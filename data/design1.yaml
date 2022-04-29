@@ -24,8 +24,8 @@ wingAlpha: null # [rad]
 wingC_L_alpha: null # [-]
 liftFactor: 1.1 # [-] excess lift needed to compensate
 wingC_D_0: 0.032 # [-]
-wingC_D: null [-]
-wingDragCorrection: 1.1 [-]
+wingC_D: null # [-]
+wingDragCorrection: 1.1 # [-]
 
 # Design Variables - Masses
 fuselageStructuralMass: null # [kg]
@@ -38,8 +38,8 @@ totalMass: null # [kg]
 
 # Design Variables - aero coefficients
 fuselageC_D: null # [-]
-balloonC_D: null # [-]
-wingC_L_design: 0.6 # [-]
+balloonC_D: 0.47 # [-] Taken from wikipedia
+wingC_L_design: 0.6 # [-] sourced from Aero engineer
 
 # Design Variables - characteristic areas
 fuselageArea: null # [m^2]
