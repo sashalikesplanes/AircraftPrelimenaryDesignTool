@@ -1,5 +1,4 @@
 
 
-
-def fuselageSizing():
-    """"""
+def fuselageSizing(params):
+    return None
