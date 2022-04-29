@@ -1,10 +1,13 @@
 import numpy as np
-from preliminaryDesign import preliminaryDesign
+# from preliminaryDesign.preliminaryDesign import preliminaryDesign
+from misc.openData import openData
 
 # comment
 
 if __name__ == "__main__":
 
-    preliminaryDesign(parameters)
+    parameters = openData("design1")
+    print(parameters)
+    # preliminaryDesign(parameters)
 
 

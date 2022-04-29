@@ -1,2 +1,2 @@
-payload = 50000
-passengers = 500
+payload: 50000
+passengers: 500
