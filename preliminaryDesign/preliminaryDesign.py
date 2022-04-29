@@ -19,19 +19,18 @@ def preliminaryDesign(parameters):
 
     rho = getDensity(parameters["altitude"])
 
-
     parameters["totalMass"] = parameters["fuselageMass"]
 
     i = 0
     while i < 10000:
         # wing
-        wingSizing(parameters, rho)
+        wingSizing(parameters, rho)  # Done
 
         # balloon sizing
-        balloonSizing(parameters, rho)
+        balloonSizing(parameters, rho)  # Done
 
         # drag model
-        dragModel(parameters, rho)
+        dragModel(parameters, rho)  # Done
 
         # propulsion sizing
         propulsionSizing(parameters)
