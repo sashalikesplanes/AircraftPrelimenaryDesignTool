@@ -5,7 +5,7 @@ g = 9.80665
 
 
 def wingSizing(params, rho):
-    params["wingArea"] = params["totalMass"] * g * params["liftFactor"] * \
+    params["wingArea"] = params["totalMass"] * g * (1 - params["liftFactor"]) * \
         params["liftRatio"] / (0.5 * rho * params["velocity"]
                                ** 2 * params["wingC_L_design"])
 
