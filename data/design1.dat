@@ -1,2 +1,51 @@
-payload: 50000
-passengers: 500
+# Payload specification
+cargoMass: 50000 # [kg]
+cargoVolume: 0 # [m^3]
+passengers: 500 # [-]
+passengerMass: 100 # [kg]
+
+# Cruise specification
+altitude: 1000 # [m]
+velocity: 140 # [m/s] = 501 kph
+flightRange: 10000000 # [m] = 10,000 km
+
+# Balloon design parameters
+shape: sphere #
+liftRatio: 0.5 # [-] Fraction of lift carried by balloon 
+compressionRatio: 2 # [-] Density of compressed hydrogen / density of sea level hydrogen
+
+# Propulsion design parameters
+propEfficiency: 0.3 # [-]
+propSpecificForce: null # [N/kg]
+fuelCellSpecificPower: null # [W/kg]
+
+# Design Variables - Masses
+fuselageStructuralMass: null # [kg]
+wingStructuralMass: null # [kg]
+balloonStructuralMass: null # [kg]
+fuelMass: null # [kg]
+liftingHydrogenMass: null # [-]
+propulsionMass: null # [kg]
+
+# Design Variables - aero coefficients
+fuselageC_D: null # [-]
+balloonC_D: null # [-]
+wingC_D: null # [-]
+wingC_L: null # [-]
+wingC_L_alpha: null # [-]
+
+# Design Variables - characteristic areas
+fuselageArea = null # [m^2]
+balloonArea = null # [m^2]
+wingArea = null # [m^2]
+
+# Design Variables - totals
+requiredEnergy: null # [J]
+totalDrag: null # [N]
+
+
+
+
+
+
+
