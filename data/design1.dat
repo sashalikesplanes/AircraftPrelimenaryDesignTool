@@ -35,9 +35,9 @@ wingC_L: null # [-]
 wingC_L_alpha: null # [-]
 
 # Design Variables - characteristic areas
-fuselageArea = null # [m^2]
-balloonArea = null # [m^2]
-wingArea = null # [m^2]
+fuselageArea: null # [m^2]
+balloonArea: null # [m^2]
+wingArea: null # [m^2]
 
 # Design Variables - totals
 requiredEnergy: null # [J]
