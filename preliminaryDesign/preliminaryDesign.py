@@ -15,7 +15,7 @@ def preliminaryDesign(parameters):
 
     fuselageSizing(parameters)
 
-    rho = 0  # get rho from isa function
+    rho = 1.225  # get rho from isa function
 
     parameters["totalMass"] = parameters["fuselageMass"]
 
@@ -31,12 +31,16 @@ def preliminaryDesign(parameters):
         dragModel(parameters, rho)
 
         # propulsion sizing
+        propulsionSizing(parameters)
 
         # energy required
+        energyRequired(parameters)
 
         # fuel mass estimation
+        fuelMassEstimation(parameters)
 
         # total mass
+        totalMassEstimation(parameters)
 
         # check if converged
 
