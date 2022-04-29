@@ -9,13 +9,16 @@ from preliminaryDesign.propulsionSizing import propulsionSizing
 from preliminaryDesign.totalMassEstimation import totalMassEstimation
 from preliminaryDesign.wingSizing import wingSizing
 
+from misc.ISA import getDensity
+
 
 def preliminaryDesign(parameters):
     """Perform preliminary design using design parameters"""
 
     fuselageSizing(parameters)
 
-    rho = 1.225  # get rho from isa function
+    rho = getDensity(parameters["altitude"])
+
 
     parameters["totalMass"] = parameters["fuselageMass"]
 
