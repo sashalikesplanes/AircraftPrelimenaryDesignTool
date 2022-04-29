@@ -1,13 +1,13 @@
 import numpy as np
 
-from balloonSizing import balloonSizing
-from dragModel import dragModel
-from energyRequired import energyRequired
-from fuelMassEstimation import fuelMassEstimation
-from fuselageSizing import fuselageSizing
-from propulsionSizing import propulsionSizing
-from totalMassEstimation import totalMassEstimation
-from wingSizing import wingSizing
+from preliminaryDesign.balloonSizing import balloonSizing
+from preliminaryDesign.dragModel import dragModel
+from preliminaryDesign.energyRequired import energyRequired
+from preliminaryDesign.fuelMassEstimation import fuelMassEstimation
+from preliminaryDesign.fuselageSizing import fuselageSizing
+from preliminaryDesign.propulsionSizing import propulsionSizing
+from preliminaryDesign.totalMassEstimation import totalMassEstimation
+from preliminaryDesign.wingSizing import wingSizing
 
 
 def preliminaryDesign(parameters):
