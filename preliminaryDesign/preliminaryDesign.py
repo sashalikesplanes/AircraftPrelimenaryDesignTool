@@ -15,7 +15,7 @@ def preliminaryDesign(parameters):
 
     fuselageSizing(parameters)
 
-    rho =  # get rho from isa function
+    rho = 0  # get rho from isa function
 
     parameters["totalMass"] = parameters["fuselageMass"]
 
@@ -42,4 +42,5 @@ def preliminaryDesign(parameters):
 
         i += 1
 
+    print("DONE :))))")
     return parameters

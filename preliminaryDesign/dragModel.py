@@ -1,2 +1,2 @@
-def dragModel(params):
+def dragModel(params, rho):
     return None
