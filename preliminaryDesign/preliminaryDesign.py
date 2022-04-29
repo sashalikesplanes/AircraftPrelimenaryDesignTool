@@ -7,7 +7,7 @@ from preliminaryDesign.fuelMassEstimation import fuelMassEstimation
 from preliminaryDesign.fuselageSizing import fuselageSizing
 from preliminaryDesign.propulsionSizing import propulsionSizing
 from preliminaryDesign.totalMassEstimation import totalMassEstimation
-from preliminaryDeisng.wingSizing import wingSizing
+from preliminaryDesign.wingSizing import wingSizing
 
 
 
