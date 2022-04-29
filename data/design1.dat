@@ -26,6 +26,7 @@ balloonStructuralMass: null # [kg]
 fuelMass: null # [kg]
 liftingHydrogenMass: null # [-]
 propulsionMass: null # [kg]
+totalMass: null # [kg]
 
 # Design Variables - aero coefficients
 fuselageC_D: null # [-]
