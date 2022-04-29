@@ -1,5 +1,6 @@
 import numpy as np
 from preliminaryDesign.preliminaryDesign import preliminaryDesign
+from preliminaryDesign.wingSizing import wingSizing
 from misc.openData import openData
 
 # comment
