@@ -27,7 +27,7 @@ def conceptualDesign(parameters, material_data):
     totalMassEstimation(parameters)  # Done
 
     i = 0
-    while i < 10:
+    while i < 100:
         # wing
         wingSizing(parameters, rho)  # Done
 
@@ -52,6 +52,7 @@ def conceptualDesign(parameters, material_data):
         # check if converged
         # print(parameters)
         i += 1
+        print(i)
 
     print("DONE :))))")
     return parameters

@@ -11,7 +11,8 @@ if __name__ == "__main__":
     material_data = load_materials()
 
     parameters = openData("design1")
-    print(parameters)
+
     conceptualDesign(parameters, material_data)
+    print(parameters)
 
 # hello world

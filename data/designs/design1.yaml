@@ -14,7 +14,7 @@ flightRange: 10000000 # [m] = 10,000 km
 shape: bullet #
 liftRatio: 0.5 # [-] Fraction of lift carried by balloon
 compressionRatio: 2 # [-] Density of compressed hydrogen / density of sea level hydrogen
-balloonLengthWidthRatio: 10 # [-] To optimize
+balloonLengthWidthRatio: 200 # [-] To optimize
 
 # Fuselage design parameters
 fuselageRadius: 4 # [m] - random shit
