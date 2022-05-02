@@ -11,6 +11,13 @@ def wingSizing(params, rho):
 
     params["wingC_D"] = params['wingDragCorrection'] * params["wingC_D_0"]
 
+    span = (params["wingArea"] * params["aspectRatio"]) ** 0.5
+    chord = params["wingArea"] / span
+
+    params["wingStructuralMass"] = 0.0017 * wingLift * \
+        (span) ** 0.75 * (1 + (6.3 / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
+            span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift)) ** 0.3
+
 
 if __name__ == "__main__":
     testDict = {
