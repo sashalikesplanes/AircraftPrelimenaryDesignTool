@@ -13,10 +13,10 @@ from conceptualDesign.payloadMassEstimation import payloadMassEstimation
 from misc.ISA import getDensity, getPressure
 
 
-def conceptualDesign(parameters):
+def conceptualDesign(parameters, material_data):
     """Perform preliminary design using design parameters"""
 
-    # Get the density at the cruise altitude
+    # Get the density at the cruise altitude hello world
     rho = getDensity(parameters["altitude"])
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
     pAir = getPressure(parameters["altitude"])
