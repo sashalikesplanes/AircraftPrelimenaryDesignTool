@@ -14,6 +14,11 @@ shape: sphere #
 liftRatio: 0.5 # [-] Fraction of lift carried by balloon
 compressionRatio: 2 # [-] Density of compressed hydrogen / density of sea level hydrogen
 
+# Fuselage design parameters
+fuselageRadius: 3 # [m] - random shit
+fuselageLength: 50 # [m] - random shit
+safetyFactor: 2 # [-] made up
+
 # Propulsion design parameters
 propEfficiency: 0.5 # [-] tank to wheel efficiency source : Atze
 propSpecificForce: null # [N/kg]
