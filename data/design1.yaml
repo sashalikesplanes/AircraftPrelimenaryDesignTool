@@ -15,7 +15,7 @@ liftRatio: 0.5 # [-] Fraction of lift carried by balloon
 compressionRatio: 2 # [-] Density of compressed hydrogen / density of sea level hydrogen
 
 # Propulsion design parameters
-propEfficiency: 0.3 # [-]
+propEfficiency: 0.5 # [-] tank to wheel efficiency source : Atze
 propSpecificForce: null # [N/kg]
 fuelCellSpecificPower: null # [W/kg]
 
