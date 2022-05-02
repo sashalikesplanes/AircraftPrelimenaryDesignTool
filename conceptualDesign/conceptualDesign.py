@@ -20,10 +20,10 @@ def conceptualDesign(parameters):
     rho = getDensity(parameters["altitude"])
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
 
-    payloadMassEstimation(parameters)
+    payloadMassEstimation(parameters)  # Done
     fuselageSizing(parameters, dp)
 
-    totalMassEstimation(parameters)
+    totalMassEstimation(parameters)  # Done
 
     i = 0
     while i < 10000:
