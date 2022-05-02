@@ -50,7 +50,7 @@ def conceptualDesign(parameters):
         totalMassEstimation(parameters)  # DOne
 
         # check if converged
-
+        print(parameters)
         i += 1
 
     print("DONE :))))")
