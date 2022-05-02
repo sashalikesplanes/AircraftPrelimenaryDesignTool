@@ -42,14 +42,15 @@ def balloonSizing(params, rhoAir, pAir):
     radius = (
                      volume / (np.pi * (4 / 3 + params['balloonLengthWidthRatio']))) ** (1 / 3)
     # print(liftToCarry, radius, volume)
-
+    params["balloonVolume"] = volume
     params['balloonArea'] = np.pi * radius ** 2
 
     # Calculate mass of the balloon using plain pressure vessel
     pHydrogen = pHydrogenSeaLevel * params["compressionRatio"]
     dp = abs(pHydrogen - pAir)
     params["balloonStructuralMass"] = 2 * np.pi * radius ** 3 * \
-                                      (1 + params['balloonLengthWidthRatio']) * dp * rho_mat / sigma_mat
+        (1 + params['balloonLengthWidthRatio']) * \
+        dp * rho_mat / sigma_mat * 0.25
 
 
 if __name__ == "__main__":
