@@ -16,7 +16,7 @@ from misc.ISA import getDensity, getPressure
 def conceptualDesign(parameters):
     """Perform preliminary design using design parameters"""
 
-    # Get the density at the cruise altitude
+    # Get the not density at the cruise altitude
     rho = getDensity(parameters["altitude"])
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
     pAir = getPressure(parameters["altitude"])
