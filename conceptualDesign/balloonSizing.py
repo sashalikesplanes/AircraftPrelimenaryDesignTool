@@ -17,8 +17,12 @@ def balloonSizing(params, rhoAir, pAir):
     fuelVolume = params["fuelMass"] / \
         (rhoHydrogen * params["compressionRatio"])
 
-    if volume < fuelVolume:
+    liftingVolume = volume - fuelVolume
+    if liftingVolume < 0:
         print("WARNING, NOT ENOUGH BALLOON TO CARRY FUEL")
+    else:
+        params["liftingHydrogenMass"] = liftingVolume * \
+            (rhoHydrogen * params["compressionRatio"])
     radius = (
         volume / (np.pi * (4/3 + params['balloonLengthWidthRatio'])))**(1/3)
     # print(liftToCarry, radius, volume)

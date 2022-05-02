@@ -22,7 +22,7 @@ def conceptualDesign(parameters):
     pAir = getPressure(parameters["altitude"])
 
     payloadMassEstimation(parameters)  # Done
-    fuselageSizing(parameters, dp)
+    fuselageSizing(parameters, dp)  # Done
 
     totalMassEstimation(parameters)  # Done
 
@@ -38,19 +38,19 @@ def conceptualDesign(parameters):
         dragModel(parameters, rho)  # Done
 
         # propulsion sizing
-        propulsionSizing(parameters)
+        propulsionSizing(parameters)  # TODO need numbers for this
 
         # energy required
-        energyRequired(parameters)
+        energyRequired(parameters)  # Done
 
         # fuel mass estimation
-        fuelMassEstimation(parameters)
+        fuelMassEstimation(parameters)  # Done
 
         # total mass
-        totalMassEstimation(parameters)
+        totalMassEstimation(parameters)  # DOne
 
         # check if converged
-
+        print(parameters)
         i += 1
 
     print("DONE :))))")
