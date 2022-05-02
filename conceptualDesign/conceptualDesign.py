@@ -1,20 +1,18 @@
+from misc.ISA import getDensity, getPressure
+from conceptualDesign.payloadMassEstimation import payloadMassEstimation
+from conceptualDesign.wingSizing import wingSizing
+from conceptualDesign.totalMassEstimation import totalMassEstimation
+from conceptualDesign.propulsionSizing import propulsionSizing
+from conceptualDesign.fuselageSizing import fuselageSizing
+from conceptualDesign.fuelMassEstimation import fuelMassEstimation
+from conceptualDesign.energyRequired import energyRequired
+from conceptualDesign.dragModel import dragModel
+from conceptualDesign.balloonSizing import balloonSizing
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-import pandas as pd
-
-from conceptualDesign.balloonSizing import balloonSizing
-from conceptualDesign.dragModel import dragModel
-from conceptualDesign.energyRequired import energyRequired
-from conceptualDesign.fuelMassEstimation import fuelMassEstimation
-from conceptualDesign.fuselageSizing import fuselageSizing
-from conceptualDesign.propulsionSizing import propulsionSizing
-from conceptualDesign.totalMassEstimation import totalMassEstimation
-from conceptualDesign.wingSizing import wingSizing
-from conceptualDesign.payloadMassEstimation import payloadMassEstimation
-
-from misc.ISA import getDensity, getPressure
 
 
 def conceptualDesign(parameters, material_data):
@@ -31,8 +29,6 @@ def conceptualDesign(parameters, material_data):
     fuselageSizing(parameters, dp)  # Done
 
     totalMassEstimation(parameters)  # Done
-    # i = 0
-    lst = []
     for i in range(1000):
         # wing
         wingSizing(parameters, rho)  # Done
