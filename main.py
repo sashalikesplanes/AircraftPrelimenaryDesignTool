@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     parameters = openData("design1")
 
-    conceptualDesign(parameters, material_data)
+    parameters, df = conceptualDesign(parameters, material_data)
     print(parameters)
 
 # hello world

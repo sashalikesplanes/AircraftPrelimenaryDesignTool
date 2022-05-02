@@ -30,12 +30,8 @@ def conceptualDesign(parameters, material_data):
 
     totalMassEstimation(parameters)  # Done
     i = 0
-<<<<<<< HEAD
-    while i < 100:
-=======
     lst = []
     for i in range(100):
->>>>>>> c64084dfae8ea2676fc559802f1cab9d4834cd75
         # wing
         wingSizing(parameters, rho)  # Done
 
@@ -62,16 +58,8 @@ def conceptualDesign(parameters, material_data):
         # # check if converged
         # i += 1
 
-<<<<<<< HEAD
-        # check if converged
-        # print(parameters)
-        i += 1
-        print(i)
-=======
     # plt.plot(range(100), lst)
     # plt.show()
-    print(df)
->>>>>>> c64084dfae8ea2676fc559802f1cab9d4834cd75
 
     # print(parameters)
-    return parameters
+    return parameters, df
