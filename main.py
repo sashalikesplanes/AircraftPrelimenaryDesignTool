@@ -12,6 +12,11 @@ if __name__ == "__main__":
 
     parameters = openData("design1")
 
+    for i in range(50):
+        params = parameters.copy()
+        compression_ratio = i/10 + 0.1
+        params["compressionRatio"] = compression_ratio
+
     parameters, df = conceptualDesign(parameters, material_data)
     print(parameters)
 

@@ -6,6 +6,8 @@ rhoHydrogen = 0.08375  # kg/m^3
 rho_mat = 2710
 sigma_mat = 241e6
 pHydrogenSeaLevel = 101325  # [Pa]
+
+
 # test comment
 
 
@@ -13,32 +15,41 @@ def balloonSizing(params, rhoAir, pAir):
     liftToCarry = params['totalMass'] * g * params["liftRatio"]
     # print(liftToCarry)
     volume = liftToCarry / \
-        ((rhoAir - rhoHydrogen * params["compressionRatio"]) * g)
+             ((rhoAir - rhoHydrogen * params["compressionRatio"]) * g)
 
     fuelVolume = params["fuelMass"] / \
-        (rhoHydrogen * params["compressionRatio"])
+                 (rhoHydrogen * params["compressionRatio"])
 
     # fuel_mass = params["fuelMass"] + params["liftingHydrogenMass"]
-    # volume =
+    ##################################################
+    # The compression code
+    # This finds a compression ratio
 
+    # fuelVolume = params["fuelMass"] / rhoHydrogen
+    # if fuelVolume == 0:
+    #     fuelVolume = 1
+    # print((-((liftToCarry / (g * fuelVolume)) - rhoAir) / rhoHydrogen) - 1)
+    ###################################################
+
+    # This part breaks shit
     liftingVolume = volume - fuelVolume
     if liftingVolume < 0:
-        # print("WARNING, NOT ENOUGH BALLOON TO CARRY FUEL")
+        print("WARNING, NOT ENOUGH BALLOON TO CARRY FUEL")
         pass
     else:
         params["liftingHydrogenMass"] = liftingVolume * \
-            (rhoHydrogen * params["compressionRatio"])
+                                        (rhoHydrogen * params["compressionRatio"])
     radius = (
-        volume / (np.pi * (4/3 + params['balloonLengthWidthRatio'])))**(1/3)
+                     volume / (np.pi * (4 / 3 + params['balloonLengthWidthRatio']))) ** (1 / 3)
     # print(liftToCarry, radius, volume)
 
     params['balloonArea'] = np.pi * radius ** 2
 
-    # Calculate mass of the balloon
+    # Calculate mass of the balloon using plain pressure vessel
     pHydrogen = pHydrogenSeaLevel * params["compressionRatio"]
     dp = abs(pHydrogen - pAir)
     params["balloonStructuralMass"] = 2 * np.pi * radius ** 3 * \
-        (1 + params['balloonLengthWidthRatio']) * dp * rho_mat / sigma_mat
+                                      (1 + params['balloonLengthWidthRatio']) * dp * rho_mat / sigma_mat
 
 
 if __name__ == "__main__":
