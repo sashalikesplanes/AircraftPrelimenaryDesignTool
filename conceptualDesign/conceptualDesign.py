@@ -29,7 +29,7 @@ def conceptualDesign(parameters, material_data):
     fuselageSizing(parameters, dp)  # Done
 
     totalMassEstimation(parameters)  # Done
-    for i in range(1000):
+    for i in range(100):
 
         # balloon sizing
         balloonSizing(parameters, rho, pAir)  # Done

@@ -11,7 +11,7 @@ def wingSizing(params, rho):
 
     params["wingC_D"] = params['wingDragCorrection'] * params["wingC_D_0"]
 
-    span = (params["wingArea"] * params["aspectRatio"]) ** 0.5
+    span = (params["wingArea"] * params["wingAspectRatio"]) ** 0.5
     chord = params["wingArea"] / span
 
     params["wingStructuralMass"] = 0.0017 * wingLift * \
