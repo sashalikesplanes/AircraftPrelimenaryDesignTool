@@ -1,13 +1,12 @@
 from misc.ISA import getDensity, getPressure
-from conceptualDesign.payloadMassEstimation import payloadMassEstimation
 from conceptualDesign.wingSizing import wingSizing
 from conceptualDesign.totalMassEstimation import totalMassEstimation
 from conceptualDesign.propulsionSizing import propulsionSizing
-from conceptualDesign.fuselageSizing import fuselageSizing
 from conceptualDesign.fuelMassEstimation import fuelMassEstimation
 from conceptualDesign.energyRequired import energyRequired
 from conceptualDesign.dragModel import dragModel
 from conceptualDesign.balloonSizing import balloonSizing
+from conceptualDesign.initializeParameters import initializeParameters
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,21 +14,20 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
-def conceptualDesign(parameters, material_data):
+def conceptualDesign(parameters, material_data, iters):
     """Perform preliminary design using design parameters"""
 
     # Get the density at the cruise altitude hello world
     rho = getDensity(parameters["altitude"])
-    dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
+
     pAir = getPressure(parameters["altitude"])
 
     df = pd.DataFrame()
 
-    payloadMassEstimation(parameters)  # Done
-    fuselageSizing(parameters, dp)  # Done
+    initializeParameters(parameters)
 
     totalMassEstimation(parameters)  # Done
-    for i in range(100):
+    for i in range(int(iters)):
 
         # balloon sizing
         balloonSizing(parameters, rho, pAir)  # Done

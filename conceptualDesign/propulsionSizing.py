@@ -1,3 +1,8 @@
 def propulsionSizing(params):
-    # TODO
-    return None
+
+    enginePower = params["totalDrag"] * \
+        params["velocity"] * params["engineEfficiency"]
+    fuelCellPower = enginePower * params["fuelCellEfficiency"]
+
+    params["propulsionMass"] = enginePower / params["engineSpecificPower"] + \
+        fuelCellPower / params["fuelCellSpecificPower"]
