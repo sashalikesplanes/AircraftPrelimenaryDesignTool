@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 
 from conceptualDesign.balloonSizing import balloonSizing
 from conceptualDesign.dragModel import dragModel
@@ -21,13 +23,15 @@ def conceptualDesign(parameters, material_data):
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
     pAir = getPressure(parameters["altitude"])
 
+    df = pd.DataFrame()
+
     payloadMassEstimation(parameters)  # Done
     fuselageSizing(parameters, dp)  # Done
 
     totalMassEstimation(parameters)  # Done
-
     i = 0
-    while i < 10:
+    lst = []
+    for i in range(100):
         # wing
         wingSizing(parameters, rho)  # Done
 
@@ -48,10 +52,15 @@ def conceptualDesign(parameters, material_data):
 
         # total mass
         totalMassEstimation(parameters)  # DOne
+        # lst.append(parameters["balloonArea"])
+        df = df.append(parameters, ignore_index=True)
 
-        # check if converged
-        # print(parameters)
-        i += 1
+        # # check if converged
+        # i += 1
 
-    print("DONE :))))")
+    # plt.plot(range(100), lst)
+    # plt.show()
+    print(df)
+
+    # print(parameters)
     return parameters

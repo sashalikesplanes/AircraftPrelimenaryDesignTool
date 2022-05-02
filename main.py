@@ -8,7 +8,7 @@ from misc.materials import load_materials
 
 if __name__ == "__main__":
 
-    material_data = load_materials()
+    material_data: dict = load_materials()
 
     parameters = openData("design1")
     print(parameters)
