@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 import pandas as pd
 
 from conceptualDesign.balloonSizing import balloonSizing
@@ -29,9 +31,9 @@ def conceptualDesign(parameters, material_data):
     fuselageSizing(parameters, dp)  # Done
 
     totalMassEstimation(parameters)  # Done
-    i = 0
+    # i = 0
     lst = []
-    for i in range(100):
+    for i in range(1000):
         # wing
         wingSizing(parameters, rho)  # Done
 
@@ -60,6 +62,9 @@ def conceptualDesign(parameters, material_data):
 
     # plt.plot(range(100), lst)
     # plt.show()
+    print(df)
+    df.plot()
+    plt.show()
 
     # print(parameters)
     return parameters, df
