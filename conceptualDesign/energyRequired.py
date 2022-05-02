@@ -1,2 +1,3 @@
 def energyRequired(params):
-    return None
+    params["requiredEnergy"] = params["totalDrag"] * \
+        params["flightRange"] / params["propEfficiency"]

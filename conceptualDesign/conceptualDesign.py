@@ -41,7 +41,7 @@ def conceptualDesign(parameters):
         propulsionSizing(parameters)  # TODO need numbers for this
 
         # energy required
-        energyRequired(parameters)
+        energyRequired(parameters)  # Done
 
         # fuel mass estimation
         fuelMassEstimation(parameters)
