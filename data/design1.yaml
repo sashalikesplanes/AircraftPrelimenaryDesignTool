@@ -3,6 +3,7 @@ cargoMass: 50000 # [kg]
 cargoVolume: 0 # [m^3]
 passengers: 500 # [-]
 passengerMass: 100 # [kg]
+payloadMass: null # [kg]
 
 # Cruise specification
 altitude: 1000 # [m]

@@ -21,7 +21,7 @@ def conceptualDesign(parameters):
 
     fuselageSizing(parameters, dp)
 
-    # parameters["totalMass"] = parameters["fuselageMass"]
+    totalMassEstimation(parameters)
 
     i = 0
     while i < 10000:
