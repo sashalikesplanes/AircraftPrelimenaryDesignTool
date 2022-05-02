@@ -16,11 +16,7 @@ from misc.ISA import getDensity, getPressure
 def conceptualDesign(parameters, material_data):
     """Perform preliminary design using design parameters"""
 
-<<<<<<< HEAD
-    # Get the not density at the cruise altitude
-=======
     # Get the density at the cruise altitude hello world
->>>>>>> f75ac0b04f7c9a030d11ce18ab8bb4aee1667b7e
     rho = getDensity(parameters["altitude"])
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
     pAir = getPressure(parameters["altitude"])
@@ -31,7 +27,7 @@ def conceptualDesign(parameters, material_data):
     totalMassEstimation(parameters)  # Done
 
     i = 0
-    while i < 10000:
+    while i < 10:
         # wing
         wingSizing(parameters, rho)  # Done
 
@@ -54,7 +50,7 @@ def conceptualDesign(parameters, material_data):
         totalMassEstimation(parameters)  # DOne
 
         # check if converged
-        print(parameters)
+        # print(parameters)
         i += 1
 
     print("DONE :))))")
