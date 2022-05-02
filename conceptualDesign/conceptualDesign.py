@@ -19,6 +19,7 @@ def conceptualDesign(parameters):
     # Get the density at the cruise altitude
     rho = getDensity(parameters["altitude"])
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
+    pAir = getPressure(parameters["altitude"])
 
     payloadMassEstimation(parameters)  # Done
     fuselageSizing(parameters, dp)
@@ -31,7 +32,7 @@ def conceptualDesign(parameters):
         wingSizing(parameters, rho)  # Done
 
         # balloon sizing
-        balloonSizing(parameters, rho)  # Done
+        balloonSizing(parameters, rho, pAir)  # Done
 
         # drag model
         dragModel(parameters, rho)  # Done
