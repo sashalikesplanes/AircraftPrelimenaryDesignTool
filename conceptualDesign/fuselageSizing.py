@@ -5,7 +5,7 @@ bullShitFactor = 3
 
 
 def fuselageSizing(params, dp):
-    print(f"Pressure difference: {dp}")
+    # print(f"Pressure difference: {dp}")
     n_pax = params["passengers"]
     m_cargo = params["cargoMass"]
     m_pax = n_pax * params["passengerMass"]
