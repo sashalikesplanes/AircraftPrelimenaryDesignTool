@@ -12,7 +12,6 @@ flightRange: 10000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-liftRatio: 0.1 # [-] Fraction of lift carried by balloon
 compressionRatio: 1.88 # [-] Density of compressed hydrogen / density of sea level hydrogen
 balloonLengthWidthRatio: 200 # [-] To optimize
 
@@ -32,6 +31,7 @@ wingC_L_alpha: null # [-]
 liftFactor: 1.1 # [-] excess lift needed to compensate
 wingC_D_0: 0.032 # [-]
 wingC_D: null # [-]
+wingAspectRatio: 8 # [-] - chief aero said so lmao
 wingDragCorrection: 1.1 # [-]
 
 # Design Variables - Masses
@@ -56,4 +56,5 @@ wingArea: null # [m^2]
 # Design Variables - totals
 requiredEnergy: null # [J]
 totalDrag: null # [N]
+balloonLift: 0 # [N]
 
