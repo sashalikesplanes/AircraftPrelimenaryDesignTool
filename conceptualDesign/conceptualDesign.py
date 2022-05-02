@@ -44,7 +44,7 @@ def conceptualDesign(parameters):
         energyRequired(parameters)  # Done
 
         # fuel mass estimation
-        fuelMassEstimation(parameters)
+        fuelMassEstimation(parameters)  # Done
 
         # total mass
         totalMassEstimation(parameters)
