@@ -12,35 +12,22 @@ pHydrogenSeaLevel = 101325  # [Pa]
 
 
 def balloonSizing(params, rhoAir, pAir):
-    liftToCarry = params['totalMass'] * g * params["liftRatio"]
+    # liftToCarry = params['totalMass'] * g * params["liftRatio"]
     # print(liftToCarry)
-    volume = liftToCarry / \
-             ((rhoAir - rhoHydrogen * params["compressionRatio"]) * g)
+    #  = liftToCarry / \
+    #          ((rhoAir - rhoHydrogen * params["compressionRatio"]) * g)
 
-    fuelVolume = params["fuelMass"] / \
-                 (rhoHydrogen * params["compressionRatio"])
+    totalHydrogenMass = params["fuelMass"] * \
+        params["compressionRatio"] / (params["compressionRatio"] - 1)
 
-    # fuel_mass = params["fuelMass"] + params["liftingHydrogenMass"]
-    ##################################################
-    # The compression code
-    # This finds a compression ratio
+    volume = totalHydrogenMass / (rhoHydrogen * params["compressionRatio"])
 
-    # fuelVolume = params["fuelMass"] / rhoHydrogen
-    # if fuelVolume == 0:
-    #     fuelVolume = 1
-    # print((-((liftToCarry / (g * fuelVolume)) - rhoAir) / rhoHydrogen) - 1)
-    ###################################################
+    lift = volume * g * (rhoAir - rhoHydrogen * params["compressionRatio"])
 
-    # This part breaks shit
-    liftingVolume = volume - fuelVolume
-    if liftingVolume < 0:
-        print("WARNING, NOT ENOUGH BALLOON TO CARRY FUEL")
-        pass
-    else:
-        params["liftingHydrogenMass"] = liftingVolume * \
-                                        (rhoHydrogen * params["compressionRatio"])
+    params["balloonLift"] = lift
+
     radius = (
-                     volume / (np.pi * (4 / 3 + params['balloonLengthWidthRatio']))) ** (1 / 3)
+        volume / (np.pi * (4 / 3 + params['balloonLengthWidthRatio']))) ** (1 / 3)
     # print(liftToCarry, radius, volume)
     params["balloonVolume"] = volume
     params['balloonArea'] = np.pi * radius ** 2
