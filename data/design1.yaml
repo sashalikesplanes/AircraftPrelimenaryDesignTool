@@ -34,12 +34,12 @@ wingC_D: null # [-]
 wingDragCorrection: 1.1 # [-]
 
 # Design Variables - Masses
-fuselageStructuralMass: null # [kg]
-wingStructuralMass: null # [kg]
-balloonStructuralMass: null # [kg]
-fuelMass: null # [kg]
-liftingHydrogenMass: null # [-]
-propulsionMass: null # [kg]
+fuselageStructuralMass: 0 # [kg]
+wingStructuralMass: 0 # [kg]
+balloonStructuralMass: 0 # [kg]
+fuelMass: 0 # [kg]
+liftingHydrogenMass: 0 # [-]
+propulsionMass: 0 # [kg]
 totalMass: null # [kg]
 
 # Design Variables - aero coefficients
