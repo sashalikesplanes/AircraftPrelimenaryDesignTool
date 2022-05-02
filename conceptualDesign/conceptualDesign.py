@@ -47,7 +47,7 @@ def conceptualDesign(parameters):
         fuelMassEstimation(parameters)  # Done
 
         # total mass
-        totalMassEstimation(parameters)
+        totalMassEstimation(parameters)  # DOne
 
         # check if converged
 
