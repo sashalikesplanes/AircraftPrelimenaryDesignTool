@@ -59,9 +59,9 @@ def conceptualDesign(parameters, material_data):
 
     # plt.plot(range(100), lst)
     # plt.show()
-    print(df)
-    df.plot()
-    plt.show()
+    # print(df)
+    # df.plot()
+    # plt.show()
 
     # print(parameters)
     return parameters, df

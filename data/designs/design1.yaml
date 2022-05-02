@@ -7,12 +7,12 @@ payloadMass: null # [kg]
 
 # Cruise specification
 altitude: 5000 # [m]
-velocity: 75 # [m/s] = 501 kph
-flightRange: 1000000 # [m] = 10,000 km
+velocity: 300 # [m/s] = 501 kph
+flightRange: 8000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 5 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 700 # [-] Density of compressed hydrogen / density of sea level hydrogen
 balloonLengthWidthRatio: 500 # [-] To optimize
 
 # Fuselage design parameters
