@@ -6,7 +6,7 @@ passengerMass: 100 # [kg]
 payloadMass: null # [kg]
 
 # Cruise specification
-altitude: 1000 # [m]
+altitude: 4000 # [m]
 velocity: 140 # [m/s] = 501 kph
 flightRange: 10000000 # [m] = 10,000 km
 
@@ -17,9 +17,9 @@ compressionRatio: 2 # [-] Density of compressed hydrogen / density of sea level 
 balloonLengthWidthRatio: 10 # [-] To optimize
 
 # Fuselage design parameters
-fuselageRadius: 3 # [m] - random shit
-fuselageLength: 50 # [m] - random shit
-safetyFactor: 2 # [-] made up
+fuselageRadius: 4 # [m] - random shit
+fuselageLength: 25 # [m] - random shit
+safetyFactor: 1.4 # [-] made up
 
 # Propulsion design parameters
 propEfficiency: 0.5 # [-] tank to wheel efficiency source : Atze
