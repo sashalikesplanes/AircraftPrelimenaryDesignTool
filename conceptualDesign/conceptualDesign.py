@@ -8,6 +8,7 @@ from conceptualDesign.fuselageSizing import fuselageSizing
 from conceptualDesign.propulsionSizing import propulsionSizing
 from conceptualDesign.totalMassEstimation import totalMassEstimation
 from conceptualDesign.wingSizing import wingSizing
+from conceptualDesign.payloadMassEstimation import payloadMassEstimation
 
 from misc.ISA import getDensity, getPressure
 
@@ -19,6 +20,7 @@ def conceptualDesign(parameters):
     rho = getDensity(parameters["altitude"])
     dp = abs(getPressure(1000) - getPressure(parameters["altitude"]))
 
+    payloadMassEstimation(parameters)
     fuselageSizing(parameters, dp)
 
     totalMassEstimation(parameters)
