@@ -30,11 +30,12 @@ def conceptualDesign(parameters, material_data):
 
     totalMassEstimation(parameters)  # Done
     for i in range(1000):
-        # wing
-        wingSizing(parameters, rho)  # Done
 
         # balloon sizing
         balloonSizing(parameters, rho, pAir)  # Done
+
+        # wing
+        wingSizing(parameters, rho)  # Done
 
         # drag model
         dragModel(parameters, rho)  # Done
