@@ -20,6 +20,8 @@ def balloonSizing(params, rhoAir, pAir):
     totalHydrogenMass = params["fuelMass"] * \
         params["compressionRatio"] / (params["compressionRatio"] - 1)
 
+    params["liftingHydrogenMass"] = totalHydrogenMass - params["fuelMass"]
+
     volume = totalHydrogenMass / (rhoHydrogen * params["compressionRatio"])
 
     lift = volume * g * (rhoAir - rhoHydrogen * params["compressionRatio"])
