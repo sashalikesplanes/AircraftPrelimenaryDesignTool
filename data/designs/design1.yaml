@@ -7,17 +7,17 @@ payloadMass: null # [kg]
 
 # Cruise specification
 altitude: 4671 # [m]
-velocity: 150 # [m/s] = 501 kph
+velocity: 300 # [m/s] = 501 kph
 flightRange: 5000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 2.11 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 50 # [-] Density of compressed hydrogen / density of sea level hydrogen
 balloonLengthWidthRatio: 2000 # [-] To optimize
 
 # Fuselage design parameters
-fuselageRadius: 4 # [m] - random shit
-fuselageLength: 25 # [m] - random shit
+fuselageRadius: null # [m] - random shit
+fuselageLength: null # [m] - random shit
 safetyFactor: 1.4 # [-] made up
 
 # Propulsion design parameters
@@ -55,7 +55,7 @@ wingC_L_design: 0.8 # [-] sourced from Aero engineer
 # Design Variables - characteristic areas
 fuselageArea: null # [m^2]
 balloonArea: null # [m^2]
-wingArea: null # [m^2]
+wingArea: 0 # [m^2]
 
 # Design Variables - totals
 requiredEnergy: null # [J]

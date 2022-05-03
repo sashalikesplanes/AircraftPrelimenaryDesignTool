@@ -25,7 +25,7 @@ if __name__ == "__main__":
     plt.plot(y, lst)
     plt.show()
 
-    parameters, df = conceptualDesign(parameters, material_data)
+    parameters, df = conceptualDesign(parameters, material_data, 50)
     print(parameters)
 
 # hello world
