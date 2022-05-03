@@ -6,6 +6,7 @@ from conceptualDesign.conceptualDesign import conceptualDesign
 from misc.openData import openData
 from misc.materials import load_materials
 import numpy as np
+from tqdm import tqdm
 
 
 def func_to_optimize(params, iters):
@@ -23,7 +24,8 @@ def func_to_optimize(params, iters):
     return parameters['fuelMass']
 
 
-def graph_stuff(params):
+def graph_stuff():
+
     # altitude = 5000
     # X = np.array([[2], [1000]])  # compressionratio --> 50 steps
     # Y = np.array([[25], [200]])  # velocity --> 100 steps
@@ -34,27 +36,28 @@ def graph_stuff(params):
     matrix = np.zeros((len(x), len(y)))
     print(matrix)
 
-    for index_i, i in enumerate(x):
+    for (index_i, i) in tqdm(enumerate(x)):
         for index_j, j in enumerate(y):
-            print(f"Hello world! {i} {j}")
+            params = openData("design1")
+            #print(f"Hello world! {i} {j}")
             params['compressionRatio'] = i
             params['velocity'] = j
 
-            _, result = conceptualDesign(params, material_data, 2)
+            _, result = conceptualDesign(params, material_data, 50)
             variable = result["fuelMass"]
             matrix[index_i, index_j] = variable.iloc[-1]
 
-    # print(matrix)
+    print(np.count_nonzero(np.isnan(matrix)))
     x = np.logspace(0.31, 3, num=51, base=10)  # compression ratio
     y = np.arange(25, 205, 5)  # velocity
 
-    plt.pcolormesh(x, y, matrix)
+    plt.pcolormesh(y, x, np.log(matrix))
     plt.show()
 
 
 if __name__ == "__main__":
-    # bnds = [(500, 10000), (2, 1000), (150, None)]
-    # print(minimize(func_to_optimize, (5000, 10, 151),
-    #       args=(10,), bounds=bnds, method="SLSQP"))
-    parameters = openData("design1")
-    graph_stuff(parameters)
+    bnds = [(500, 10000), (2, 1000), (None, None)]
+    print(minimize(func_to_optimize, (9000, 5, 200),
+          args=(10,), bounds=bnds, method="SLSQP"))
+
+    # graph_stuff()
