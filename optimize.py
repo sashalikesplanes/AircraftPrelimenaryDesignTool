@@ -40,7 +40,11 @@ def graph_stuff(params):
             params['compressionRatio'] = i
             params['velocity'] = j
 
+<<<<<<< Updated upstream
             _, result = conceptualDesign(params, material_data, 2)
+=======
+            _, result = conceptualDesign(params, material_data, 50)
+>>>>>>> Stashed changes
             variable = result["fuelMass"]
             matrix[index_i, index_j] = variable.iloc[-1]
 
