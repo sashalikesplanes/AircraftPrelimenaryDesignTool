@@ -17,7 +17,7 @@ if __name__ == "__main__":
     for i in range(100):
         params = parameters.copy()
         params["altitude"] = i * 100
-        params, _ = conceptualDesign(params, material_data)
+        params, _ = conceptualDesign(params, material_data, 50)
 
         lst.append(params["totalMass"])
 
