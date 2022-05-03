@@ -25,26 +25,31 @@ def func_to_optimize(params, iters):
 
 def graph_stuff(params):
     # altitude = 5000
-    X = np.array([[2], [51]])  # compressionratio --> 50 steps
-    Y = np.array([[40], [140]])  # velocity --> 100 steps
-    x = np.arange(2, 51)
-    y = np.arange(40, 140)
+    # X = np.array([[2], [1000]])  # compressionratio --> 50 steps
+    # Y = np.array([[25], [200]])  # velocity --> 100 steps
+    x = np.logspace(0.31, 3, num=50, base=10)  # compression ratio
+    y = np.arange(25, 200, 5)  # velocity
     material_data: dict = load_materials()
 
-    matrix = np.zeros((49, 100))
+    matrix = np.zeros((len(x), len(y)))
     print(matrix)
 
-    for i in x:
-        for j in y:
-            parameters['compressionRatio'] = i
-            parameters['velocity'] = j
+    for index_i, i in enumerate(x):
+        for index_j, j in enumerate(y):
+            print(f"Hello world! {i} {j}")
+            params['compressionRatio'] = i
+            params['velocity'] = j
 
-            _, result = conceptualDesign(params, material_data, 250)
+            _, result = conceptualDesign(params, material_data, 2)
             variable = result["fuelMass"]
-            matrix[i, j] = variable.iloc[-1]
+            matrix[index_i, index_j] = variable.iloc[-1]
 
-    print(matrix)
-    plt.pcolormesh()
+    # print(matrix)
+    x = np.logspace(0.31, 3, num=51, base=10)  # compression ratio
+    y = np.arange(25, 205, 5)  # velocity
+
+    plt.pcolormesh(x, y, matrix)
+    plt.show()
 
 
 if __name__ == "__main__":
