@@ -58,12 +58,13 @@ if __name__ == "__main__":
     # Drag of things
     balloonDrag = 0.5 * rho_air * v ** 2 * (np.pi * r ** 2 * 0.05)  # [N]
     fuselageDrag = 0.5 * rho_air * v ** 2 * (params['fuselageArea'] * 0.295)  # [N]
-    wingDrag = 0.5 * rho_air * v ** 2 * (S_w * C_D)
-    Drag = balloonDrag + fuselageDrag + wingDrag
-    P_req = Drag * v
+    wingDrag = 0.5 * rho_air * v ** 2 * (S_w * C_D)  # [N]
+    Drag = balloonDrag + fuselageDrag + wingDrag  # [N]
+    P_req = Drag * v  # [W]
 
     # Endurance and range calculations
-    endurance = E_h2 / P_req
-    dist = endurance * v
+    # Fuel is assumed to be 100% efficient
+    endurance = E_h2 / P_req  # [s]
+    dist = endurance * v  # [m]
     print(f"The endurance is {endurance} s")
     print(f"The range is {dist/1000} km")
