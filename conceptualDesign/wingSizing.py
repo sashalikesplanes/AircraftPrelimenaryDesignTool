@@ -1,7 +1,7 @@
 from cgi import test
 
 
-g = 9.80665
+from misc.constants import g
 
 
 def wingSizing(params, rho):
@@ -16,10 +16,11 @@ def wingSizing(params, rho):
 
     span = (params["wingArea"] * params["wingAspectRatio"]) ** 0.5
     chord = params["wingArea"] / span
+    c2 = params["wingHalfChordSweep"]
 
-    params["wingStructuralMass"] = 0.0017 * wingLift * \
-        (span) ** 0.75 * (1 + (6.3 / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
-            span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift)) ** 0.3
+    params["wingStructuralMass"] = 0.00125 * wingLift * \
+            (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
+            span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift * np.cos(c2))) ** 0.3
 
 
 if __name__ == "__main__":
