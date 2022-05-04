@@ -55,17 +55,17 @@ def conceptualDesign(parameters, material_data, iters):
         # fuel mass estimation
         fuelMassEstimation(parameters)  # Done
 
-        if abs(parameters["fuelMass"]-prev_fuel) < 0.01:
-            # print("Converged")
-            break
-        else:
-            prev_fuel = parameters["fuelMass"]
-
         # total mass
         totalMassEstimation(parameters)  # DOne
 
         # lst.append(parameters["balloonArea"])
         df = df.append(parameters, ignore_index=True)
+
+        if abs(parameters["fuelMass"]-prev_fuel) < 0.01:
+            # print("Converged")
+            break
+        else:
+            prev_fuel = parameters["fuelMass"]
 
         # # check if converged
         # i += 1
