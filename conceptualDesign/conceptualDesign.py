@@ -39,7 +39,7 @@ def conceptualDesign(parameters, material_data, iters):
         dragModel(parameters, rho)  # Done
 
         # propulsion sizing
-        propulsionSizing(parameters)  # TODO need numbers for this
+        propulsionSizing(parameters)  # DOne
 
         # energy required
         energyRequired(parameters)  # Done

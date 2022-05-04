@@ -28,7 +28,8 @@ def fuselageSizing(params, dp):
     w_seat = 0.44
     w_armrest = 0.05
 
-    w_fuselage = n_aisles * w_aisle + w_armrest * (n_sa+n_aisles+1) + n_sa * w_seat
+    w_fuselage = n_aisles * w_aisle + w_armrest * \
+        (n_sa+n_aisles+1) + n_sa * w_seat
     # End of ADSEE I
 
     # Total mass of payload
@@ -46,6 +47,6 @@ def fuselageSizing(params, dp):
     # print(m_cabin)
     # print(r_fuselage, l_cabin)
     # https://www.researchgate.net/publication/264864827_Analytical_Weight_Estimation_Method_for_Oval_Fuselages_in_Conventional_and_Novel_Aircraft
-    m_cabin = 44.4e3
-    params["fuselageStructuralMass"] = m_cabin
+    # m_cabin = 44.4e3
+    # params["fuselageStructuralMass"] = m_cabin
     params["fuselageArea"] = np.pi * r_fuselage ** 2

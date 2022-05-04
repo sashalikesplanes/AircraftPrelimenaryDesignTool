@@ -1,4 +1,5 @@
 def dragModel(params, rho):
+    # Consider the drag of each main component separately
     wingDrag = 0.5 * rho * params['velocity'] ** 2 * \
         (params['wingArea'] * params['wingC_D'])
     balloonDrag = 0.5 * rho * params['velocity'] ** 2 * \
@@ -6,4 +7,5 @@ def dragModel(params, rho):
     fuselageDrag = 0.5 * rho * \
         params['velocity'] ** 2 * \
         (params['fuselageArea'] * params['fuselageC_D'])
+
     params['totalDrag'] = wingDrag + balloonDrag + fuselageDrag

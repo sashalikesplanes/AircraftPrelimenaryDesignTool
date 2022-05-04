@@ -8,14 +8,7 @@ sigma_mat = 241e6
 pHydrogenSeaLevel = 101325  # [Pa]
 
 
-# test comment
-
-
 def balloonSizing(params, rhoAir, pAir):
-    # liftToCarry = params['totalMass'] * g * params["liftRatio"]
-    # print(liftToCarry)
-    #  = liftToCarry / \
-    #          ((rhoAir - rhoHydrogen * params["compressionRatio"]) * g)
 
     totalHydrogenMass = params["fuelMass"] * \
         params["compressionRatio"] / (params["compressionRatio"] - 1)
@@ -40,13 +33,3 @@ def balloonSizing(params, rhoAir, pAir):
     params["balloonStructuralMass"] = 2 * np.pi * radius ** 3 * \
         (1 + params['balloonLengthWidthRatio']) * \
         dp * rho_mat / sigma_mat * 0.25
-
-
-if __name__ == "__main__":
-    testDict = {
-        "totalMass": 10000,
-        "liftRatio": 0.5,
-        "compressionRatio": 1.2,
-    }
-    balloonSizing(testDict, 1.225)
-    print(testDict)
