@@ -37,6 +37,8 @@ wingAspectRatio: 8 # [-] - chief aero said so lmao
 wingDragCorrection: 1.1 # [-]
 maxLoadFactor: 2.5 # [-] CS 25
 thicknessOverChord: 0.12 # [-] NACA 0012
+wingQuarterChordSweep: 0 # [rad]
+wingTaperRatio: 1 # [-]
 
 # Design Variables - Masses
 fuselageStructuralMass: 0 # [kg]
