@@ -61,9 +61,6 @@ def conceptualDesign(parameters, material_data, iters):
 
         # lst.append(parameters["balloonArea"])
 
-        # total mass
-        totalMassEstimation(parameters)  # DOne
-
         # lst.append(parameters["balloonArea"])
         df = df.append(parameters, ignore_index=True)
 
