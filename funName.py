@@ -7,22 +7,22 @@ from conceptualDesign.fuselageSizing import fuselageSizing
 
 if __name__ == "__main__":
     # Thingies
-    v = 50  # [m/s]
-    params = {}
+    v = 160  # [m/s]
     C_D = 0.055
     C_L = 0.6
 
     # Masses of things
+    params = dict()
     params["passengerMass"] = 100  # [kg]
-    m_cabin = 30000  # [kg]
-    n_pax = 500  # [-]
+    m_cabin = 30  # [kg]
+    n_pax = 100  # [-]
     params["cargoMass"] = 0  # [kg]
 
     # Dimensions of balloon
-    l = 300  # [m]
-    r = 20  # [m]
-    h = 3000  # [m]
-    compressionRatio = 5  # [-]
+    l = 37.7  # [m]
+    r = 7.06/2  # [m]
+    h = 10000  # [m]
+    compressionRatio = 700  # [-]
 
     # Lift from presence of fuel container
     rho_h2 = 0.08375  # [kg/m^3]
