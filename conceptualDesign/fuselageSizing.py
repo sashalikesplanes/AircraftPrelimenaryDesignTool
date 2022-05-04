@@ -31,7 +31,8 @@ def fuselageSizing(params, dp):
     w_seat = 0.44
     w_armrest = 0.05
 
-    w_fuselage = n_aisles * w_aisle + w_armrest * (n_sa+n_aisles+1) + n_sa * w_seat
+    w_fuselage = n_aisles * w_aisle + w_armrest * \
+        (n_sa+n_aisles+1) + n_sa * w_seat
     # End of ADSEE I
 
     # Total mass of payload
@@ -43,7 +44,8 @@ def fuselageSizing(params, dp):
     # print(f"Outer fuselage diameter: {d_outer}")
 
     # Assume that the weight of the mass is 10% that of a cylinder with the thickness of the fuselage
-    m_fuselage = (np.pi * (d_outer/2) ** 2 - np.pi * (d_inner/2) ** 2) * l_cabin * rho_mat * 0.1
+    m_fuselage = (np.pi * (d_outer/2) ** 2 - np.pi *
+                  (d_inner/2) ** 2) * l_cabin * rho_mat * 0.1
     # print(f"{m_fuselage} kg")
 
     # https://en.wikipedia.org/wiki/Pressure_vessel
@@ -68,11 +70,12 @@ def fuselageWeight(params):
     rfus = (params["fuselageDiameter"] / 2) / 0.3048
     Sfuswet = 2 * np.pi * lfus * rfus + 4 * np.pi * rfus ** 2
 
-    c4 = 0
+    c4 = params["wingQuarterChordSweep"]
     AR = params["wingAspectRatio"]
     Sref = params["wingArea"] / 10.7639
-    labda = 1
+    labda = params["wingTaperRatio"]
     KWS = 0.75 * ((1+2*labda)/(1+labda)*(AR*Sref)**2*np.tan(c4))/lfus
 
-    Wfus = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * Sfuswet ** 0.302 * (1 + KWS) ** 0.4
+    Wfus = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * \
+        Sfuswet ** 0.302 * (1 + KWS) ** 0.4
     params["fuselageStructuralMass"] = Wfus / 2.20462
