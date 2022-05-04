@@ -64,9 +64,9 @@ def fuselageSizing(params, dp):
 def fuselageWeight(params):
     Wto = params["totalMass"] * 2.20462
     Nult = 2.5 * 1.65
-    lfus = params["cabinLength"] * 0.3048
-    rfus = (params["fuselageDiameter"] / 2) * 0.3048
-    Sfuswet = 2 * np.pi * lfus + np.pi * rfus ** 2
+    lfus = params["cabinLength"] / 0.3048
+    rfus = (params["fuselageDiameter"] / 2) / 0.3048
+    Sfuswet = 2 * np.pi * lfus * rfus + 4 * np.pi * rfus ** 2
 
     c4 = 0
     AR = params["wingAspectRatio"]
