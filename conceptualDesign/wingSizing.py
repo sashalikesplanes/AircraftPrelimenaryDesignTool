@@ -8,6 +8,9 @@ def wingSizing(params, rho):
     wingLift = params["totalMass"] * g - params["balloonLift"]
     params["wingArea"] = wingLift * params["liftFactor"] / (0.5 * rho * params["velocity"]
                                                             ** 2 * params["wingC_L_design"])
+    # set wing area to zero in case of negative surface area
+    if params["wingArea"] < 0:
+        params["wingArea"] = 0
 
     params["wingC_D"] = params['wingDragCorrection'] * params["wingC_D_0"]
 

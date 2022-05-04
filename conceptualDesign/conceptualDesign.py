@@ -24,6 +24,7 @@ def conceptualDesign(parameters, material_data, iters):
     pAir = getPressure(parameters["altitude"])
 
     df = pd.DataFrame()
+    prev_fuel = -100
 
     initializeParameters(parameters)
 
@@ -33,6 +34,7 @@ def conceptualDesign(parameters, material_data, iters):
         # balloon sizing
         balloonSizing(parameters, rho, pAir)  # Done
         if np.isnan(parameters["fuelMass"]):
+            # print("Diverged")
             break
 
         # wing
@@ -52,6 +54,12 @@ def conceptualDesign(parameters, material_data, iters):
 
         # fuel mass estimation
         fuelMassEstimation(parameters)  # Done
+
+        if abs(parameters["fuelMass"]-prev_fuel) < 1:
+            # print("Converged")
+            break
+        else:
+            prev_fuel = parameters["fuelMass"]
 
         # total mass
         totalMassEstimation(parameters)  # DOne
