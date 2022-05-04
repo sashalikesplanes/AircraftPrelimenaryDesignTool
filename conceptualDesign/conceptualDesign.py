@@ -28,32 +28,37 @@ def conceptualDesign(parameters, material_data, iters):
 
     initializeParameters(parameters)
 
-    totalMassEstimation(parameters)  # Done
+    totalMassEstimation(parameters)
     for i in range(int(iters)):
 
         # balloon sizing
-        balloonSizing(parameters, rho, pAir)  # Done
+        balloonSizing(parameters, rho, pAir)
         if np.isnan(parameters["fuelMass"]):
             # print("Diverged")
             break
 
         # wing
-        wingSizing(parameters, rho)  # Done
+        wingSizing(parameters, rho)
 
         # Fuselage Weight
         fuselageWeight(parameters)
 
         # drag model
-        dragModel(parameters, rho)  # Done
+        dragModel(parameters, rho)
 
         # propulsion sizing
-        propulsionSizing(parameters)  # TODO need numbers for this
+        propulsionSizing(parameters)
 
         # energy required
-        energyRequired(parameters)  # Done
+        energyRequired(parameters)
 
         # fuel mass estimation
-        fuelMassEstimation(parameters)  # Done
+        fuelMassEstimation(parameters)
+
+        # total mass
+        totalMassEstimation(parameters)  # DOne
+
+        # lst.append(parameters["balloonArea"])
 
         # total mass
         totalMassEstimation(parameters)  # DOne
@@ -66,9 +71,6 @@ def conceptualDesign(parameters, material_data, iters):
             break
         else:
             prev_fuel = parameters["fuelMass"]
-
-        # # check if converged
-        # i += 1
 
     # plt.plot(range(100), lst)
     # plt.show()
