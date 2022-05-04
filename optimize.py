@@ -9,7 +9,6 @@ import numpy as np
 
 
 def func_to_optimize(params, iters):
-
     altitude, compressionRatio, velocity = params
     material_data: dict = load_materials()
 
@@ -56,7 +55,7 @@ def graph_stuff():
 
 
 if __name__ == "__main__":
-    # bnds = [(500, 10000), (2, 1000), (150, None)]
-    # print(minimize(func_to_optimize, (5000, 10, 151),
-    #       args=(10,), bounds=bnds, method="SLSQP"))
-    graph_stuff()
+    bnds = [(1000, 10999), (2, 1000), (20, 330)]  # height, CR, speed
+    print(minimize(func_to_optimize, (5000, 20, 150),
+          args=(50,), bounds=bnds, method="SLSQP"))
+    # graph_stuff()

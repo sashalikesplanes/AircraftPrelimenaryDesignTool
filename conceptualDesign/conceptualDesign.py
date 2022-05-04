@@ -7,6 +7,7 @@ from conceptualDesign.energyRequired import energyRequired
 from conceptualDesign.dragModel import dragModel
 from conceptualDesign.balloonSizing import balloonSizing
 from conceptualDesign.initializeParameters import initializeParameters
+from conceptualDesign.fuselageSizing import fuselageWeight
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,9 +32,14 @@ def conceptualDesign(parameters, material_data, iters):
 
         # balloon sizing
         balloonSizing(parameters, rho, pAir)  # Done
+        if np.isnan(parameters["fuelMass"]):
+            break
 
         # wing
         wingSizing(parameters, rho)  # Done
+
+        # Fuselage Weight
+        fuselageWeight(parameters)
 
         # drag model
         dragModel(parameters, rho)  # Done
@@ -49,8 +55,11 @@ def conceptualDesign(parameters, material_data, iters):
 
         # total mass
         totalMassEstimation(parameters)  # DOne
+
         # lst.append(parameters["balloonArea"])
         df = df.append(parameters, ignore_index=True)
+
+
 
         # # check if converged
         # i += 1
