@@ -1,4 +1,4 @@
-designConcept: 1 # a value between 1 and 4 [-]
+designConcept: 2 # a value between 1 and 4 [-]
 # 1 represents a wingless blimp
 # 2 represents a hybrid with low CR (max 5), gaseous H2
 # 3 represents a hybrid with high CR (max 100), gaseous H2
