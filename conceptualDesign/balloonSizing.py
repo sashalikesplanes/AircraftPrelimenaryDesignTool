@@ -51,6 +51,7 @@ def balloonSizing(params, rhoAir, pAir):
         # Calculate mass of the balloon using plain pressure vessel
         pHydrogen = pHydrogenSeaLevel * params["compressionRatio"]
         dp = abs(pHydrogen - pAir)
+
         wallThickness = dp * radius * \
             params["factorOfSafety"] / (2 * sigma_mat)
         eccentricity = (1 - (1 / params['balloonFinesseRatio']) ** 2)
