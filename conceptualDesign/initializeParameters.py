@@ -9,9 +9,12 @@ def initializeParameters(params):
     """Initialize all the things which should not be done within the main loop"""
     fuselageSizing(params)
 
+    # Crash for unacceptable values
+    if params["wingTaperRatio"] > 1 or params["wingTaperRatio"] <= 1:
+        raise ValueError("Taper ratio should be 1 at most")
     fuselageWeight(params)
 
-    payloadMassEstimation(params)  # Done
+    payloadMassEstimation(params)
 
     params["propEfficiency"] = params["engineEfficiency"] * \
         params["fuelCellEfficiency"]
