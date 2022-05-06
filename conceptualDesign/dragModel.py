@@ -76,13 +76,29 @@ def get_CD_0(params, rho):
     return CD_0
 
 
+def estimate_CL_alpha(aspectRatio, sweep=0):
+    return 2 * np.pi * aspectRatio/(2 + np.sqrt(4 + aspectRatio*aspectRatio * (1 + np.tan(sweep)**2)))
+
+def estimate_K_factor(aspectRatio):
+    return -0.0145*(aspectRatio)**(-4)+0.182*(aspectRatio)**(-3) - \
+        0.514*(aspectRatio)**(-2) + 0.838*(1/aspectRatio) - 0.053
+    
+
+def determine_balloon_ar(volume, width):
+    return width*width/(2 * volume ** (2/3))
 
 
+def get_CD_i(params):
+    balloonAr = determine_balloon_ar(params['balloonVolume'], params['balloonRadius']*2)
+    balloonAoA = np.deg2rad(2) # deg
+    balloonC_L = balloonAoA * estimate_CL_alpha(balloonAr)
+    wingC_L = params['wingC_L_design']
+    kFactor = estimate_K_factor(balloonAr)
+    balloonC_D_i = kFactor * balloonC_L ** 2
+    wingC_D_i = wingC_L**2/(np.pi * params['wingAspectRatio'] * 0.8)
+    return balloonC_D_i + wingC_D_i
+    
 
+def get_drag(params, rho):
+    return get_CD_0(params, rho) + get_CD_i(params)
 
-
-if __name__ == "__main__":
-    parameters = openData("design1")
-
-    run_concept(parameters)
-    main()
