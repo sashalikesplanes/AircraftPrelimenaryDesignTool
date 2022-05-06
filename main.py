@@ -38,4 +38,5 @@ if __name__ == "__main__":
     # plt.show()
 
     run_concept(parameters)
-    print(parameters['fuelMass'])
+    print(parameters['fuelMass'], parameters["balloonVolume"],
+          parameters["balloonRadius"], parameters["balloonLength"])

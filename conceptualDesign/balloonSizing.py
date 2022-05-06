@@ -29,8 +29,10 @@ def balloonSizing(params, rhoAir, pAir):
             params["compressionRatio"] / (params["compressionRatio"] - 1)
 
         params["liftingHydrogenMass"] = totalHydrogenMass - params["fuelMass"]
-        volume = totalHydrogenMass / (rhoHydrogen * params["compressionRatio"])
-        lift = volume * g * (rhoAir - rhoHydrogen * params["compressionRatio"])
+        volume = totalHydrogenMass / \
+            (rhoHydrogenGas * params["compressionRatio"])
+        lift = volume * g * (rhoAir - rhoHydrogenGas *
+                             params["compressionRatio"])
         radius = (volume / (4 / 3 * np.pi *
                   params['balloonFinesseRatio'])) ** (1/3)
 
@@ -69,4 +71,5 @@ def balloonSizing(params, rhoAir, pAir):
         params["balloonLength"] = (V_h2 - (4*np.pi*r**3)/3)/(np.pi*r**2)
         # print(f"Balloon length: {params['balloonLength']} m")
 
-        params["balloonStructuralMass"] = m_fuel * params["containerToFuelMassRatio"]
+        params["balloonStructuralMass"] = m_fuel * \
+            params["containerToFuelMassRatio"]
