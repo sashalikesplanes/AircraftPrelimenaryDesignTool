@@ -1,3 +1,9 @@
+designConcept: 1 # a value between 1 and 4 [-]
+# 1 represents a wingless blimp
+# 2 represents a hybrid with low CR (max 5), gaseous H2
+# 3 represents a hybrid with high CR (max 100), gaseous H2
+# 4 represents an LH2 powered aircraft
+
 # Payload specification
 cargoMass: 0 # [kg]
 cargoVolume: 0 # [m^3]

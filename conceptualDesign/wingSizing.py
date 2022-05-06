@@ -6,12 +6,15 @@ from misc.constants import g
 
 
 def wingSizing(params, rho):
+
+    if ["designConcept"]:
+        pass
     wingLift = params["totalMass"] * g - params["balloonLift"]
     params["wingArea"] = wingLift * params["liftFactor"] / (0.5 * rho * params["velocity"]
                                                             ** 2 * params["wingC_L_design"])
     # set wing area to zero in case of negative surface area
     if params["wingArea"] < 0:
-        params["wingArea"] = 0
+        raise ValueError("wing area is negative")
 
     params["wingC_D"] = params['wingDragCorrection'] * params["wingC_D_0"]
 
@@ -20,8 +23,8 @@ def wingSizing(params, rho):
     c2 = params["wingHalfChordSweep"]
 
     params["wingStructuralMass"] = 0.00125 * wingLift * \
-            (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
-            span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift * np.cos(c2))) ** 0.3
+        (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
+        span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift * np.cos(c2))) ** 0.3
 
 
 if __name__ == "__main__":

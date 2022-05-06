@@ -13,6 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import warnings
 from tqdm import trange
+# Ignore warnings from pd.append
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
@@ -30,12 +31,12 @@ def conceptualDesign(parameters, material_data, iters):
     initializeParameters(parameters)
 
     totalMassEstimation(parameters)  # Done
-    for i in trange(int(iters)):
+    for _ in trange(int(iters)):
 
         # balloon sizing
         balloonSizing(parameters, rho, pAir)
         if np.isnan(parameters["fuelMass"]):
-            # print("Diverged")
+            print("Diverged")
             break
 
         # wing
