@@ -3,6 +3,7 @@ from misc.constants import testMargin
 
 from conceptualDesign.wingSizing import wingSizing
 
+
 class TestWingSizing(unittest.TestCase):
     def testWingSizing(self):
         x = {
@@ -10,7 +11,7 @@ class TestWingSizing(unittest.TestCase):
             "totalMass": 60000,
             "balloonLift": 500000,
             "liftFactor": 5,
-            "velocity": 80,   #m/s
+            "velocity": 80,  # m/s
             "wingC_L_design": 1,
             'wingDragCorrection': 1,
             "wingC_D_0": 0.02,
@@ -23,11 +24,9 @@ class TestWingSizing(unittest.TestCase):
         }  # inputs
 
         rho = 1.225
+        wingSizing(x, rho)
 
-        wingSizing(x,rho)
-
-
-        #calculated output
+        # calculated output
         calcwingStrMass = 1778.592959
 
         # start testing
