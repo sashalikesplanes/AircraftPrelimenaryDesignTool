@@ -1,7 +1,8 @@
 import numpy as np
+from misc.constants import g
 
-g = 9.80665
-rhoHydrogen = 0.08375  # kg/m^3
+rhoHydrogenGas = 0.08375  # kg/m^3
+rhoHydrogenLiquid = 71  # kg/m^3
 # aluminium 6061
 rho_mat = 2710
 sigma_mat = 241e6
@@ -56,4 +57,16 @@ def balloonSizing(params, rhoAir, pAir):
             wallThickness * rho_mat
 
     elif params["designConcept"] == 4:
-        pass
+        m_fuel = params["fuelMass"]
+        # p = 101325
+        # T = 20
+        # n = m_fuel * 1000 / (2 * 1.008)  # moles
+        # print(f"{n} Moles")
+        # V_h2 = n*R_h2*T/p
+        V_h2 = m_fuel / rhoHydrogenLiquid  # m^3
+        r = 1.25  # m  (radius of fuel tank)
+        # print(f"{V_h2} m^3")
+        params["balloonLength"] = (V_h2 - (4*np.pi*r**3)/3)/(np.pi*r**2)
+        # print(f"Balloon length: {params['balloonLength']} m")
+
+        params["balloonStructuralMass"] = m_fuel * params["containerToFuelMassRatio"]
