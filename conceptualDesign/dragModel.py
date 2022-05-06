@@ -2,16 +2,9 @@ import numpy as np
 
 
 def dragModel(params, rho):
-    wingDrag = 0.5 * rho * params['velocity'] ** 2 * \
-        (params['wingArea'] * params['wingC_D'])
-
-    balloonDrag = 0.5 * rho * params['velocity'] ** 2 * \
-        (params['balloonVolume'] ** (2/3) * params['balloonC_D'])
-    fuselageDrag = 0.5 * rho * \
-        params['velocity'] ** 2 * \
-        (params['fuselageArea'] * params['fuselageC_D'])
-    fuselageDrag = 0
-    params['totalDrag'] = wingDrag + balloonDrag + fuselageDrag
+    Cd = get_drag(params, rho)
+    D = 0.5 * rho * params['velocity'] ** 2 * Cd * params['volume'] ** (2 / 3)
+    params['totalDrag'] = D
 
 
 def FFB(finesseratio):
@@ -95,7 +88,7 @@ def get_CD_i(params):
     wingC_L = params['wingC_L_design']
     kFactor = estimate_K_factor(balloonAr)
     balloonC_D_i = kFactor * balloonC_L ** 2
-    conversionRatioWingDrag = params['wingArea']/params['balloonVolume']
+    conversionRatioWingDrag = params['wingArea']/(params['balloonVolume'] ** (2/3))
     wingC_D_i = wingC_L**2/(np.pi * params['wingAspectRatio'] * 0.8) * conversionRatioWingDrag 
     return balloonC_D_i + wingC_D_i
     
