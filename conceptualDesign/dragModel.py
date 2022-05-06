@@ -5,7 +5,6 @@ def dragModel(params, rho):
     Cd = get_drag(params, rho)
     D = 0.5 * rho * params['velocity'] ** 2 * Cd * params['balloonVolume'] ** (2 / 3)
     params['totalDrag'] = D
-    print(f'{ D = }')
 
 
 def FFB(finesseratio):
@@ -34,40 +33,29 @@ def get_visc(altitude):
 
 def get_CD_0(params, rho):
     FFb = FFB(params["balloonFinesseRatio"])
-    #print(f"{FFb = }")
 
     FFw = FFW(params["thicknessOverChord"])
-    #print(f'{FFw = }')
 
     Swetb = Swet_balloon(params["balloonVolume"],
                          params["balloonFinesseRatio"])
-    #print(f'{Swetb = }')
 
     Swetw = 2 * params['wingArea']
-    #print(f'{Swetw = }')
 
     bw = np.sqrt(params['wingArea']*params['wingAspectRatio'])
-    #print(f'{bw = }')
 
     visc = get_visc(params["altitude"])
-    #print(f'{visc = }')
 
     Reb = (rho * params['velocity'] * params['balloonLength']) / visc
-    #print(f'{Reb = }')
 
     Rew = (rho * params['velocity'] * bw) / visc
-    #print(f'{FFb = }')
 
     Cfb = 0.455/(np.log10(Reb)**2.58)
-    #print(f'{Cfb = }')
 
     Cfw = 0.455/(np.log10(Rew)**2.58)
 
-    #print(f'{Cfw = }')
 
     CDF = (Cfb * FFb * Swetb) / (params["balloonVolume"]**(2/3)) + \
         (Cfw * FFw * Swetw) / (params["balloonVolume"]**(2/3))
-    #print(f'{CDF = }')
 
     CD_0 = (CDF) / 0.95
     return CD_0
