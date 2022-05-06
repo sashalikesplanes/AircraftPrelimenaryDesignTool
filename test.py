@@ -5,6 +5,7 @@ from misc.constants import testMargin
 from unit_test.testBalloonSizing import TestBalloonSizing
 from unit_test.testEnergyRequired import TestEnergyRequired
 from unit_test.testFuelMassEstimation import TestFuelMassEstimation
+from unit_test.testFuselageSizing import TestFuselageSizing
 
 
 def main():

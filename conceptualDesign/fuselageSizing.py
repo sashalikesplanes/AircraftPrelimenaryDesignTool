@@ -7,7 +7,7 @@ rho_mat = 2710
 sigma_mat = 241 * 10 ** 6
 
 
-def fuselageSizing(params, dp):
+def fuselageSizing(params):
     # print(f"Pressure difference: {dp}")
     n_pax = params["passengers"]
     m_cargo = params["cargoMass"]
@@ -36,7 +36,7 @@ def fuselageSizing(params, dp):
     # End of ADSEE I
 
     # Total mass of payload
-    m_total = m_cargo + m_pax
+    # m_total = m_cargo + m_pax
 
     d_inner = w_fuselage
     # print(f"Inner fuselage diameter: {d_inner}")
@@ -44,8 +44,7 @@ def fuselageSizing(params, dp):
     # print(f"Outer fuselage diameter: {d_outer}")
 
     # Assume that the weight of the mass is 10% that of a cylinder with the thickness of the fuselage
-    m_fuselage = (np.pi * (d_outer/2) ** 2 - np.pi *
-                  (d_inner/2) ** 2) * l_cabin * rho_mat * 0.1
+    m_fuselage = np.pi * ((d_outer/2) ** 2 - (d_inner/2) ** 2) * l_cabin * rho_mat * 0.1
     # print(f"{m_fuselage} kg")
 
     # https://en.wikipedia.org/wiki/Pressure_vessel
@@ -57,8 +56,7 @@ def fuselageSizing(params, dp):
 
     # m_cabin = 44.4e3
     params["cabinLength"] = l_cabin
-    m_cabin = m_fuselage
-    params["fuselageStructuralMass"] = m_cabin
+    params["fuselageStructuralMass"] = m_fuselage
     params["fuselageArea"] = np.pi * (d_outer / 2) ** 2
     params["fuselageDiameter"] = d_outer
 
