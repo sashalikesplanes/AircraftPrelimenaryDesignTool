@@ -5,23 +5,52 @@ from conceptualDesign.balloonSizing import balloonSizing
 
 
 class TestBalloonSizing(unittest.TestCase):
-    def test1(self):
+    # def test1(self):
+    #     x = {
+    #         "designConcept": 3,
+    #         "fuelMass": 5000,
+    #         "compressionRatio": 700,
+    #         "liftingHydrogenMass": 7.153,
+    #         "balloonFinesseRatio": 100,
+    #         "factorOfSafety": 1,
+    #         "containerToFuelMassRatio": 0.4
+    #     }  # inputs
+    #     calcStrMass = 79935 # calculated result
+    #     calcSurfArea = 341
+    #
+    #     # Other things the functions takes
+    #     rhoAir = 0.225
+    #     p = 100000
+    #     balloonSizing(x, rhoAir, p)
+    #
+    #     self.assertAlmostEqual(calcStrMass, x["balloonStructuralMass"], delta=calcStrMass * testMargin)
+    #     self.assertAlmostEqual(calcSurfArea, x["balloonSurfaceArea"], delta=calcSurfArea * testMargin)
+
+
+
+    def test2(self):
         x = {
-            "designConcept": 2,
+            "designConcept": 4,
             "fuelMass": 5000,
-            "compressionRatio": 2,
-            "liftingHydrogenMass": 5000,
-            "balloonFinesseRatio": 10,
+            "compressionRatio": 20,
+            "liftingHydrogenMass": 263.1579,
+            "balloonFinesseRatio": 100,
             "factorOfSafety": 1,
-            "containerToFuelMassRatio": 0.4
+            "containerToFuelMassRatio": 2
+
         }  # inputs
-        y = 0  # calculated result
+        calcStrMass = 10000 # calculated result
+        # calcSurfArea = 341
+        calcLength = 12.679
 
         # Other things the functions takes
-        rho = 1
+        rhoAir = 0.225
         p = 100000
-        balloonSizing(x, rho, p)
+        balloonSizing(x, rhoAir, p)
 
-        self.assertAlmostEqual(y, x["balloonStructuralMass"], delta=y * testMargin)
 
+
+        self.assertAlmostEqual(calcStrMass, x["balloonStructuralMass"], delta=calcStrMass * testMargin)
+        # self.assertAlmostEqual(calcSurfArea, x["balloonSurfaceArea"], delta=calcSurfArea * testMargin)
+        self.assertAlmostEqual(calcLength, x["balloonLength"], delta=calcLength * testMargin)
 
