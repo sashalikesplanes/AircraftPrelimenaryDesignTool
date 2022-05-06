@@ -24,7 +24,7 @@ hasSolarPanels: false # [Bool] Determines if the airship has solar panels
 factorOfSafety: 2 # [-]
 
 # Fuel container for design 4
-containerToFuelMassRatio: 0.4
+containerToFuelMassRatio: 0.4  # [-]
 
 # Fuselage design parameters
 fuselageRadius: 4 # [m] - random shit
@@ -72,9 +72,9 @@ balloonArea: null # [m^2]
 wingArea: null # [m^2]
 
 # Solar variables
-solarMass: 0
-solarEnergy: 0
-solarPower: 0
+solarMass: 0  # [kg]
+solarEnergy: 0  # [J]
+solarPower: 0  # [W]
 
 # Design Variables - totals
 requiredEnergy: null # [J]
