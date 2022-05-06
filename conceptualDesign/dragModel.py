@@ -2,16 +2,9 @@ import numpy as np
 
 
 def dragModel(params, rho):
-    wingDrag = 0.5 * rho * params['velocity'] ** 2 * \
-        (params['wingArea'] * params['wingC_D'])
-
-    balloonDrag = 0.5 * rho * params['velocity'] ** 2 * \
-        (params['balloonVolume'] ** (2/3) * params['balloonC_D'])
-    fuselageDrag = 0.5 * rho * \
-        params['velocity'] ** 2 * \
-        (params['fuselageArea'] * params['fuselageC_D'])
-    fuselageDrag = 0
-    params['totalDrag'] = wingDrag + balloonDrag + fuselageDrag
+    Cd = get_drag(params, rho)
+    D = 0.5 * rho * params['velocity'] ** 2 * Cd * params['volume'] ** (2 / 3)
+    params['totalDrag'] = D
 
 
 def FFB(finesseratio):
@@ -40,40 +33,40 @@ def get_visc(altitude):
 
 def get_CD_0(params, rho):
     FFb = FFB(params["balloonFinesseRatio"])
-    print(f"{FFb = }")
+    #print(f"{FFb = }")
 
     FFw = FFW(params["thicknessOverChord"])
-    print(f'{FFw = }')
+    #print(f'{FFw = }')
 
     Swetb = Swet_balloon(params["balloonVolume"],
                          params["balloonFinesseRatio"])
-    print(f'{Swetb = }')
+    #print(f'{Swetb = }')
 
     Swetw = 2 * params['wingArea']
-    print(f'{Swetw = }')
+    #print(f'{Swetw = }')
 
     bw = np.sqrt(params['wingArea']*params['wingAspectRatio'])
-    print(f'{bw = }')
+    #print(f'{bw = }')
 
     visc = get_visc(params["altitude"])
-    print(f'{visc = }')
+    #print(f'{visc = }')
 
     Reb = (rho * params['velocity'] * params['balloonLength']) / visc
-    print(f'{Reb = }')
+    #print(f'{Reb = }')
 
     Rew = (rho * params['velocity'] * bw) / visc
-    print(f'{FFb = }')
+    #print(f'{FFb = }')
 
     Cfb = 0.455/(np.log10(Reb)**2.58)
-    print(f'{Cfb = }')
+    #print(f'{Cfb = }')
 
     Cfw = 0.455/(np.log10(Rew)**2.58)
 
-    print(f'{Cfw = }')
+    #print(f'{Cfw = }')
 
     CDF = (Cfb * FFb * Swetb) / (params["balloonVolume"]**(2/3)) + \
         (Cfw * FFw * Swetw) / (params["balloonVolume"]**(2/3))
-    print(f'{CDF = }')
+    #print(f'{CDF = }')
 
     CD_0 = (CDF) / 0.95
     return CD_0
@@ -100,7 +93,8 @@ def get_CD_i(params):
     wingC_L = params['wingC_L_design']
     kFactor = estimate_K_factor(balloonAr)
     balloonC_D_i = kFactor * balloonC_L ** 2
-    conversionRatioWingDrag = params['wingArea']/params['balloonVolume']
+    conversionRatioWingDrag = params['wingArea'] / \
+        (params['balloonVolume'] ** (2/3))
     wingC_D_i = wingC_L**2 / \
         (np.pi * params['wingAspectRatio'] * 0.8) * conversionRatioWingDrag
     return balloonC_D_i + wingC_D_i
