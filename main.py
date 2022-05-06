@@ -11,7 +11,11 @@ material_data: dict = load_materials()
 
 def run_concept(params):
 
+<<<<<<< HEAD
+    params, df = conceptualDesign(params, material_data, 1000)
+=======
     params, df = conceptualDesign(params, material_data, 100)
+>>>>>>> 0b966bb199943286e2651233174ee5c6d16b9f6b
     return df["fuelMass"].iloc[-1]
 
 
