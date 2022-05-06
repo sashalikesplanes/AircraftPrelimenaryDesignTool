@@ -12,13 +12,13 @@ passengerMass: 120 # [kg]
 payloadMass: null # [kg]
 
 # Cruise specification
-altitude: 2000 # [m]
-velocity: 120 # [m/s] = 501 kph
+altitude: 1000 # [m]
+velocity: 121 # [m/s] = 501 kph
 flightRange: 2000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 20 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 100 # [-] Density of compressed hydrogen / density of sea level hydrogen
 balloonFinesseRatio: 10 # [-] To optimize
 hasSolarPanels: false # [Bool] Determines if the airship has solar panels
 factorOfSafety: 2 # [-]
@@ -62,7 +62,7 @@ propulsionMass: 0 # [kg]
 totalMass: null # [kg]
 
 # Design Variables - aero coefficients
-balloonC_D: 0.05 # [-] C_D of a streamline body
+balloonC_D: 0.035 # [-] C_D of a streamline body
 fuselageC_D: 0.295 # [-] https://www.grc.nasa.gov/www/k-12/airplane/shaped.html
 wingC_L_design: 0.8 # [-] sourced from Aero engineer
 
