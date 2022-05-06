@@ -2,15 +2,15 @@ import numpy as np
 
 from conceptualDesign.payloadMassEstimation import payloadMassEstimation
 from conceptualDesign.fuselageSizing import fuselageSizing, fuselageWeight
+from conceptualDesign.totalMassEstimation import totalMassEstimation
 from misc.ISA import getPressure
 
 
 def initializeParameters(params):
     """Initialize all the things which should not be done within the main loop"""
     fuselageSizing(params)
-
+    totalMassEstimation(params)
     fuselageWeight(params)
-
     payloadMassEstimation(params)  # Done
 
     params["propEfficiency"] = params["engineEfficiency"] * \
