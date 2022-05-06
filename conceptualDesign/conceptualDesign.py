@@ -30,7 +30,7 @@ def conceptualDesign(parameters, material_data, iters):
 
     initializeParameters(parameters)
 
-    totalMassEstimation(parameters)  # Done
+    # Done
     for _ in trange(int(iters)):
 
         # balloon sizing
