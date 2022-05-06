@@ -18,9 +18,9 @@ flightRange: 5000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 10 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 3 # [-] Density of compressed hydrogen / density of sea level hydrogen
 balloonLengthWidthRatio: 200 # [-] To optimize
-hasSolarPanels: true # [Bool] Determines if the airship has solar panels
+hasSolarPanels: false # [Bool] Determines if the airship has solar panels
 
 # Fuselage design parameters
 fuselageRadius: 4 # [m] - random shit
