@@ -11,31 +11,16 @@ material_data: dict = load_materials()
 
 def run_concept(params):
 
+<<<<<<< HEAD
     params, df = conceptualDesign(params, material_data, 1000)
+=======
+    params, df = conceptualDesign(params, material_data, 100)
+>>>>>>> 0b966bb199943286e2651233174ee5c6d16b9f6b
     return df["fuelMass"].iloc[-1]
 
 
 if __name__ == "__main__":
     parameters = openData("design1")
-
-    # speed = np.arange(50, 300, 10)
-    # range_list = np.arange(1000000, 10000000, 100000)
-    #
-    # lst = []
-    # for sped in speed:
-    #     for dist in tqdm(range_list):
-    #         param = parameters.copy()
-    #         param["velocity"] = sped
-    #         param["flightRange"] = dist
-    #         result = run_concept(param)
-    #         if not np.isnan(result):
-    #             lst.append([sped, dist, result])
-    #
-    # matrix = np.array(lst)
-    # X = matrix[:, 0]
-    # Y = matrix[:, 1]
-    # plt.scatter(X, Y)
-    # plt.show()
 
     run_concept(parameters)
     print(parameters['fuelMass'], parameters["balloonVolume"],
