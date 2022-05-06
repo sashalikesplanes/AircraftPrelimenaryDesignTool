@@ -28,7 +28,7 @@ class TestWingSizing(unittest.TestCase):
 
 
         #calculated output
-        calcwingStrMass = 43345363.12
+        calcwingStrMass = 278869.67
 
         # start testing
         self.assertAlmostEqual(calcwingStrMass, x["wingStructuralMass"], delta=calcwingStrMass * testMargin)
