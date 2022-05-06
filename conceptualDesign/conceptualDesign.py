@@ -63,7 +63,7 @@ def conceptualDesign(parameters, material_data, iters):
         # lst.append(parameters["balloonArea"])
         df = df.append(parameters, ignore_index=True)
 
-        if abs(parameters["fuelMass"]-prev_fuel) < 0.01:
+        if abs(parameters["fuelMass"] - prev_fuel) < 0.01:
             # print("Converged")
             break
         else:

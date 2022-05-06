@@ -28,27 +28,36 @@ def balloonSizing(params, rhoAir, pAir):
             params["compressionRatio"] / (params["compressionRatio"] - 1)
 
         params["liftingHydrogenMass"] = totalHydrogenMass - params["fuelMass"]
-
         volume = totalHydrogenMass / (rhoHydrogen * params["compressionRatio"])
-
         lift = volume * g * (rhoAir - rhoHydrogen * params["compressionRatio"])
+        radius = (volume / (4 / 3 * np.pi *
+                  params['balloonFinesseRatio'])) ** (1/3)
 
         params["balloonLift"] = lift
-
-        radius = (
-            volume / (np.pi * (4 / 3 + params['balloonFinesseRatio']))) ** (1 / 3)
-        # print(liftToCarry, radius, volume)
         params["balloonVolume"] = volume
-        params["balloonArea"] = np.pi * radius ** 2
         params["balloonRadius"] = radius
-        params["balloonLength"] = volume / params["balloonArea"]
+        params["balloonArea"] = np.pi * radius ** 2
+        params["balloonLength"] = radius * params['balloonFinesseRatio'] * 2
+
+        # radius = (
+        #     volume / (np.pi * (4 / 3 + params['balloonFinesseRatio']))) ** (1 / 3)
+        # # print(liftToCarry, radius, volume)
+        # params["balloonVolume"] = volume
+        # params["balloonArea"] = np.pi * radius ** 2
+        # params["balloonRadius"] = radius
+        # params["balloonLength"] = volume / params["balloonArea"]
 
         # Calculate mass of the balloon using plain pressure vessel
         pHydrogen = pHydrogenSeaLevel * params["compressionRatio"]
         dp = abs(pHydrogen - pAir)
-        params["balloonStructuralMass"] = 2 * np.pi * radius ** 3 * \
-            (1 + params['balloonLengthWidthRatio']) * \
-            dp * rho_mat / sigma_mat * 0.25
+        wallThickness = dp * radius * \
+            params["factorOfSafety"] / (2 * sigma_mat)
+        eccentricity = (1 - (1 / params['balloonFinesseRatio']) ** 2)
+        balloonSurfaceArea = 2 * np.pi * radius ** 2 * \
+            (1 + params['balloonFinesseRatio'] /
+             eccentricity * np.arcsin(eccentricity))
+        params["balloonStructuralMass"] = balloonSurfaceArea * \
+            wallThickness * rho_mat
 
     elif params["designConcept"] == 4:
         pass
