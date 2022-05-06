@@ -95,7 +95,8 @@ def get_CD_i(params):
     wingC_L = params['wingC_L_design']
     kFactor = estimate_K_factor(balloonAr)
     balloonC_D_i = kFactor * balloonC_L ** 2
-    wingC_D_i = wingC_L**2/(np.pi * params['wingAspectRatio'] * 0.8)
+    conversionRatioWingDrag = params['wingArea']/params['balloonVolume']
+    wingC_D_i = wingC_L**2/(np.pi * params['wingAspectRatio'] * 0.8) * conversionRatioWingDrag 
     return balloonC_D_i + wingC_D_i
     
 
