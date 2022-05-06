@@ -41,6 +41,6 @@ class TestEnergyRequired(unittest.TestCase):
         # Assert the values in the params to the expected results
         self.assertAlmostEqual(8.5714286, x["requiredEnergy"], delta=8.5714286*testMargin)
         # Assert if there are no solar panels when we disable solar panels
-        self.assertEqual(45833.333, x["solarPower"])
-        self.assertEqual(0, x["solarMass"])
-        self.assertEqual(0, x["solarEnergy"])
+        self.assertAlmostEqual(45833.333, x["solarPower"], delta=45833.333 * testMargin)
+        self.assertAlmostEqual(654.7619, x["solarMass"], delta=654.7619 * testMargin)
+        self.assertAlmostEqual(27500, x["solarEnergy"], delta=27500 * testMargin)
