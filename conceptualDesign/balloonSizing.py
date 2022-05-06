@@ -37,6 +37,8 @@ def balloonSizing(params, rhoAir, pAir):
                   params['balloonFinesseRatio'])) ** (1/3)
 
         params["balloonArea"] = np.pi * radius ** 2
+        if lift < 0:
+            lift = 0
         params["balloonLift"] = lift
         params["balloonVolume"] = volume
         params["balloonRadius"] = radius
