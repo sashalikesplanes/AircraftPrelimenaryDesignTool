@@ -33,3 +33,5 @@ class TestFuselageSizing(unittest.TestCase):
         fuselageWeight(x)
 
         self.assertAlmostEqual(0.3114469781034549, x['kws'], delta=0.3114469781034549*testMargin)
+
+        self.assertAlmostEqual(5146.02267416, x['fuselageStructuralMass'], delta=5146.02267416*testMargin)
