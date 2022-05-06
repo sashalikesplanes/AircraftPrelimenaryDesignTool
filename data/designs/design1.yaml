@@ -13,8 +13,8 @@ payloadMass: null # [kg]
 
 # Cruise specification
 altitude: 1000 # [m]
-velocity: 121 # [m/s] = 501 kph
-flightRange: 2000000 # [m] = 10,000 km
+velocity: 140 # [m/s] = 501 kph
+flightRange: 2500000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
@@ -24,7 +24,7 @@ hasSolarPanels: false # [Bool] Determines if the airship has solar panels
 factorOfSafety: 2 # [-]
 
 # Fuel container for design 4
-containerToFuelMassRatio: 0.4  # [-]
+containerToFuelMassRatio: 0.4 # [-]
 
 # Fuselage design parameters
 fuselageRadius: 4 # [m] - random shit
@@ -53,13 +53,13 @@ wingHalfChordSweep: 0 # [rad]
 wingTaperRatio: 1 # [-]
 
 # Design Variables - Masses
-fuselageStructuralMass: 0 # [kg]
-wingStructuralMass: 0 # [kg]
-balloonStructuralMass: 0 # [kg]
-fuelMass: 0 # [kg]
-liftingHydrogenMass: 0 # [-]
-propulsionMass: 0 # [kg]
-totalMass: null # [kg]
+fuselageStructuralMass: 1 # [kg]
+wingStructuralMass: 1 # [kg]
+balloonStructuralMass: 1 # [kg]
+fuelMass: 1 # [kg]
+liftingHydrogenMass: 1 # [-]
+propulsionMass: 1 # [kg]
+totalMass: 1 # [kg]
 
 # Design Variables - aero coefficients
 balloonC_D: 0.035 # [-] C_D of a streamline body
@@ -67,14 +67,14 @@ fuselageC_D: 0.295 # [-] https://www.grc.nasa.gov/www/k-12/airplane/shaped.html
 wingC_L_design: 0.8 # [-] sourced from Aero engineer
 
 # Design Variables - characteristic areas
-fuselageArea: null # [m^2]
-balloonArea: null # [m^2]
-wingArea: null # [m^2]
+fuselageArea: 1 # [m^2]
+balloonArea: 1 # [m^2]
+wingArea: 1 # [m^2]
 
 # Solar variables
-solarMass: 0  # [kg]
-solarEnergy: 0  # [J]
-solarPower: 0  # [W]
+solarMass: 1 # [kg]
+solarEnergy: 0 # [J]
+solarPower: 0 # [W]
 
 # Design Variables - totals
 requiredEnergy: null # [J]
