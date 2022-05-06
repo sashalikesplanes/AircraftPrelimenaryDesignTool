@@ -4,7 +4,9 @@ from misc.constants import testMargin
 
 class TestExample(unittest.TestCase):
     def test_addition(self):
-        self.assertAlmostEqual(0.3, 0.2+0.1, delta=0.3*testMargin)
+        x = {}
+
+        self.assertAlmostEqual(y, f(x), delta=y*testMargin)
 
 
 # class TestObjects(unittest.TestCase):

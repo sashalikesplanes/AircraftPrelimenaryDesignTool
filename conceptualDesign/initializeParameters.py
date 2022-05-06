@@ -6,15 +6,16 @@ from misc.ISA import getPressure
 
 
 def initializeParameters(params):
-    # Initialize shit that should be
-    dp = abs(getPressure(1000) - getPressure(params["altitude"]))
-    if dp < 0:
-        dp = 0
-    fuselageSizing(params, dp)  # Done
+    """Initialize all the things which should not be done within the main loop"""
+    fuselageSizing(params)
 
+<<<<<<< HEAD
     fuselageWeight(params)
 
     payloadMassEstimation(params)  # Done
+=======
+    payloadMassEstimation(params)
+>>>>>>> 325bd6e19b032041a258f9bfbab9446c6511069b
 
     params["propEfficiency"] = params["engineEfficiency"] * \
         params["fuelCellEfficiency"]

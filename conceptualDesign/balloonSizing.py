@@ -57,6 +57,7 @@ def balloonSizing(params, rhoAir, pAir):
              eccentricity * np.arcsin(eccentricity))
         params["balloonStructuralMass"] = balloonSurfaceArea * \
             wallThickness * rho_mat
+        params["balloonSurfaceArea"] = balloonSurfaceArea
 
     elif params["designConcept"] == 4:
         m_fuel = params["fuelMass"]
