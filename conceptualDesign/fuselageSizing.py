@@ -62,17 +62,22 @@ def fuselageSizing(params):
 
 
 def fuselageWeight(params):
-    Wto = params["totalMass"] * 2.20462
-    Nult = 2.5 * 1.65
-    lfus = params["cabinLength"] / 0.3048
-    rfus = (params["fuselageDiameter"] / 2) / 0.3048
-    Sfuswet = 2 * np.pi * lfus * rfus + 4 * np.pi * rfus ** 2
+    """Estimate the weight of the fuselage"""
+    # /!\ RETARD UNITS /!\
+    Wto = params["totalMass"] * 2.20462  # [lbs]
+    Nult = 2.5 * 1.65  # [-]
+    lfus = params["cabinLength"] / 0.3048  # [ft]
+    rfus = (params["fuselageDiameter"] / 2) / 0.3048  # [ft]
+    Sfuswet = 2 * np.pi * lfus * rfus + 4 * np.pi * rfus ** 2  # [ft^2]
 
-    c4 = params["wingQuarterChordSweep"]
-    AR = params["wingAspectRatio"]
-    Sref = params["wingArea"] / 10.7639
-    labda = params["wingTaperRatio"]
-    KWS = 0.75 * ((1+2*labda)/(1+labda)*(AR*Sref)**2*np.tan(c4))/lfus
+    c4 = params["wingQuarterChordSweep"]  # [rad]
+    AR = params["wingAspectRatio"]  # [-]
+    Sref = params["wingArea"] / 10.7639  # [ft^2]
+    labda = params["wingTaperRatio"]  # [-]
+    KWS = 0.75 * ((1+2*labda)/(1+labda)*(AR*Sref)**2*np.tan(c4))/lfus  # [?]
+    # This can be used while unit testing in order to check kws
+    if 'kws' in params:
+        params['kws'] = KWS
 
     Wfus = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * \
         Sfuswet ** 0.302 * (1 + KWS) ** 0.4
