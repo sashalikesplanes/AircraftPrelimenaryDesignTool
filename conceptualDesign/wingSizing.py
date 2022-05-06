@@ -1,5 +1,4 @@
 from cgi import test
-from nbformat import ValidationError
 import numpy as np
 
 
@@ -11,14 +10,14 @@ def wingSizing(params, rho):
     # Check if blimp concept has enough lift to compensate the weight and not too much
     if ["designConcept"] == 1:
         if abs(params["totalMass"] * g - params["balloonLift"]) > 5:
-            raise ValidationError("Balloon Lift does not match weight")
+            raise ValueError("Balloon Lift does not match weight")
         params["wingArea"] = 0
         params["wingStructuralMass"] = 0
 
     # Check for aircraft concept that no lift is calculated from the fuel
     elif ["designConcept"] == 4:
         if abs(params["balloonLift"]) > 5:
-            raise ValidationError(
+            raise ValueError(
                 "In a plane concept there is some balloon lift...")
 
     wingLift = params["totalMass"] * g - params["balloonLift"]
