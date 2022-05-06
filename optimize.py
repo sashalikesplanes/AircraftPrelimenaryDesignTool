@@ -57,5 +57,5 @@ def graph_stuff():
 if __name__ == "__main__":
     bnds = [(1000, 10999), (5, 100), (20, 330)]  # height, CR, speed
     print(minimize(func_to_optimize, (5000, 20, 80),
-          args=(50,), bounds=bnds, method="SLSQP"))
+          args=(10,), bounds=bnds, method="SLSQP"))
     # graph_stuff()
