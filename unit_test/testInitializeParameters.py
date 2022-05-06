@@ -3,22 +3,29 @@ from misc.constants import testMargin
 
 from conceptualDesign.initializeParameters import initializeParameters
 
-class TestBalloonSizing(unittest.TestCase):
+class InitializeParameters(unittest.TestCase):
     def testinitialiseParameters(self):
         x = {
-            "altitude": 1
-            "engineEfficiency": 1
-            "fuelCellEfficiency": 1
-            "wingTaperRatio": 1
-            "wingQuarterChordSweep": 1
-            "wingAspectRatio": 1
+            # "altitude": 914,
+            "engineEfficiency": 0.6,
+            "fuelCellEfficiency": 0.7,
+
+            "wingTaperRatio": 0.8,
+            "wingQuarterChordSweep": 0.5,
+            "wingAspectRatio": 5,
+
+            "passengers": 500,
+            "cargoMass": 10000,
+            "passengerMass": 60000,
+            "designConcept": 4
+
 
         }  # inputs
 
         initializeParameters(x)
 
         #calculated output
-        wingHalfChordSweep = 1
+        calcwingHalfChordSweep = 0.487474
 
         # start testing
-        self.assertAlmostEqual(wingHalfChordSweep, x["wingHalfChordSweep"], delta=wingHalfChordSweep * testMargin)
+        self.assertAlmostEqual(calcwingHalfChordSweep, x["wingHalfChordSweep"], delta=calcwingHalfChordSweep * testMargin)
