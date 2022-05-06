@@ -6,19 +6,26 @@ from conceptualDesign.initializeParameters import initializeParameters
 class TestBalloonSizing(unittest.TestCase):
     def testinitialiseParameters(self):
         x = {
-            "altitude": 1
-            "engineEfficiency": 1
-            "fuelCellEfficiency": 1
-            "wingTaperRatio": 1
-            "wingQuarterChordSweep": 1
-            "wingAspectRatio": 1
+            # "altitude": 914,
+            "engineEfficiency": 0.6,
+            "fuelCellEfficiency": 0.7,
+
+            "wingTaperRatio": 0.8,
+            "wingQuarterChordSweep": 20,
+            "wingAspectRatio": 8,
+
+            "passengers": 500,
+            "cargoMass": 10000,
+            "passengerMass": 60000,
+            "designConcept": 4
+
 
         }  # inputs
 
         initializeParameters(x)
 
         #calculated output
-        wingHalfChordSweep = 1
+        calcwingHalfChordSweep = 1.148119
 
         # start testing
-        self.assertAlmostEqual(wingHalfChordSweep, x["wingHalfChordSweep"], delta=wingHalfChordSweep * testMargin)
+        self.assertAlmostEqual(calcwingHalfChordSweep, x["wingHalfChordSweep"], delta=calcwingHalfChordSweep * testMargin)
