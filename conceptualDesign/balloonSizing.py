@@ -33,11 +33,15 @@ def balloonSizing(params, rhoAir, pAir):
         radius = (volume / (4 / 3 * np.pi *
                   params['balloonFinesseRatio'])) ** (1/3)
 
+        params["balloonArea"] = np.pi * radius ** 2
         params["balloonLift"] = lift
         params["balloonVolume"] = volume
         params["balloonRadius"] = radius
-        params["balloonArea"] = np.pi * radius ** 2
-        params["balloonLength"] = radius * params['balloonFinesseRatio'] * 2
+        if params["balloonArea"] == 0:
+            params["balloonLength"] = 0
+        else:
+            params["balloonLength"] = radius * \
+                params['balloonFinesseRatio'] * 2
 
         # Calculate mass of the balloon using plain pressure vessel
         pHydrogen = pHydrogenSeaLevel * params["compressionRatio"]

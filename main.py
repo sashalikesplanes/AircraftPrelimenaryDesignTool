@@ -38,4 +38,4 @@ if __name__ == "__main__":
     # plt.show()
 
     run_concept(parameters)
-    print(parameters['fuselageStructuralMass'])
+    print(parameters['fuelMass'])
