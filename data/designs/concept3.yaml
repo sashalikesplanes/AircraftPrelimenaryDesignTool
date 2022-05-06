@@ -1,0 +1,83 @@
+designConcept: 3 # a value between 1 and 4 [-]
+# 1 represents a wingless blimp
+# 2 represents a hybrid with low CR (max 5), gaseous H2
+# 3 represents a hybrid with high CR (max 100), gaseous H2
+# 4 represents an LH2 powered aircraft
+
+# Payload specification
+cargoMass: 0 # [kg]
+cargoVolume: 0 # [m^3]
+passengers: 500 # [-]
+passengerMass: 120 # [kg]
+payloadMass: null # [kg]
+
+# Cruise specification
+altitude: 5000 # [m]
+velocity: 120 # [m/s] = 501 kph
+flightRange: 5000000 # [m] = 10,000 km
+
+# Balloon design parameters
+shape: bullet #
+compressionRatio: 20 # [-] Density of compressed hydrogen / density of sea level hydrogen
+balloonFinesseRatio: 10 # [-] To optimize
+balloonLengthWidthRatio: 200 # [-] To optimize
+hasSolarPanels: false # [Bool] Determines if the airship has solar panels
+
+# Fuel container for design 4
+containerToFuelMassRatio: 0.4
+
+# Fuselage design parameters
+fuselageRadius: 4 # [m] - random shit
+fuselageLength: 25 # [m] - random shit
+safetyFactor: 1.4 # [-] made up
+
+# Propulsion design parameters
+propEfficiency: null # [-] engine * fuel efficiency
+engineEfficiency: 0.929 # [-]
+fuelCellEfficiency: 0.6 #[-]
+engineSpecificPower: 11100 # [W/kg]
+fuelCellSpecificPower: 8000 # [W/kg]
+
+# Wing design parameters
+wingAlpha: null # [rad]
+wingC_L_alpha: null # [-]
+liftFactor: 1.1 # [-] excess lift needed to compensate
+wingC_D_0: 0.032 # [-]
+wingC_D: null # [-]
+wingAspectRatio: 8 # [-] - chief aero said so lmao
+wingDragCorrection: 1.1 # [-]
+maxLoadFactor: 2.5 # [-] CS 25
+thicknessOverChord: 0.12 # [-] NACA 0012
+wingQuarterChordSweep: 0 # [rad]
+wingHalfChordSweep: 0 # [rad]
+wingTaperRatio: 1 # [-]
+
+# Design Variables - Masses
+fuselageStructuralMass: 0 # [kg]
+wingStructuralMass: 0 # [kg]
+balloonStructuralMass: 0 # [kg]
+fuelMass: 0 # [kg]
+liftingHydrogenMass: 0 # [-]
+propulsionMass: 0 # [kg]
+totalMass: null # [kg]
+
+# Design Variables - aero coefficients
+balloonC_D: 0.05 # [-] C_D of a streamline body
+fuselageC_D: 0.295 # [-] https://www.grc.nasa.gov/www/k-12/airplane/shaped.html
+wingC_L_design: 0.8 # [-] sourced from Aero engineer
+
+# Design Variables - characteristic areas
+fuselageArea: null # [m^2]
+balloonArea: null # [m^2]
+wingArea: null # [m^2]
+
+# Solar variables
+solarMass: 0
+solarEnergy: 0
+solarPower: 0
+
+# Design Variables - totals
+requiredEnergy: null # [J]
+totalDrag: null # [N]
+balloonLift: 0 # [N]
+
