@@ -3,8 +3,9 @@ import numpy as np
 
 def dragModel(params, rho):
     Cd = get_drag(params, rho)
-    D = 0.5 * rho * params['velocity'] ** 2 * Cd * params['volume'] ** (2 / 3)
+    D = 0.5 * rho * params['velocity'] ** 2 * Cd * params['balloonVolume'] ** (2 / 3)
     params['totalDrag'] = D
+    print(f'{ D = }')
 
 
 def FFB(finesseratio):
