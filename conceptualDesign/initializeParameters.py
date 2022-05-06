@@ -13,6 +13,10 @@ def initializeParameters(params):
     fuselageWeight(params)
     payloadMassEstimation(params)  # Done
 
+    # Crash for unacceptable values
+    if params["wingTaperRatio"] > 1 or params["wingTaperRatio"] <= 1:
+        raise ValueError("Taper ratio should be 1 at most")
+
     params["propEfficiency"] = params["engineEfficiency"] * \
         params["fuelCellEfficiency"]
 
