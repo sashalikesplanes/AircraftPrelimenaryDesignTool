@@ -6,18 +6,18 @@ from conceptualDesign.wingSizing import wingSizing
 class TestWingSizing(unittest.TestCase):
     def testWingSizing(self):
         x = {
-            "designConcept": 1,
-            "totalMass": 800000,
-            "balloonLift": 1,
-            "liftFactor": 1.1,
+            "designConcept": 3,
+            "totalMass": 60000,
+            "balloonLift": 500000,
+            "liftFactor": 5,
             "velocity": 80,   #m/s
             "wingC_L_design": 1,
             'wingDragCorrection': 1,
-            "wingC_D_0": 0.2,
+            "wingC_D_0": 0.02,
             "wingAspectRatio": 8,
             "wingHalfChordSweep": 0.5,
-            "thicknessOverChord": 0.3,
-            "maxLoadFactor": 3
+            "thicknessOverChord": 1,
+            "maxLoadFactor": 5
 
 
         }  # inputs
@@ -28,7 +28,7 @@ class TestWingSizing(unittest.TestCase):
 
 
         #calculated output
-        calcwingStrMass = 278869.67
+        calcwingStrMass = 1778.592959
 
         # start testing
         self.assertAlmostEqual(calcwingStrMass, x["wingStructuralMass"], delta=calcwingStrMass * testMargin)
