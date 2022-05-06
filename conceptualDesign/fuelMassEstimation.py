@@ -3,4 +3,5 @@ energyDensityHydrogen = 33.6e3 * 60 * 60  # J/kg
 
 
 def fuelMassEstimation(params):
-    params["fuelMass"] = params["requiredEnergy"] / energyDensityHydrogen
+    # print(params["solarEnergy"]/params["requiredEnergy"])
+    params["fuelMass"] = (params["requiredEnergy"] - params["solarEnergy"]) / energyDensityHydrogen
