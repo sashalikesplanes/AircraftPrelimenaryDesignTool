@@ -27,7 +27,7 @@ def initializeParameters(params):
     AR = params["wingAspectRatio"]
     span = np.sqrt(params["wingArea"] * AR)
     rootChord = 2 * params["wingArea"] / ( span * (1 + params["wingTaperRatio"]))
-    MAC = 2 / 3 * rootchord * (1 + params["wingTaperRatio"] + \ 
+    MAC = 2 / 3 * rootchord * (1 + params["wingTaperRatio"] + \
             params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
     params["meanAerodynamicChord"] = MAC
 
