@@ -59,7 +59,7 @@ def balloonSizing(params, rhoAir, pAir):
             (1 + params['balloonFinesseRatio'] /
              eccentricity * np.arcsin(eccentricity))
         params["balloonStructuralMass"] = balloonSurfaceArea * \
-            wallThickness * rho_mat
+            wallThickness * rho_mat * 0.5
         params["balloonSurfaceArea"] = balloonSurfaceArea
 
     elif params["designConcept"] == 4:
