@@ -37,7 +37,7 @@ import matplotlib.pyplot as plt
 
 CR = 5
 LoverD = 10
-rhoair = 0.6
+rhoair = 0.66
 rhohelium = 0.1785
 cdb = 0.05
 V = 198218
@@ -49,12 +49,15 @@ eta = 0.6
 Edens = 120 * 10**6
 rhohydrogen = 0.08988 * CR
 
-LbML = (rhoair-rhohelium) *V*g
-LwML = WML-LbML
+LbML = (0.659697-rhohelium) *V*g
+LwML1 = WML-LbML
+LwMLoverrho = LwML1/0.659697
+LwML = LwMLoverrho*rhoair
 DwML = LwML/LoverD
 print('lift helium buoyancy=',LbML,'lift of wing=',LwML, 'lift ratio B/L=', LbML/(LbML+LwML))
 
-A = np.pi * (35/2)**2
+
+A = np.pi * 35/2*48/2
 Db = cdb*0.5*rhoair*v**2*A
 
 Dtotal = Db + DwML

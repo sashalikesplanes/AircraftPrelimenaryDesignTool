@@ -5,6 +5,18 @@ rho0 = 1.225
 T0 = 273.15 + 15
 a = -0.0065
 
+def getTemperature(h):
+    """Calculates low level density using a provided height value"""
+    # raise an error if the provided altitude is outside the accepted range
+    if h > 11000 or h < 0:
+        raise ValueError("Specified height not within acceptable range")
+
+    # Calculate the temperature at the specified height
+    T1 = T0 + a * h
+    return T1
+
+
+
 
 def getDensity(h):
     """Calculates low level density using a provided height value"""
