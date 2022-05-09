@@ -32,3 +32,12 @@ def getPressure(h):
     # Calculate the density at the specified height
     p1 = p0 * (T1/T0) ** -(g / (a * R_air))
     return p1  # [N/m^2]
+
+
+def getTemperature(h):
+    if h > 11000 or h < 0:
+        raise ValueError("Specified height not within acceptable range")
+
+    # Calculate the temperature at the specified height
+    T1 = T0 + a * h
+    return T1

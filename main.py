@@ -20,4 +20,4 @@ if __name__ == "__main__":
 
     run_concept(parameters)
     print(parameters['fuelMass'], parameters["balloonVolume"],
-          parameters["balloonRadius"], parameters["balloonLength"])
+          parameters["balloonRadius"], parameters["balloonLength"], parameters["wallThickness"], parameters["balloonStructuralMass"], parameters["wingArea"])

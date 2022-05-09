@@ -1,4 +1,4 @@
-from misc.ISA import getDensity, getPressure
+from misc.ISA import getDensity, getPressure, getTemperature
 from conceptualDesign.wingSizing import wingSizing
 from conceptualDesign.totalMassEstimation import totalMassEstimation
 from conceptualDesign.propulsionSizing import propulsionSizing
@@ -25,6 +25,8 @@ def conceptualDesign(parameters, material_data, iters):
 
     pAir = getPressure(parameters["altitude"])
 
+    tAir = getTemperature(parameters['altitude'])
+
     df = pd.DataFrame()
     prev_fuel = -100
 
@@ -34,7 +36,7 @@ def conceptualDesign(parameters, material_data, iters):
     for _ in trange(int(iters)):
 
         # balloon sizing
-        balloonSizing(parameters, rho, pAir)  # TODO concept 1
+        balloonSizing(parameters, rho, pAir, tAir)  # TODO concept 1
         if np.isnan(parameters["fuelMass"]):
             print("Diverged")
             break

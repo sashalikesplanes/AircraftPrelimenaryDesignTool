@@ -5,7 +5,7 @@ def dragModel(params, rho):
     Cd = get_drag(params, rho)
     D = 0.5 * rho * params['velocity'] ** 2 * \
         Cd * params['balloonVolume'] ** (2 / 3)
-    params['totalDrag'] = D
+    params['totalDrag'] = D * params["dragReductionFactor"]
 
 
 def FFB(finesseratio):
@@ -53,7 +53,6 @@ def get_CD_0(params, rho):
     Cfb = 0.455/(np.log10(Reb)**2.58)
 
     Cfw = 0.455/(np.log10(Rew)**2.58)
-
 
     CDF = (Cfb * FFb * Swetb) / (params["balloonVolume"]**(2/3)) + \
         (Cfw * FFw * Swetw) / (params["balloonVolume"]**(2/3))
