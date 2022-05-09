@@ -23,13 +23,28 @@ def Swet_balloon(volume, finesseratio):
 def get_visc(altitude):
     # Sutherland's formula
     # https://www.grc.nasa.gov/www/k-12/airplane/viscosity.html
-    visc0 = 1.716e-5  # lb-s/ft2
-    T0_R = 273  # Rankine
+    visc0 = 1.716e-5  
+    T0_R = 273  
     Delta_T = (6.5/1000) * altitude  # degree celsius
     # http://fisicaatmo.at.fcen.uba.ar/practicas/ISAweb.pdf
     T = T0_R - Delta_T
     visc = visc0 * ((T/T0_R)**1.5) * ((T0_R + 111)/(T + 111))
     return visc
+
+
+def get_oswald_efficiency(aspectRatio, leadingEdgeSweep):
+    if leadingEdgeSweep <= np.deg2rad(30): #degree
+        return 1.78*(1 - aspectRatio ** 0.68) - 0.64
+    else: 
+        return 4.61 * (1 - 0.054 * aspectRatio ** 0.68) * ( np.cos( leadingEdgeSweep ))
+
+def estimate_wing_FF(maxThicknessLocationAirfoil, tOverC, machNumber):
+    return (1 + 0.6/maxThicknessLocationAirfoil*tOverC + 100*tOverC**4)*(1.34*\
+            machNumber**0.18*np.cos(maxThicknessSweep)**0.28)
+
+def estimate_fuselage_FF(fuselageLength, fuselageDiameter):
+    fFactor = fuselageLength/fuselageDiameter
+    return 1 + 60/(f ** 3) + f / 400
 
 
 def get_CD_0(params, rho):
