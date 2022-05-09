@@ -9,7 +9,7 @@ def dragModel(params, rho, temp):
 
     designConcept = params["designConcept"]
     C_D = get_drag(params, rho, temp, designConcept)
-    # print(f'{C_D = }')
+    # print(f"{C_D}")
     if designConcept <= 3:  # Concepts with a balloon
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['balloonVolume'] ** (2 / 3)
@@ -17,6 +17,7 @@ def dragModel(params, rho, temp):
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['wingArea']
     params['totalDrag'] = D * params["dragContingency"]
+    # print(D)
 
 
 def FFB(finesseratio):
@@ -141,6 +142,7 @@ def get_C_D_0(params, rho, temp, designConcept):
     elif designConcept == 4:
         C_D_0 = airplane_design_drag_components(
             params, rho, temp, airViscosity)
+    # print(f'{designConcept}')
     # print(f'{C_D_0}')
     return C_D_0
 
@@ -177,7 +179,7 @@ def get_CD_i(params):
     # print(f'{oswaldFactor = }')
     wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor) *\
         conversionRatioWingDrag
-    # print(f'{balloonC_D_i + wingC_D_i = }')
+    # print(f'{balloonC_D_i + wingC_D_i}')
     return balloonC_D_i + wingC_D_i
 
 

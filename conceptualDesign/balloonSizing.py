@@ -77,7 +77,7 @@ def balloonSizing(params, rhoAir, pAir, tAir):
         V_h2 = m_fuel / rhoHydrogenLiquid  # m^3
         r = 1.25  # m  (radius of fuel tank)
         # print(f"{V_h2} m^3")
-        params["balloonLength"] = (V_h2 - (4*np.pi*r**3)/3)/(np.pi*r**2)
+        params["balloonLength"] = (V_h2)/(np.pi*r**2)
         # print(f"Balloon length: {params['balloonLength']} m")
 
         params["balloonStructuralMass"] = m_fuel * \

@@ -25,14 +25,21 @@ def wingSizing(params, rho):
                                                             ** 2 * params["wingC_L_design"])
     # set wing area to zero in case of negative surface area
     if params["wingArea"] < 0:
-        raise ValueError("wing area is negative")
+        print("WARNING WING AREA IS NEGATIVE : ", params["wingArea"])
+        params["wingArea"] = 0.001
 
     params["wingC_D"] = params['wingDragCorrection'] * params["wingC_D_0"]
 
-    span = (params["wingArea"] * params["wingAspectRatio"]) ** 0.5
+    span = np.sqrt(params["wingArea"] * params["wingAspectRatio"])
     # chord = params["wingArea"] / span
     chord = span / params["wingAspectRatio"]
     c2 = params["wingHalfChordSweep"]
+
+    rootChord = 2 * params["wingArea"] / \
+        (span * (1 + params["wingTaperRatio"]))
+    MAC = 2 / 3 * rootChord * (1 + params["wingTaperRatio"] +
+                               params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
+    params["meanAerodynamicChord"] = MAC
 
     params["wingStructuralMass"] = 0.00125 * wingLift * \
         (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (

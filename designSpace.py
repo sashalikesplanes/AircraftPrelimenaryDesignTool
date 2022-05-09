@@ -1,3 +1,4 @@
+from fileinput import filename
 from tqdm import tqdm
 
 import matplotlib.pyplot as plt
@@ -42,7 +43,7 @@ def heatmap(data, row_labels, col_labels, ax=None,
 
     # Create colorbar
     cbar = ax.figure.colorbar(im, ax=ax, **cbar_kw)
-    cbar.ax.set_ylabel(cbarlabel, rotation=-90, va="bottom")
+    cbar.ax.set_ylabel(cbarlabel, va="bottom")
 
     # We want to show all ticks...
     ax.set_xticks(np.arange(data.shape[1]))
@@ -130,7 +131,21 @@ def annotate_heatmap(im, data=None, valfmt="{x:.2f}",
     return texts
 
 
-def graph_stuff(altitude, compressionRatio, steps, speedStart, speedEnd, rangeStart, rangeEnd, figName):
+def func_to_optimize(params, iters, velocity, compressionRatio, range):
+    altitude = params[0]
+    material_data: dict = load_materials()
+
+    parameters = openData("design1")
+
+    parameters['altitude'] = altitude
+    parameters['compressionRatio'] = compressionRatio
+    parameters['velocity'] = velocity
+    parameters["flightRange"] = range
+    conceptualDesign(parameters, material_data, iters)
+    return parameters['fuelMass']
+
+
+def graph_stuff(compressionRatio, steps, speedStart, speedEnd, rangeStart, rangeEnd, figName):
     # altitude = 5000
     # X = np.array([[2], [1000]])  # compressionratio --> 50 steps
     # Y = np.array([[25], [200]])  # velocity --> 100 steps
@@ -141,8 +156,12 @@ def graph_stuff(altitude, compressionRatio, steps, speedStart, speedEnd, rangeSt
 
     matrix = np.zeros((len(x), len(y)))
 
-    for index_i, velocity in tqdm(enumerate(x)):
-        for index_j, range in tqdm(enumerate(y)):
+    for index_i, velocity in enumerate(x):
+        for index_j, range in enumerate(y):
+            bnds = [(1000, 10999)]  # height, CR, speed
+            altitude = minimize(func_to_optimize, (1001,),
+                                args=(10, velocity, compressionRatio, range), bounds=bnds, method="SLSQP").x[0]
+            print(range, velocity, altitude)
             params = openData("design1")
             # print(f"Hello world! {i} {j}")
             params['compressionRatio'] = compressionRatio
@@ -169,6 +188,7 @@ def graph_stuff(altitude, compressionRatio, steps, speedStart, speedEnd, rangeSt
 
     fig.tight_layout()
     plt.savefig(figName, dpi=1000)
+    np.save(f"{figName}_data", matrix * 100)
     # plt.pcolormesh(y, x, matrix)
     # plt.show()
 
@@ -177,5 +197,17 @@ if __name__ == "__main__":
 
     # graph_stuff(altitude=10000, compressionRatio=5,
     #             steps=20, speedStart=50, speedEnd=200, rangeStart=5e6, rangeEnd=20e6, figName="FeasibilityCR5")
-    graph_stuff(altitude=10000, compressionRatio=20,
-                steps=20, speedStart=50, speedEnd=200, rangeStart=5e6, rangeEnd=12e6, figName="FeasibilityCR20")
+    # Constrained: Ballon Structure - 2x, Drag - 1.5x, Fuel - 1.2 x
+    # Low Constrain: Balloon - 1.25x, Drag - 1.1x, Fuel - 1.05x
+    graph_stuff(compressionRatio=2,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR2LowConstrainAltitudeOptimized")
+    graph_stuff(compressionRatio=3,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR3LowConstrainAltitudeOptimized")
+    graph_stuff(compressionRatio=4,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR4LowConstrainAltitudeOptimized")
+    graph_stuff(compressionRatio=5,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR5LowConstrainAltitudeOptimized")
+    graph_stuff(compressionRatio=20,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR20LowConstrainAltitudeOptimized")
+    graph_stuff(compressionRatio=700,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR700LowConstrainAltitudeOptimized")

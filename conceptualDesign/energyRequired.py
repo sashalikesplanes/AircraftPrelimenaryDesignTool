@@ -1,7 +1,7 @@
 def energyRequired(params):
     E_req = params["totalDrag"] * \
         params["flightRange"] / params["propEfficiency"]
-    params["requiredEnergy"] = E_req
+    params["requiredEnergy"] = E_req * params["propulsionContingency"]
 
     if params["hasSolarPanels"]:
         S_solar = params["balloonLength"] * params["balloonRadius"]
