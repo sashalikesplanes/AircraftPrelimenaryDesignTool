@@ -52,6 +52,7 @@ maxThicknessLocationAirfoil : 0.3
 wingQuarterChordSweep: 0 # [rad]
 wingHalfChordSweep: 0 # [rad]
 wingTaperRatio: 1 # [-]
+meanAerodynamicChord: 0
 
 # Design Variables - Masses
 fuselageStructuralMass: 1 # [kg]

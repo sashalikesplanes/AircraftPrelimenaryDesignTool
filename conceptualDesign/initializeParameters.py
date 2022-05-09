@@ -25,6 +25,11 @@ def initializeParameters(params):
     Lambda = params["wingTaperRatio"]
     c4 = params["wingQuarterChordSweep"]
     AR = params["wingAspectRatio"]
+    span = np.sqrt(params["wingArea"] * AR)
+    rootChord = 2 * params["wingArea"] / ( span * (1 + params["wingTaperRatio"]))
+    MAC = 2 / 3 * rootchord * (1 + params["wingTaperRatio"] + \ 
+            params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
+    params["meanAerodynamicChord"] = MAC
 
     params["wingHalfChordSweep"] = np.arctan(
         np.tan(c4) - 4/AR*((50-25)/100) * (1 - Lambda)/(1 + Lambda))
