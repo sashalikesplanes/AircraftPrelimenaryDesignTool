@@ -51,9 +51,9 @@ def get_wetted_area_fuselage(fuselageLength, fuselageRadius):
 
 def get_oswald_efficiency(aspectRatio, leadingEdgeSweep):
     if leadingEdgeSweep <= np.deg2rad(30): #degree
-        return 1.78 * (1 - aspectRatio ** 0.68) - 0.64
+        return 1.78 * (1 - 0.045 * aspectRatio ** 0.68) - 0.64
     else: 
-        return 4.61 * (1 - 0.054 * aspectRatio ** 0.68) * (np.cos(leadingEdgeSweep))
+        return 4.61 * (1 - 0.045 * aspectRatio ** 0.68) * (np.cos(leadingEdgeSweep) ** 0.15) -3.1
 
 
 def estimate_wing_FF(params, maxThicknessLocationAirfoil, tOverC, machNumber):
@@ -92,16 +92,22 @@ def balloon_design_drag_components(params, rho, viscosity):
 def airplane_design_drag_components(params, rho, temp, viscosity):
     specificGasConstantAir = 287.058
     machNumber = params['velocity'] / np.sqrt(1.4 * specificGasConstantAir * temp)
+    print(f'{machNumber = }')
     # Form Factor
     wingFF = estimate_wing_FF(params, params['maxThicknessLocationAirfoil'], \
              params['thicknessOverChord'], machNumber)
+    print(f'{wingFF = }')
     fuselageFF = estimate_fuselage_FF(params['fuselageLength'], \
                  2 * params['fuselageRadius'])
+    print(f'{fuselageFF = }')
     # Wetted Area
     wingS_wet = get_wetted_area_wing(params["thicknessOverChord"], \
                 params["wingArea"])
+    print(f'{wingS_wet = }')
     fuselageS_wet = get_wetted_area_fuselage(params['fuselageLength'], \
                     2 * params['fuselageRadius'])
+    print(f'{fuselageS_wet = }')
+
     # Reynolds Number
     wingRe = rho * params['velocity'] * params['meanAerodynamicChord'] / viscosity
     wingRe_cutoff = 38.21*(params['meanAerodynamicChord']/ (2.08e-5 * .3048))**1.053 
@@ -110,8 +116,10 @@ def airplane_design_drag_components(params, rho, temp, viscosity):
     # Skin Friction
     wingC_f = 0.455 / (np.log10(min(wingRe, wingRe_cutoff))**2.58 \
               * (1 + 0.144 * machNumber ** 2) ** 0.65)
+    print(f'{wingC_f = }')
     fuselageC_f = 0.455 / (np.log10(min(fuselageRe, fuselageRe_cutoff))**2.58 \
                   * (1 + 0.144 * machNumber ** 2) ** 0.65)
+    print(f'{fuselageC_f = }')
     return ((wingC_f*wingFF*wingS_wet) + (fuselageC_f*fuselageFF*fuselageS_wet)) / \
             params['wingArea']
 
@@ -122,6 +130,7 @@ def get_C_D_0(params, rho, temp, designConcept):
         C_D_0 = balloon_design_drag_components(params, rho, airViscosity)
     elif designConcept == 4:
         C_D_0 = airplane_design_drag_components(params, rho, temp, airViscosity)
+    print(f'{C_D_0}')
     return C_D_0
 
 
@@ -152,8 +161,10 @@ def get_CD_i(params):
                                         0, \
                                         params['wingTaperRatio'], \
                                         params['wingAspectRatio']))
+    print(f'{oswaldFactor = }')
     wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor) *\
                 conversionRatioWingDrag
+    print(f'{balloonC_D_i + wingC_D_i = }')
     return balloonC_D_i + wingC_D_i
 
 
