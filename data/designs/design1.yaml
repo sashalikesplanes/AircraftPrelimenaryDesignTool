@@ -23,6 +23,7 @@ balloonFinesseRatio: 6.5 # [-] To optimize
 hasSolarPanels: false # [Bool] Determines if the airship has solar panels
 factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
+dragContingency: 1.5 # [-]
 
 # Fuel container for design 4
 containerToFuelMassRatio: 0.4 # [-]
@@ -50,7 +51,7 @@ wingAspectRatio: 8 # [-] - chief aero said so lmao
 wingDragCorrection: 1.1 # [-]
 maxLoadFactor: 2.5 # [-] CS 25
 thicknessOverChord: 0.12 # [-] NACA 0012
-maxThicknessLocationAirfoil : 0.3
+maxThicknessLocationAirfoil: 0.3
 wingQuarterChordSweep: 0 # [rad]
 wingHalfChordSweep: 0 # [rad]
 wingTaperRatio: 1 # [-]

@@ -14,7 +14,7 @@ def dragModel(params, rho, temp, designConcept):
     elif designConcept == 4:  # Concept with a balloon
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['wingArea']
-    params['totalDrag'] = D
+    params['totalDrag'] = D * params["dragContingency"]
 
 
 def FFB(finesseratio):
