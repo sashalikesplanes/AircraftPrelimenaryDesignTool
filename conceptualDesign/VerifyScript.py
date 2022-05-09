@@ -37,7 +37,7 @@ import matplotlib.pyplot as plt
 
 CR = 5
 LoverD = 10
-rhoair = 0.66
+rhoair = 0.659697
 rhohelium = 0.1785
 cdb = 0.05
 V = 198218
@@ -77,3 +77,5 @@ print('Lb',Lb)
 
 Lw = Wgros - Lb
 print('Lw',Lw)
+
+#TODO chec weight, check material, 
