@@ -22,6 +22,7 @@ def conceptualDesign(parameters, material_data, iters):
 
     # Get the density at the cruise altitude hello world
     rho = getDensity(parameters["altitude"])
+    temp = getTemperature(parameters["altitude")
 
     pAir = getPressure(parameters["altitude"])
 
@@ -46,7 +47,7 @@ def conceptualDesign(parameters, material_data, iters):
         fuselageWeight(parameters)
 
         # drag model
-        dragModel(parameters, rho)
+        dragModel(parameters, rho, temp)
 
         # propulsion sizing
         propulsionSizing(parameters)
