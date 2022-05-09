@@ -22,7 +22,7 @@ def conceptualDesign(parameters, material_data, iters):
 
     # Get the density at the cruise altitude hello world
     rho = getDensity(parameters["altitude"])
-    temp = getTemperature(parameters["altitude")
+    temp = getTemperature(parameters["altitude"])
 
     pAir = getPressure(parameters["altitude"])
 
