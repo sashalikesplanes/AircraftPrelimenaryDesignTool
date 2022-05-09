@@ -31,6 +31,12 @@ def get_visc(altitude):
     visc = visc0 * ((T/T0_R)**1.5) * ((T0_R + 111)/(T + 111))
     return visc
 
+def get_wetted_area_wing(tOverC, referenceArea):
+    return referenceArea * (1.977 + 0.52 * tOverC)
+
+def get_wetted_area_fuselage(fuselageLength, fuselageDiameter):
+    return 3.4 * fuselageDiameter * fuselageLength
+
 
 def get_oswald_efficiency(aspectRatio, leadingEdgeSweep):
     if leadingEdgeSweep <= np.deg2rad(30): #degree
@@ -47,33 +53,45 @@ def estimate_fuselage_FF(fuselageLength, fuselageDiameter):
     return 1 + 60/(f ** 3) + f / 400
 
 
-def get_CD_0(params, rho):
-    FFb = FFB(params["balloonFinesseRatio"])
-
-    FFw = FFW(params["thicknessOverChord"])
-
-    Swetb = Swet_balloon(params["balloonVolume"],
-                         params["balloonFinesseRatio"])
-
-    Swetw = 2 * params['wingArea']
-
-    bw = np.sqrt(params['wingArea']*params['wingAspectRatio'])
-
+def get_CD_0(params, rho, designConcept, temp):
     visc = get_visc(params["altitude"])
+    if designConcept <= 3:
+        FFb = FFB(params["balloonFinesseRatio"])
 
-    Reb = (rho * params['velocity'] * params['balloonLength']) / visc
+        FFw = FFW(params["thicknessOverChord"])
 
-    Rew = (rho * params['velocity'] * bw) / visc
+        Swetb = Swet_balloon(params["balloonVolume"],
+                             params["balloonFinesseRatio"])
 
-    Cfb = 0.455/(np.log10(Reb)**2.58)
+        Swetw = get_wetted_area_wing(params['thicknessOverChord'], params['wingArea'])
 
-    Cfw = 0.455/(np.log10(Rew)**2.58)
+        bw = np.sqrt(params['wingArea']*params['wingAspectRatio'])
 
 
-    CDF = (Cfb * FFb * Swetb) / (params["balloonVolume"]**(2/3)) + \
-        (Cfw * FFw * Swetw) / (params["balloonVolume"]**(2/3))
+        Reb = (rho * params['velocity'] * params['balloonLength']) / visc
 
-    CD_0 = (CDF) / 0.95
+        Rew = (rho * params['velocity'] * bw) / visc
+
+        Cfb = 0.455/(np.log10(Reb)**2.58)
+
+        Cfw = 0.455/(np.log10(Rew)**2.58)
+
+
+        CDF = (Cfb * FFb * Swetb) / (params["balloonVolume"]**(2/3)) + \
+            (Cfw * FFw * Swetw) / (params["balloonVolume"]**(2/3))
+
+        CD_0 = (CDF) / 0.95
+    elif designConcept == 4:
+        specificGasConstantAir = 287.058
+        machNumber = params['velocity'] / np.sqrt(1.4 * 287.058 * temp)
+        wing_FF = estimate_wing_FF(params['maxThicknessLocationAirfoil'], \
+                params['thicknessOverChord'], machNumber)
+        fuselage_Ff = estimate_fuselage_FF(params['fuselageLength'], \ 
+                2 * params['fuselageDiameter'])
+
+
+        CD_0 = 'awesome <3'
+
     return CD_0
 
 
@@ -105,5 +123,5 @@ def get_CD_i(params):
     return balloonC_D_i + wingC_D_i
 
 
-def get_drag(params, rho):
-    return get_CD_0(params, rho) + get_CD_i(params)
+def get_drag(params, rho, temp):
+    return get_CD_0(params, rho, temp) + get_CD_i(params)
