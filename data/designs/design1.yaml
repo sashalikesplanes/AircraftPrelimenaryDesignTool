@@ -13,12 +13,12 @@ payloadMass: null # [kg]
 
 # Cruise specification
 altitude: 11000 # [m] 8500 for 100 cr, 10999 for 20 cr
-velocity: 200 # [m/s] = 501 kph
-flightRange: 8600000 # [m]0 = 10,000 km
+velocity: 180 # [m/s] = 501 kph
+flightRange: 7000000 # [m]0 = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 700 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 200 # [-] Density of compressed hydrogen / density of sea level hydrogen
 balloonFinesseRatio: 6.5 # [-] To optimize
 hasSolarPanels: false # [Bool] Determines if the airship has solar panels
 factorOfSafety: 2 # [-]

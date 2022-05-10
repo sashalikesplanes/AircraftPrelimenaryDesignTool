@@ -199,15 +199,7 @@ if __name__ == "__main__":
     #             steps=20, speedStart=50, speedEnd=200, rangeStart=5e6, rangeEnd=20e6, figName="FeasibilityCR5")
     # Constrained: Ballon Structure - 2x, Drag - 1.5x, Fuel - 1.2 x
     # Low Constrain: Balloon - 1.25x, Drag - 1.1x, Fuel - 1.05x
-<<<<<<< HEAD
-    graph_stuff(compressionRatio=150,
-                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR10ConstrainAltitudeOptimized")
-=======
     for thingy in [200]:
         print(f"Running graph stuff for {thingy}")
         graph_stuff(compressionRatio=thingy,
-                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName=f"FeasibilityCR{thingy}ConstrainAltitudeOptimized")
-
-
-
->>>>>>> 078f76530e4550a37d3c2f7ab19f93b8c074261d
+                    steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName=f"FeasibilityCR{thingy}ConstrainAltitudeOptimized")
