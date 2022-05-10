@@ -199,8 +199,6 @@ if __name__ == "__main__":
     #             steps=20, speedStart=50, speedEnd=200, rangeStart=5e6, rangeEnd=20e6, figName="FeasibilityCR5")
     # Constrained: Ballon Structure - 2x, Drag - 1.5x, Fuel - 1.2 x
     # Low Constrain: Balloon - 1.25x, Drag - 1.1x, Fuel - 1.05x
-    graph_stuff(compressionRatio=8,
-                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR8ConstrainAltitudeOptimized")
-    graph_stuff(compressionRatio=9,
-                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6,
-                figName="FeasibilityCR9ConstrainAltitudeOptimized")
+    graph_stuff(compressionRatio=300,
+                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName="FeasibilityCR300ConstrainAltitudeOptimized")
+
