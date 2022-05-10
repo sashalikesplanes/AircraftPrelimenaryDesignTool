@@ -21,4 +21,17 @@ if __name__ == "__main__":
     run_concept(parameters)
     # print(parameters['fuelMass'], parameters["balloonVolume"],
     #       parameters["balloonRadius"], parameters["balloonLength"], parameters["wallThickness"], parameters["balloonStructuralMass"], parameters["wingArea"])
+    # print(parameters)
     print(parameters)
+    totalEngines = parameters["totalDrag"] * parameters["velocity"] / 2e6
+    massBig = parameters["fuselageStructuralMass"] + \
+        parameters["balloonStructuralMass"]
+    fuelBig = parameters["fuelMass"]
+
+    parameters = openData("design1")
+    parameters["compressionRatio"] = 250
+
+    run_concept(parameters)
+    print("We need ", massBig / (parameters["fuselageStructuralMass"] +
+          parameters["balloonStructuralMass"]), " x more material")
+    print("We need ", fuelBig / parameters["fuelMass"], " x more fuel")
