@@ -23,7 +23,8 @@ def func_to_optimize(params, iters):
 
 
 if __name__ == "__main__":
-    bnds = [(1000, 10999), (4.99, 20), (100, 150)]  # height, CR, speed
-    print(minimize(func_to_optimize, (4000, 9, 140),
+    bnds = [(1000, 10999), (699.99, 700.01),
+            (199.99, 200.01)]  # height, CR, speed
+    print(minimize(func_to_optimize, (4000, 700, 200),
           args=(30,), bounds=bnds, method="SLSQP"))
     # graph_stuff()

@@ -19,5 +19,6 @@ if __name__ == "__main__":
     parameters = openData("design1")
 
     run_concept(parameters)
-    print(parameters['fuelMass'], parameters["balloonVolume"],
-          parameters["balloonRadius"], parameters["balloonLength"], parameters["wallThickness"], parameters["balloonStructuralMass"], parameters["wingArea"])
+    # print(parameters['fuelMass'], parameters["balloonVolume"],
+    #       parameters["balloonRadius"], parameters["balloonLength"], parameters["wallThickness"], parameters["balloonStructuralMass"], parameters["wingArea"])
+    print(parameters)
