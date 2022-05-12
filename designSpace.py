@@ -131,18 +131,29 @@ def annotate_heatmap(im, data=None, valfmt="{x:.2f}",
     return texts
 
 
-def func_to_optimize(params, iters, velocity, compressionRatio, range):
-    altitude = params[0]
-    material_data: dict = load_materials()
+def optimize_altitude(velocity=None, compressionRatio=None, range=None, bnds=[(1000, 10999)]):
 
-    parameters = openData("design1")
+    def func_to_optimize(params, iters, velocity, compressionRatio, range):
+        altitude = params[0]
+        material_data: dict = load_materials()
 
-    parameters['altitude'] = altitude
-    parameters['compressionRatio'] = compressionRatio
-    parameters['velocity'] = velocity
-    parameters["flightRange"] = range
-    conceptualDesign(parameters, material_data, iters)
-    return parameters['fuelMass']
+        parameters = openData("design1")
+
+        if velocity:
+            parameters['velocity'] = velocity
+        if compressionRatio:
+            parameters['compressionRatio'] = compressionRatio
+        if range:
+            parameters["flightRange"] = range
+
+        parameters['altitude'] = altitude
+
+        conceptualDesign(parameters, material_data, iters)
+        return parameters['fuelMass']
+
+    altitude = minimize(func_to_optimize, (1001,),
+                        args=(30, velocity, compressionRatio, range), bounds=bnds, method="SLSQP").x[0]
+    return altitude
 
 
 def graph_stuff(compressionRatio, steps, speedStart, speedEnd, rangeStart, rangeEnd, figName):
@@ -158,14 +169,12 @@ def graph_stuff(compressionRatio, steps, speedStart, speedEnd, rangeStart, range
 
     for index_i, velocity in enumerate(x):
         for index_j, range in enumerate(y):
-            bnds = [(1000, 10999)]  # height, CR, speed
-            altitude = minimize(func_to_optimize, (1001,),
-                                args=(10, velocity, compressionRatio, range), bounds=bnds, method="SLSQP").x[0]
-            print(range, velocity, altitude)
+
             params = openData("design1")
             # print(f"Hello world! {i} {j}")
             params['compressionRatio'] = compressionRatio
-            params['altitude'] = altitude
+            params['altitude'] = optimize_altitude(
+                velocity, compressionRatio, range, bnds=[(1000, 6000)])
             params['velocity'] = velocity
             params["flightRange"] = range
 
@@ -202,7 +211,4 @@ if __name__ == "__main__":
     for thingy in [200]:
         print(f"Running graph stuff for {thingy}")
         graph_stuff(compressionRatio=thingy,
-                steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName=f"FeasibilityCR{thingy}ConstrainAltitudeOptimized")
-
-
-
+                    steps=26, speedStart=50, speedEnd=200, rangeStart=1e6, rangeEnd=11e6, figName=f"FeasibilityCR{thingy}ConstrainAltitudeOptimized")

@@ -8,7 +8,7 @@ from conceptualDesign.dragModel import dragModel
 from conceptualDesign.balloonSizing import balloonSizing
 from conceptualDesign.initializeParameters import initializeParameters
 from conceptualDesign.fuselageSizing import fuselageWeight
-from conceptualDesign.performCosting import performCosting
+from conceptualDesign.postSizingCalcs import post_sizing_calcs
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -83,5 +83,5 @@ def conceptualDesign(parameters, material_data, iters):
     # plt.show()
 
     # print(parameters)
-    performCosting(parameters)
+    post_sizing_calcs(parameters)
     return parameters, df

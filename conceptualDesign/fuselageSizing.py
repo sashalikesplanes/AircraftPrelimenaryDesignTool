@@ -23,7 +23,8 @@ def fuselageSizing(params):
         n_aisles = 2
         k_cabin = 1.17
     else:
-        raise IOError
+        n_aisles = 3
+        k_cabin = 1.17
 
     l_cabin = n_rows * k_cabin
     # print(f"Cabin length: {l_cabin}")
@@ -44,7 +45,8 @@ def fuselageSizing(params):
     # print(f"Outer fuselage diameter: {d_outer}")
 
     # Assume that the weight of the mass is 10% that of a cylinder with the thickness of the fuselage
-    m_fuselage = np.pi * ((d_outer/2) ** 2 - (d_inner/2) ** 2) * l_cabin * rho_mat * 0.1
+    m_fuselage = np.pi * ((d_outer/2) ** 2 - (d_inner/2)
+                          ** 2) * l_cabin * rho_mat * 0.1
     # print(f"{m_fuselage} kg")
 
     # https://en.wikipedia.org/wiki/Pressure_vessel
