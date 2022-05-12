@@ -19,10 +19,10 @@ def run_concept(params):
 
 
 def run_concepts(design_range,
-                 design_speed,
+                 design_speeds,
                  comp_ratios,
+                 specified_altitude,
                  params_to_table=["compressionRatio", "fuelMass"],
-                 find_best_altitude=True,
                  iters=1000,
                  alt_bounds=(1000, 10999)):
     """
@@ -30,14 +30,16 @@ def run_concepts(design_range,
     at the end of the iterations
     """
     out_table = pd.DataFrame()
-    for comp_ratio in comp_ratios:
+    for (design_speed, comp_ratio) in tqdm(zip(design_speeds, comp_ratios)):
 
         params = openData("design1")
 
-        if find_best_altitude:
+        if not specified_altitude:
             altitude = optimize_altitude(
                 design_speed, comp_ratio, design_range, bnds=[alt_bounds])
             params["altitude"] = altitude
+        else:
+            params["altitude"] = specified_altitude
 
         params["velocity"] = design_speed
         params["flightRange"] = design_range
@@ -51,7 +53,8 @@ def run_concepts(design_range,
 
 if __name__ == "__main__":
 
-    print(run_concepts(6e6, 100, [20, 50, 200]))
+    print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
+          "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
 
     # Show that the design is Poorly
     # parameters = openData("design1")

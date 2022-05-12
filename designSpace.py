@@ -152,7 +152,7 @@ def optimize_altitude(velocity=None, compressionRatio=None, range=None, bnds=[(1
         return parameters['fuelMass']
 
     altitude = minimize(func_to_optimize, (1001,),
-                        args=(10, velocity, compressionRatio, range), bounds=bnds, method="SLSQP").x[0]
+                        args=(30, velocity, compressionRatio, range), bounds=bnds, method="SLSQP").x[0]
     return altitude
 
 

@@ -54,6 +54,7 @@ def balloonSizing(params, rhoAir, pAir, tAir):
         # Calculate mass of the balloon using plain pressure vessel
         pHydrogen = pHydrogenSeaLevel * params["compressionRatio"]
         p = totalHydrogenMass / hydrogenMolarMass * R * tAir / volume
+        params["balloonPressure"] = p
         dp = abs(p - pAir)
 
         ratio = dp / (2 * sigma_mat / params["factorOfSafety"] + dp)
