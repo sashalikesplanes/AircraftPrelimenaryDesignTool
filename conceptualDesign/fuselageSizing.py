@@ -1,5 +1,5 @@
 import numpy as np
-from misc.constants import g
+from misc.constants import g, rho_h2
 
 
 # aluminium 6061
@@ -61,6 +61,7 @@ def fuselageSizing(params):
     params["fuselageStructuralMass"] = m_fuselage
     params["fuselageArea"] = np.pi * (d_outer / 2) ** 2
     params["fuselageDiameter"] = d_outer
+    params["fuselageInnerDiameter"] = d_inner
 
 
 def fuselageWeight(params):
@@ -87,3 +88,13 @@ def fuselageWeight(params):
     Wfus = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * \
         Sfuswet ** 0.302 * (1 + KWS) ** 0.4
     params["fuselageStructuralMass"] = Wfus / 2.20462
+
+    r_tank = (params["fuselageInnerDiameter"] / 2)
+    A_tank = np.pi * r_tank ** 2
+    CR = params["compressionRatio"]
+
+    fuelMass = params["fuelMass"]
+
+    V_req = fuelMass / (rho_h2 * CR)
+    l_tank = V_req / A_tank
+    print(l_tank)
