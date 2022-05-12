@@ -100,7 +100,10 @@ def fuselageWeight(params):
 
     V_req = fuelMass / (rho_h2 * CR)
     l_tank = V_req / A_tank
-    print(l_tank)
+    # print("Hello world!")
+    # print(fuelMass)
+    # print(V_req)
+    # print(l_tank)
 
     # Save container parameters
     params["balloonVolume"] = V_req

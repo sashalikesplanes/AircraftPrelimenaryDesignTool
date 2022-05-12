@@ -1,19 +1,19 @@
 from misc.ISA import getDensity, getPressure, getTemperature
+
 from conceptualDesign.wingSizing import wingSizing
 from conceptualDesign.totalMassEstimation import totalMassEstimation
 from conceptualDesign.propulsionSizing import propulsionSizing
 from conceptualDesign.fuelMassEstimation import fuelMassEstimation
 from conceptualDesign.energyRequired import energyRequired
 from conceptualDesign.dragModel import dragModel
-from conceptualDesign.balloonSizing import balloonSizing
 from conceptualDesign.initializeParameters import initializeParameters
 from conceptualDesign.fuselageSizing import fuselageWeight
 from conceptualDesign.postSizingCalcs import post_sizing_calcs
+from conceptualDesign.marketStuff import marketStuff
+
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import warnings
-from tqdm import trange
 # Ignore warnings from pd.append
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -76,6 +76,7 @@ def conceptualDesign(parameters, material_data, iters):
         else:
             prev_fuel = parameters["fuelMass"]
 
+    marketStuff(parameters)
     # plt.plot(range(100), lst)
     # plt.show()
     # print(df)
