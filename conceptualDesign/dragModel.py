@@ -13,10 +13,11 @@ def dragModel(params, rho, temp):
     if designConcept <= 3:  # Concepts with a balloon
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['balloonVolume'] ** (2 / 3)
-    elif designConcept == 4:  # Concept with a balloon
+    elif designConcept == 4:  # Concept without a balloon
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['wingArea']
-    params['totalDrag'] = D * params["dragContingency"]
+
+    params['totalDrag'] = abs(D) * params["dragContingency"]
     # print(D)
 
 

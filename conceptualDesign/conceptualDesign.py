@@ -20,6 +20,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def conceptualDesign(parameters, material_data, iters):
     """Perform preliminary design using design parameters"""
+    converged = False
 
     # Get the density at the cruise altitude hello world
     rho = getDensity(parameters["altitude"])
@@ -72,11 +73,13 @@ def conceptualDesign(parameters, material_data, iters):
 
         if abs(parameters["fuelMass"] - prev_fuel) < 0.01:
             # print("Converged")
+            converged = True
             break
         else:
             prev_fuel = parameters["fuelMass"]
 
-    marketStuff(parameters)
+    if converged:
+        marketStuff(parameters)
     # plt.plot(range(100), lst)
     # plt.show()
     # print(df)
