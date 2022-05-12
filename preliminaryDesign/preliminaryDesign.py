@@ -1,5 +1,6 @@
 import numpy as np
+from preliminaryDesign.classes.Aircraft import Aircraft
 
 
-def preliminaryDesign():
+if __name__ == "__main__":
     pass
