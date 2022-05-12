@@ -1,6 +1,9 @@
 import numpy as np
-from misc.constants import g, rho_h2
+from misc.constants import g, rho_h2, R
+from misc.ISA import getPressure, getTemperature
 
+
+hydrogenMolarMass = 2.016e-3  # [kg/mole]
 
 # aluminium 6061
 rho_mat = 2710
@@ -98,3 +101,29 @@ def fuselageWeight(params):
     V_req = fuelMass / (rho_h2 * CR)
     l_tank = V_req / A_tank
     print(l_tank)
+
+    # Save container parameters
+    params["balloonVolume"] = V_req
+    params["balloonRadius"] = r_tank
+    params["balloonLength"] = l_tank
+
+    # Save total fuselage length
+    l_cockpit = 4  # [m]
+    tail_finesse = 3  # [-] between 3 and 6 for flying boats
+    params["fuselageLength"] = l_tank + params["cabinLength"] + l_cockpit + params["fuselageDiameter"] * tail_finesse
+
+    h = params["altitude"]
+    pAir = getPressure(h)
+    tAir = getTemperature(h)
+
+    # Calculate mass of the balloon using plain pressure vessel
+    p = fuelMass / hydrogenMolarMass * R * tAir / V_req
+    params["balloonPressure"] = p
+    dp = abs(p - pAir)
+
+    ratio = dp / (2 * sigma_mat / params["factorOfSafety"] + dp)
+    wallThickness = ratio * (2 * r_tank)
+    params["wallThickness"] = wallThickness
+    balloonSurfaceArea = np.pi * r_tank ** 2 + 2 * np.pi * r_tank * l_tank
+    balloonMass = balloonSurfaceArea * wallThickness * rho_mat * 0.5 * params["balloonMassContingency"]
+    params["balloonStructuralMass"] = balloonMass

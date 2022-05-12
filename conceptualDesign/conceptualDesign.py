@@ -38,7 +38,7 @@ def conceptualDesign(parameters, material_data, iters):
     for _ in range(int(iters)):
 
         # balloon sizing
-        balloonSizing(parameters, rho, pAir, tAir)  # TODO concept 1
+        # balloonSizing(parameters, rho, pAir, tAir)  # TODO concept 1
         if np.isnan(parameters["fuelMass"]):
             # print(parameters)
             print("Diverged")
