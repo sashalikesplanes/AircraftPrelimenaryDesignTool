@@ -1,4 +1,4 @@
-from misc.ISA import getDensity, getPressure, getTemperature
+from misc.ISA import getDensity, getTemperature
 
 from conceptualDesign.wingSizing import wingSizing
 from conceptualDesign.totalMassEstimation import totalMassEstimation
@@ -26,26 +26,15 @@ def conceptualDesign(parameters, material_data, iters):
     rho = getDensity(parameters["altitude"])
     temp = getTemperature(parameters["altitude"])
 
-    pAir = getPressure(parameters["altitude"])
-
-    tAir = getTemperature(parameters['altitude'])
-
     df = pd.DataFrame()
     prev_fuel = -100
 
     initializeParameters(parameters)
 
-    # Done
     for _ in range(int(iters)):
-
-        # balloon sizing
-        # balloonSizing(parameters, rho, pAir, tAir)  # TODO concept 1
         if np.isnan(parameters["fuelMass"]):
-            # print(parameters)
             print("Diverged")
             break
-        #
-        # break
 
         # wing
         wingSizing(parameters, rho)
@@ -68,11 +57,10 @@ def conceptualDesign(parameters, material_data, iters):
         # total mass
         totalMassEstimation(parameters)
 
-        # lst.append(parameters["balloonArea"])
+        # add current iteration to dataframe in order to track convergence/divergence behaviour
         df = df.append(parameters, ignore_index=True)
 
         if abs(parameters["fuelMass"] - prev_fuel) < 0.01:
-            # print("Converged")
             converged = True
             break
         else:
@@ -80,12 +68,6 @@ def conceptualDesign(parameters, material_data, iters):
 
     if converged:
         marketStuff(parameters)
-    # plt.plot(range(100), lst)
-    # plt.show()
-    # print(df)
-    # df.plot()
-    # plt.show()
+        post_sizing_calcs(parameters)
 
-    # print(parameters)
-    post_sizing_calcs(parameters)
     return parameters, df
