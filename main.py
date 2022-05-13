@@ -15,7 +15,8 @@ material_data: dict = load_materials()
 def run_concept(params):
 
     params, df = conceptualDesign(params, material_data, 100)
-    return df["fuelMass"].iloc[-1]
+    # return df["fuelMass"].iloc[-1]
+    return df
 
 
 def run_concepts(design_range,
@@ -57,6 +58,10 @@ if __name__ == "__main__":
           # "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
     df = run_concept(parameters)
     print(df)
+
+    plt.plot(range(len(df.index)), df["fuelMass"])
+    plt.show()
+
     # Show that the design is Poorly
     # parameters = openData("design1")
     # run_concept(parameters)
