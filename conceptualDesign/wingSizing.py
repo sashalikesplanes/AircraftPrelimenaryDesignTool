@@ -21,6 +21,7 @@ def wingSizing(params, rho):
     MAC = 2 / 3 * rootChord * (1 + params["wingTaperRatio"] +
                                params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
     params["meanAerodynamicChord"] = MAC
+    params["wingSpan"] = span
 
     params["wingStructuralMass"] = 0.00125 * wingLift * \
         (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
