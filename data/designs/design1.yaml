@@ -92,4 +92,6 @@ solarPower: 0 # [W]
 # Design Variables - totals
 requiredEnergy: null # [J]
 totalDrag: null # [N]
+totalC_D: null # [-]
 balloonLift: 0 # [N]
+
