@@ -7,34 +7,30 @@ designConcept: 3 # a value between 1 and 4 [-]
 # Payload specification
 cargoMass: 0 # [kg]
 cargoVolume: 0 # [m^3]
-passengers: 1000 # [-]
+passengers: 500 # [-]
 passengerMass: 120 # [kg]
 payloadMass: null # [kg]
 
 # Cruise specification
 altitude: 8500 # [m] 8500 for 100 cr, 10999 for 20 cr
 velocity: 200 # [m/s] = 501 kph
-flightRange: 1000000 # [m] = 10,000 km
+flightRange: 5000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
 compressionRatio: 200 # [-] Density of compressed hydrogen / density of sea level hydrogen
-balloonFinesseRatio: 6.5 # [-] To optimize
 factorOfSafety: 2 # [-]
-balloonMassContingency: 2 # [-]
-dragContingency: 1.5 # [-]
-propulsionContingency: 1.2 # [-]
+balloonMassContingency: 1.5 # [-]
+dragContingency: 1.25 # [-]
+propulsionContingency: 1.1 # [-]
 balloonVolume: 0.1 # [m^3]
 balloonRadius: 0.1 # [m]
 wallThickness: 0.1 # [m]
 
-# Fuel container for design 4
-containerToFuelMassRatio: 0.4 # [-]
-
 # Fuselage design parameters
 fuselageRadius: 6 # [m] - random shit
-fuselageLength: 60 # [m] - random shit
-safetyFactor: 1.4 # [-] made up
+fuselageLength: 42.5 # [m] - random shit
+safetyFactor: 1.4 # [-] made up, but regular value
 
 # Propulsion design parameters
 propEfficiency: null # [-] engine * fuel efficiency
@@ -75,19 +71,12 @@ propulsionMass: 1 # [kg]
 totalMass: 1 # [kg]
 
 # Design Variables - aero coefficients
-balloonC_D: 0.035 # [-] C_D of a streamline body
-fuselageC_D: 0.295 # [-] https://www.grc.nasa.gov/www/k-12/airplane/shaped.html
 wingC_L_design: 0.8 # [-] sourced from Aero engineer
 
 # Design Variables - characteristic areas
 fuselageArea: 1 # [m^2]
 balloonArea: 1 # [m^2]
 wingArea: 1 # [m^2]
-
-# Solar variables
-solarMass: 1 # [kg]
-solarEnergy: 0 # [J]
-solarPower: 0 # [W]
 
 # Design Variables - totals
 requiredEnergy: null # [J]
