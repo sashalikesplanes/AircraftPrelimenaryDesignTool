@@ -46,7 +46,7 @@ def conceptualDesign(parameters, material_data, iters):
         fuselageWeight(parameters)
 
         # drag model
-        dragModel(parameters, rho, temp)
+        dragModel(parameters, rho)
 
         # propulsion sizing
         propulsionSizing(parameters)

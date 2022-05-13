@@ -56,7 +56,7 @@ if __name__ == "__main__":
     # print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
     # "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
     df = run_concept(parameters)
-    print(parameters)
+    print(parameters["totalMass"] * 9.81 / parameters["totalDrag"])
     print(df[
         ['balloonVolume',
          'tailStructuralMass',
