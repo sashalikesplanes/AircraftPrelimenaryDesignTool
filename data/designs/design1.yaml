@@ -12,9 +12,9 @@ passengerMass: 120 # [kg]
 payloadMass: null # [kg]
 
 # Cruise specification
-altitude: 6000 # [m] 8500 for 100 cr, 10999 for 20 cr
+altitude: 8500 # [m] 8500 for 100 cr, 10999 for 20 cr
 velocity: 200 # [m/s] = 501 kph
-flightRange: 5000000 # [m] = 10,000 km
+flightRange: 1000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #

@@ -27,7 +27,7 @@ def fuselageSizing(params):
         k_cabin = 1.17
     else:
         n_aisles = 3
-        k_cabin = 1.17
+        k_cabin = 1.25
 
     l_cabin = n_rows * k_cabin
     # print(f"Cabin length: {l_cabin}")
@@ -35,12 +35,8 @@ def fuselageSizing(params):
     w_seat = 0.44
     w_armrest = 0.05
 
-    w_fuselage = n_aisles * w_aisle + w_armrest * \
-        (n_sa+n_aisles+1) + n_sa * w_seat
+    w_fuselage = n_aisles * w_aisle + w_armrest * (n_sa+n_aisles+1) + n_sa * w_seat
     # End of ADSEE I
-
-    # Total mass of payload
-    # m_total = m_cargo + m_pax
 
     d_inner = w_fuselage
     # print(f"Inner fuselage diameter: {d_inner}")
