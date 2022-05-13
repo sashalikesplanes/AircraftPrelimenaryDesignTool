@@ -1,4 +1,5 @@
 import numpy as np
+from misc.ISA import getSpeedOfSound
 from conceptualDesign.sweepAngles import convertSweep
 
 
@@ -57,9 +58,7 @@ def estimate_fuselage_FF(fuselageLength, fuselageRadius):
 
 
 def airplane_design_drag_components(params, rho, temp, viscosity):
-    specificGasConstantAir = 287.058
-    machNumber = params['velocity'] / \
-        np.sqrt(1.4 * specificGasConstantAir * temp)
+    machNumber = params['velocity'] / getSpeedOfSound(params['altitude']
     # Form Factor
     wingFF = estimate_wing_FF(params, params['maxThicknessLocationAirfoil'],
                               params['thicknessOverChord'], machNumber)
@@ -113,6 +112,7 @@ def get_CD_i(params):
                                                       0,
                                                       params['wingTaperRatio'],
                                                       params['wingAspectRatio']))
+    print(oswaldFactor)
     wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor)
     return wingC_D_i
 
