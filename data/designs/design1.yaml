@@ -23,6 +23,8 @@ factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
 dragContingency: 1.25 # [-]
 propulsionContingency: 1.2 # [-]
+fuselageStructureContingency: 1.2
+takeOffPowerContingency: 1.5
 balloonVolume: 0.1 # [m^3]
 balloonRadius: 0.1 # [m]
 wallThickness: 0.1 # [m]
@@ -56,7 +58,7 @@ maxLoadFactor: 2.5 # [-] CS 25
 thicknessOverChord: 0.12 # [-] NACA 0012
 maxThicknessLocationAirfoil: 0.3
 wingQuarterChordSweep: 0 # [rad]
-wingHalfChordSweep: 0 # [rad]
+wingHalfChordSweep: null # [rad]
 wingTaperRatio: 0.3 # [-]
 meanAerodynamicChord: 0 #[-]
 wingSpan: 0 #[-]
@@ -71,7 +73,7 @@ propulsionMass: 1 # [kg]
 totalMass: 1 # [kg]
 
 # Design Variables - aero coefficients
-wingC_L_design: 0.5 # [-] sourced from Aero engineer
+wingC_L_design: 0.6 # [-] sourced from Aero engineer
 
 # Design Variables - characteristic areas
 fuselageArea: 1 # [m^2]
