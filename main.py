@@ -51,14 +51,26 @@ def run_concepts(design_range,
 
 
 if __name__ == "__main__":
+
     parameters = openData("design1")
     # print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
           # "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
     df = run_concept(parameters)
-    print(df)
+    print(df[
+       ['balloonVolume',"wallThickness",
+    'fuselageLength',
+       'meanAerodynamicChord', 'fuselageStructuralMass', 'wingStructuralMass',
+       'balloonStructuralMass', 'fuelMass', 
+       'propulsionMass', 'totalMass',
+       'wingArea','totalDrag',
 
-    plt.plot(range(len(df.index)), df["fuelMass"])
-    plt.show()
+       'balloonLength']].iloc[-20:])
+
+    # plt.plot(range(len(df.index)), df["fuelMass"])
+    # plt.show()
+
+#     print(run_concepts(1e4, [200], [200], specified_altitude=11000, params_to_table=[
+#           "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
 
     # Show that the design is Poorly
     # parameters = openData("design1")

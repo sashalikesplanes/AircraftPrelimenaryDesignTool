@@ -9,55 +9,61 @@ hydrogenMolarMass = 2.016e-3  # [kg/mole]
 rho_mat = 2710
 sigma_mat = 241 * 10 ** 6
 
+# Carbon Fiber
+rho_mat = 1550  # kg carbon fiber
+sigma_mat = 1900e6  # Carbon Fiber source NASA
+
 
 def fuselageSizing(params):
     # print(f"Pressure difference: {dp}")
-    n_pax = params["passengers"]
-    m_cargo = params["cargoMass"]
-    m_pax = n_pax * params["passengerMass"]
+    # n_pax = params["passengers"]
+    # m_cargo = params["cargoMass"]
+    # m_pax = n_pax * params["passengerMass"]
 
-    # ADSEE I starts here
-    n_sa = np.ceil(0.45 * n_pax ** 0.5)
-    n_rows = np.ceil(n_pax/n_sa)
-    if n_sa <= 6:
-        n_aisles = 1
-        k_cabin = 1.08
-    elif n_sa <= 12:
-        n_aisles = 2
-        k_cabin = 1.17
-    else:
-        n_aisles = 3
-        k_cabin = 1.25
+    # # ADSEE I starts here
+    # n_sa = np.ceil(0.45 * n_pax ** 0.5)
+    # n_rows = np.ceil(n_pax/n_sa)
+    # if n_sa <= 6:
+    #     n_aisles = 1
+    #     k_cabin = 1.08
+    # elif n_sa <= 12:
+    #     n_aisles = 2
+    #     k_cabin = 1.17
+    # else:
+    #     n_aisles = 3
+    #     k_cabin = 1.25
 
-    l_cabin = n_rows * k_cabin
-    # print(f"Cabin length: {l_cabin}")
-    w_aisle = 0.6
-    w_seat = 0.44
-    w_armrest = 0.05
+    # l_cabin = n_rows * k_cabin
+    # # print(f"Cabin length: {l_cabin}")
+    # w_aisle = 0.6
+    # w_seat = 0.44
+    # w_armrest = 0.05
 
-    w_fuselage = n_aisles * w_aisle + w_armrest * (n_sa+n_aisles+1) + n_sa * w_seat
-    # End of ADSEE I
+    # w_fuselage = n_aisles * w_aisle + w_armrest * (n_sa+n_aisles+1) + n_sa * w_seat
+    # # End of ADSEE I
 
-    d_inner = w_fuselage
-    # print(f"Inner fuselage diameter: {d_inner}")
-    d_outer = 1.045 * d_inner + 0.084
-    # print(f"Outer fuselage diameter: {d_outer}")
+    # d_inner = w_fuselage
+    # # print(f"Inner fuselage diameter: {d_inner}")
+    # d_outer = 1.045 * d_inner + 0.084
+    # # print(f"Outer fuselage diameter: {d_outer}")
 
-    # Assume that the weight of the mass is 10% that of a cylinder with the thickness of the fuselage
-    m_fuselage = np.pi * ((d_outer/2) ** 2 - (d_inner/2)
-                          ** 2) * l_cabin * rho_mat * 0.1
-    # print(f"{m_fuselage} kg")
+    # # Assume that the weight of the mass is 10% that of a cylinder with the thickness of the fuselage
+    # m_fuselage = np.pi * ((d_outer/2) ** 2 - (d_inner/2)
+    #                       ** 2) * l_cabin * rho_mat * 0.1
+    # # print(f"{m_fuselage} kg")
 
-    # https://en.wikipedia.org/wiki/Pressure_vessel
-    # shape is a stadium of revolution
-    # m_cabin = 2 * np.pi * r_fuselage ** 2 * (l_cabin - r_fuselage) * dp * rho_mat / sigma_mat * params["safetyFactor"]
-    # print(m_cabin)
-    # print(r_fuselage, l_cabin)
-    # https://www.researchgate.net/publication/264864827_Analytical_Weight_Estimation_Method_for_Oval_Fuselages_in_Conventional_and_Novel_Aircraft
+    # # https://en.wikipedia.org/wiki/Pressure_vessel
+    # # shape is a stadium of revolution
+    # # m_cabin = 2 * np.pi * r_fuselage ** 2 * (l_cabin - r_fuselage) * dp * rho_mat / sigma_mat * params["safetyFactor"]
+    # # print(m_cabin)
+    # # print(r_fuselage, l_cabin)
+    # # https://www.researchgate.net/publication/264864827_Analytical_Weight_Estimation_Method_for_Oval_Fuselages_in_Conventional_and_Novel_Aircraft
 
-    # m_cabin = 44.4e3
-    params["cabinLength"] = l_cabin
-    params["fuselageStructuralMass"] = m_fuselage
+    # # m_cabin = 44.4e3
+    params["cabinLength"] = 42.5
+    d_outer = 12
+    d_inner = 11.5
+    # params["fuselageStructuralMass"] = m_fuselage
     params["fuselageArea"] = np.pi * (d_outer / 2) ** 2
     params["fuselageDiameter"] = d_outer
     params["fuselageInnerDiameter"] = d_inner
@@ -68,7 +74,7 @@ def fuselageWeight(params):
     # /!\ RETARD UNITS /!\
     # Extract all relevant variables from params and convert them to retard units
     Wto = params["totalMass"] * 2.20462  # [lbs]
-    lfus = params["cabinLength"] / 0.3048  # [ft]
+    lfus = params["fuselageLength"] / 0.3048  # [ft]
     rfus = (params["fuselageDiameter"] / 2) / 0.3048  # [ft]
     c4 = params["wingQuarterChordSweep"]  # [rad]
     AR = params["wingAspectRatio"]  # [-]
@@ -108,7 +114,7 @@ def fuselageWeight(params):
 
     # Save total fuselage length
     l_cockpit = 4  # [m]
-    tail_finesse = 3  # [-] between 3 and 6 for flying boats
+    tail_finesse = 1.6  # [-] between 3 and 6 for flying boats
     params["fuselageLength"] = l_tank + params["cabinLength"] + l_cockpit + params["fuselageDiameter"] * tail_finesse
 
     h = params["altitude"]
