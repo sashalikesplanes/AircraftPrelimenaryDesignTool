@@ -11,6 +11,7 @@ def dragModel(params, rho, temp):
     D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['wingArea']
 
+    params['totalC_D'] = C_D
     params['totalDrag'] = D * params["dragContingency"]
 
 
