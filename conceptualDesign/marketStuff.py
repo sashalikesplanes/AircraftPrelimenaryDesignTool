@@ -17,12 +17,20 @@ maintenanceTime = 2749  # [h]
 blockTimeSupplement = 1.8  # [h]
 f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 
-
 # CAPEX constants
-# TODO: Revise CAPEX calculations
+AircraftCost = 800e6    # [$] - should be changed
+
+# TODO: Revise CAPEX calculations to incorporate fuel tank costs properly
 # TODO: Do cost calculation for GH2 vs LH2
-# P_OEW = 1200    # Price per operating empty weight [$/kg]
-# P_eng =
+P_OEW = 1200    # Price per operating empty weight [$/kg]
+P_eng = 2500    # price per engine weight
+W_eng = 2000
+IR = 0.05
+f_rv = 0.1
+f_ins = 0.005
+f_misc = 0.05  # TODO: Unknown correctness
+DP = 14
+
 
 def marketStuff(params):
     # Calculate block time
@@ -59,14 +67,14 @@ def marketStuff(params):
     DOC_maintenance = flightCycles * (DOC_maint_engine + DOC_maint_material + DOC_maint_personnel)  # [$]
 
     # DOC capex
-    # # IR = 0.05
-    # # f_rv = 0.05
-    # # f_ins = 0.005
-    # # f_misc = 0.05  # TODO: Unknown correctness
-    # # DP = 14
-    # # a = IR * (1-f_rv * (1/(1+IR)) ** DP)/(1-(1/(1+IR)) ** DP)
+    a = IR * (1-f_rv * (1/(1+IR)) ** DP)/(1-(1/(1+IR)) ** DP)
+    DOC_cap = (P_OEW * (OEW - W_eng*params["engineCount"])+W_eng*params["engineCount"]*P_eng)*(a+f_ins)
+
+
     # # TODO: finish capex stuff
-    DOC_cap = 100e6  # [$]
+    # DOC_cap = AircraftCost  # [$]
+
+
 
     DOC = DOC_maintenance + DOC_crew + DOC_fees + DOC_fuel + DOC_cap  # [$]
     availableSeatKM = flightCycles * flightRange * params["passengers"] / 1000
@@ -84,15 +92,15 @@ def marketStuff(params):
 
 if __name__ == "__main__":
     x = {
-        "totalMass": 397e3,
-        "fuelMass": 177e3,
-        "velocity": 252,
-        "flightRange": 13490e3,
-        "payloadMass": 124000,
+        "totalMass": 800e3,
+        "fuelMass": 82e3,
+        "velocity": 200,
+        "flightRange": 8000e3,  # m
+        "payloadMass": 120000,
         "pilotCount": 2,
-        "passengers": 250,
-        "engineCount": 4,
-        "engineThrust": 282  # power / velocity
+        "passengers": 1000,
+        "engineCount": 86,
+        "engineThrust": 6600  # power / velocity
     }
 
     marketStuff(x)
