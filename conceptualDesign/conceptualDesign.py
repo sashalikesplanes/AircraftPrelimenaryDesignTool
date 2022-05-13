@@ -67,6 +67,7 @@ def conceptualDesign(parameters, material_data, iters):
             prev_fuel = parameters["fuelMass"]
 
     if converged:
+        print("running post")
         marketStuff(parameters)
         post_sizing_calcs(parameters)
 

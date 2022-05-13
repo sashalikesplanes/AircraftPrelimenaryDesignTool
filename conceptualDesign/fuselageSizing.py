@@ -13,6 +13,8 @@ sigma_mat = 241 * 10 ** 6
 rho_mat = 1550  # kg carbon fiber
 sigma_mat = 1900e6  # Carbon Fiber source NASA
 
+compressibilityOfH2Effect = 1.3
+
 
 def fuselageSizing(params):
     # print(f"Pressure difference: {dp}")
@@ -94,7 +96,7 @@ def fuselageWeight(params):
         Sfuswet ** 0.302 * (1 + KWS) ** 0.4
     params["fuselageStructuralMass"] = Wfus / 2.20462
 
-    r_tank = (params["fuselageInnerDiameter"] / 2)
+    r_tank = (params["fuselageInnerDiameter"] / 2) - params["wallThickness"]
     A_tank = np.pi * r_tank ** 2
     CR = params["compressionRatio"]
 
@@ -122,7 +124,7 @@ def fuselageWeight(params):
     tAir = getTemperature(h)
 
     # Calculate mass of the balloon using plain pressure vessel
-    p = fuelMass / hydrogenMolarMass * R * tAir / V_req
+    p = fuelMass / hydrogenMolarMass * R * tAir / V_req * compressibilityOfH2Effect
     params["balloonPressure"] = p
     dp = abs(p - pAir)
 

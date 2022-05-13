@@ -69,8 +69,8 @@ if __name__ == "__main__":
     # plt.plot(range(len(df.index)), df["fuelMass"])
     # plt.show()
 
-#     print(run_concepts(1e4, [200], [200], specified_altitude=11000, params_to_table=[
-#           "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
+    # print(run_concepts(8E6, [200], [250], specified_altitude=11000, params_to_table=[
+    #       "compressionRatio", "velocity", "fuelMass", "totalMass", "balloonVolume"]))
 
     # Show that the design is Poorly
     # parameters = openData("design1")
