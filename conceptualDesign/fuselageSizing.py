@@ -94,7 +94,8 @@ def fuselageWeight(params):
     # Calculate the fuselage weight using the sketchy method
     Wfus = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * \
         Sfuswet ** 0.302 * (1 + KWS) ** 0.4
-    params["fuselageStructuralMass"] = Wfus / 2.20462
+    params["fuselageStructuralMass"] = Wfus / 2.20462 * \
+        params["fuselageStructureContingency"]
 
     r_tank = (params["fuselageInnerDiameter"] / 2) - params["wallThickness"]
     A_tank = np.pi * r_tank ** 2
@@ -117,7 +118,8 @@ def fuselageWeight(params):
     # Save total fuselage length
     l_cockpit = 4  # [m]
     tail_finesse = 1.6  # [-] between 3 and 6 for flying boats
-    params["fuselageLength"] = l_tank + params["cabinLength"] + l_cockpit + params["fuselageDiameter"] * tail_finesse
+    params["fuselageLength"] = l_tank + params["cabinLength"] + \
+        l_cockpit + params["fuselageDiameter"] * tail_finesse
 
     h = params["altitude"]
     pAir = getPressure(h)
@@ -132,5 +134,6 @@ def fuselageWeight(params):
     wallThickness = ratio * (2 * r_tank)
     params["wallThickness"] = wallThickness
     balloonSurfaceArea = np.pi * r_tank ** 2 + 2 * np.pi * r_tank * l_tank
-    balloonMass = balloonSurfaceArea * wallThickness * rho_mat * 0.5 * params["balloonMassContingency"]
+    balloonMass = balloonSurfaceArea * wallThickness * \
+        rho_mat * 0.5 * params["balloonMassContingency"]
     params["balloonStructuralMass"] = balloonMass
