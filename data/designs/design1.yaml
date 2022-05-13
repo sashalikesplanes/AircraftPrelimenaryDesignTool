@@ -57,7 +57,7 @@ thicknessOverChord: 0.12 # [-] NACA 0012
 maxThicknessLocationAirfoil: 0.3
 wingQuarterChordSweep: 0 # [rad]
 wingHalfChordSweep: 0 # [rad]
-wingTaperRatio: 1 # [-]
+wingTaperRatio: 0.3 # [-]
 meanAerodynamicChord: 0 #[-]
 wingSpan: 0 #[-]
 
