@@ -114,7 +114,7 @@ def get_CD_i(params):
                                                       0,
                                                       params['wingTaperRatio'],
                                                       params['wingAspectRatio']))
-    wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * 0.8)
+    wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor)
     return  wingC_D_i
 
 
