@@ -9,7 +9,7 @@ def dragModel(params, rho, temp):
 
     designConcept = params["designConcept"]
     C_D = get_drag(params, rho, temp, designConcept)
-    # print(f"{C_D}")
+    print(f"{C_D}")
     if designConcept <= 3:  # Concepts with a balloon
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['balloonVolume'] ** (2 / 3)
@@ -163,25 +163,24 @@ def determine_balloon_ar(volume, width):
 
 
 def get_CD_i(params):
-    balloonAr = determine_balloon_ar(
-        params['balloonVolume'], params['balloonRadius']*2)
-    balloonAoA = np.deg2rad(2)  # deg ## TODO:::implemet AoA optimization
-    balloonC_L = balloonAoA * estimate_CL_alpha(balloonAr)
+    #balloonAr = determine_balloon_ar(
+        #params['balloonVolume'], params['balloonRadius']*2)
+    #balloonAoA = np.deg2rad(2)  # deg ## TODO:::implemet AoA optimization
+    #balloonC_L = balloonAoA * estimate_CL_alpha(balloonAr)
     wingC_L = params['wingC_L_design']
-    kFactor = estimate_K_factor(balloonAr)
-    balloonC_D_i = kFactor * balloonC_L ** 2
-    conversionRatioWingDrag = params['wingArea'] / \
-        (params['balloonVolume'] ** (2/3))
+    # kFactor = estimate_K_factor(balloonAr)
+    # balloonC_D_i = kFactor * balloonC_L ** 2
+    #conversionRatioWingDrag = params['wingArea'] / \
+        #(params['wingArea'] )
     oswaldFactor = get_oswald_efficiency(params['wingAspectRatio'],
                                          convertSweep(params['wingQuarterChordSweep'],
                                                       0,
                                                       params['wingTaperRatio'],
                                                       params['wingAspectRatio']))
     # print(f'{oswaldFactor = }')
-    wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor) *\
-        conversionRatioWingDrag
-    # print(f'{balloonC_D_i + wingC_D_i}')
-    return balloonC_D_i + wingC_D_i
+    wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * 0.8) 
+    # print(f'{wingC_D_i = }')
+    return  wingC_D_i
 
 
 def get_drag(params, rho, temp, designConcept):
