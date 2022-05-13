@@ -16,7 +16,6 @@ altitude: 8500 # [m] 8500 for 100 cr, 10999 for 20 cr
 velocity: 200 # [m/s] = 501 kph
 flightRange: 8000000 # [m] = 10,000 km
 
-
 # Balloon design parameters
 shape: bullet #
 compressionRatio: 250 # [-] Density of compressed hydrogen / density of sea level hydrogen
@@ -41,7 +40,6 @@ engineSpecificPower: 11100 # [W/kg]
 engineThrust: 10000 # [N]
 engineCount: 8 # [-]
 fuelCellSpecificPower: 8000 # [W/kg]
-dragReductionFactor: 0.9 # [-] due to distributed propulsion, very optimisitc
 
 # Crew data
 pilotCount: 3 # [-]
@@ -72,7 +70,7 @@ propulsionMass: 1 # [kg]
 totalMass: 1 # [kg]
 
 # Design Variables - aero coefficients
-wingC_L_design: 0.8 # [-] sourced from Aero engineer
+wingC_L_design: 0.5 # [-] sourced from Aero engineer
 
 # Design Variables - characteristic areas
 fuselageArea: 1 # [m^2]
