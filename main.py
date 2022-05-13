@@ -1,5 +1,3 @@
-
-import numpy as np
 from conceptualDesign.conceptualDesign import conceptualDesign
 from misc.openData import openData
 from misc.materials import load_materials
@@ -14,8 +12,9 @@ material_data: dict = load_materials()
 
 def run_concept(params):
 
-    params, df = conceptualDesign(params, material_data, 100)
-    return df["fuelMass"].iloc[-1]
+    params, df = conceptualDesign(params, material_data, 1000)
+    # return df["fuelMass"].iloc[-1]
+    return df
 
 
 def run_concepts(design_range,
@@ -53,8 +52,25 @@ def run_concepts(design_range,
 
 if __name__ == "__main__":
 
-    print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
-          "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
+    parameters = openData("design1")
+    # print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
+    # "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
+    df = run_concept(parameters)
+    print(df[
+        ['balloonVolume',
+         'fuselageLength',
+         'meanAerodynamicChord', 'fuselageStructuralMass', 'wingStructuralMass',
+         'balloonStructuralMass', 'fuelMass',
+         'propulsionMass', 'totalMass', "wingSpan",
+         'wingArea', 'totalDrag',
+
+         'balloonLength']].iloc[-20:])
+
+    # plt.plot(range(len(df.index)), df["fuelMass"])
+    # plt.show()
+
+    # print(run_concepts(8E6, [200], [250], specified_altitude=11000, params_to_table=[
+    #       "compressionRatio", "velocity", "fuelMass", "totalMass", "balloonVolume"]))
 
     # Show that the design is Poorly
     # parameters = openData("design1")
