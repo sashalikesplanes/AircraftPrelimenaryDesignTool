@@ -9,7 +9,7 @@ def dragModel(params, rho, temp):
 
     designConcept = params["designConcept"]
     C_D = get_drag(params, rho, temp, designConcept)
-    print(f"{C_D}")
+    # print(f"{C_D}")
     if designConcept <= 3:  # Concepts with a balloon
         D = 0.5 * rho * params['velocity'] ** 2 * \
             C_D * params['balloonVolume'] ** (2 / 3)
