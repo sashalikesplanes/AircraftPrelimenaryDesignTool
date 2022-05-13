@@ -103,11 +103,6 @@ def estimate_CL_alpha(aspectRatio, sweep=0):
                                                   (1 + np.tan(sweep)**2)))
 
 
-def estimate_K_factor(aspectRatio):
-    return -0.0145 * (aspectRatio) ** (-4) + 0.182 * (aspectRatio) ** (-3) - \
-        0.514 * (aspectRatio) ** (-2) + 0.838 * (1 / aspectRatio) - 0.053
-
-
 def determine_balloon_ar(volume, width):
     return width * width / (2 * volume ** (2 / 3))
 
