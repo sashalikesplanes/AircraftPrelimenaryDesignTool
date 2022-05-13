@@ -9,7 +9,7 @@ def dragModel(params, rho, temp):
 
     C_D = get_drag(params, rho, temp)
     D = 0.5 * rho * params['velocity'] ** 2 * \
-            C_D * params['wingArea']
+        C_D * params['wingArea']
 
     params['totalC_D'] = C_D
     params['totalDrag'] = D * params["dragContingency"]
@@ -56,7 +56,6 @@ def estimate_fuselage_FF(fuselageLength, fuselageRadius):
     return 1 + 60 / (fFactor ** 3) + fFactor / 400
 
 
-
 def airplane_design_drag_components(params, rho, temp, viscosity):
     specificGasConstantAir = 287.058
     machNumber = params['velocity'] / \
@@ -94,7 +93,7 @@ def airplane_design_drag_components(params, rho, temp, viscosity):
 def get_C_D_0(params, rho, temp):
     airViscosity = get_viscosity(params["altitude"])
     C_D_0 = airplane_design_drag_components(
-            params, rho, temp, airViscosity)
+        params, rho, temp, airViscosity)
     return C_D_0
 
 
@@ -115,7 +114,7 @@ def get_CD_i(params):
                                                       params['wingTaperRatio'],
                                                       params['wingAspectRatio']))
     wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor)
-    return  wingC_D_i
+    return wingC_D_i
 
 
 def get_drag(params, rho, temp):

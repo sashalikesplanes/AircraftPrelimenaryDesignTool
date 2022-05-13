@@ -56,15 +56,15 @@ if __name__ == "__main__":
     # print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
     # "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
     df = run_concept(parameters)
+    print(parameters)
     print(df[
         ['balloonVolume',
+         'tailStructuralMass',
          'fuselageLength',
          'meanAerodynamicChord', 'fuselageStructuralMass', 'wingStructuralMass',
          'balloonStructuralMass', 'fuelMass',
          'propulsionMass', 'totalMass', "wingSpan",
-         'wingArea', 'totalDrag',
-
-         'balloonLength']].iloc[-20:])
+         'wingArea', 'totalDrag', ]].iloc[-20:])
 
     # plt.plot(range(len(df.index)), df["fuelMass"])
     # plt.show()

@@ -3,11 +3,21 @@ import numpy as np
 from conceptualDesign.payloadMassEstimation import payloadMassEstimation
 from conceptualDesign.fuselageSizing import fuselageSizing, fuselageWeight
 from conceptualDesign.totalMassEstimation import totalMassEstimation
-from misc.ISA import getPressure
+from misc.ISA import getPressure, getSpeedOfSound
 
 
 def initializeParameters(params):
     """Initialize all the things which should not be done within the main loop"""
+
+    dive_speed_mach_increment = 0.05  # M_dive - M_cruise
+    params["cruiseMach"] = params["velocity"] / \
+        getSpeedOfSound(params["altitude"])
+
+    params["diveSpeed"] = (
+        params["cruiseMach"] + dive_speed_mach_increment) * getSpeedOfSound(params["altitude"])
+
+    params["ultimateLoadFactor"] = params["maxLoadFactor"] * 1.65
+
     fuselageSizing(params)
     payloadMassEstimation(params)
     totalMassEstimation(params)

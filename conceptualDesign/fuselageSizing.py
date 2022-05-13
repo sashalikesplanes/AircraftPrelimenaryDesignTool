@@ -83,19 +83,28 @@ def fuselageWeight(params):
     Sref = params["wingArea"] / 10.7639  # [ft^2]
     labda = params["wingTaperRatio"]  # [-]
 
-    Nult = 2.5 * 1.65  # [-]
-    Sfuswet = 2 * np.pi * lfus * rfus + 4 * np.pi * rfus ** 2  # [ft^2]
+    Nult = params["ultimateLoadFactor"]  # [-]
+    # Raymer - al shaman - british units
+    Sfuswet = 2 * 3.4 * rfus * lfus
     KWS = 0.75 * ((1+2*labda)/(1+labda)*(AR*Sref)**2*np.tan(c4))/lfus  # [?]
+    weight_fuselage = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * \
+        Sfuswet ** 0.302 * (1 + KWS) ** 0.4 / 2.205
+
+    # Torenbeek-Al shama
+
+    # fuselage_wetted_area =
+    # tail_arm = params["fuselageLength"] * 0.5
+
+    # weight_fuselage = 0.23 * fuselage_wetted_area ** 1.2 * \
+    #     np.sqrt(params["diveSpeed"] * tail_arm /
+    #             (2 * params["fuselageDiameter"]))
+
+    params["fuselageStructuralMass"] = weight_fuselage * \
+        params["fuselageStructureContingency"]
 
     # This can be used while unit testing in order to check kws
-    if 'kws' in params:
-        params['kws'] = KWS
 
     # Calculate the fuselage weight using the sketchy method
-    Wfus = 0.4886 * (Wto * Nult) ** 0.5 * lfus ** 0.25 * \
-        Sfuswet ** 0.302 * (1 + KWS) ** 0.4
-    params["fuselageStructuralMass"] = Wfus / 2.20462 * \
-        params["fuselageStructureContingency"]
 
     r_tank = (params["fuselageInnerDiameter"] / 2) - params["wallThickness"]
     A_tank = np.pi * r_tank ** 2
