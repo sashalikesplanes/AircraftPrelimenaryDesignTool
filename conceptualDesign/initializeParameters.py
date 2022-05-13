@@ -8,7 +8,6 @@ from misc.ISA import getPressure
 
 def initializeParameters(params):
     """Initialize all the things which should not be done within the main loop"""
-    params["wingArea"] = 0
     fuselageSizing(params)
     payloadMassEstimation(params)
     totalMassEstimation(params)
@@ -25,6 +24,7 @@ def initializeParameters(params):
     c4 = params["wingQuarterChordSweep"]
     AR = params["wingAspectRatio"]
     span = np.sqrt(params["wingArea"] * AR)
+    print(span)
     rootChord = 2 * params["wingArea"] / (span * (1 + params["wingTaperRatio"]))
     MAC = 2 / 3 * rootChord * (1 + params["wingTaperRatio"] + \
             params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
