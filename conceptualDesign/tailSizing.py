@@ -12,8 +12,11 @@ def tailSizing(params):
 
     vertical_tail_area = vertical_tail_volume_coefficient * \
         params["wingSpan"] * params["wingArea"] / tail_arm
+    params["verticalTailArea"] = vertical_tail_area
+
     horizontal_tail_area = horizontal_tail_volume_coefficient * \
         params["meanAerodynamicChord"] * params["wingArea"] / tail_arm
+    params["horizontalTailArea"] = horizontal_tail_area
 
     params["tailStructuralMass"] = 0.051 * params["diveSpeed"] * \
         (vertical_tail_area + horizontal_tail_area) ** 1.2 / \

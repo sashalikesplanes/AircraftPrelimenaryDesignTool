@@ -29,3 +29,6 @@ def wingSizing(params, rho):
 
     params["wingStructuralMass"] = 0.0051 * params["wingArea"] ** 0.649 * (flap_area) ** 0.1 * (params["ultimateLoadFactor"] * params["totalMass"] * g) ** 0.557 * (
         1 + params["wingTaperRatio"]) ** 0.1 * params["wingAspectRatio"] ** 0.5 / (params["thicknessOverChord"] ** 0.4 * np.cos(params["wingQuarterChordSweep"]))
+
+    params["wingStructuralMass"] = params["wingStructuralMass"] * \
+        params["wingStructureContingency"]

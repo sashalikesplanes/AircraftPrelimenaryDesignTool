@@ -20,7 +20,8 @@ def post_sizing_calcs(params):
     params["opCostsPerPax"] = params["operatingCosts"] / params["passengers"]
 
     params["engineCount"] = params["totalDrag"] * \
-        params["velocity"] / power_per_engine
+        params["velocity"] * \
+        params["takeOffPowerContingency"] / power_per_engine
 
     params["engineThrust"] = params["totalDrag"] / params["engineCount"]
 

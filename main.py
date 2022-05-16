@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from designSpace import optimize_altitude
 import pandas as pd
-
+import json
 
 material_data: dict = load_materials()
 
@@ -50,13 +50,22 @@ def run_concepts(design_range,
     return out_table[params_to_table]
 
 
+def pretty(d, indent=0):
+    for key, value in d.items():
+        print('\t' * indent + str(key))
+        if isinstance(value, dict):
+            pretty(value, indent+1)
+        else:
+            print('\t' * (indent+1) + str(value))
+
+
 if __name__ == "__main__":
 
     parameters = openData("design1")
     # print(run_concepts(8e6, [200], [200], specified_altitude=None, params_to_table=[
     # "compressionRatio", "velocity", "fuelMass", "massEfficiency", "totalMass", "balloonVolume", "wingArea", "opCostsPerPax"], alt_bounds=(1000, 6000)))
     df = run_concept(parameters)
-    print(parameters["totalMass"] * 9.81 / parameters["totalDrag"])
+    print(parameters["totalDrag"] / (0.5 * 0.7 * 200**2 * 875))
     print(df[
         ['balloonVolume',
          'tailStructuralMass',
@@ -65,6 +74,7 @@ if __name__ == "__main__":
          'balloonStructuralMass', 'fuelMass',
          'propulsionMass', 'totalMass', "wingSpan",
          'wingArea', 'totalDrag', ]].iloc[-20:])
+    pretty(parameters)
 
     # plt.plot(range(len(df.index)), df["fuelMass"])
     # plt.show()

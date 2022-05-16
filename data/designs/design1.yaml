@@ -21,14 +21,17 @@ shape: bullet #
 compressionRatio: 250 # [-] Density of compressed hydrogen / density of sea level hydrogen
 factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
-dragContingency: 1.25 # [-]
-propulsionContingency: 1.2 # [-]
-fuselageStructureContingency: 1.2
+dragContingency: 1.5 # [-]
+propulsionContingency: 1.25 # [-]
+fuselageStructureContingency: 1.25
 tailStructuralContingency: 1.5
 takeOffPowerContingency: 1.5
+wingStructureContingency: 1.25
 balloonVolume: 0.1 # [m^3]
 balloonRadius: 0.1 # [m]
 wallThickness: 0.1 # [m]
+
+
 
 maxLoadFactor: 2.5 # [-] CS25 
 
