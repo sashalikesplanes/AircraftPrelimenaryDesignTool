@@ -23,17 +23,17 @@ f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 # TODO: Revise CAPEX calculations to incorporate fuel tank costs properly
 # TODO: Do cost calculation for GH2 vs LH2
 P_OEW = 1200  # [$/kg] operating empty weight
-W_eng = 200  # Weight per engine
+W_eng = 200  # Weight per engine [kg]
 P_eng = 2600  # [$/kg] engine
 P_fc = 608  # [$/kg] fuel cell
 P_tank = 475  # [$/kg] GH2
 
-IR = 0.05  # Interest rate
-f_rv = 0.1  # Residual value factor
-f_ins = 0.005  # Insurance cost
-f_misc = 0.05  # Misc contingency factor to account for new tech
-PMac = 0.2  # 20% profit margin for manufacturer
-DP = 14  # Depreciation period
+IR = 0.05  # 5% Interest rate
+f_rv = 0.1  # 10% Residual value factor
+f_ins = 0.005  # 0.5% insurance cost
+f_misc = 0.05  # Misc 5% contingency factor to account for new tech
+PMac = 0.0  # typically 20% profit margin for manufacturer
+DP = 14  # Depreciation period [yrs]
 
 
 def marketStuff(params):
@@ -73,8 +73,12 @@ def marketStuff(params):
     # DOC capex (engines, fuel cell, fuel tak, cont. factor incl)
     # TODO: Revise Pac calc. Should the other masses be subtracted from OEW?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
-    Pac = (P_OEW * (OEW - W_eng * params["engineCount"]) + W_eng * params["engineCount"] * P_eng + params[
+    # Pac = (P_OEW * (OEW - W_eng * params["engineCount"]) + W_eng * params["engineCount"] * P_eng + params[
+    # "balloonStructuralMass"] * P_tank + params["fuelCellMass"] * P_fc) * (1 + PMac + f_misc)
+    Pac = (P_OEW * (OEW - W_eng * params["engineCount"] - params[
+        "balloonStructuralMass"] - params["fuelCellMass"]) + W_eng * params["engineCount"] * P_eng + params[
         "balloonStructuralMass"] * P_tank + params["fuelCellMass"] * P_fc) * (1 + PMac + f_misc)
+
     DOC_cap = Pac * (a + f_ins)
 
     # print(Pac)
@@ -90,7 +94,7 @@ def marketStuff(params):
     frac_fuel = DOC_fuel / DOC * 100
     frac_cap = DOC_cap / DOC * 100
     print(f"Aircraft Price [$]: {Pac}")
-    print(f"Direct Operating Cost [$]: {params['costPerPassengerKilometer']}")
+    print(f"Direct Operating Cost / ASK [$/pax/km]: {params['costPerPassengerKilometer']}")
     print(f"Cost breakdown [%]: {frac_maintenance}, {frac_crew}, {frac_fees }, { frac_fuel}, {frac_cap}")
 
     # Make pie chart
@@ -102,21 +106,3 @@ def marketStuff(params):
     plt.axis('equal')
     plt.savefig("plots\CostBreakdown", dpi = 600)
     # plt.show()
-
-
-# if __name__ == "__main__":
-#     x = {
-#         "totalMass": 800e3,
-#         "fuelMass": 82e3,
-#         "velocity": 200,
-#         "flightRange": 8000e3,  # m
-#         "payloadMass": 120000,
-#         "pilotCount": 2,
-#         "passengers": 1000,
-#         "engineCount": 86,
-#         "engineThrust": 6600,  # power / velocity
-#         "tankMass": 100000,
-#         "fuelcellMass": 20000
-#     }
-
-    # marketStuff(x)
