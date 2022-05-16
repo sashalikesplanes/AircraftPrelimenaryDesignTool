@@ -32,8 +32,8 @@ def get_wetted_area_wing(tOverC, referenceArea):
     return referenceArea * (1.977 + 0.52 * tOverC)
 
 
-def get_wetted_area_fuselage(fuselageLength, fuselageRadius):
-    return 3.4 * fuselageRadius * fuselageLength
+def get_wetted_area_fuselage(fuselageLength, fuselageDiameter):
+    return 3.4 * fuselageDiameter * fuselageLength
 
 
 def get_oswald_efficiency(aspectRatio, leadingEdgeSweep):
@@ -55,6 +55,7 @@ def estimate_wing_FF(params, maxThicknessLocationAirfoil, tOverC, machNumber):
 def estimate_fuselage_FF(fuselageLength, fuselageRadius):
     fFactor = fuselageLength / fuselageRadius
     return 1 + 60 / (fFactor ** 3) + fFactor / 400
+
 
 
 def airplane_design_drag_components(params, rho, viscosity):
