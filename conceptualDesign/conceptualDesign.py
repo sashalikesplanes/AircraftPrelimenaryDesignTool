@@ -71,7 +71,7 @@ def conceptualDesign(parameters, material_data, iters):
 
     if converged:
         print("running post")
-        marketStuff(parameters)
         post_sizing_calcs(parameters)
+        marketStuff(parameters)
 
     return parameters, df
