@@ -57,7 +57,6 @@ def estimate_fuselage_FF(fuselageLength, fuselageRadius):
     return 1 + 60 / (fFactor ** 3) + fFactor / 400
 
 
-
 def airplane_design_drag_components(params, rho, viscosity):
     machNumber = params['velocity'] / getSpeedOfSound(params['altitude'])
     # Form Factor
@@ -113,7 +112,7 @@ def get_CD_i(params):
                                                       0,
                                                       params['wingTaperRatio'],
                                                       params['wingAspectRatio']))
-    print(oswaldFactor)
+    # print(oswaldFactor)
     wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor)
     return wingC_D_i
 
