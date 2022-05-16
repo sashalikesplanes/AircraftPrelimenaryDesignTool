@@ -10,6 +10,8 @@ from conceptualDesign.initializeParameters import initializeParameters
 from conceptualDesign.fuselageSizing import fuselageWeight
 from conceptualDesign.postSizingCalcs import post_sizing_calcs
 from conceptualDesign.marketStuff import marketStuff
+from conceptualDesign.tailSizing import tailSizing
+
 
 import pandas as pd
 import numpy as np
@@ -39,11 +41,12 @@ def conceptualDesign(parameters, material_data, iters):
         # wing
         wingSizing(parameters, rho)
 
+        tailSizing(parameters)
         # Fuselage Weight
         fuselageWeight(parameters)
 
         # drag model
-        dragModel(parameters, rho, temp)
+        dragModel(parameters, rho)
 
         # propulsion sizing
         propulsionSizing(parameters)

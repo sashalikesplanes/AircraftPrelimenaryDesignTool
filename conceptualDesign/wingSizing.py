@@ -17,12 +17,15 @@ def wingSizing(params, rho):
     chord = span / params["wingAspectRatio"]
     c2 = params["wingHalfChordSweep"]
 
-    rootChord = 2 * params["wingArea"] / (span * (1 + params["wingTaperRatio"]))
+    rootChord = 2 * params["wingArea"] / \
+        (span * (1 + params["wingTaperRatio"]))
     MAC = 2 / 3 * rootChord * (1 + params["wingTaperRatio"] +
                                params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
     params["meanAerodynamicChord"] = MAC
     params["wingSpan"] = span
 
-    params["wingStructuralMass"] = 0.00125 * wingLift * \
-        (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
-        span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift * np.cos(c2))) ** 0.3
+    flap_area_to_wing_area = params["flapAreaToWingArea"]
+    flap_area = params["wingArea"] * flap_area_to_wing_area
+
+    params["wingStructuralMass"] = 0.0051 * params["wingArea"] ** 0.649 * (flap_area) ** 0.1 * (params["ultimateLoadFactor"] * params["totalMass"] * g) ** 0.557 * (
+        1 + params["wingTaperRatio"]) ** 0.1 * params["wingAspectRatio"] ** 0.5 / (params["thicknessOverChord"] ** 0.4 * np.cos(params["wingQuarterChordSweep"]))

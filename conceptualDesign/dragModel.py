@@ -3,14 +3,14 @@ from misc.ISA import getSpeedOfSound
 from conceptualDesign.sweepAngles import convertSweep
 
 
-def dragModel(params, rho, temp):
+def dragModel(params, rho):
     """ Main function called by outside modules"""
     # Establish Drag Coefficient [-]
     # Calculate the corresponding drag in [N]
 
-    C_D = get_drag(params, rho, temp)
+    C_D = get_drag(params, rho)
     D = 0.5 * rho * params['velocity'] ** 2 * \
-            C_D * params['wingArea']
+        C_D * params['wingArea']
 
     params['totalC_D'] = C_D
     params['totalDrag'] = D * params["dragContingency"]
@@ -58,7 +58,7 @@ def estimate_fuselage_FF(fuselageLength, fuselageRadius):
 
 
 
-def airplane_design_drag_components(params, rho, temp, viscosity):
+def airplane_design_drag_components(params, rho, viscosity):
     machNumber = params['velocity'] / getSpeedOfSound(params['altitude'])
     # Form Factor
     wingFF = estimate_wing_FF(params, params['maxThicknessLocationAirfoil'],
@@ -90,10 +90,10 @@ def airplane_design_drag_components(params, rho, temp, viscosity):
         params['wingArea']
 
 
-def get_C_D_0(params, rho, temp):
+def get_C_D_0(params, rho):
     airViscosity = get_viscosity(params["altitude"])
     C_D_0 = airplane_design_drag_components(
-            params, rho, temp, airViscosity)
+        params, rho, airViscosity)
     return C_D_0
 
 
@@ -115,8 +115,8 @@ def get_CD_i(params):
                                                       params['wingAspectRatio']))
     print(oswaldFactor)
     wingC_D_i = wingC_L**2 / (np.pi * params['wingAspectRatio'] * oswaldFactor)
-    return  wingC_D_i
+    return wingC_D_i
 
 
-def get_drag(params, rho, temp):
-    return get_C_D_0(params, rho, temp) + get_CD_i(params)
+def get_drag(params, rho):
+    return get_C_D_0(params, rho) + get_CD_i(params)
