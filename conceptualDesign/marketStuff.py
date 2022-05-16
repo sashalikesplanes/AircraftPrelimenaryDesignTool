@@ -74,7 +74,7 @@ def marketStuff(params):
     # TODO: Revise Pac calc. Should the other masses be subtracted from OEW?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
     Pac = (P_OEW * (OEW - W_eng * params["engineCount"]) + W_eng * params["engineCount"] * P_eng + params[
-        "balloonStructuralMass"] * P_tank + params["fuelcellMass"] * P_fc) * (1 + PMac + f_misc)
+        "balloonStructuralMass"] * P_tank + params["fuelCellMass"] * P_fc) * (1 + PMac + f_misc)
     DOC_cap = Pac * (a + f_ins)
 
     # print(Pac)
@@ -100,23 +100,23 @@ def marketStuff(params):
     plt.pie(breakdown, labels=mylabels, autopct='%1.1f%%', colors=colors, startangle=90)
     plt.title("Cost Breakdown [%]")
     plt.axis('equal')
-    plt.savefig("plots\CostBreakdown")
+    plt.savefig("plots\CostBreakdown", dpi = 600)
     # plt.show()
 
 
-if __name__ == "__main__":
-    x = {
-        "totalMass": 800e3,
-        "fuelMass": 82e3,
-        "velocity": 200,
-        "flightRange": 8000e3,  # m
-        "payloadMass": 120000,
-        "pilotCount": 2,
-        "passengers": 1000,
-        "engineCount": 86,
-        "engineThrust": 6600,  # power / velocity
-        "tankMass": 100000,
-        "fuelcellMass": 20000
-    }
+# if __name__ == "__main__":
+#     x = {
+#         "totalMass": 800e3,
+#         "fuelMass": 82e3,
+#         "velocity": 200,
+#         "flightRange": 8000e3,  # m
+#         "payloadMass": 120000,
+#         "pilotCount": 2,
+#         "passengers": 1000,
+#         "engineCount": 86,
+#         "engineThrust": 6600,  # power / velocity
+#         "tankMass": 100000,
+#         "fuelcellMass": 20000
+#     }
 
-    marketStuff(x)
+    # marketStuff(x)
