@@ -93,3 +93,5 @@ totalDrag: null # [N]
 totalC_D: null # [-]
 balloonLift: 0 # [N]
 
+fuelcellMass: 20000
+

@@ -74,7 +74,7 @@ def marketStuff(params):
     # TODO: Revise Pac calc. Should the other masses be subtracted from OEW?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
     Pac = (P_OEW * (OEW - W_eng * params["engineCount"]) + W_eng * params["engineCount"] * P_eng + params[
-        "tankMass"] * P_tank + params["fuelcellMass"] * P_fc) * (1 + PMac + f_misc)
+        "balloonStructuralMass"] * P_tank + params["fuelcellMass"] * P_fc) * (1 + PMac + f_misc)
     DOC_cap = Pac * (a + f_ins)
 
     # print(Pac)
@@ -100,8 +100,8 @@ def marketStuff(params):
     plt.pie(breakdown, labels=mylabels, autopct='%1.1f%%', colors=colors, startangle=90)
     plt.title("Cost Breakdown [%]")
     plt.axis('equal')
-    plt.savefig("..\plots\CostBreakdown")
-    plt.show()
+    plt.savefig("plots\CostBreakdown")
+    # plt.show()
 
 
 if __name__ == "__main__":
