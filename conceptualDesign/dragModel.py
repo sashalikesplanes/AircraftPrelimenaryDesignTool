@@ -32,8 +32,8 @@ def get_wetted_area_wing(tOverC, referenceArea):
     return referenceArea * (1.977 + 0.52 * tOverC)
 
 
-def get_wetted_area_fuselage(fuselageLength, fuselageRadius):
-    return 3.4 * fuselageRadius * fuselageLength
+def get_wetted_area_fuselage(fuselageLength, fuselageDiameter):
+    return 3.4 * fuselageDiameter * fuselageLength
 
 
 def get_oswald_efficiency(aspectRatio, leadingEdgeSweep):
@@ -59,7 +59,7 @@ def estimate_fuselage_FF(fuselageLength, fuselageRadius):
 
 
 def airplane_design_drag_components(params, rho, temp, viscosity):
-    machNumber = params['velocity'] / getSpeedOfSound(params['altitude']
+    machNumber = params['velocity'] / getSpeedOfSound(params['altitude'])
     # Form Factor
     wingFF = estimate_wing_FF(params, params['maxThicknessLocationAirfoil'],
                               params['thicknessOverChord'], machNumber)
