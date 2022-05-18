@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 import matplotlib.pyplot as plt
 
 # Personnel constants
@@ -104,5 +105,6 @@ def marketStuff(params):
     plt.pie(breakdown, labels=mylabels, autopct='%1.1f%%', colors=colors, startangle=90)
     plt.title("Cost Breakdown [%]")
     plt.axis('equal')
-    plt.savefig("plots\CostBreakdown", dpi = 600)
+    costBreakdownPath = Path("plots","costBreakdown")
+    plt.savefig(costBreakdownPath, dpi = 600)
     # plt.show()
