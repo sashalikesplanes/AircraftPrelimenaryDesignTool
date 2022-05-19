@@ -18,7 +18,7 @@ flightRange: 8000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 250 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 297.5 # [-] Density of compressed hydrogen / density of sea level hydrogen
 factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
 dragContingency: 1.5 # [-]

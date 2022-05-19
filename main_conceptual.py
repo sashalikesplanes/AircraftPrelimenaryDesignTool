@@ -67,13 +67,12 @@ if __name__ == "__main__":
     df = run_concept(parameters)
     print(parameters["totalDrag"] / (0.5 * 0.7 * 200**2 * 875))
     print(df[
-        ['balloonVolume',
-         'tailStructuralMass',
-         'fuselageLength',
-         'meanAerodynamicChord', 'fuselageStructuralMass', 'wingStructuralMass',
-         'balloonStructuralMass', 'fuelMass',
-         'propulsionMass', 'totalMass', "wingSpan",
-         'wingArea', 'totalDrag', ]].iloc[-20:])
+        [
+            'fuelCellPower',
+            'cabinLength', 'balloonLength', 'balloonVolume',
+            'balloonStructuralMass', 'fuelMass',
+            'propulsionMass', 'totalMass', "wingSpan",
+            'wingArea', 'totalDrag', 'totalC_D']].iloc[-20:])
     pretty(parameters)
 
     # plt.plot(range(len(df.index)), df["fuelMass"])

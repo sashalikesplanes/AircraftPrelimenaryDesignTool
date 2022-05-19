@@ -13,6 +13,10 @@ sigma_mat = 241 * 10 ** 6
 rho_mat = 1550  # kg carbon fiber
 sigma_mat = 1900e6  # Carbon Fiber source NASA
 
+# Carbon fiber from Tom's paper
+# sigma_mat = 2410e6
+# rho_mat = 2370
+
 compressibilityOfH2Effect = 1.3
 
 
@@ -62,9 +66,9 @@ def fuselageSizing(params):
     # # https://www.researchgate.net/publication/264864827_Analytical_Weight_Estimation_Method_for_Oval_Fuselages_in_Conventional_and_Novel_Aircraft
 
     # # m_cabin = 44.4e3
-    params["cabinLength"] = 42.5
-    d_outer = 12
-    d_inner = 11.5
+    params["cabinLength"] = 39
+    d_outer = 13
+    d_inner = d_outer - 0.5
     # params["fuselageStructuralMass"] = m_fuselage
     params["fuselageArea"] = np.pi * (d_outer / 2) ** 2
     params["fuselageDiameter"] = d_outer
@@ -140,7 +144,7 @@ def fuselageWeight(params):
     dp = abs(p - pAir)
 
     ratio = dp / (2 * sigma_mat / params["factorOfSafety"] + dp)
-    wallThickness = ratio * (2 * r_tank)
+    wallThickness = ratio * (2 * (r_tank + params["wallThickness"]))
     params["wallThickness"] = wallThickness
     balloonSurfaceArea = np.pi * r_tank ** 2 + 2 * np.pi * r_tank * l_tank
     balloonMass = balloonSurfaceArea * wallThickness * \
