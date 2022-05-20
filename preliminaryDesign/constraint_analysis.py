@@ -21,7 +21,7 @@ def main():
 
     C_D_min = 0.055
 
-    wing_loading_points = np.linspace(2000, 20000, 1000)
+    wing_loading_points = np.linspace(2000, 100000, 1000)
 
     thrust_loading_cruise = dynamic_pressure * C_D_min / wing_loading_points + \
         lift_induced_drag_constant / dynamic_pressure * wing_loading_points
@@ -36,7 +36,7 @@ def main():
     plt.plot(wing_loading_points, thrust_loading_constant_turn,
              'b', label='constant turn')
 
-    required_climb_rate = 5
+    required_climb_rate = 20
 
     thrust_loading_climb_rate = required_climb_rate / velocity + dynamic_pressure / \
         wing_loading_points * C_D_min + lift_induced_drag_constant / \
