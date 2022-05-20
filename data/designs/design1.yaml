@@ -18,7 +18,7 @@ flightRange: 8000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
-compressionRatio: 250 # [-] Density of compressed hydrogen / density of sea level hydrogen
+compressionRatio: 700 # [-] Density of compressed hydrogen / density of sea level hydrogen
 factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
 dragContingency: 1.5 # [-]
@@ -32,12 +32,9 @@ balloonRadius: 0.1 # [m]
 wallThickness: 0.1 # [m]
 
 
-
-maxLoadFactor: 2.5 # [-] CS25 
-
 # Fuselage design parameters
-fuselageRadius: 6 # [m] - random shit
-fuselageLength: 42.5 # [m] - random shit
+fuselageRadius: 5.9 # [m] - random shit
+fuselageLength: 78.39 # [m] - random shit
 safetyFactor: 1.4 # [-] made up, but regular value
 
 # Tail stuff

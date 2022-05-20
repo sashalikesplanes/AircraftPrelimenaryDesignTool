@@ -4,6 +4,8 @@ def propulsionSizing(params):
         params["engineEfficiency"] * params["takeOffPowerContingency"]
     fuelCellPower = enginePower * params["fuelCellEfficiency"]
 
+    params["fuelCellPower"] = fuelCellPower
+
     engine_mass = enginePower / params["engineSpecificPower"]
     fuel_cell_mass = fuelCellPower / params["fuelCellSpecificPower"]
 

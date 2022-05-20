@@ -1,4 +1,4 @@
-from main import run_concept
+from main_conceptual import run_concept
 from conceptualDesign.dragModel import dragModel as model_drag
 from conceptualDesign.dragModel import get_drag as get_cd
 from misc.openData import openData
