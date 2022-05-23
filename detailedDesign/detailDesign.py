@@ -7,8 +7,10 @@ def detailDesign():
 
     config = openData(Path('..', 'data', 'new_designs', 'config.yaml'))
     aircraft = Aircraft(config)
-    print("Bye World!")
-    print(aircraft.test_prop, aircraft.FuselageGroup.test_prop_fuselage)
+    while True:
+        aircraft.get_sized()
+
+    get_marketed(aircraft)
 
 
 if __name__ == "__main__":
