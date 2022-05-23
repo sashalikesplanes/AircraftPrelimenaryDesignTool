@@ -4,8 +4,8 @@ from detailedDesign.classes.HLDs import HLDs
 
 
 class Wing(Component):
-    def __init__(self, WingGroup):
-        super().__init__()
+    def __init__(self, WingGroup, config):
+        my_config = super().__init__(config)
         self.WingGroup = WingGroup
-        self.HLDs = HLDs(self)
+        self.HLDs = HLDs(self, my_config)
         self.components += [self.HLDs]
