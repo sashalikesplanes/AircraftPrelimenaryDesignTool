@@ -1,0 +1,32 @@
+Aircraft:
+  test_prop: 10
+  FuselageGroup:
+    test_prop_fuselage: 420
+    Tail:
+      test_prop: 1
+      VerticalTail:
+        test_prop: 1
+      HorizontalTail:
+        test_pop: 1
+    Power:
+      test_porp: 1
+      FuelCells:
+        test_prop: 1
+      Batteries:
+        test_prop: 69
+    Fuselage:
+      test_prop: 1
+      CargoBay:
+        test_prop: 1
+      Cabin:
+        test_prop: 1
+      FuelContainer:
+        test_prop: 1
+  WingGroup:
+    test_prop_wing: 10
+    Wing:
+      test_prop: 1
+      HLDs:
+        test_prop: 1
+    Engines:
+      test_prop: 1
