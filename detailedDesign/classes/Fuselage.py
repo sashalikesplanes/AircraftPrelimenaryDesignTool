@@ -5,7 +5,7 @@ from detailedDesign.classes.CargoBay import CargoBay
 
 
 class Fuselage(Component):
-    def __int__(self, FuselageGroup):
+    def __init__(self, FuselageGroup):
         super().__init__()
         self.FuselageGroup = FuselageGroup
 

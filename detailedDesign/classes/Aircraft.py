@@ -5,9 +5,11 @@ from detailedDesign.classes.WingGroup import WingGroup
 
 class Aircraft(Component):
     def __init__(self, config):
-        super().__init__()
-        print(config)
+        my_config = super().__init__(config)
 
-        self.WingGroup = WingGroup(self)
-        self.FuselageGroup = FuselageGroup(self, config["FuselageGroup"])
+        self.WingGroup = WingGroup(self, my_config)
+        self.FuselageGroup = FuselageGroup(self, my_config)
         self.components += [self.WingGroup, self.FuselageGroup]
+
+    def get_sized(self):
+        print('sized')
