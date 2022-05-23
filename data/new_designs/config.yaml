@@ -26,6 +26,7 @@ Aircraft:
     test_prop_wing: 10
     Wing:
       test_prop: 1
+      AspectRatio: 8
       HLDs:
         test_prop: 1
     Engines:
