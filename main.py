@@ -5,7 +5,6 @@ if __name__ == "__main__":
     detail_design()
 
 
-
 #       /\_/\
 #  /\  / o o \
 # //\\ \~(*)~/
