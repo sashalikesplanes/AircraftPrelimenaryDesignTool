@@ -5,13 +5,13 @@ from detailedDesign.classes.Engines import Engines
 
 
 class WingGroup(Component):
-    def __init__(self, Aircraft, config):
-        my_config = super().__init__(config)
+    def __init__(self, Aircraft, design_config):
+        super().__init__(design_config)
 
         self.Aircraft = Aircraft
 
-        self.Wing = Wing(self, my_config)
-        self.Engines = Engines(self, my_config)
+        self.Wing = Wing(self, self.design_config)
+        self.Engines = Engines(self, self.design_config)
         self.components += [self.Wing, self.Engines]
 
         # Create all the parameters that this component must have here:
