@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from misc.openData import openData
+from misc.ISA import getPressure, getDensity, getTemperature, getSpeedOfSound
 
 
 class State:
@@ -13,3 +14,9 @@ class State:
 
         self.velocity = source["velocity"]
         self.altitude = source["altitude"]
+        h = self.altitude
+
+        self.pressure = getPressure(h)
+        self.density = getDensity(h)
+        self.temperature = getTemperature(h)
+        self.speed_of_sound = getSpeedOfSound(h)
