@@ -11,7 +11,5 @@ class Aircraft(Component):
         self.FuselageGroup = FuselageGroup(self, my_config)
         self.components = [self.WingGroup, self.FuselageGroup]
 
-    def get_sized(self):
-        for component in self.components:
-            component.get_sized()
-        # TODO get sized
+    def size_self(self):
+        pass

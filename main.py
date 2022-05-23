@@ -1,8 +1,8 @@
-from detailedDesign.detailDesign import detailDesign
+from detailedDesign.detailDesign import detail_design
 
 
 if __name__ == "__main__":
-    detailDesign()
+    detail_design()
 
 
 #       /\_/\

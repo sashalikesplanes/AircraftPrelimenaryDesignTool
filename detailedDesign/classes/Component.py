@@ -22,5 +22,14 @@ class Component():
         # TODO
         pass
 
+    def __str__(self):
+        return type(self).__name__
+
+    def size_self(self):
+        print(f"WARNING! {self} IS NOT BEING SIZE")
+
     def get_sized(self):
-        raise ValueError("I AM NOT SIZED RIGHT")
+        for component in self.components:
+            component.get_sized()
+
+        self.size_self()
