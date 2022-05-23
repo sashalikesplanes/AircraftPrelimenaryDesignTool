@@ -12,3 +12,4 @@ class Fuselage(Component):
         self.CargoBay = CargoBay(self)
         self.Cabin = Cabin(self)
         self.FuelContainer = FuelContainer(self)
+        self.components += [self.CargoBay, self.Cabin, self.FuelContainer]

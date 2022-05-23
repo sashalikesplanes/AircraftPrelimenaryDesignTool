@@ -8,3 +8,4 @@ class FuelContainer(Component):
 
         self.RemovableContainers = []
         self.NonRemovableContainers = []
+        self.components += self.RemovableContainers + self.NonRemovableContainers
