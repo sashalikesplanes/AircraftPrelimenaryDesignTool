@@ -40,6 +40,8 @@ def detail_design():
 
     perform_analyses(aircraft)
 
+    print(aircraft.get_mass())
+
 
 if __name__ == "__main__":
     detail_design()
