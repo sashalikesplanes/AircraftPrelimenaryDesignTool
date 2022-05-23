@@ -27,4 +27,4 @@ class Fuselage(Component):
             S_cargo = self.CargoBay.width * self.CargoBay.height
 
             # Print dead space inside the fuselage
-            print(np.pi * self.diameter ** 2 / 4 - S_cargo - S_cabin)
+            # print(np.pi * self.diameter ** 2 / 4 - S_cargo - S_cabin)

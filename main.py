@@ -3,9 +3,8 @@ from detailedDesign.historicalRelations import historicalRelations
 
 
 if __name__ == "__main__":
+    # historicalRelations()
     detail_design()
-    historicalRelations()
-
 
 
 #       /\_/\
