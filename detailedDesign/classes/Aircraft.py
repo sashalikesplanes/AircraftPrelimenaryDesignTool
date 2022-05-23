@@ -11,5 +11,10 @@ class Aircraft(Component):
         self.FuselageGroup = FuselageGroup(self, my_config)
         self.components = [self.WingGroup, self.FuselageGroup]
 
+        # Set all the variables you may need
+        self.mtow = None
+
+        self._freeze()
+
     def size_self(self):
         pass

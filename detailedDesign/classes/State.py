@@ -20,3 +20,7 @@ class State:
         self.density = getDensity(h)
         self.temperature = getTemperature(h)
         self.speed_of_sound = getSpeedOfSound(h)
+
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
+        self._freeze()

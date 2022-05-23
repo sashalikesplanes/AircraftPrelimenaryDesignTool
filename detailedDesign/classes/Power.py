@@ -11,3 +11,10 @@ class Power(Component):
         self.FuelCells = FuelCells(self, my_config)
         self.Batteries = Batteries(self, my_config)
         self.components += [self.FuelCells, self.Batteries]
+
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
+        self._freeze()
+
+    def size_self(self):
+        pass

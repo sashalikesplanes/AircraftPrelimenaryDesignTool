@@ -19,15 +19,25 @@ Aircraft:
       CargoBay:
         test_prop: 1
       Cabin:
-        test_prop: 1
+        passengers: 1000
+        max_seats_abreast: 18
+        max_rows_per_floor: 30
+        seat_width: 0.6
+        aisle_width: 0.7
+        floor_height: 2.5
+        # Largest k from the ADSEE I formula sheet
+        k_cabin: 1.17
       FuelContainer:
         test_prop: 1
   WingGroup:
     test_prop_wing: 10
+
     Wing:
-      test_prop: 1
-      AspectRatio: 8
+      aspectRatio: 8
+      taperRatio: 0.8
+
       HLDs:
         test_prop: 1
+
     Engines:
       test_prop: 1
