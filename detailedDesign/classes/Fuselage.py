@@ -1,3 +1,5 @@
+import numpy as np
+
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.Cabin import Cabin
 from detailedDesign.classes.FuelContainer import FuelContainer
@@ -13,3 +15,16 @@ class Fuselage(Component):
         self.Cabin = Cabin(self, my_config)
         self.FuelContainer = FuelContainer(self, my_config)
         self.components = [self.CargoBay, self.Cabin, self.FuelContainer]
+
+        # Dimensions
+        self.diameter = None
+
+    def size_self(self):
+        self.diameter = 1.045 * self.Cabin.diameter + 0.084
+
+        if self.CargoBay.width is not None:
+            S_cabin = self.Cabin.width * self.Cabin.height
+            S_cargo = self.CargoBay.width * self.CargoBay.height
+
+            # Print dead space inside the fuselage
+            # print(np.pi * self.diameter ** 2 / 4 - S_cargo - S_cabin)

@@ -13,3 +13,6 @@ class WingGroup(Component):
         self.Wing = Wing(self, my_config)
         self.Engines = Engines(self, my_config)
         self.components += [self.Wing, self.Engines]
+
+    def size_self(self):
+        pass

@@ -11,3 +11,6 @@ class Power(Component):
         self.FuelCells = FuelCells(self, my_config)
         self.Batteries = Batteries(self, my_config)
         self.components += [self.FuelCells, self.Batteries]
+
+    def size_self(self):
+        pass
