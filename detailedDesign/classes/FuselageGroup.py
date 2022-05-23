@@ -15,8 +15,5 @@ class FuselageGroup(Component):
         self.Fuselage = Fuselage(self, my_config)
         self.components += [self.Tail, self.Power, self.Fuselage]
 
-    # def get_sizing(self):
-    #     pass
-
     def size_self(self):
         pass
