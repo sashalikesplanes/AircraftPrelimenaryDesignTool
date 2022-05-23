@@ -7,7 +7,10 @@ def detailDesign():
 
     config = openData(Path('..', 'data', 'new_designs', 'config.yaml'))
     aircraft = Aircraft(config)
-    print(aircraft.FuselageGroup.Power.Batteries.test_prop)
+    while True:
+        aircraft.get_sized()
+
+    get_marketed(aircraft)
 
 
 if __name__ == "__main__":
