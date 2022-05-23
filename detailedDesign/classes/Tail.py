@@ -1,7 +1,7 @@
 # To check
-from Component import Component
-from VerticalTail import VerticalTail
-from HorizontalTail import HorizontalTail
+from detailedDesign.classes.Component import Component
+from detailedDesign.classes.VerticalTail import VerticalTail
+from detailedDesign.classes.HorizontalTail import HorizontalTail
 
 
 class Tail(Component):

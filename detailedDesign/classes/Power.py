@@ -1,7 +1,7 @@
 # To check
-from Component import Component
-from FuelCells import FuelCells
-from Batteries import Batteries
+from detailedDesign.classes.Component import Component
+from detailedDesign.classes.FuelCells import FuelCells
+from detailedDesign.classes.Batteries import Batteries
 
 
 class Power(Component):

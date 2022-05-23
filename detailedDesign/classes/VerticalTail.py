@@ -1,5 +1,5 @@
 # To check
-from Component import Component
+from detailedDesign.classes.Component import Component
 
 
 class VerticalTail(Component):
