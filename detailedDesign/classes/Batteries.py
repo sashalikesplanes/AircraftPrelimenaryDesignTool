@@ -7,7 +7,7 @@ class Batteries(Component):
         my_config = super().__init__(config)
         self.Power = Power
 
-# Battery ACID ;)
+# "Battery" ACID ;)
 #                      H
 #                      |
 #                H  H  C--H
