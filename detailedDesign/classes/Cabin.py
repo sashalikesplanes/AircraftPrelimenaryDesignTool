@@ -68,6 +68,6 @@ class Cabin(Component):
         self.diameter = 2 * ((0.5 * self.width) ** 2 + (0.5 * self.height) ** 2) ** 0.5
 
         # Debug print statements
-        print(self.height, self.width, self.length)
-        print(self.diameter)
-        print(self.height * self.width * self.length)
+        # print(self.height, self.width, self.length)
+        # print(self.diameter)
+        # print(self.height * self.width * self.length)

@@ -30,7 +30,7 @@ def detail_design():
 
     # TODO Loop
     # Magical Disney Loop
-    for i in range(1):
+    for i in range(2):
         thrust_over_weight, weight_over_surface = get_constraints(
             aircraft, State("cruise"))
 
