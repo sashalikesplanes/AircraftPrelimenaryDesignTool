@@ -31,9 +31,13 @@ Aircraft:
         test_prop: 1
   WingGroup:
     test_prop_wing: 10
+
     Wing:
-      test_prop: 1
+      aspectRatio: 8
+      taperRatio: 0.8
+
       HLDs:
         test_prop: 1
+
     Engines:
       test_prop: 1
