@@ -1,7 +1,6 @@
-import imp
-from Component import Component
-from FuselageGroup import FuselageGroup
-from WingGroup import WingGroup
+from detailedDesign.classes.Component import Component
+from detailedDesign.classes.FuselageGroup import FuselageGroup
+from detailedDesign.classes.WingGroup import WingGroup
 
 
 class Aircraft(Component):

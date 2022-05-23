@@ -1,4 +1,5 @@
-from Component import Component
+# To Check
+from detailedDesign.classes.Component import Component
 
 
 class FuselageGroup(Component):
