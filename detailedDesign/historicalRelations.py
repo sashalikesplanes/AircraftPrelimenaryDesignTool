@@ -4,8 +4,8 @@ import scipy.optimize
 from pathlib import Path
 
 
-def historicalRelations():
-    designPAX = 2000
+def get_MTOW_from_historical_relations(aircraft, plot=False):
+    designPAX = aircraft.FuselageGroup.Fuselage.Cabin.passengers
 
     # second 400 pax is iffy
     aircraftPaxMTOW = np.array(
@@ -33,14 +33,20 @@ def historicalRelations():
     # for i in range(1000, designPAX + 500, 500):
     #     print(f" pax: {i} MTOW: {a * i + b}")
 
-    print(f"pax: {designPAX} MTOW: {a * designPAX + b}")
+    MTOWdesPAX = a * designPAX + b
 
-    plt.figure()
-    plt.title(f"Historical LH2 relations: MTOW vs PAX")
-    plt.scatter(PAX, MTOW)
-    plt.plot(x, j)
-    plt.xlabel("PAX [-]")
-    plt.ylabel("MTOW [kg]")
-    histRelationsPath = Path("plots", "historicalRelations")
-    plt.savefig(histRelationsPath, dpi=600)
-    # plt.show()
+    if plot:
+        print(f"pax: {designPAX} MTOW: {a * designPAX + b}")
+
+        plt.figure()
+        plt.title(f"Historical LH2 relations: MTOW vs PAX")
+        plt.scatter(PAX, MTOW)
+        plt.plot(x, j)
+        plt.xlabel("PAX [-]")
+        plt.ylabel("MTOW [kg]")
+        histRelationsPath = Path("plots", "historicalRelations")
+        plt.savefig(histRelationsPath, dpi=600)
+        # plt.show()
+
+
+    return MTOWdesPAX

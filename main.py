@@ -1,10 +1,9 @@
 from detailedDesign.detailDesign import detail_design
-from detailedDesign.historicalRelations import historicalRelations
 
 
 if __name__ == "__main__":
-    # historicalRelations()
     detail_design()
+
 
 
 #       /\_/\
