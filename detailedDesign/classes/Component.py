@@ -1,4 +1,7 @@
-class Component:
+from abc import ABC, abstractclassmethod
+
+
+class Component(ABC):
     def __init__(self):
         self.own_mass = 0
         self.own_cg = [0, 0, 0]
@@ -12,4 +15,8 @@ class Component:
 
     def get_cg(self):
         # TODO
+        pass
+
+    @abstractclassmethod
+    def get_sized(self):
         pass
