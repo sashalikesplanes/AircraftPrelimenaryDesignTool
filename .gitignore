@@ -133,3 +133,6 @@ dmypy.json
 
 # Pycharm files
 /.idea/
+
+# SHIT
+/plots/costBreakdown.png
