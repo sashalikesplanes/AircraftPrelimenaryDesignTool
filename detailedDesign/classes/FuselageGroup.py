@@ -6,11 +6,14 @@ from detailedDesign.classes.Fuselage import Fuselage
 
 
 class FuselageGroup(Component):
-    def __init__(self, Aircraft):
-        super().__init__()
+    def __init__(self, Aircraft, config):
+        my_config = super().__init__(config)
         self.Aircraft = Aircraft
 
-        self.Tail = Tail(self)
-        self.Power = Power(self)
-        self.Fuselage = Fuselage(self)
+        self.Tail = Tail(self, my_config)
+        self.Power = Power(self, my_config)
+        self.Fuselage = Fuselage(self, my_config)
         self.components += [self.Tail, self.Power, self.Fuselage]
+
+    def get_sizing(self):
+        pass
