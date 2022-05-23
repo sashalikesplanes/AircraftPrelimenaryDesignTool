@@ -6,3 +6,4 @@ class Cabin(Component):
         super().__init__()
         self.Fuselage = Fuselage
         # The bet for one beer
+        # hello cruel world
