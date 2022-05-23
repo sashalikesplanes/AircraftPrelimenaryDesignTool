@@ -1,6 +1,11 @@
-from detailedDesign.classes.Aircraft import Aircraft
-from misc.openData import openData
+import numpy as np
 from pathlib import Path
+
+from misc.openData import openData
+from detailedDesign.classes.Aircraft import Aircraft
+from detailedDesign.performAnalyses import perform_analyses
+from detailedDesign.getConstraints import get_constraints
+from detailedDesign.classes.State import State
 
 
 def get_ultimate_load_factor():
@@ -20,13 +25,14 @@ def detail_design():
 
     # TODO Create state
 
-    config = openData(Path('..', 'data', 'new_designs', 'config.yaml'))
+    config = openData(Path('data', 'new_designs', 'config.yaml'))
     aircraft = Aircraft(config)
 
     # TODO Loop
-    for i in range(10):
+    # Magical Disney Loop
+    for i in range(1):
         thrust_over_weight, weight_over_surface = get_constraints(
-            aircraft, state)
+            aircraft, State("cruise"))
 
         ultimate_load_factor = get_ultimate_load_factor()
 

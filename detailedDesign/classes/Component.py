@@ -1,4 +1,4 @@
-class Component():
+class Component:
     def __init__(self, config):
         self.own_mass = 0
         self.own_cg = [0, 0, 0]
@@ -28,8 +28,8 @@ class Component():
     def size_self(self):
         print(f"WARNING! {self} IS NOT BEING SIZE")
 
-    def get_sized(self):
+    def get_sized(self, thrust_over_weight, weight_over_surface):
         for component in self.components:
-            component.get_sized()
+            component.get_sized(thrust_over_weight, weight_over_surface)
 
         self.size_self()
