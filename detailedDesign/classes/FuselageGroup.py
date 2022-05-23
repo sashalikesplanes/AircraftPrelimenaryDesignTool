@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+from detailedDesign.classes.Tail import Tail
+from detailedDesign.classes.Power import Power
+# To Check
+>>>>>>> d49ed02bd257aee662fb289657f5d4a6aadf98c5
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.Tail import Tail
 from detailedDesign.classes.Power import Power
