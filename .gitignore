@@ -136,3 +136,4 @@ dmypy.json
 
 # SHIT
 /plots/costBreakdown.png
+/plots

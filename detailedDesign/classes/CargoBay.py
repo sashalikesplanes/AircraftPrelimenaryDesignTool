@@ -15,9 +15,9 @@ class CargoBay(Component):
         height = self.Fuselage.Cabin.height
         width = self.Fuselage.Cabin.width
 
-        print("Hello from CargoBay!")
-        print(diameter)
-        print(height, width)
+        # print("Hello from CargoBay!")
+        # print(diameter)
+        # print(height, width)
 
         if diameter is not None:
             # Calculate the cross-sectional area of a rectangle of
