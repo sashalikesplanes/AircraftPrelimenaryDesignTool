@@ -1,4 +1,8 @@
-from classes.Aircraft import Aircraft
+from detailedDesign.classes.Aircraft import Aircraft
 
-aircraft = Aircraft()
-print(aircraft.WingGroup.Engines.count)
+
+def detailDesign():
+    aircraft = Aircraft()
+    print("Bye World!")
+
+    print(aircraft.WingGroup.Engines.count)
