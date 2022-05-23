@@ -11,3 +11,6 @@ class Tail(Component):
         self.VerticalTail = VerticalTail(self, my_config)
         self.HorizontalTail = HorizontalTail(self, my_config)
         self.components += [self.VerticalTail, self.HorizontalTail]
+
+    def size_self(self):
+        pass

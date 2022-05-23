@@ -9,3 +9,6 @@ class FuelContainer(Component):
         self.RemovableContainers = []
         self.NonRemovableContainers = []
         self.components += self.RemovableContainers + self.NonRemovableContainers
+
+    def size_self(self):
+        pass
