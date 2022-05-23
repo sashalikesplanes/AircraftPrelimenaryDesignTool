@@ -1,25 +1,46 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import InterpolatedUnivariateSpline
+import scipy.optimize
+from pathlib import Path
 
-acRange = 10186
-# second 400 pax is iffy
-aircraftPaxMTOW = np.array([(400, 177672.131), (600, 278732.511), (800, 381017.591)])  # , (400, 266440.158), ])
 
-pax = [x[0] for x in aircraftPaxMTOW]
-MTOW = [x[1] for x in aircraftPaxMTOW]
+def historicalRelations():
+    designPAX = 2000
 
-x = np.linspace(0, 2500, 1000)
-order = 1
-s = InterpolatedUnivariateSpline(pax, MTOW, k=order)
-y = s(x)
+    # second 400 pax is iffy
+    aircraftPaxMTOW = np.array(
+        [(400, 177672.131), (600, 278732.511), (800, 381017.591),  # (400, 266440.158)]) Range = 10000 km
+         (200, 81419.8304), (400, 152044.162), (600, 231241.39), (800, 316380.678)])  # Range = 5500 km
 
-print(f"pax: 1000 MTOW: {s(1000)}, \n pax: 1500  MTOW: {s(1500)}, \n pax: 2000 MTOW: {s(2000)}")
+    PAX = [x[0] for x in aircraftPaxMTOW]
+    MTOW = [x[1] for x in aircraftPaxMTOW]
 
-plt.figure()
-plt.title(f"Historical LH2 relations: MTOW vs PAX, range = {acRange}")
-plt.scatter(pax, MTOW)
-plt.plot(x, y)
-plt.xlabel("PAX [-]")
-plt.ylabel("MTOW [kg]")
-# plt.show()
+    x = np.linspace(0, designPAX, 1000)
+
+    def opt_fit(x, a, b):
+        opt = a * x + b
+        return opt
+
+    # Minimises LSE
+    tst = scipy.optimize.curve_fit(opt_fit, PAX, MTOW)
+
+    # Fitted values of a and b in opt_fit
+    a = tst[0][0]
+    b = tst[0][1]
+
+    j = a * x + b
+
+    # for i in range(1000, designPAX + 500, 500):
+    #     print(f" pax: {i} MTOW: {a * i + b}")
+
+    print(f"pax: {designPAX} MTOW: {a * designPAX + b}")
+
+    plt.figure()
+    plt.title(f"Historical LH2 relations: MTOW vs PAX")
+    plt.scatter(PAX, MTOW)
+    plt.plot(x, j)
+    plt.xlabel("PAX [-]")
+    plt.ylabel("MTOW [kg]")
+    histRelationsPath = Path("plots", "historicalRelations")
+    plt.savefig(histRelationsPath, dpi=600)
+    # plt.show()
