@@ -15,9 +15,13 @@ class Fuselage(Component):
         self.Cabin = Cabin(self, my_config)
         self.FuelContainer = FuelContainer(self, my_config)
         self.components = [self.CargoBay, self.Cabin, self.FuelContainer]
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
 
         # Dimensions
         self.diameter = None
+
+        self._freeze()
 
     def size_self(self):
         self.diameter = 1.045 * self.Cabin.diameter + 0.084

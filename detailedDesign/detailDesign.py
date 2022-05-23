@@ -24,11 +24,9 @@ def detail_design():
     config_file = Path('data', 'new_designs', 'config.yaml')
     aircraft = Aircraft(openData(config_file))
     get_MTOW_from_historical_relations(aircraft)
-    aircraft.MTOW = get_MTOW_from_historical_relations(aircraft)
+    aircraft.mtow = get_MTOW_from_historical_relations(aircraft)
 
     # TODO Create state
-
-
 
     # TODO Loop
     # Magical Disney Loop

@@ -7,8 +7,12 @@ class CargoBay(Component):
         self.Fuselage = Fuselage
         self.config = my_config
 
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
         self.height = None
         self.width = None
+
+        self._freeze()
 
     def size_self(self):
         diameter = self.Fuselage.Cabin.diameter

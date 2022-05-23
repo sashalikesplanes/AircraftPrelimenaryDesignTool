@@ -9,3 +9,7 @@ class Wing(Component):
         self.WingGroup = WingGroup
         self.HLDs = HLDs(self, my_config)
         self.components += [self.HLDs]
+
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
+        self._freeze()

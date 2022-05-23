@@ -10,5 +10,10 @@ class FuelContainer(Component):
         self.NonRemovableContainers = []
         self.components += self.RemovableContainers + self.NonRemovableContainers
 
-    def size_self(self):
-        pass
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
+        self._freeze()
+
+
+def size_self(self):
+    pass

@@ -14,6 +14,9 @@ class Cabin(Component):
         # This list could be used later to load the passengers for the cg range diagram
         self.components = []
 
+        # Create all the parameters that this component must have here:
+        # Using self.property_name = value
+
         self.seats_abreast = None
         self.floor_count = None
         self.rows_per_floor = None
@@ -25,6 +28,8 @@ class Cabin(Component):
         self.width = None
         self.length = None
         self.diameter = None
+
+        self._freeze()
 
     def size_self(self):
         """Function to size the cabin"""
@@ -64,10 +69,12 @@ class Cabin(Component):
 
         # Calculate the dimensions of the rectangular cabin
         self.height = n_floors * self.config["floor_height"]
-        self.width = n_sa * self.config["seat_width"] + n_aisles * self.config["aisle_width"]
+        self.width = n_sa * \
+            self.config["seat_width"] + n_aisles * self.config["aisle_width"]
         self.length = n_rows * self.config["k_cabin"]
         # Find the diameter of the cabin using the width and the height and the smallest circle
-        self.diameter = 2 * ((0.5 * self.width) ** 2 + (0.5 * self.height) ** 2) ** 0.5
+        self.diameter = 2 * ((0.5 * self.width) ** 2 +
+                             (0.5 * self.height) ** 2) ** 0.5
 
         # Debug print statements
         # print(self.height, self.width, self.length)
