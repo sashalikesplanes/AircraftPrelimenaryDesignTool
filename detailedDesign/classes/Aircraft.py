@@ -4,8 +4,10 @@ from detailedDesign.classes.WingGroup import WingGroup
 
 
 class Aircraft(Component):
-    def __init__(self):
+    def __init__(self, config):
         super().__init__()
+        print(config)
+
         self.WingGroup = WingGroup(self)
-        self.FuselageGroup = FuselageGroup(self)
+        self.FuselageGroup = FuselageGroup(self, config["FuselageGroup"])
         self.components += [self.WingGroup, self.FuselageGroup]
