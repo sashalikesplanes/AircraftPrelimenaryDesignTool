@@ -1,4 +1,4 @@
-designConcept: 3 # a value between 1 and 4 [-]
+designConcept: 4 # a value between 1 and 4 [-]
 # 1 represents a wingless blimp
 # 2 represents a hybrid with low CR (max 5), gaseous H2
 # 3 represents a hybrid with high CR (max 100), gaseous H2
@@ -18,7 +18,11 @@ flightRange: 8000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
+<<<<<<< HEAD
+compressionRatio: 250 # [-] Density of compressed hydrogen / density of sea level hydrogen
+=======
 compressionRatio: 700 # [-] Density of compressed hydrogen / density of sea level hydrogen
+>>>>>>> 652d75a515ec6c25d67a7aa95ced8bd1c2f4c999
 factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
 dragContingency: 1.5 # [-]

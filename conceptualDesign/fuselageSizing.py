@@ -5,9 +5,6 @@ from misc.ISA import getPressure, getTemperature
 
 hydrogenMolarMass = 2.016e-3  # [kg/mole]
 
-# aluminium 6061
-rho_mat = 2710
-sigma_mat = 241 * 10 ** 6
 
 # Carbon Fiber
 rho_mat = 1550  # kg carbon fiber
@@ -66,8 +63,8 @@ def fuselageSizing(params):
     # # https://www.researchgate.net/publication/264864827_Analytical_Weight_Estimation_Method_for_Oval_Fuselages_in_Conventional_and_Novel_Aircraft
 
     # # m_cabin = 44.4e3
-    params["cabinLength"] = 39
-    d_outer = 13
+    params["cabinLength"] = 42.5
+    d_outer = 12  # 2326
     d_inner = d_outer - 0.5
     # params["fuselageStructuralMass"] = m_fuselage
     params["fuselageArea"] = np.pi * (d_outer / 2) ** 2
@@ -110,43 +107,97 @@ def fuselageWeight(params):
 
     # Calculate the fuselage weight using the sketchy method
 
-    r_tank = (params["fuselageInnerDiameter"] / 2) - params["wallThickness"]
-    A_tank = np.pi * r_tank ** 2
-    CR = params["compressionRatio"]
+    if params["designConcept"] == 3:
 
-    fuelMass = params["fuelMass"]
+        r_tank = (params["fuselageInnerDiameter"] / 2) - \
+            params["wallThickness"]
+        A_tank = np.pi * r_tank ** 2
+        CR = params["compressionRatio"]
 
-    V_req = fuelMass / (rho_h2 * CR)
-    l_tank = V_req / A_tank
-    # print("Hello world!")
-    # print(fuelMass)
-    # print(V_req)
-    # print(l_tank)
+        fuelMass = params["fuelMass"]
 
-    # Save container parameters
-    params["balloonVolume"] = V_req
-    params["balloonRadius"] = r_tank
-    params["balloonLength"] = l_tank
+        V_req = fuelMass / (rho_h2 * CR)
+        l_tank = V_req / A_tank
+        # print("Hello world!")
+        # print(fuelMass)
+        # print(V_req)
+        # print(l_tank)
 
-    # Save total fuselage length
-    l_cockpit = 4  # [m]
-    tail_finesse = 1.6  # [-] between 3 and 6 for flying boats
-    params["fuselageLength"] = l_tank + params["cabinLength"] + \
-        l_cockpit + params["fuselageDiameter"] * tail_finesse
+        # Save container parameters
+        params["balloonVolume"] = V_req
+        params["balloonRadius"] = r_tank
+        params["balloonLength"] = l_tank
 
-    h = params["altitude"]
-    pAir = getPressure(h)
-    tAir = getTemperature(h)
+        # Save total fuselage length
 
-    # Calculate mass of the balloon using plain pressure vessel
-    p = fuelMass / hydrogenMolarMass * R * tAir / V_req * compressibilityOfH2Effect
-    params["balloonPressure"] = p
-    dp = abs(p - pAir)
+        h = params["altitude"]
+        pAir = getPressure(h)
+        tAir = getTemperature(h)
 
-    ratio = dp / (2 * sigma_mat / params["factorOfSafety"] + dp)
-    wallThickness = ratio * (2 * (r_tank + params["wallThickness"]))
-    params["wallThickness"] = wallThickness
-    balloonSurfaceArea = np.pi * r_tank ** 2 + 2 * np.pi * r_tank * l_tank
-    balloonMass = balloonSurfaceArea * wallThickness * \
-        rho_mat * 0.5 * params["balloonMassContingency"]
-    params["balloonStructuralMass"] = balloonMass
+        # Calculate mass of the balloon using plain pressure vessel
+        p = fuelMass / hydrogenMolarMass * R * tAir / V_req * compressibilityOfH2Effect
+        params["balloonPressure"] = p
+        dp = abs(p - pAir)
+
+        ratio = dp / (2 * sigma_mat / params["factorOfSafety"] + dp)
+        wallThickness = ratio * (2 * (r_tank + params["wallThickness"]))
+        params["wallThickness"] = wallThickness
+        balloonSurfaceArea = np.pi * r_tank ** 2 + 2 * np.pi * r_tank * l_tank
+        balloonMass = balloonSurfaceArea * wallThickness * \
+            rho_mat * 0.5 * params["balloonMassContingency"]
+        params["balloonStructuralMass"] = balloonMass
+
+        l_cockpit = 4  # [m]
+        tail_finesse = 1.6  # [-] between 3 and 6 for flying boats
+        params["fuselageLength"] = l_tank + params["cabinLength"] + \
+            l_cockpit + params["fuselageDiameter"] * tail_finesse
+
+    if params["designConcept"] == 4:
+
+        # aluminium 6061
+        rho_mat = 2710
+        sigma_mat = 241e6
+
+        insulation_thickness = 1
+        r_tank = (params["fuselageInnerDiameter"] / 2) - \
+            params["wallThickness"] - insulation_thickness
+        A_tank = np.pi * r_tank ** 2
+
+        fuelMass = params["fuelMass"]
+
+        rho_LH2 = 71
+        V_req = fuelMass / (rho_LH2) * 3
+        l_tank = V_req / A_tank
+        # print("Hello world!")
+        # print(fuelMass)
+        # print(V_req)
+        # print(l_tank)
+
+        # Save container parameters
+        params["balloonVolume"] = V_req
+        params["balloonRadius"] = r_tank
+        params["balloonLength"] = l_tank
+
+        # Save total fuselage length
+
+        h = params["altitude"]
+        pAir = getPressure(h)
+        tAir = getTemperature(h)
+
+        # Calculate mass of the balloon using plain pressure vessel
+        p = 1.5 * 101325  # 1.5 atm
+        params["balloonPressure"] = p
+        dp = p
+
+        ratio = dp / (2 * sigma_mat / params["factorOfSafety"] + dp)
+        wallThickness = ratio * (2 * (r_tank + params["wallThickness"]))
+        params["wallThickness"] = wallThickness
+        balloonSurfaceArea = np.pi * r_tank ** 2 + 2 * np.pi * r_tank * l_tank
+        balloonMass = 0.4 * params["fuelMass"]
+        params["balloonStructuralMass"] = balloonMass * \
+            params["balloonMassContingency"]
+
+        l_cockpit = 4  # [m]
+        tail_finesse = 1.6  # [-] between 3 and 6 for flying boats
+        params["fuselageLength"] = l_tank + params["cabinLength"] + \
+            l_cockpit + params["fuselageDiameter"] * tail_finesse
