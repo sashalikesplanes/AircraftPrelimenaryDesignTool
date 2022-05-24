@@ -37,3 +37,4 @@ class FuelContainer(Component):
         self.volume_tank = self.mass_H2*(1+self.Vi)/self.density_H2
         self.length = (self.volume_tank - 4*np.pi*self.inner_radius**3/3)/(np.pi*self.inner_radius**2) # we constrained the radius as being an integral tank,\
                                                                                                                 #normally the radius is found through this eq
+        d
