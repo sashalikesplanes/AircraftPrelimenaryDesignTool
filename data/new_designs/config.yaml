@@ -1,6 +1,8 @@
 Aircraft:
   test_prop: 10
   FuselageGroup:
+    Miscellaneous:
+      Fish: 5
     test_prop_fuselage: 420
     Tail:
       test_prop: 1
@@ -40,6 +42,7 @@ Aircraft:
         temp_room: 293 # [K]
         thermal_cond: 0.0046 # [W/mK]
         E_boiloff: 446592 # [J/kg]
+        density_insulation: 49.8 #[kg/m3]
   WingGroup:
     test_prop_wing: 10
 

@@ -6,3 +6,5 @@ R = 8.31446261815324  # ideal gas constant [J/k/mol]
 testMargin = 0.03  # [-] fraction of the margin that a unit_test can be wrong without being wrong
 # https://rmi.org/run-on-less-with-hydrogen-fuel-cells/#:~:text=In%20electrical%20terms%2C%20the%20energy,as%20a%20gallon%20of%20diesel.
 energyDensityHydrogen = 33.6e3 * 60 * 60  # [J/kg]
+Xtrovercfus = 0.0   #transition location
+Xtrovercwing = 0.35 #transition location
