@@ -27,9 +27,9 @@ class Component:
     def size_self(self):
         print(f"WARNING! {self} IS NOT BEING SIZE")
 
-    def get_sized(self, thrust_over_weight, weight_over_surface):
+    def get_sized(self):
         for component in self.components:
-            component.get_sized(thrust_over_weight, weight_over_surface)
+            component.get_sized()
 
         self.size_self()
 
