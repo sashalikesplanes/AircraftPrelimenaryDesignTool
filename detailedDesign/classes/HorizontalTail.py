@@ -12,6 +12,11 @@ class HorizontalTail(Component):
 
         self.MGC = 1
 
+        self.tail_length = None
+        self.surface_area = None
+        self.mean_aerodynamic_chord = None
+        self.span = None
+
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self._freeze()
@@ -39,8 +44,8 @@ class HorizontalTail(Component):
 
         # TODO: check MDN
         # TODO: Size these properly
-        MAGICAL_DISNEY_NUMBER = 0.55
-        l_HT = l_FS * MAGICAL_DISNEY_NUMBER  # [ft]
+
+        self.tail_length = np.sqrt((2)/(np.pi * (FuselageGroup.Fuselage.diameter)))
         span_HT = None  # [ft]
         root_chord_thickness_HT = None  # [inches]
         aspect_ratio_HT = None  # [-]

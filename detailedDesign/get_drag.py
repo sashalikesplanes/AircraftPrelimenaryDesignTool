@@ -99,17 +99,17 @@ def get_drag(aircraft):
     Sref = aircraft.reference_area
     dfus = aircraft.FuselageGroup.Fuselage.diameter
     croot = aircraft.WingGroup.Wing.root_chord
-    toverc = 0.12
-    xovercmax = 0.4
+    toverc = aircraft.WingGroup.Wing.thickness_chord_ratio
+    xovercmax = aircraft.WingGroup.Wing.xovercmax
     M = V/aircraft.states['cruise'].speed_of_sound
     tovercVT = aircraft.FuselageGroup.Tail.VerticalTail.toverc          #from NACA0010
     tovercHT = aircraft.FuselageGroup.Tail.HorizontalTail.toverc            #from NACA0010
     xovercmaxVT = aircraft.FuselageGroup.Tail.VerticalTail.xovercmax         #from NACA0010
     xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax        #from NACA0010
-    cVT = 9.05
+    cVT = 9.05 #TODO link to vertical tail
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
-    cfus = 183 # length of the fuselage
-    AR = 6
+    cfus = 183 # TODO link to Fuselage. (length of the fuselage)
+    AR = 6      # TODO Link AR, e, CL to Wing
     e = 0.8
     CL = 0.521
 
@@ -151,7 +151,7 @@ def get_drag(aircraft):
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
 
-    CDi = calc_CDi(CL, A, e)
+    CDi = calc_CDi(CL, AR, e)
     CD = CDi+TotalCDmin
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)
