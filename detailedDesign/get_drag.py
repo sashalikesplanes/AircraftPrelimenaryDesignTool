@@ -90,7 +90,7 @@ def get_drag(aircraft):
     cWMGC = aircraft.Wing.mean_geometric_chord
     T = aircraft.states['cruise'].temperature
     Sref = aircraft.reference_area
-    dfus = 12
+    dfus = aircraft.Fuselage.diameter
     croot = aircraft.Wing.root_chord
     toverc = 0.12
     xovercmax = 0.4
