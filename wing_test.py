@@ -13,9 +13,7 @@ def run_test():
 
     aircraft.reference_area = 10
 
-
     aircraft.WingGroup.Wing.size_self()
-
 
 
 if __name__ == "__main__":

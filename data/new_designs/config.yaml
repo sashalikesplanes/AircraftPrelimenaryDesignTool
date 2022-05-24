@@ -27,6 +27,7 @@ Aircraft:
         floor_height: 2.5
         # Largest k from the ADSEE I formula sheet
         k_cabin: 1.17
+        cabin_pressure_altitude: 3000  # [m]
       FuelContainer:
         tank_pressure: 1.2
   WingGroup:
