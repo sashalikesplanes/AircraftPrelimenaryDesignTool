@@ -4,11 +4,13 @@ import numpy as np
 from detailedDesign.classes.State import State
 from misc.constants import *
 
+
 def calc_viscosity(T):
     mu = 1.458e-6*T**1.5/(T+110.4)
     return mu
 
-def calc_reynolds(rho,V, c,T):
+
+def calc_reynolds(rho, V, c, T):
     Re = rho*V*c/calc_viscosity(T)
     Re_cutoff = 38.21 * (c / 0.3048 / 2.08e-5) ** 1.053
     if Re < Re_cutoff:
@@ -32,66 +34,72 @@ def calc_CDfwing(dfus, croot, toverc, Sref, Cf):
     CDf = Swet/Sref*Cf
     return CDf
 
+
 def calc_CDffus(Sref, cfus, dfus, Cf):
-    Swet = 3.4 * cfus*dfus # slightly overestimating
+    Swet = 3.4 * cfus*dfus  # slightly overestimating
     CDf = Swet/Sref*Cf
     return CDf
+
 
 def calc_CDftail(toverc, Sref, Cf):
     Swet = Sref * (1.977 + 0.52 * toverc)
     CDf = Swet/Sref*Cf
     return CDf
 
-def calc_FFwing(toverc,M, xovercmax):
-    FFwing = (1+0.6/xovercmax*toverc+100*toverc**4)*1.34*M**0.18 # no compressibility or sweep
+
+def calc_FFwing(toverc, M, xovercmax):
+    FFwing = (1+0.6/xovercmax*toverc+100*toverc**4) * \
+        1.34*M**0.18  # no compressibility or sweep
     return FFwing
 
-def calc_FFfuselage(l,d):
+
+def calc_FFfuselage(l, d):
     f = l/d
     FFfuselage = 1 + 60/f**3+f/400
     return FFfuselage
 
-def calc_FFnacele(l,d):
+
+def calc_FFnacele(l, d):
     f = l/d
     FFnacelle = 1+0.35/f
     return FFnacelle
-
 
 
 def calc_CDmin_wing(CDf, FFwing, IF):
     CDmin_wing = CDf*FFwing*IF['wing']
     return CDmin_wing
 
+
 def calc_CDmin_fuselage(CDf, FFfuselage, IF):
     CDmin_fuselage = CDf*FFfuselage*IF['fuselage']
     return CDmin_fuselage
+
 
 def calc_CDmin_tail(CDf, FFtail, IF):
     CDmin_tail = CDf*FFtail*IF['tail']
     return CDmin_tail
 
+
 def calc_CDmin(CDmin_wing, CDmin_fuselage, CDmin_tail):
     i = CDmin_wing + CDmin_fuselage + CDmin_tail
-    CDmin = i + 0.0025 #for misc
+    CDmin = i + 0.0025  # for misc
     return CDmin
 
-def calc_CDi(CL,A,e):
+
+def calc_CDi(CL, A, e):
     CDi = CL**2/(np.pi*A*e)
     return CDi
 
 
-
-
-
 def get_drag(aircraft):
-    #aircraft.reference_area
+    # aircraft.reference_area
     rho = aircraft.states['cruise'].density
     V = aircraft.states['cruise'].velocity
-    cWMGC = aircraft.Wing.mean_geometric_chord
+    cWMGC = aircraft.WingGroup.Wing.mean_geometric_chord
     T = aircraft.states['cruise'].temperature
     Sref = aircraft.reference_area
-    dfus = aircraft.Fuselage.diameter
-    croot = aircraft.Wing.root_chord
+    dfus = aircraft.FuselageGroup.Fuselage.diameter
+    croot = aircraft.WingGroup.Wing.root_chord
     toverc = 0.12
     xovercmax = 0.4
     M = V/aircraft.states['cruise'].speed_of_sound
@@ -100,7 +108,7 @@ def get_drag(aircraft):
     xovercmaxVT = 0.3
     xovercmaxHT = 0.3
     cVT = 9.05
-    cHT = 9.59
+    cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
     cfus = 183
     A = 6
     e = 0.8
