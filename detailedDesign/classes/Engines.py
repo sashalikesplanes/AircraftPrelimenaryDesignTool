@@ -7,6 +7,9 @@ class Engines(Component):
         super().__init__(design_config)
 
         self.WingGroup = WingGroup
+        
+
+        self.thrust_specific_fuel_consumption = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
