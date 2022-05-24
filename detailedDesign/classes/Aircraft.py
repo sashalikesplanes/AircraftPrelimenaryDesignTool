@@ -5,7 +5,7 @@ from misc.constants import g
 
 
 class Aircraft(Component):
-    def __init__(self, design_config):
+    def __init__(self, design_config, states_dict):
         super().__init__(design_config)
 
         self.WingGroup = WingGroup(self, self.design_config)
@@ -15,6 +15,7 @@ class Aircraft(Component):
         # FAKE REFERENCE AREA FOR TESTING PURPOSES
         self.reference_area = 500
         # REMOVE BECAUSE MAGICAL DISNEY VALUE
+        self.states = states_dict
 
         # Create all the parameters that this component must have here:
         # Use self.property = None

@@ -16,8 +16,7 @@ def get_ultimate_load_factor():
 
 def detail_design():
 
-    states = [State('cruise')]
-    states[0].name
+    states = {"cruise": State('cruise')}
 
     # Things that update on sizing - attributes of Aircraft and sub components
 
@@ -25,7 +24,7 @@ def detail_design():
 
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
-    aircraft = Aircraft(openData(config_file))
+    aircraft = Aircraft(openData(config_file), states)
     get_MTOM_from_historical_relations(aircraft)
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
 
