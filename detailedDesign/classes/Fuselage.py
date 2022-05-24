@@ -67,7 +67,6 @@ class Fuselage(Component):
 
         self.own_mass = lbs_to_kg(mass_lbs)
 
-
     def get_sized(self):
         for component in self.components:
             component.get_sized()
@@ -84,4 +83,8 @@ class Fuselage(Component):
 
     @property
     def outer_diameter(self):
-        return self.diameter
+        if self.diameter is not None:
+            return self.diameter
+        else:
+            self.diameter = self.inner_diameter * 1.045 + 0.084
+            return self.outer_diameter
