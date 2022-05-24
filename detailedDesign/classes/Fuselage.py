@@ -22,7 +22,6 @@ class Fuselage(Component):
 
         # Dimensions
         self.diameter = None
-        self.length = None
 
         self._freeze()
 

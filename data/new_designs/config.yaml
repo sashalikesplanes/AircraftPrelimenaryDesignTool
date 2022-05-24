@@ -1,6 +1,8 @@
 Aircraft:
   test_prop: 10
   FuselageGroup:
+    Miscellaneous:
+      Fish: 5
     test_prop_fuselage: 420
     Tail:
       test_prop: 1
