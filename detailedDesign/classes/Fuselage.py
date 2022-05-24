@@ -42,6 +42,7 @@ class Fuselage(Component):
         S_FUS = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * l_FS
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
         W_O = kg_to_lbs(self.FuselageGroup.Aircraft.mtom)
+        # TODO: check MDN
         MAGICAL_DISNEY_NUMBER = 0.55
         l_HT = l_FS * MAGICAL_DISNEY_NUMBER
         d_FS = self.diameter
