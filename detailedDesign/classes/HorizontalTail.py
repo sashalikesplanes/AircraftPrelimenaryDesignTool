@@ -38,8 +38,7 @@ class HorizontalTail(Component):
         taper_HT = None   # [-]
         MGC_HT = None     # [m]
 
-        l_FS_m = FuselageGroup.Fuselage.Cabin.length + \
-            FuselageGroup.Fuselage.FuelContainer.length
+        l_FS_m = FuselageGroup.Fuselage.length
         l_FS = m_to_ft(l_FS_m)   # [ft]
 
         # TODO: check MDN

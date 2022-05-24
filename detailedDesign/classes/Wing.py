@@ -75,4 +75,4 @@ class Wing(Component):
             * self.taper_ratio ** 0.04 * ((100 * self.thickness_chord_ratio)
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
 
-        self.own_mass = lbs_to_kg(mass_lbs)
+        self.own_mass = lbs_to_kg(mass_lbs)     # [kg]

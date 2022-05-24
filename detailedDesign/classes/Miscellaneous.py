@@ -17,14 +17,14 @@ class Miscellaneous(Component):
         W_O = kg_to_lbs(mtom)  # [lbs]
         l_FS = m_to_ft(self.FuselageGroup.Fuselage.length)  # [ft]
         b = m_to_ft(self.FuselageGroup.Aircraft.WingGroup.Wing.span)  # [ft]
-        n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
-        n_pax = self.FuselageGroup.Fuselage.Cabin.passengers
+        n_z = self.FuselageGroup.Aircraft.ultimate_load_factor  # [-]
+        n_pax = self.FuselageGroup.Fuselage.Cabin.passengers  # [-]
         pilot_count = 3  # [-]
-        N_OCC = n_pax + n_pax % 50 + 1 + pilot_count
+        N_OCC = n_pax + n_pax % 50 + 1 + pilot_count  # [-]
         # This needs to be in meters since the mach number requires metric units for speed of sound
         h = self.FuselageGroup.Aircraft.states["cruise"].altitude  # [m]
         M = self.FuselageGroup.Aircraft.states["cruise"].velocity / getSpeedOfSound(h)  # [-]
-        W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())
+        W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
 
         # MAGICAL DISNEY NUMBER WARNING (MDN)
         W_UAV = 420  # [lbs]
