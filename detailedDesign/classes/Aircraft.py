@@ -28,6 +28,9 @@ class Aircraft(Component):
         self.reference_area = None
         self.reference_thrust = None
 
+        # Drag states
+        self.C_D_min = None
+
         self._freeze()
 
     def size_self(self):

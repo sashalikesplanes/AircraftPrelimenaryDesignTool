@@ -1,4 +1,6 @@
 # To Check
+import numpy as np
+
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.HLDs import HLDs
 
@@ -20,6 +22,29 @@ class Wing(Component):
         # Using self.property_name = None
         self._freeze()
 
+    def size_AR(self):
+        print(f'sizing the Aspect Ratio')
+        Range = None
+        V_C = self.WingGroup.Aircraft.states['cruise'].velocity 
+        dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density * V_C * V_C
+        W_initial_cruise = None
+        W_end_cruise = None
+        C_L_initial_cruise = W_initial_cruise / (dynamic_pressure * self.wing_area)
+        C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)
+        C_LC = (C_L_intial_cruise + C_L_end_cruise) / 2
+
+
+        C_D_min = aircraft.C_D_min
+        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption #g/kNs
+        c_t_Imp = c_t_SI * 9.81 / 1e6 * 3600
+
+        optimal_effective_AR = C_LC*C_LC / np.pi / (V_C / Range \
+                * C_LC / c_t_Imp * np.log(W_intial_cruise \
+                / W_final_cruise) - C_D_min)
+        print(optimal_effective_AR)
+
+
+
     def size_self(self):
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
@@ -27,4 +52,5 @@ class Wing(Component):
         # print(self.span)
         self.root_chord = (2 * self.wing_area) / (self.span * (1 + self.taper_ratio))
         self.tip_chord = self.root_chord * self.taper_ratio
+        self.size_AR()
         # print(self.root_chord, self.tip_chord)
