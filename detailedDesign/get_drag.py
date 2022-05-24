@@ -151,7 +151,7 @@ def get_drag(aircraft):
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
 
-    CDi = calc_CDi(CL, A, e)
+    CDi = calc_CDi(CL, AR, e)
     CD = CDi+TotalCDmin
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)
