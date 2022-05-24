@@ -1,19 +1,11 @@
 import unittest
-from misc.constants import testMargin
 
-from unit_test.testWeights import TestWeights
-from unit_test.testISA import TestISA
-
-# from unit_test.testExample import TestExample
+from unit_test.testExample import TestStringMethods
 
 
-def main():
-    """Main function for running unit tests"""
+if __name__ == '__main__':
     unittest.main()
 
-
-if __name__ == "__main__":
-    main()
 
 # Run the following two commands in order to generate a code coverage report.
 # coverage run -m unittest discover
