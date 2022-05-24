@@ -1,5 +1,6 @@
 from detailedDesign.classes.Component import Component
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class FuelContainer(Component):
@@ -15,18 +16,18 @@ class FuelContainer(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self.thickness = 0
-        self.inner_diameter = None
-        self.inner_radius = None
+        self.inner_diameter = 0
+        self.inner_radius = 0
 
-        self.volume_tank = None
-        self.length = None
-        self.voltage = None
-        self.flow_H2 = None
-        self.mass_H2 = None
-        self.volume_tank = None
-        self.radius_tank = None
-        self.mass_tank = None
-        self.area_tank = None
+        self.volume_tank = 0
+        self.length = 0
+        self.voltage = 0
+        self.flow_H2 = 0
+        self.mass_H2 = 0
+        self.volume_tank = 0
+        self.radius_tank = 0
+        self.mass_tank = 0
+        self.area_tank = 0
 
 
         # self.fatiguestrength = 103*10**6 #[MPa], fatigue strength Al 2219-T81 after 500e6 cycles
@@ -40,7 +41,8 @@ class FuelContainer(Component):
 
     def size_self(self):
 
-        self.inner_diameter = self.Fuselage.inner_diameter - self.thickness * 2
+        # self.inner_diameter = self.Fuselage.inner_diameter - self.thickness * 2
+        self.inner_diameter = 12
         self.inner_radius = self.inner_diameter/2
 
         thickness_fatigue = self.tank_pressure*self.inner_radius*self.SF/self.fatiguestrength
@@ -61,22 +63,26 @@ class FuelContainer(Component):
         self.flow_H2 = powertest/(self.voltage*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency*2*96500*500) #GET POWER FROM PAULA
         self.mass_H2 = self.flow_H2*self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight/(32167*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
 
-        self.volume_tank = self.mass_H2* (1+self.Vi)/self.density_H2
+        self.volume_tank = self.mass_H2 * (1+self.Vi)/self.density_H2
         self.radius_tank = self.inner_radius
         self.mass_tank = self.tank_pressure*4/3*np.pi*(self.radius_tank+self.thickness)**3+np.pi*(self.radius_tank+self.thickness)**2*self.length-self.volume_tank
         self.area_tank = 4*np.pi*self.radius_tank**2+2*np.pi*self.radius_tank*self.length
 
 
-        thickness_insulation = range(0,20)
-        Q_conduction = []
-        Q_flow = []
-        boiloff_rate = []
-        for i in self.thickness_insulation:
-            Q_conduction = self.thermal_cond*(self.temp_room-self.temp_LH2)/thickness_insulation
+        thickness_insulation = range(1,40)
+        # Q_conduction = []
+        # Q_flow = []
+        # boiloff_rate = []
+        mass_total = []
+        for i in thickness_insulation:
+            Q_conduction = self.thermal_cond*(self.temp_room-self.temp_LH2)/i/100
             Q_flow = Q_conduction*self.area_tank
             boiloff_rate = Q_flow/self.E_boiloff
             total_boiloff = boiloff_rate*self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight*3600
-            mass_total = total_boiloff+self.mass_tank
+            mass_total.append(total_boiloff+self.mass_tank)
+
+        plt.plot(thickness_insulation, mass_total)
+        plt.show()
 
 
 

@@ -33,8 +33,8 @@ Aircraft:
         tank_pressure: 1.2
         density_H2: 71 #[kg/m3]
         Vi: 0.072 # cte, extra volume needed for boiloff
-        fatiguestrength: 103*10**6 #[MPa], fatigue strength Al 2219-T81 after 500e6 cycles
-        yieldstrength: 352*10**6 #[MPa], yield strength Al 2219-T81
+        fatiguestrength: 103000000 #[MPa], fatigue strength Al 2219-T81 after 500e6 cycles
+        yieldstrength: 352000000 #[MPa], yield strength Al 2219-T81
         temp_LH2: 20 #[K]
         temp_room: 293 #[K]
         thermal_cond: 0.0046 #[W/mK]
