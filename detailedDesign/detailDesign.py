@@ -6,7 +6,7 @@ from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.performAnalyses import perform_analyses
 from detailedDesign.getConstraints import get_constraints
 from detailedDesign.classes.State import State
-from detailedDesign.historicalRelations import get_MTOW_from_historical_relations
+from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
 
 
 def get_ultimate_load_factor():
@@ -16,6 +16,9 @@ def get_ultimate_load_factor():
 
 def detail_design():
 
+    states = [State('cruise')]
+    states[0].name
+
     # Things that update on sizing - attributes of Aircraft and sub components
 
     # Things defining the sizing - in /new_designs/config.yaml
@@ -23,20 +26,20 @@ def detail_design():
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
     aircraft = Aircraft(openData(config_file))
-    get_MTOW_from_historical_relations(aircraft)
-    aircraft.mtow = get_MTOW_from_historical_relations(aircraft)
+    get_MTOM_from_historical_relations(aircraft)
+    aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
 
     # TODO Create state
 
     # TODO Loop
     # Magical Disney Loop
     for i in range(2):
-        thrust_over_weight, weight_over_surface = get_constraints(
-            aircraft, State("cruise"))
+        aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
+            aircraft, states)
 
         ultimate_load_factor = get_ultimate_load_factor()
 
-        aircraft.get_sized(thrust_over_weight, weight_over_surface)
+        aircraft.get_sized()
 
     perform_analyses(aircraft)
 

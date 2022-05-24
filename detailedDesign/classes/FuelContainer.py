@@ -7,14 +7,18 @@ class FuelContainer(Component):
 
         self.Fuselage = Fuselage
 
-        self.RemovableContainers = []
-        self.NonRemovableContainers = []
-        self.components = self.RemovableContainers + self.NonRemovableContainers
+        # self.RemovableContainers = []
+        # self.NonRemovableContainers = []
+        # self.components = self.RemovableContainers + self.NonRemovableContainers
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
+        self.thickness = 0
+        self.inner_diameter = None
         self._freeze()
 
+    def size_self(self):
+        self.Fuselage.inner_diameter
 
-def size_self(self):
-    pass
+        self.inner_diameter = self.Fuselage.inner_diameter - self.thickness * 2
+        self.thickness = 1

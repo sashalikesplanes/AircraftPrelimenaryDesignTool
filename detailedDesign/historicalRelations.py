@@ -4,7 +4,7 @@ import scipy.optimize
 from pathlib import Path
 
 
-def get_MTOW_from_historical_relations(aircraft, plot=False):
+def get_MTOM_from_historical_relations(aircraft, plot=False):
     designPAX = aircraft.FuselageGroup.Fuselage.Cabin.passengers
 
     # second 400 pax is iffy
@@ -47,6 +47,5 @@ def get_MTOW_from_historical_relations(aircraft, plot=False):
         histRelationsPath = Path("plots", "historicalRelations")
         plt.savefig(histRelationsPath, dpi=600)
         # plt.show()
-
 
     return MTOWdesPAX

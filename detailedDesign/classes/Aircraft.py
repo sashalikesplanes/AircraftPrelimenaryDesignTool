@@ -1,6 +1,7 @@
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
+from misc.constants import g
 
 
 class Aircraft(Component):
@@ -11,11 +12,21 @@ class Aircraft(Component):
         self.FuselageGroup = FuselageGroup(self, self.design_config)
         self.components = [self.WingGroup, self.FuselageGroup]
 
+        # FAKE REFERENCE AREA FOR TESTING PURPOSES
+        self.reference_area = 500
+        # REMOVE BECAUSE MAGICAL DISNEY VALUE
+
         # Create all the parameters that this component must have here:
         # Use self.property = None
-        self.mtow = None
+        self.mtom = None
+        self.thrust_over_weight = None
+        self.weight_over_surface = None
+        self.reference_area = None
+        self.reference_thrust = None
 
         self._freeze()
 
     def size_self(self):
-        pass
+        self.reference_area = self.mtom * g / kwargs['weight_over_surface']
+        self.reference_thrust = self.mtom * g * thrust_over_weight
+        print(self.reference_area, self.reference_thrust)
