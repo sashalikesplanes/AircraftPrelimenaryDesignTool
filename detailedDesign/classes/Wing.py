@@ -24,7 +24,7 @@ class Wing(Component):
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
         self.span = (self.wing_area * self.aspect_ratio) ** 0.5
-        print(self.span)
+        # print(self.span)
         self.root_chord = (2 * self.wing_area) / (self.span * (1 + self.taper_ratio))
         self.tip_chord = self.root_chord * self.taper_ratio
-        print(self.root_chord, self.tip_chord)
+        # print(self.root_chord, self.tip_chord)
