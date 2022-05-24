@@ -114,7 +114,6 @@ def m2_to_ft2(m2):
     :param m2: m2
     :return: ft2
     """
-
     ft2 = 0.092903 * m2
     return ft2
 

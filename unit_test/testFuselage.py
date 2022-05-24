@@ -27,3 +27,9 @@ class TestFuselage(unittest.TestCase):
         self.assertEqual(self.aircraft.FuselageGroup.Fuselage.inner_diameter, 69)
         y = 72.189
         self.assertAlmostEqual(y, self.aircraft.FuselageGroup.Fuselage.outer_diameter, delta=y*testMargin)
+
+    def test_size_self(self):
+        # TODO: fix sizing self for the aircraft fuselage
+        self.aircraft.FuselageGroup.Fuselage.size_self()
+
+        self.assertTrue(True)
