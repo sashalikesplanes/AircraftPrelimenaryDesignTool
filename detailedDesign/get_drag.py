@@ -108,7 +108,7 @@ def get_drag(aircraft):
     xovercmaxVT = 0.3
     xovercmaxHT = 0.3
     cVT = 9.05
-    cHT = aircraft.FuselageGroup.HorizontalTail.MGC_HT
+    cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
     cfus = 183
     A = 6
     e = 0.8

@@ -10,6 +10,8 @@ class HorizontalTail(Component):
 
         self.Tail = Tail
 
+        self.MGC = 1
+
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self._freeze()
@@ -32,7 +34,7 @@ class HorizontalTail(Component):
         MGC_HT = None     # [m]
 
         l_FS_m = FuselageGroup.Fuselage.Cabin.length + \
-               FuselageGroup.Fuselage.FuelContainer.length
+            FuselageGroup.Fuselage.FuelContainer.length
         l_FS = m_to_ft(l_FS_m)   # [ft]
 
         # TODO: check MDN
