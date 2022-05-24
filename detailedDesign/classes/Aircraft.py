@@ -1,7 +1,9 @@
+import imp
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
 from misc.constants import g
+from detailedDesign.get_drag import get_drag
 
 
 class Aircraft(Component):
@@ -33,3 +35,5 @@ class Aircraft(Component):
         self.reference_thrust = self.mtom * g * self.thrust_over_weight
 
         self.oem = self.get_mass()
+
+        drag = get_drag(self)
