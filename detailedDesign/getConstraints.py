@@ -86,10 +86,11 @@ def get_constraints(aircraft, state):
         else:
             i += 1
 
-    min_value = min(values)
-    min_index = values.index(min_value)
+    max_value = max(values)
+    max_index = values.index(max_value)
+    optimum = intersections[max_index]
 
     #still have to compute T and S
-    return 
+    return optimum
 
 get_constraints(1,2)
