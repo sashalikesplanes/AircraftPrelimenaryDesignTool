@@ -29,6 +29,7 @@ class HorizontalTail(Component):
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
         sweep_HT = None   # [-]
         taper_HT = None   # [-]
+        MGC_HT = None     # [m]
 
         l_FS_m = FuselageGroup.Fuselage.Cabin.length + \
                FuselageGroup.Fuselage.FuelContainer.length
