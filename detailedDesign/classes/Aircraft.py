@@ -2,7 +2,7 @@ import imp
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
-from misc.constants import g
+import misc.constants as const
 from detailedDesign.get_drag import get_drag
 
 
@@ -23,6 +23,7 @@ class Aircraft(Component):
         # Use self.property = None
         self.mtom = None
         self.oem = None
+        self.fuel_mass = None
         self.thrust_over_weight = None
         self.weight_over_surface = None
         self.reference_area = None
@@ -30,13 +31,15 @@ class Aircraft(Component):
 
         # Drag states
         self.C_D_min = None
+        self.C_L_max = None
 
         self._freeze()
 
     def size_self(self):
-        self.reference_area = self.mtom * g / self.weight_over_surface
-        self.reference_thrust = self.mtom * g * self.thrust_over_weight
+        self.reference_area = self.mtom * const.g / self.weight_over_surface
+        self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
         self.oem = self.get_mass()
 
-        drag = get_drag(self)
+        drag, CDs = get_drag(self)
+        # Update CDmin
