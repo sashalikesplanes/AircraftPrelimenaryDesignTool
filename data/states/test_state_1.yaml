@@ -1,0 +1,4 @@
+# THIS FILE IS NEEDED FOR UNIT TESTS THUS SHOULD NOT BE CHANGED EVER
+velocity: 0  # [m/s]
+altitude: 0  # [m]
+range: 100000  # [m]

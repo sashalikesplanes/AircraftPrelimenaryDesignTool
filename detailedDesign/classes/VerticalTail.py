@@ -22,6 +22,24 @@ class VerticalTail(Component):
 
     def size_self(self):
         # Mass Sizing
+        self.size_self_geometry()
+        self.size_self_mass()
+
+    def size_self_geometry(self):
+
+        wing_area = self.Tail.FuselageGroup.Aircraft.reference_area
+        wing_span = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span
+        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / 2
+
+        self.tail_length = np.sqrt(
+            (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * 2 * fuselage_radius))
+
+        self.surface_area = self.volume_coefficient * \
+            wing_area * wing_span / self.tail_length
+
+        # TODO Calculate Mean Geometric Chord
+
+    def size_self_mass(self):
         WingGroup = self.Tail.FuselageGroup.Aircraft.WingGroup
         FuselageGroup = self.Tail.FuselageGroup
 

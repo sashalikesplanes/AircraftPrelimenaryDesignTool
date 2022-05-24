@@ -25,6 +25,22 @@ class Fuselage(Component):
 
         self._freeze()
 
+    @property
+    def length(self):
+        return self.Cabin.length + self.FuelContainer.length
+
+    @property
+    def inner_diameter(self):
+        return self.Cabin.diameter
+
+    @property
+    def outer_diameter(self):
+        if self.diameter is not None:
+            return self.diameter
+        else:
+            self.diameter = self.inner_diameter * 1.045 + 0.084
+            return self.outer_diameter
+
     def size_self(self):
         self.diameter = 1.045 * self.Cabin.diameter + 0.084
 
@@ -53,16 +69,18 @@ class Fuselage(Component):
 
         d_FS = m_to_ft(self.diameter)      # [ft]
 
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2) # [psi]
+        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)  # [psi]
 
-        V_p = m3_to_ft3(np.pi * self.Cabin.diameter ** 2 / 4 * self.Cabin.length)   # [ft3]
+        V_p = m3_to_ft3(np.pi * self.Cabin.diameter ** 2 /
+                        4 * self.Cabin.length)   # [ft3]
 
-        Delta_P = pa_to_psi(getPressure(self.Cabin.cabin_pressure_altitude) - state.pressure)   # [psi]
+        Delta_P = pa_to_psi(getPressure(
+            self.Cabin.cabin_pressure_altitude) - state.pressure)   # [psi]
         if Delta_P < 0:
             Delta_P = 0
 
-        mass_lbs = lbs_to_kg(0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) ** \
-                        -0.072 * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271)
+        mass_lbs = lbs_to_kg(0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) **
+                             -0.072 * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271)
 
         self.own_mass = lbs_to_kg(mass_lbs)
 
@@ -71,19 +89,3 @@ class Fuselage(Component):
             component.get_sized()
 
         self.size_self()
-
-    @property
-    def length(self):
-        return self.Cabin.length + self.FuelContainer.length
-
-    @property
-    def inner_diameter(self):
-        return self.Cabin.diameter
-
-    @property
-    def outer_diameter(self):
-        if self.diameter is not None:
-            return self.diameter
-        else:
-            self.diameter = self.inner_diameter * 1.045 + 0.084
-            return self.outer_diameter
