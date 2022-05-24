@@ -81,8 +81,8 @@ class FuelContainer(Component):
             total_boiloff = boiloff_rate*self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight*3600
             mass_total.append(total_boiloff+self.mass_tank)
 
-        plt.plot(thickness_insulation, mass_total)
-        plt.show()
+        # plt.plot(thickness_insulation, mass_total)
+        # plt.show()
 
 
 
