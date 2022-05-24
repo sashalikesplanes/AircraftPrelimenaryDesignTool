@@ -9,9 +9,10 @@ Aircraft:
       HorizontalTail:
         test_pop: 1
     Power:
-      test_porp: 1
       FuelCells:
-        test_prop: 1
+        conversion_efficiency: 0.5
+        current_density: 8  #[Amps/m2]
+        duration_flight: 8 #[h]
       Batteries:
         test_prop: 69
     Fuselage:
@@ -29,6 +30,10 @@ Aircraft:
         k_cabin: 1.17
       FuelContainer:
         tank_pressure: 1.2
+        density_H2: 71 #[kg/m3]
+        Vi: 0.072 # cte, extra volume needed for boiloff
+        fatiguestrength: 103*10**6 #[MPa], fatigue strength Al 2219-T81 after 500e6 cycles
+        yieldstrength: 352*10**6 #[MPa], yield strength Al 2219-T81
   WingGroup:
     test_prop_wing: 10
 
