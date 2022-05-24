@@ -1,19 +1,29 @@
 import unittest
-from misc.constants import testMargin
-
-from unit_test.testWeights import TestWeights
-from unit_test.testISA import TestISA
-
-# from unit_test.testExample import TestExample
 
 
-def main():
-    """Main function for running unit tests"""
+class TestStringMethods(unittest.TestCase):
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FOO')
+
+    def test_isupper(self):
+        self.assertTrue('FOO'.isupper())
+        self.assertFalse('Foo'.isupper())
+
+    def test_split(self):
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world'])
+        # check that s.split fails when the separator is not a string
+        with self.assertRaises(TypeError):
+            s.split(2)
+
+
+if __name__ == '__main__':
     unittest.main()
 
 
 if __name__ == "__main__":
-    main()
+    print("hello world")
+
 
 # Run the following two commands in order to generate a code coverage report.
 # coverage run -m unittest discover
