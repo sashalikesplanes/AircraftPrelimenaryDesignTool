@@ -102,10 +102,10 @@ def get_drag(aircraft):
     toverc = 0.12
     xovercmax = 0.4
     M = V/aircraft.states['cruise'].speed_of_sound
-    tovercVT = aircraft.Fuselagegroup.Tail.VerticalTail.toverc          #from NACA0010
-    tovercHT = aircraft.Fuselagegroup.Tail.HorizontalTail.toverc            #from NACA0010
-    xovercmaxVT = aircraft.Fuselagegroup.Tail.VerticalTail.xovercmax         #from NACA0010
-    xovercmaxHT = aircraft.Fuselagegroup.Tail.HorizontalTail.xovercmax        #from NACA0010
+    tovercVT = aircraft.FuselageGroup.Tail.VerticalTail.toverc          #from NACA0010
+    tovercHT = aircraft.FuselageGroup.Tail.HorizontalTail.toverc            #from NACA0010
+    xovercmaxVT = aircraft.FuselageGroup.Tail.VerticalTail.xovercmax         #from NACA0010
+    xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax        #from NACA0010
     cVT = 9.05
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
     cfus = 183 # length of the fuselage
