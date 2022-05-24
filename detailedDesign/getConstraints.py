@@ -71,17 +71,17 @@ def get_constraints(aircraft, state):
     values = []
     i = 2000
     while i < 100000:
-        if thrust_loading_cruise == V_stall:
+        if thrust_loading_cruise[i] == V_stall[i]:
             intersections.append(i)
-            values.append(np.sqrt(2 / density / C_L_max * i))
+            values.append(thrust_loading_cruise[i])
             i += 1
-        elif thrust_loading_climb_rate == V_stall:
+        elif thrust_loading_climb_rate[i] == V_stall[i]:
             intersections.append(i)
-            values.append(np.sqrt(2 / density / C_L_max * i))
+            values.append(thrust_loading_climb_rate[i])
             i += 1
-        elif thrust_loading_constant_turn == V_stall:
+        elif thrust_loading_constant_turn[i] == V_stall[i]:
             intersections.append(i)
-            values.append(np.sqrt(2 / density / C_L_max * i))
+            values.append(thrust_loading_constant_turn[i])
             i += 1
         else:
             i += 1
