@@ -18,26 +18,6 @@ def kg_to_lbs(kg):
     return lbs
 
 
-def ft_to_m(ft):
-    """
-    this function converts ft to m
-    :param ft: feet
-    :return: m
-    """
-    m = ft * 0.3048
-    return m
-
-
-def m_to_ft(m):
-    """
-    this function converts m to ft
-    :param m: metre
-    :return: ft
-    """
-    ft = m / 0.3048
-    return ft
-
-
 def kts_to_ms(kts):
     """
     this function converts kts to m/s
@@ -96,3 +76,64 @@ def inch_to_m(inch):
     """
     m = inch * 0.0254
     return m
+
+
+def pa_to_psi(pa):
+    """
+    this function converts Pa to PSI
+    :param pa: Pascal
+    :return: PSI
+    """
+    psi = pa * 0.000145038
+    return psi
+
+
+def bar_to_pa(bar):
+    """
+    this function converts bar to Pa
+    :param bar: bar
+    :return: Pa
+    """
+    pa = 100000 * bar
+    return pa
+
+
+def m3_to_ft3(m3):
+    """
+    this function converts m3 to ft3
+    :param m3: m3
+    :return: ft3
+    """
+    ft3 = 35.3147 * m3
+    return ft3
+
+
+def m2_to_ft2(m2):
+    """
+    this function converts m2 to ft2
+    :param m2: m2
+    :return: ft2
+    """
+
+    ft2 = 0.092903 * m2
+    return ft2
+
+
+def ft_to_m(ft):
+    """
+    this function converts ft to m
+    :param ft: feet
+    :return: m
+    """
+    m = ft * 0.3048
+    return m
+
+
+def m_to_ft(m):
+    """
+    this function converts m to ft
+    :param m: metre
+    :return: ft
+    """
+    ft = m / 0.3048
+    return ft
