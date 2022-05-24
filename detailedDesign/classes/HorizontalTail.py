@@ -20,22 +20,29 @@ class HorizontalTail(Component):
         FuselageGroup = self.Tail.FuselageGroup
 
         state = WingGroup.Aircraft.states["cruise"]
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)
-        n_z = FuselageGroup.Aircraft.ultimate_load_factor
-        W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)
-        S_HT = None       # [ft2]
-        thickness_to_chord = WingGroup.Wing.thickness_chord_ratio
-        sweep_HT = None
-        taper_HT = None
-        l_FS = FuselageGroup.Fuselage.Cabin.length + \
-            FuselageGroup.Fuselage.FuelContainer.length
+
+        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)   # [psi]
+        n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
+        W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)   # [lbs]
+
+        S_HT = None  # [ft2]
+        thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
+        sweep_HT = None   # [-]
+        taper_HT = None   # [-]
+
+        l_FS_m = FuselageGroup.Fuselage.Cabin.length + \
+               FuselageGroup.Fuselage.FuelContainer.length
+        l_FS = m_to_ft(l_FS_m)   # [ft]
+
         # TODO: check MDN
         # TODO: Size these properly
         MAGICAL_DISNEY_NUMBER = 0.55
-        l_HT = l_FS * MAGICAL_DISNEY_NUMBER     # [ft]
-        span_HT = None                  # [ft]
-        root_chord_thickness_HT = None   # [inches]
-        aspect_ratio_HT = None   # [-]
+        l_HT = l_FS * MAGICAL_DISNEY_NUMBER  # [ft]
+        span_HT = None  # [ft]
+        root_chord_thickness_HT = None  # [inches]
+        aspect_ratio_HT = None  # [-]
 
-        self.own_mass = 0.016*(n_z*W_O)**0.414*q**0.168*S_HT**0.896*((100*thickness_to_chord) / np.cos(
-            sweep_HT))**(-0.12)*(aspect_ratio_HT/np.cos(sweep_HT)**2)**0.043*taper_HT**(-0.02)
+        mass_lbs = 0.016 * (n_z * W_O) ** 0.414 * q ** 0.168 * S_HT ** 0.896 * ((100 * thickness_to_chord) / np.cos(
+            sweep_HT)) ** (-0.12) * (aspect_ratio_HT / np.cos(sweep_HT) ** 2) ** 0.043 * taper_HT ** (-0.02)
+
+        self.own_mass = lbs_to_kg(mass_lbs)  # [kg]

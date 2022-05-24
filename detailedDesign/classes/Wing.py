@@ -62,14 +62,17 @@ class Wing(Component):
 
         # Mass Sizing
         state = self.WingGroup.Aircraft.states["cruise"]
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)
-        S_W = m2_to_ft2(self.wing_area)
-        W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
-        sweep = np.pi / 180. * self.sweep  # put it in radians
-        n_z = self.WingGroup.Aircraft.ultimate_load_factor
-        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)
 
-        self.own_mass = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
+        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)    # [psi]
+        S_W = m2_to_ft2(self.wing_area)     # [ft2]
+        W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
+        sweep = np.pi / 180. * self.sweep  # [rads]
+        n_z = self.WingGroup.Aircraft.ultimate_load_factor
+        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)   # [lbs]
+
+        mass_lbs = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
             * (self.aspect_ratio / np.cos(sweep) ** 2) ** 0.6 * q ** 0.006 \
             * self.taper_ratio ** 0.04 * ((100 * self.thickness_chord_ratio)
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
+
+        self.own_mass = lbs_to_kg(mass_lbs)
