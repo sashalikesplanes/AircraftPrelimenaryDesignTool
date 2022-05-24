@@ -7,9 +7,11 @@ Aircraft:
     Tail:
       test_prop: 1
       VerticalTail:
-        test_prop: 1
+        tovercVT: 0.1
+        xovercmaxVT: 0.3
       HorizontalTail:
-        test_pop: 1
+        tovercHT: 0.1
+        xovercmaxHT: 0.3
     Power:
       FuelCells:
         conversion_efficiency: 0.5  # [-]
