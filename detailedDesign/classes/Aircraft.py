@@ -14,6 +14,9 @@ class Aircraft(Component):
 
         # FAKE REFERENCE AREA FOR TESTING PURPOSES
         self.reference_area = 500
+        # I SWEAR TO GOD THIS TEST VALUE SHOULDN'T BE HERE
+
+
         # REMOVE BECAUSE MAGICAL DISNEY VALUE
         self.states = states_dict
 
@@ -32,7 +35,7 @@ class Aircraft(Component):
         self._freeze()
 
     def size_self(self):
-        self.reference_area = self.mtom * g / self.weight_over_surface
+        self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * g * self.thrust_over_weight
 
         self.oem = self.get_mass()
