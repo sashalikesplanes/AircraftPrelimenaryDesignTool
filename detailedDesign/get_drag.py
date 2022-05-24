@@ -81,8 +81,7 @@ def calc_CDmin_tail(CDf, FFtail, IF):
 
 
 def calc_CDmin(CDmin_wing, CDmin_fuselage, CDmin_tail):
-    i = CDmin_wing + CDmin_fuselage + CDmin_tail
-    CDmin = i + 0.0025  # for misc
+    CDmin = CDmin_wing + CDmin_fuselage + CDmin_tail + 0.0025 #for misc
     return CDmin
 
 
@@ -103,14 +102,14 @@ def get_drag(aircraft):
     toverc = 0.12
     xovercmax = 0.4
     M = V/aircraft.states['cruise'].speed_of_sound
-    tovercVT = 0.1
-    tovercHT = 0.1
-    xovercmaxVT = 0.3
-    xovercmaxHT = 0.3
+    tovercVT = 0.1          #from NACA0010
+    tovercHT = 0.1          #from NACA0010
+    xovercmaxVT = 0.3       #from NACA0010
+    xovercmaxHT = 0.3       #from NACA0010
     cVT = 9.05
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
-    cfus = 183
-    A = 6
+    cfus = 183 # length of the fuselage
+    AR = 6
     e = 0.8
     CL = 0.521
 
