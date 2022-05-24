@@ -13,14 +13,12 @@ class Wing(Component):
         self.HLDs = HLDs(self, self.design_config)
         self.components = [self.HLDs]
 
-        self.taper = None
-
-        self.wing_area = None
-        self.span = None
-        self.tip_chord = None
-        self.mean_geometric_chord = None
-        self.root_chord = None
-        self.sweep = None
+        self.wing_area = 0  # Initial Value
+        self.span = 0  # Initial Value
+        self.tip_chord = 0  # Initial Value
+        self.mean_geometric_chord = 0  # Initial Value
+        self.root_chord = 0  # Initial Value
+        self.sweep = 0  # Initial Value
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
@@ -68,8 +66,8 @@ class Wing(Component):
         S_W = m2_to_ft2(self.wing_area)
         W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
         sweep = np.pi / 180. * self.sweep  # put it in radians
-        n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
-        W_O = kg_to_lbs(self.FuselageGroup.Aircraft.mtom)
+        n_z = self.WingGroup.Aircraft.ultimate_load_factor
+        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)
 
         self.own_mass = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
             * (self.aspect_ratio / np.cos(sweep) ** 2) ** 0.6 * q ** 0.006 \
