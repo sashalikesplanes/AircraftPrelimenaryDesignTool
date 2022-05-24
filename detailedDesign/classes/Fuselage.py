@@ -53,3 +53,9 @@ class Fuselage(Component):
 
         self.own_mass = lbs_to_kg(0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) ** \
                         -0.072 * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271)
+
+    def get_sized(self):
+        for component in self.components:
+            component.get_sized()
+
+        self.size_self()
