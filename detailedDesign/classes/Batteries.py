@@ -3,8 +3,8 @@ from detailedDesign.classes.Component import Component
 
 
 class Batteries(Component):
-    def __init__(self, Power, config):
-        my_config = super().__init__(config)
+    def __init__(self, Power, design_config):
+        super().__init__(design_config)
         self.Power = Power
 
         # Create all the parameters that this component must have here:

@@ -5,12 +5,14 @@ from detailedDesign.classes.Batteries import Batteries
 
 
 class Power(Component):
-    def __init__(self, FuselageGroup, config):
-        my_config = super().__init__(config)
+    def __init__(self, FuselageGroup, design_config):
+        super().__init__(design_config)
+
         self.FuselageGroup = FuselageGroup
-        self.FuelCells = FuelCells(self, my_config)
-        self.Batteries = Batteries(self, my_config)
-        self.components += [self.FuelCells, self.Batteries]
+
+        self.FuelCells = FuelCells(self, self.design_config)
+        self.Batteries = Batteries(self, self.design_config)
+        self.components = [self.FuelCells, self.Batteries]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value

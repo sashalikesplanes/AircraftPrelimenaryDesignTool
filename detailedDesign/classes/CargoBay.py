@@ -2,10 +2,10 @@ from detailedDesign.classes.Component import Component
 
 
 class CargoBay(Component):
-    def __init__(self, Fuselage, config):
-        my_config = super().__init__(config)
+    def __init__(self, Fuselage, design_config):
+        super().__init__(design_config)
+
         self.Fuselage = Fuselage
-        self.config = my_config
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value

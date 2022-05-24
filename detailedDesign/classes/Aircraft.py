@@ -4,14 +4,19 @@ from detailedDesign.classes.WingGroup import WingGroup
 
 
 class Aircraft(Component):
-    def __init__(self, config):
-        my_config = super().__init__(config)
+    def __init__(self, design_config):
+        super().__init__(design_config)
 
-        self.WingGroup = WingGroup(self, my_config)
-        self.FuselageGroup = FuselageGroup(self, my_config)
+        self.WingGroup = WingGroup(self, self.design_config)
+        self.FuselageGroup = FuselageGroup(self, self.design_config)
         self.components = [self.WingGroup, self.FuselageGroup]
 
-        # Set all the variables you may need
+        # FAKE REFERENCE AREA FOR TESTING PURPOSES
+        self.reference_area = 500
+        # REMOVE BECAUSE MAGICAL DISNEY VALUE
+
+        # Create all the parameters that this component must have here:
+        # Use self.property = None
         self.mtow = None
 
         self._freeze()

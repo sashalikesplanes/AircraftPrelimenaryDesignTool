@@ -3,8 +3,8 @@ from detailedDesign.classes.Component import Component
 
 
 class HLDs(Component):
-    def __init__(self, Wing, config):
-        my_config = super().__init__(config)
+    def __init__(self, Wing, design_config):
+        super().__init__(design_config)
         self.Wing = Wing
 
         # Create all the parameters that this component must have here:

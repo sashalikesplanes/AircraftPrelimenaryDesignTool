@@ -4,12 +4,12 @@ from detailedDesign.classes.Component import Component
 
 
 class Cabin(Component):
-    def __init__(self, Fuselage, config):
-        my_config = super().__init__(config)
+    def __init__(self, Fuselage, design_config):
+        super().__init__(design_config)
         self.Fuselage = Fuselage
-        self.config = my_config
-        self.max_seats_abreast = my_config["max_seats_abreast"]
-        self.max_rows_per_floor = my_config["max_rows_per_floor"]
+        # self.config = my_config
+        # self.max_seats_abreast = my_config["max_seats_abreast"]
+        # self.max_rows_per_floor = my_config["max_rows_per_floor"]
 
         # This list could be used later to load the passengers for the cg range diagram
         self.components = []
@@ -22,7 +22,7 @@ class Cabin(Component):
         self.rows_per_floor = None
         self.aisle_count = None
 
-        self.passengers = my_config["passengers"]
+        # self.passengers = my_config["passengers"]
 
         self.height = None
         self.width = None
@@ -68,10 +68,10 @@ class Cabin(Component):
         self.aisle_count = n_aisles
 
         # Calculate the dimensions of the rectangular cabin
-        self.height = n_floors * self.config["floor_height"]
+        self.height = n_floors * self.floor_height
         self.width = n_sa * \
-            self.config["seat_width"] + n_aisles * self.config["aisle_width"]
-        self.length = n_rows * self.config["k_cabin"]
+            self.seat_width + n_aisles * self.aisle_width
+        self.length = n_rows * self.k_cabin
         # Find the diameter of the cabin using the width and the height and the smallest circle
         self.diameter = 2 * ((0.5 * self.width) ** 2 +
                              (0.5 * self.height) ** 2) ** 0.5

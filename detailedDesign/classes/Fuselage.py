@@ -7,13 +7,13 @@ from detailedDesign.classes.CargoBay import CargoBay
 
 
 class Fuselage(Component):
-    def __init__(self, FuselageGroup, config):
-        my_config = super().__init__(config)
+    def __init__(self, FuselageGroup, design_config):
+        super().__init__(design_config)
         self.FuselageGroup = FuselageGroup
 
-        self.CargoBay = CargoBay(self, my_config)
-        self.Cabin = Cabin(self, my_config)
-        self.FuelContainer = FuelContainer(self, my_config)
+        self.CargoBay = CargoBay(self, self.design_config)
+        self.Cabin = Cabin(self, self.design_config)
+        self.FuelContainer = FuelContainer(self, self.design_config)
         self.components = [self.CargoBay, self.Cabin, self.FuelContainer]
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
