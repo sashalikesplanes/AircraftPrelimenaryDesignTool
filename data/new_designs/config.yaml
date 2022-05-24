@@ -7,15 +7,23 @@ Aircraft:
     Tail:
       test_prop: 1
       VerticalTail:
-        tovercVT: 0.1
-        xovercmaxVT: 0.3
+        toverc: 0.1 # [-] - NACA0010
+        xovercmax: 0.3 # [-] - NACA0010
+        taper: 0.3 # [-] - picked from ADSEE
+        aspect_ratio: 1.5 # [-] - picked from ADSEE
+        leading_edge_sweep: 0.5 # [rad] - picked from ADSEE
+        volume_coefficient: 0.09 # [-] - General Aviation Design
       HorizontalTail:
-        tovercHT: 0.1
-        xovercmaxHT: 0.3
+        toverc: 0.1 # [-] - NACA0010
+        xovercmax: 0.3 # [-] - picked from ADSEE
+        taper: 0.3 # [-] - picked from ADSEE
+        aspect_ratio: 4 # [-] - picked from ADSEE
+        three_quarter_chord_sweep: 0 # [rad] - picked from ADSEE
+        volume_coefficient: 1.0 # [-] General Aviation Design
     Power:
       FuelCells:
-        conversion_efficiency: 0.5 # [-]
-        current_density: 8 # [Amps/m2]
+        conversion_efficiency: 0.5 # [-] - multiple literature source
+        current_density: 8 # [Amps/m2] - same paper as above
         duration_flight: 8 # [h]
       Batteries:
         test_prop: 69
@@ -51,7 +59,8 @@ Aircraft:
     Wing:
       aspect_ratio: 8 # [-]
       taper_ratio: 0.8 # [-]
-      thickness_chord_ratio: 0.12 # [-]
+      thickness_chord_ratio: 0.12 # [-] from airfoil
+      xovercmax: 0.4 # [-] from airfoil
 
       HLDs:
         test_prop: 1
