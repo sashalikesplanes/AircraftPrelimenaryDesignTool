@@ -1,9 +1,12 @@
 from misc.constants import R_air, g
+import numpy as np
 
 p0 = 101325
 rho0 = 1.225
 T0 = 273.15 + 15
 a = -0.0065
+gamma_air = 1.4
+
 
 def getTemperature(h):
     """Calculates low level density using a provided height value"""
@@ -16,6 +19,11 @@ def getTemperature(h):
     return T1
 
 
+def getSpeedOfSound(h):
+    """Calculate the speed of sounds at the given altitude"""
+    temperature = getTemperature(h)
+
+    return np.sqrt(gamma_air * R_air * temperature)
 
 
 def getDensity(h):

@@ -13,6 +13,8 @@ class State:
 
         self.velocity = source["velocity"]
         self.altitude = source["altitude"]
+        self.range = source["range"]
+
         h = self.altitude
 
         self.pressure = getPressure(h)

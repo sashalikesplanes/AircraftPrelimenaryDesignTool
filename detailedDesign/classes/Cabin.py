@@ -26,7 +26,7 @@ class Cabin(Component):
 
         self.height = None
         self.width = None
-        self.length = None
+        self.length = 1  # Initial Value
         self.diameter = None
 
         self._freeze()
