@@ -33,8 +33,8 @@ Aircraft:
     test_prop_wing: 10
 
     Wing:
-      aspectRatio: 8
-      taperRatio: 0.8
+      aspect_ratio: 8
+      taper_ratio: 0.8
 
       HLDs:
         test_prop: 1
