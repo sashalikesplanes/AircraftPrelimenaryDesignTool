@@ -22,6 +22,10 @@ class State:
         return self.source["range"]
 
     @property
+    def duration(self):
+        return self.source["range"] / self.source["speed"]
+
+    @property
     def pressure(self):
         return getPressure(self.altitude)
 
