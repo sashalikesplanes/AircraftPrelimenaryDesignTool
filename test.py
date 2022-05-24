@@ -3,6 +3,7 @@ import unittest
 from unit_test.testExample import TestStringMethods
 from unit_test.testWeights import TestWeights
 from unit_test.testSizing import TestSizing
+from unit_test.testFuselage import TestFuselage
 
 
 if __name__ == '__main__':

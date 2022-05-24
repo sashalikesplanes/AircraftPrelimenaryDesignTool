@@ -12,7 +12,7 @@ class TestFuselage(unittest.TestCase):
         config_file = Path('data', 'new_designs', 'config.yaml')
         states = {"cruise": State('cruise')}
         self.aircraft = Aircraft(openData(config_file), states)
-        self.aircraft.FuselageGroup.get_sized()
+        # self.aircraft.FuselageGroup.get_sized()
 
     def test_fuselage_mass(self):
         print(self.aircraft)
