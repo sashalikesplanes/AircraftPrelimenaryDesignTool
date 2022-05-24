@@ -28,12 +28,10 @@ class Component:
         print(f"WARNING! {self} IS NOT BEING SIZE")
 
     def get_sized(self):
-        for component in self.components:
-            component.get_sized()
-
         self.size_self()
 
-        # Stuff copied to prevent new attributes being added to classes
+        for component in self.components:
+            component.get_sized()
 
     def unwrap_design_config(self, design_config):
         return design_config[type(self).__name__]

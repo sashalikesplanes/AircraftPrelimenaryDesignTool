@@ -7,13 +7,31 @@ from misc.constants import g
 
 def wingSizing(params, rho):
 
-    wingLift = params["totalMass"] * g
+    # Check if blimp concept has enough lift to compensate the weight and not too much
+    if ["designConcept"] == 1:
+        if abs(params["totalMass"] * g - params["balloonLift"]) > 5:
+            raise ValueError("Balloon Lift does not match weight")
+        params["wingArea"] = 0
+        params["wingStructuralMass"] = 0
+
+    # Check for aircraft concept that no lift is calculated from the fuel
+    elif ["designConcept"] == 4:
+        if abs(params["balloonLift"]) > 5:
+            raise ValueError(
+                "In a plane concept there is some balloon lift...")
+
+    wingLift = params["totalMass"] * g - params["balloonLift"]
     params["wingArea"] = wingLift * params["liftFactor"] / (0.5 * rho * params["velocity"]
                                                             ** 2 * params["wingC_L_design"])
+    # set wing area to zero in case of negative surface area
+    if params["wingArea"] < 0:
+        print("WARNING WING AREA IS NEGATIVE : ", params["wingArea"])
+        params["wingArea"] = 0.001
 
     params["wingC_D"] = params['wingDragCorrection'] * params["wingC_D_0"]
 
     span = np.sqrt(params["wingArea"] * params["wingAspectRatio"])
+    # chord = params["wingArea"] / span
     chord = span / params["wingAspectRatio"]
     c2 = params["wingHalfChordSweep"]
 
@@ -22,13 +40,7 @@ def wingSizing(params, rho):
     MAC = 2 / 3 * rootChord * (1 + params["wingTaperRatio"] +
                                params["wingTaperRatio"] ** 2)/(1 + params["wingTaperRatio"])
     params["meanAerodynamicChord"] = MAC
-    params["wingSpan"] = span
 
-    flap_area_to_wing_area = params["flapAreaToWingArea"]
-    flap_area = params["wingArea"] * flap_area_to_wing_area
-
-    params["wingStructuralMass"] = 0.0051 * params["wingArea"] ** 0.649 * (flap_area) ** 0.1 * (params["ultimateLoadFactor"] * params["totalMass"] * g) ** 0.557 * (
-        1 + params["wingTaperRatio"]) ** 0.1 * params["wingAspectRatio"] ** 0.5 / (params["thicknessOverChord"] ** 0.4 * np.cos(params["wingQuarterChordSweep"]))
-
-    params["wingStructuralMass"] = params["wingStructuralMass"] * \
-        params["wingStructureContingency"]
+    params["wingStructuralMass"] = 0.00125 * wingLift * \
+        (span/np.cos(c2)) ** 0.75 * (1 + (6.3 * np.cos(c2) / span) ** 0.5) * (params["maxLoadFactor"] * 1.5) ** 0.55 * (
+        span * params["wingArea"] / (params["thicknessOverChord"] * chord * wingLift * np.cos(c2))) ** 0.3

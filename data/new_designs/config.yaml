@@ -9,9 +9,10 @@ Aircraft:
       HorizontalTail:
         test_pop: 1
     Power:
-      test_porp: 1
       FuelCells:
-        test_prop: 1
+        conversion_efficiency: 0.5
+        current_density: 8  #[Amps/m2]
+        duration_flight: 8 #[h]
       Batteries:
         test_prop: 69
     Fuselage:
@@ -27,14 +28,26 @@ Aircraft:
         floor_height: 2.5
         # Largest k from the ADSEE I formula sheet
         k_cabin: 1.17
+        cabin_pressure_altitude: 3000  # [m]
       FuelContainer:
-        test_prop: 1
+        tank_pressure: 120000 # [Pa]
+        density_H2: 70.85 # [kg/m3]
+        Vi: 0.072 # cte, extra volume needed for boiloff
+        fatiguestrength: 103000000 # [Pa], fatigue strength Al 2219-T81 after 500e6 cycles
+        yieldstrength: 352000000 # [Pa], yield strength Al 2219-T81
+        tank_density: 2840 # [kg/m2]
+        temp_LH2: 20 # [K]
+        temp_room: 293 # [K]
+        thermal_cond: 0.0046 # [W/mK]
+        E_boiloff: 446592 # [J/kg]
+        density_insulation: 49.8 #[kg/m3]
   WingGroup:
     test_prop_wing: 10
 
     Wing:
       aspect_ratio: 8
       taper_ratio: 0.8
+      thickness_chord_ratio: 0.12
 
       HLDs:
         test_prop: 1

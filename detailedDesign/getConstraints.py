@@ -122,4 +122,4 @@ def get_constraints(aircraft):
     return V_stall, TW, WS
 
 if __name__ == "__main__":
-    get_constraints(1,2)
+    get_constraints(1, 2)

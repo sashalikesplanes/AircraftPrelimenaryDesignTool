@@ -8,6 +8,8 @@ class Engines(Component):
 
         self.WingGroup = WingGroup
 
+        self.thrust_specific_fuel_consumption = 1
+
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
