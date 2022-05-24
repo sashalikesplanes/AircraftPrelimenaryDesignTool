@@ -7,22 +7,25 @@ def get_constraints(aircraft):
     """
     Produce a constraint diagram - W/S vs T/W
     """
+
+    #Parameters needed
     aspect_ratio = aircraft.WingGroup.Wing.AspectRatio
     oswald_efficiency = 1.78 * (1 - 0.045 * aspect_ratio ** 0.68) - 0.64
     lift_induced_drag_constant = 1 / (np.pi * aspect_ratio * oswald_efficiency)
 
-    velocity = 200
-    density = 0.809
+    velocity = aircraft.states['cruise'].velocity
+    density = aircraft.states['cruise'].density
     dynamic_pressure = 0.5 * density * velocity ** 2
 
     max_bank_angle = 40 / 180 * np.pi  # rad   #taken from regulation
     load_factor = 1 / np.cos(max_bank_angle)
 
-    C_D_min = 0.055  # will have to be changed in order to account for it iteratively changing
-    C_L_max = 1.8  # will have to be changed in order to account for it iteratively changing
+    C_D_min = aircraft.C_D_min  
+    C_L_max = aircraft.C_L_max  
     required_climb_rate = 10  # from regulation I believe but I cannot find anything about it
     #therefore we take ot from the yamel and it is something we change in order to make it work
 
+    #Start calculating the functions
     wing_loading_points = np.linspace(2000, 100000, 1000)
 
     # q using turning speed and associated altitude
@@ -38,6 +41,7 @@ def get_constraints(aircraft):
     thrust_loading_cruise = dynamic_pressure * C_D_min / wing_loading_points + \
         lift_induced_drag_constant / dynamic_pressure * wing_loading_points
 
+    #Plot the fuctions
     fig, ax = plt.subplots()
 
     ax.plot(wing_loading_points, thrust_loading_cruise,
@@ -55,10 +59,6 @@ def get_constraints(aircraft):
     plt.legend()
 
     plt.show()
-
-    # Vstall regulated by CS 25.103
-    # I actually have to calculate the stall speed from the CLmax
-  
 
     #Calculate optimum
         #If they do not intersect
@@ -114,12 +114,19 @@ def get_constraints(aircraft):
     
     print(TW, WS)
 
+    # Vstall regulated by CS 25.103: not really specified
+    # I actually have to calculate the stall speed from the CLmax
     #once optimum point is found we use the value of W/S to calculate the V_stall for the CLmax
     #provided and we can calculate the V_stall from here
 
     V_stall = np.sqrt(2 / density / C_L_max * WS)
     
-    return V_stall, TW, WS
+    #save results into the aircraft
+    aircraft.thrust_over_weight = TW
+    aircraft.weight_over_surface = WS
+    #save stall speed
+
+    return 
 
 if __name__ == "__main__":
     get_constraints(1, 2)
