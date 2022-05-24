@@ -54,8 +54,7 @@ class Fuselage(Component):
         # MAKE MASS OF THING
         state = self.FuselageGroup.Aircraft.states["cruise"]
 
-        length = self.Cabin.length + self.FuelContainer.length
-        l_FS = m_to_ft(length)  # [ft]
+        l_FS = m_to_ft(self.length)  # [ft]
 
         S_FUS_m = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * l_FS
         S_FUS = m2_to_ft2(S_FUS_m)  # [ft2]
