@@ -1,4 +1,4 @@
-designConcept: 3 # a value between 1 and 4 [-]
+designConcept: 4 # a value between 1 and 4 [-]
 # 1 represents a wingless blimp
 # 2 represents a hybrid with low CR (max 5), gaseous H2
 # 3 represents a hybrid with high CR (max 100), gaseous H2
@@ -7,43 +7,54 @@ designConcept: 3 # a value between 1 and 4 [-]
 # Payload specification
 cargoMass: 0 # [kg]
 cargoVolume: 0 # [m^3]
-passengers: 500 # [-]
+passengers: 1000 # [-]
 passengerMass: 120 # [kg]
 payloadMass: null # [kg]
 
 # Cruise specification
-altitude: 11000 # [m] 8500 for 100 cr, 10999 for 20 cr
+altitude: 4000 # [m] 8500 for 100 cr, 10999 for 20 cr
 velocity: 200 # [m/s] = 501 kph
-flightRange: 8600000 # [m]0 = 10,000 km
+flightRange: 8000000 # [m] = 10,000 km
 
 # Balloon design parameters
 shape: bullet #
+<<<<<<< HEAD
+compressionRatio: 250 # [-] Density of compressed hydrogen / density of sea level hydrogen
+=======
 compressionRatio: 700 # [-] Density of compressed hydrogen / density of sea level hydrogen
-balloonFinesseRatio: 6.5 # [-] To optimize
-hasSolarPanels: false # [Bool] Determines if the airship has solar panels
+>>>>>>> 652d75a515ec6c25d67a7aa95ced8bd1c2f4c999
 factorOfSafety: 2 # [-]
 balloonMassContingency: 2 # [-]
 dragContingency: 1.5 # [-]
-propulsionContingency: 1.2 # [-]
+propulsionContingency: 1.25 # [-]
+fuselageStructureContingency: 1.25
+tailStructuralContingency: 1.5
+takeOffPowerContingency: 1.5
+wingStructureContingency: 1.25
 balloonVolume: 0.1 # [m^3]
 balloonRadius: 0.1 # [m]
 wallThickness: 0.1 # [m]
 
-# Fuel container for design 4
-containerToFuelMassRatio: 0.4 # [-]
 
 # Fuselage design parameters
-fuselageRadius: 4 # [m] - random shit
-fuselageLength: 25 # [m] - random shit
-safetyFactor: 1.4 # [-] made up
+fuselageRadius: 5.9 # [m] - random shit
+fuselageLength: 78.39 # [m] - random shit
+safetyFactor: 1.4 # [-] made up, but regular value
+
+# Tail stuff
+tailStructuralMass: 0
 
 # Propulsion design parameters
 propEfficiency: null # [-] engine * fuel efficiency
 engineEfficiency: 0.929 # [-]
 fuelCellEfficiency: 0.6 #[-]
 engineSpecificPower: 11100 # [W/kg]
+engineThrust: 10000 # [N]
+engineCount: 8 # [-]
 fuelCellSpecificPower: 8000 # [W/kg]
-dragReductionFactor: 0.9 # [-] due to distributed propulsion, very optimisitc
+
+# Crew data
+pilotCount: 3 # [-]
 
 # Wing design parameters
 wingAlpha: null # [rad]
@@ -57,9 +68,11 @@ maxLoadFactor: 2.5 # [-] CS 25
 thicknessOverChord: 0.12 # [-] NACA 0012
 maxThicknessLocationAirfoil: 0.3
 wingQuarterChordSweep: 0 # [rad]
-wingHalfChordSweep: 0 # [rad]
-wingTaperRatio: 1 # [-]
-meanAerodynamicChord: 0
+wingHalfChordSweep: null # [rad]
+wingTaperRatio: 0.3 # [-]
+meanAerodynamicChord: 0 #[-]
+wingSpan: 0 #[-]
+flapAreaToWingArea: 0.4 # a guess
 
 # Design Variables - Masses
 fuselageStructuralMass: 1 # [kg]
@@ -71,22 +84,15 @@ propulsionMass: 1 # [kg]
 totalMass: 1 # [kg]
 
 # Design Variables - aero coefficients
-balloonC_D: 0.035 # [-] C_D of a streamline body
-fuselageC_D: 0.295 # [-] https://www.grc.nasa.gov/www/k-12/airplane/shaped.html
-wingC_L_design: 0.8 # [-] sourced from Aero engineer
+wingC_L_design: 0.6 # [-] sourced from Aero engineer
 
 # Design Variables - characteristic areas
 fuselageArea: 1 # [m^2]
 balloonArea: 1 # [m^2]
 wingArea: 1 # [m^2]
 
-# Solar variables
-solarMass: 1 # [kg]
-solarEnergy: 0 # [J]
-solarPower: 0 # [W]
-
 # Design Variables - totals
 requiredEnergy: null # [J]
 totalDrag: null # [N]
+totalC_D: null # [-]
 balloonLift: 0 # [N]
-
