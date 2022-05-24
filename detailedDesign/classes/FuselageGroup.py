@@ -3,6 +3,7 @@ from detailedDesign.classes.Component import Component
 from detailedDesign.classes.Tail import Tail
 from detailedDesign.classes.Power import Power
 from detailedDesign.classes.Fuselage import Fuselage
+from detailedDesign.classes.Miscellaneous import Miscellaneous
 
 
 class FuselageGroup(Component):
@@ -14,6 +15,8 @@ class FuselageGroup(Component):
         self.Tail = Tail(self, self.design_config)
         self.Power = Power(self, self.design_config)
         self.Fuselage = Fuselage(self, self.design_config)
+        self.Miscellaneous = Miscellaneous(self, self.design_config)
+
         self.components = [self.Tail, self.Power, self.Fuselage]
 
         # Create all the parameters that this component must have here:

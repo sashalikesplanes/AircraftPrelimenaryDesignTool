@@ -22,6 +22,7 @@ class Fuselage(Component):
 
         # Dimensions
         self.diameter = None
+        self.length = None
 
         self._freeze()
 
@@ -60,3 +61,7 @@ class Fuselage(Component):
             component.get_sized()
 
         self.size_self()
+
+    @property
+    def length(self):
+        return self.Cabin.length + self.FuelContainer.length
