@@ -28,6 +28,6 @@ class Aircraft(Component):
         self._freeze()
 
     def size_self(self):
-        self.reference_area = self.mtom * g / kwargs['weight_over_surface']
-        self.reference_thrust = self.mtom * g * thrust_over_weight
+        self.reference_area = self.mtom * g / self.weight_over_surface
+        self.reference_thrust = self.mtom * g * self.thrust_over_weight
         print(self.reference_area, self.reference_thrust)
