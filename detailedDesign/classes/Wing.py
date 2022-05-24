@@ -37,10 +37,8 @@ class Wing(Component):
         C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2
 
-<<<<<<< HEAD
-
         C_D_min = self.WingGroup.Aircraft.C_D_min
-        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption #g/kNs
+        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption  # [g/kNs]
         c_t_Imp = c_t_SI * 9.81 / 1e6 * 3600
 
         optimal_effective_AR = C_LC * C_LC / np.pi / (V_C / Range \
