@@ -59,7 +59,8 @@ Aircraft:
     Wing:
       aspect_ratio: 8 # [-]
       taper_ratio: 0.8 # [-]
-      thickness_chord_ratio: 0.12 # [-]
+      thickness_chord_ratio: 0.12 # [-] from airfoil
+      xovercmax: 0.4 # [-] from airfoil
 
       HLDs:
         test_prop: 1
