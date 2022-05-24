@@ -102,25 +102,14 @@ def get_drag(aircraft):
     toverc = aircraft.WingGroup.Wing.thickness_chord_ratio
     xovercmax = aircraft.WingGroup.Wing.xovercmax
     M = V/aircraft.states['cruise'].speed_of_sound
-<<<<<<< HEAD
     tovercVT = aircraft.FuselageGroup.Tail.VerticalTail.toverc  # from NACA0010
     tovercHT = aircraft.FuselageGroup.Tail.HorizontalTail.toverc  # from NACA0010
     xovercmaxVT = aircraft.FuselageGroup.Tail.VerticalTail.xovercmax  # from NACA0010
     xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax  # from NACA0010
-    cVT = 9.05
-    cHT = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
-    cfus = 183  # length of the fuselage
-    AR = 6
-=======
-    tovercVT = aircraft.FuselageGroup.Tail.VerticalTail.toverc          #from NACA0010
-    tovercHT = aircraft.FuselageGroup.Tail.HorizontalTail.toverc            #from NACA0010
-    xovercmaxVT = aircraft.FuselageGroup.Tail.VerticalTail.xovercmax         #from NACA0010
-    xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax        #from NACA0010
-    cVT = 9.05 #TODO link to vertical tail
+    cVT = 9.05  # TODO link to vertical tail
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
-    cfus = 183 # TODO link to Fuselage. (length of the fuselage)
+    cfus = 183  # TODO link to Fuselage. (length of the fuselage)
     AR = 6      # TODO Link AR, e, CL to Wing
->>>>>>> 43754b6ff36c9510e4ed4bb17836c9ec023a30f9
     e = 0.8
     CL = 0.521
 
