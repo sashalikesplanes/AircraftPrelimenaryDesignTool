@@ -7,9 +7,9 @@ class FuelContainer(Component):
 
         self.Fuselage = Fuselage
 
-        self.RemovableContainers = []
-        self.NonRemovableContainers = []
-        self.components = self.RemovableContainers + self.NonRemovableContainers
+        # self.RemovableContainers = []
+        # self.NonRemovableContainers = []
+        # self.components = self.RemovableContainers + self.NonRemovableContainers
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
