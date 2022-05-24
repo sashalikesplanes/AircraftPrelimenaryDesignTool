@@ -77,3 +77,11 @@ class Fuselage(Component):
     @property
     def length(self):
         return self.Cabin.length + self.FuelContainer.length
+
+    @property
+    def inner_diameter(self):
+        return self.Cabin.diameter
+
+    @property
+    def outer_diameter(self):
+        return self.diameter
