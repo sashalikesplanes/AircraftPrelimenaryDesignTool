@@ -28,7 +28,7 @@ Aircraft:
         # Largest k from the ADSEE I formula sheet
         k_cabin: 1.17
       FuelContainer:
-        test_prop: 1
+        tank_pressure: 1.2
   WingGroup:
     test_prop_wing: 10
 
