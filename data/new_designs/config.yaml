@@ -45,6 +45,7 @@ Aircraft:
     Wing:
       aspect_ratio: 8
       taper_ratio: 0.8
+      thickness_chord_ratio: 0.12
 
       HLDs:
         test_prop: 1
