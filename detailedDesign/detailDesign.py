@@ -36,7 +36,7 @@ def detail_design():
         # aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
         #     aircraft, states)
 
-        ultimate_load_factor = get_ultimate_load_factor()
+        aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
 

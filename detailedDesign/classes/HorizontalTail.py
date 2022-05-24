@@ -27,7 +27,8 @@ class HorizontalTail(Component):
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio
         sweep_HT = None
         taper_HT = None
-        l_FS = FuselageGroup.Cabin.length + FuselageGroup.FuelContainer.length
+        l_FS = FuselageGroup.Fuselage.Cabin.length + \
+            FuselageGroup.Fuselage.FuelContainer.length
         # TODO: check MDN
         # TODO: Size these properly
         MAGICAL_DISNEY_NUMBER = 0.55
@@ -36,5 +37,5 @@ class HorizontalTail(Component):
         root_chord_thickness_HT = None   # [inches]
         aspect_ratio_HT = None   # [-]
 
-
-        self.own_mass = 0.016*(n_z*W_O)**0.414*q**0.168*S_HT**0.896*((100*thickness_to_chord) / np.cos(sweep_HT))**(-0.12)*(aspect_ratio_HT/np.cos(sweep_HT)**2)**0.043*taper_HT**(-0.02)
+        self.own_mass = 0.016*(n_z*W_O)**0.414*q**0.168*S_HT**0.896*((100*thickness_to_chord) / np.cos(
+            sweep_HT))**(-0.12)*(aspect_ratio_HT/np.cos(sweep_HT)**2)**0.043*taper_HT**(-0.02)

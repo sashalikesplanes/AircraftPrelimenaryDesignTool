@@ -2,6 +2,7 @@ import numpy as np
 #from detailedDesign.classes.Aircraft import Aircraft
 #from detailedDesign.classes.Wing import Wing
 from detailedDesign.classes.State import State
+from misc.constants import *
 
 def calc_viscosity(T):
     mu = 1.458e-6*T**1.5/(T+110.4)
@@ -88,9 +89,8 @@ def get_drag(aircraft):
     V = aircraft.states['cruise'].velocity
     cWMGC = aircraft.Wing.mean_geometric_chord
     T = aircraft.states['cruise'].temperature
-    Xtroverc = 0.35
     Sref = aircraft.reference_area
-    dfus = 12
+    dfus = aircraft.Fuselage.diameter
     croot = aircraft.Wing.root_chord
     toverc = 0.12
     xovercmax = 0.4
@@ -101,7 +101,6 @@ def get_drag(aircraft):
     xovercmaxHT = 0.3
     cVT = 9.05
     cHT = 9.59
-    Xtrovercfus = 0.0
     cfus = 183
     A = 6
     e = 0.8
@@ -113,7 +112,7 @@ def get_drag(aircraft):
 
     # run Wing part
     Rewing = calc_reynolds(rho, V, cWMGC, T)
-    Cfwing = calc_Cf(Rewing, Xtroverc)
+    Cfwing = calc_Cf(Rewing, Xtrovercwing)
     CDfwing = calc_CDfwing(dfus, croot, toverc, Sref, Cfwing)
     FFwing = calc_FFwing(toverc, M, xovercmax)
     CDmin_wing = calc_CDmin_wing(CDfwing, FFwing, IF)
@@ -127,14 +126,14 @@ def get_drag(aircraft):
 
     # run Vtail part
     ReVT = calc_reynolds(rho, V, cVT, T)
-    CfVT = calc_Cf(ReVT, Xtroverc)
+    CfVT = calc_Cf(ReVT, Xtrovercwing)
     CDfVT = calc_CDftail(tovercVT, Sref, CfVT)
     FFVT = calc_FFwing(tovercVT, M, xovercmaxVT)
     CDmin_VT = calc_CDmin_tail(CDfVT, FFVT, IF)
 
     # run Htail part
     ReHT = calc_reynolds(rho, V, cHT, T)
-    CfHT = calc_Cf(ReHT, Xtroverc)
+    CfHT = calc_Cf(ReHT, Xtrovercwing)
     CDfHT = calc_CDftail(tovercHT, Sref, CfHT)
     FFHT = calc_FFwing(tovercHT, M, xovercmaxHT)
     CDmin_HT = calc_CDmin_tail(CDfHT, FFHT, IF)
@@ -149,5 +148,5 @@ def get_drag(aircraft):
     CD = CDi+TotalCDmin
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)
-    D = 0.5*rho*V**2*(CD)*Sref
+    D = 0.5*rho*V**2*CD*Sref
     return TotalCDmin, CDi, CD, D
