@@ -35,8 +35,8 @@ class FuelContainer(Component):
 
     def size_self(self):
         # basic sizing
-        # self.inner_diameter = self.Fuselage.inner_diameter - self.thickness * 2
-        self.inner_diameter = 10 #manual change for non-integral tank
+        self.inner_diameter = self.Fuselage.inner_diameter - self.thickness * 2
+        # self.inner_diameter = 10 #manual change for non-integral tank
         self.inner_radius = self.inner_diameter/2 #for integral tank
         self.radius_tank = self.inner_radius #change here if non-integral tank
 
@@ -58,10 +58,6 @@ class FuelContainer(Component):
         self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length
 
 
-        #reuse this for fuel cells
-        # self.voltage = 1.2*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency
-        # self.power_produced = self.voltage*Aircraft.FuselageGroup.Power.FuelCells.current_density* areafuelcell
-        # self.flow_H2 = powertest/(self.voltage*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency*2*96500*500) #GET POWER FROM PAULA
 
 
         #calculations mass/thickness
