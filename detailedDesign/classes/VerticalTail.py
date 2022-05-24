@@ -37,6 +37,8 @@ class VerticalTail(Component):
         self.surface_area = self.volume_coefficient * \
             wing_area * wing_span / self.tail_length
 
+        # TODO Calculate Mean Geometric Chord
+
     def size_self_mass(self):
         WingGroup = self.Tail.FuselageGroup.Aircraft.WingGroup
         FuselageGroup = self.Tail.FuselageGroup
