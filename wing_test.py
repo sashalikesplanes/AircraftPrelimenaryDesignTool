@@ -7,10 +7,9 @@ from detailedDesign.classes.State import State
 
 
 def run_test():
-    states_dict = {"cruise": State("cruise")}
-
     config_file = Path('data', 'new_designs', 'config.yaml')
-    aircraft = Aircraft(openData(config_file), states_dict)
+    states = {"cruise": State('cruise')}
+    aircraft = Aircraft(openData(config_file), states)
 
     aircraft.reference_area = 10
 
