@@ -8,14 +8,13 @@ from detailedDesign.classes.Aircraft import Aircraft
 
 
 class TestWeights(unittest.TestCase):
-    def __init__(self):
-        states_dict = {"cruise": State("cruise")}
+    def test_upper(self):
+        self.assertAlmostEqual(0.3, 0.2+0.1, delta=0.3*testMargin)
 
         config_file = Path('data', 'new_designs', 'config.yaml')
-        self.aircraft = Aircraft(openData(config_file), states_dict)
+        states = {"cruise": State('cruise')}
+        aircraft = Aircraft(openData(config_file), states)
+        aircraft.get_sized()
 
-    def test_fuselage_weight(self):
-        self.assertAlmostEqual(0.1+0.2, 0.3, delta=0)
-
-    def test_wing_weight(self):
-        pass
+        fuselage_weight = aircraft.FuselageGroup.Fuselage.get_mass()
+        print(fuselage_weight)
