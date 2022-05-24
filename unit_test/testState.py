@@ -1,14 +1,12 @@
 import unittest
-from pathlib import Path
 
 from misc.constants import testMargin
-from misc.openData import openData
 from detailedDesign.classes.State import State
 
 
 class TestState(unittest.TestCase):
     def test_stationary_state(self):
-        self.state = State("stationary")
+        self.state = State("test_state_1")
 
         self.assertEqual(self.state.velocity, 0)
         self.assertEqual(self.state.altitude, 0)
@@ -20,7 +18,7 @@ class TestState(unittest.TestCase):
         self.assertAlmostEqual(self.state.speed_of_sound, 340, delta=340*testMargin)
 
     def test_high_place_state(self):
-        self.state = State("high_place")
+        self.state = State("test_state_2")
 
         self.assertEqual(self.state.velocity, 50)
         self.assertEqual(self.state.altitude, 10000)
