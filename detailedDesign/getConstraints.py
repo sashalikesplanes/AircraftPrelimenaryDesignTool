@@ -92,4 +92,6 @@ def get_constraints(aircraft, state):
     #still have to compute T and S
     return 
 
-get_constraints(1,2)
+
+if __name__ == "__main__":
+    get_constraints(1,2)

@@ -11,6 +11,10 @@ class Aircraft(Component):
         self.FuselageGroup = FuselageGroup(self, self.design_config)
         self.components = [self.WingGroup, self.FuselageGroup]
 
+        # FAKE REFERENCE AREA FOR TESTING PURPOSES
+        self.reference_area = 500
+        # REMOVE BECAUSE MAGICAL DISNEY VALUE
+
         # Create all the parameters that this component must have here:
         # Use self.property = None
         self.mtow = None
