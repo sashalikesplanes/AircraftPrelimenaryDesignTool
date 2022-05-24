@@ -1,0 +1,3 @@
+velocity: 50  # [m/s]
+altitude: 10000  # [m]
+range: 100000  # [m]
