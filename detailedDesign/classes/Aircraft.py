@@ -18,17 +18,16 @@ class Aircraft(Component):
         self.reference_area = 500
         # I SWEAR TO GOD THIS TEST VALUE SHOULDN'T BE HERE
 
-
         # REMOVE BECAUSE MAGICAL DISNEY VALUE
         self.states = states_dict
 
         # Create all the parameters that this component must have here:
         # Use self.property = None
-        self.mtom = None
+        self.mtom = 1
         self.oem = None
         self.fuel_mass = None
-        self.thrust_over_weight = None
-        self.weight_over_surface = None
+        self.thrust_over_weight = 1
+        self.weight_over_surface = 1
         self.reference_area = None
         self.reference_thrust = None
 

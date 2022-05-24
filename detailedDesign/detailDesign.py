@@ -33,8 +33,8 @@ def detail_design():
     # TODO Loop
     # Magical Disney Loop
     for i in range(2):
-        aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
-            aircraft, states)
+        # aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
+        #     aircraft, states)
 
         ultimate_load_factor = get_ultimate_load_factor()
 
