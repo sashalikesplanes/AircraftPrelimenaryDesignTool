@@ -42,7 +42,7 @@ class FuelContainer(Component):
     def size_self(self):
 
         # self.inner_diameter = self.Fuselage.inner_diameter - self.thickness * 2
-        self.inner_diameter = 12
+        self.inner_diameter = 10
         self.inner_radius = self.inner_diameter/2
 
         thickness_fatigue = self.tank_pressure*self.inner_radius*self.SF/self.fatiguestrength
@@ -50,22 +50,24 @@ class FuelContainer(Component):
 
         self.thickness = max(thickness_fatigue, thickness_yield)
 
+
+        powertest = 300000000
+
+        # self.flow_H2 = powertest/(self.voltage*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency*2*96500*500) #GET POWER FROM PAULA
+        self.mass_H2 = powertest * self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight / (
+                    32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
+
         self.volume_tank = self.mass_H2*(1+self.Vi)/self.density_H2
         self.length = (self.volume_tank - 4*np.pi*self.inner_radius**3/3)/(np.pi*self.inner_radius**2) # we constrained the radius as being an integral tank,\
                                                                                                                 #normally the radius is found through this eq
 
-        self.voltage = 1.2*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency
+        # self.voltage = 1.2*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency
         # self.power_produced = self.voltage*Aircraft.FuselageGroup.Power.FuelCells.current_density* areafuelcell
 
 
-        powertest = 600000000
 
-        self.flow_H2 = powertest/(self.voltage*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency*2*96500*500) #GET POWER FROM PAULA
-        self.mass_H2 = self.flow_H2*self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight/(32167*self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-
-        self.volume_tank = self.mass_H2 * (1+self.Vi)/self.density_H2
         self.radius_tank = self.inner_radius
-        self.mass_tank = self.tank_pressure*4/3*np.pi*(self.radius_tank+self.thickness)**3+np.pi*(self.radius_tank+self.thickness)**2*self.length-self.volume_tank
+        self.mass_tank = self.tank_density*(4/3*np.pi*(self.radius_tank+self.thickness)**3 + np.pi*(self.radius_tank+self.thickness)**2*self.length - self.volume_tank)
         self.area_tank = 4*np.pi*self.radius_tank**2+2*np.pi*self.radius_tank*self.length
 
 
@@ -81,8 +83,20 @@ class FuelContainer(Component):
             total_boiloff = boiloff_rate*self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight*3600
             mass_total.append(total_boiloff+self.mass_tank)
 
+            print("conduction",Q_conduction)
+            print("flow",Q_flow)
+
+
         # plt.plot(thickness_insulation, mass_total)
         # plt.show()
+
+        # print("mass H2=",self.mass_H2)
+        # print("volume tank=",self.volume_tank)
+        # print("length=",self.length)
+        # print("total boiloff=",total_boiloff)
+        # print("mass tank=", self.mass_tank)
+        # print("area tank=", self.area_tank)
+        # print("thickness tank=", self.thickness)
 
 
 
