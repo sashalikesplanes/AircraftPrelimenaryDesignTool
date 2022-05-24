@@ -28,10 +28,10 @@ class Wing(Component):
 
     def size_AR(self):
         print(f'sizing the Aspect Ratio')
-        Range = self.WingGroup.Aircraft.states['cruise'].range
+        range_ = self.WingGroup.Aircraft.states['cruise'].range
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
-        dynamic_pressure = 0.5 * \
-            self.WingGroup.Aircraft.states['cruise'].density * V_C * V_C
+        dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
+            * V_C * V_C
         W_initial_cruise = self.WingGroup.Aircraft.mtom * 9.81
         W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 * .7
         C_L_initial_cruise = W_initial_cruise / \
@@ -40,12 +40,13 @@ class Wing(Component):
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2
 
         C_D_min = self.WingGroup.Aircraft.C_D_min
-        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption  # g/kNs
+        # [g/kNs]
+        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption
         c_t_Imp = c_t_SI * 9.81 / 1e6 * 3600
 
-        optimal_effective_AR = C_LC * C_LC / np.pi / (V_C / Range
-                                                      * C_LC / c_t_Imp * np.log(W_intial_cruise
-                                                                                / W_final_cruise) - C_D_min)
+        optimal_effective_AR = C_LC * C_LC / np.pi / (V_C / range_
+                                                      * C_LC / c_t_Imp * np.log(W_initial_cruise
+                                                                                / W_end_cruise) - C_D_min)
         print(optimal_effective_AR)
 
     def size_self(self):
@@ -70,6 +71,7 @@ class Wing(Component):
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
         W_O = kg_to_lbs(self.FuselageGroup.Aircraft.mtom)
 
-        self.own_mass = 0.036 * S_W ** 0.758 * W_FW ** 0.0035 * (
-            self.aspect_ratio / np.cos(sweep) ** 2) ** 0.6 * q ** 0.006 * self.taper_ratio ** 0.04 * (
-            (100 * self.thickness_chord_ratio) / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
+        self.own_mass = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
+            * (self.aspect_ratio / np.cos(sweep) ** 2) ** 0.6 * q ** 0.006 \
+            * self.taper_ratio ** 0.04 * ((100 * self.thickness_chord_ratio)
+                                          / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49

@@ -30,15 +30,16 @@ Aircraft:
         k_cabin: 1.17
         cabin_pressure_altitude: 3000  # [m]
       FuelContainer:
-        tank_pressure: 1.2
-        density_H2: 71 #[kg/m3]
+        tank_pressure: 120000 # [Pa]
+        density_H2: 70.85 # [kg/m3]
         Vi: 0.072 # cte, extra volume needed for boiloff
-        fatiguestrength: 103000000 #[MPa], fatigue strength Al 2219-T81 after 500e6 cycles
-        yieldstrength: 352000000 #[MPa], yield strength Al 2219-T81
-        temp_LH2: 20 #[K]
-        temp_room: 293 #[K]
-        thermal_cond: 0.0046 #[W/mK]
-        E_boiloff: 446592 #[J/kg]
+        fatiguestrength: 103000000 # [Pa], fatigue strength Al 2219-T81 after 500e6 cycles
+        yieldstrength: 352000000 # [Pa], yield strength Al 2219-T81
+        tank_density: 2840 # [kg/m2]
+        temp_LH2: 20 # [K]
+        temp_room: 293 # [K]
+        thermal_cond: 0.0046 # [W/mK]
+        E_boiloff: 446592 # [J/kg]
   WingGroup:
     test_prop_wing: 10
 

@@ -1,52 +1,59 @@
-from misc.ISA import getDensity, getTemperature
-
+from misc.ISA import getDensity, getPressure, getTemperature
 from conceptualDesign.wingSizing import wingSizing
 from conceptualDesign.totalMassEstimation import totalMassEstimation
 from conceptualDesign.propulsionSizing import propulsionSizing
 from conceptualDesign.fuelMassEstimation import fuelMassEstimation
 from conceptualDesign.energyRequired import energyRequired
 from conceptualDesign.dragModel import dragModel
+from conceptualDesign.balloonSizing import balloonSizing
 from conceptualDesign.initializeParameters import initializeParameters
 from conceptualDesign.fuselageSizing import fuselageWeight
-from conceptualDesign.postSizingCalcs import post_sizing_calcs
-from conceptualDesign.marketStuff import marketStuff
-from conceptualDesign.tailSizing import tailSizing
-
-
+from conceptualDesign.performCosting import performCosting
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 import warnings
+from tqdm import trange
 # Ignore warnings from pd.append
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def conceptualDesign(parameters, material_data, iters):
     """Perform preliminary design using design parameters"""
-    converged = False
 
     # Get the density at the cruise altitude hello world
     rho = getDensity(parameters["altitude"])
     temp = getTemperature(parameters["altitude"])
+
+    pAir = getPressure(parameters["altitude"])
+
+    tAir = getTemperature(parameters['altitude'])
 
     df = pd.DataFrame()
     prev_fuel = -100
 
     initializeParameters(parameters)
 
+    # Done
     for _ in range(int(iters)):
+
+        # balloon sizing
+        balloonSizing(parameters, rho, pAir, tAir)  # TODO concept 1
         if np.isnan(parameters["fuelMass"]):
+            # print(parameters)
             print("Diverged")
             break
+        #
+        # break
 
         # wing
         wingSizing(parameters, rho)
 
-        tailSizing(parameters)
         # Fuselage Weight
         fuselageWeight(parameters)
 
         # drag model
-        dragModel(parameters, rho)
+        dragModel(parameters, rho, temp)
 
         # propulsion sizing
         propulsionSizing(parameters)
@@ -60,18 +67,21 @@ def conceptualDesign(parameters, material_data, iters):
         # total mass
         totalMassEstimation(parameters)
 
-        # add current iteration to dataframe in order to track convergence/divergence behaviour
+        # lst.append(parameters["balloonArea"])
         df = df.append(parameters, ignore_index=True)
 
         if abs(parameters["fuelMass"] - prev_fuel) < 0.01:
-            converged = True
+            # print("Converged")
             break
         else:
             prev_fuel = parameters["fuelMass"]
 
-    if converged:
-        print("running post")
-        post_sizing_calcs(parameters)
-        marketStuff(parameters)
+    # plt.plot(range(100), lst)
+    # plt.show()
+    # print(df)
+    # df.plot()
+    # plt.show()
 
+    # print(parameters)
+    performCosting(parameters)
     return parameters, df
