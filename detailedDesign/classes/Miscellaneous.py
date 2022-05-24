@@ -29,7 +29,8 @@ class Miscellaneous(Component):
         # MAGICAL DISNEY NUMBER WARNING (MDN)
         W_UAV = 420  # [lbs]
 
-        W_boat = 0
+        # MAGICAL DISNEY FACTOR (MDF)
+        W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.2
 
         W_flight_control_system = 0.053 * l_FS ** 1.536 * b ** 0.371 * (n_z * W_O * 10 ** -4) ** 0.8
 
