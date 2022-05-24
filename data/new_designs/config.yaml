@@ -2,19 +2,29 @@ Aircraft:
   test_prop: 10
   FuselageGroup:
     Miscellaneous:
-      Fish: 5  # [Fish]
+      Fish: 5 # [Fish]
     test_prop_fuselage: 420
     Tail:
       test_prop: 1
       VerticalTail:
-        test_prop: 1
+        toverc: 0.1 # [-] - NACA0010
+        xovercmax: 0.3 # [-] - NACA0010
+        taper: 0.3 # [-] - picked from ADSEE
+        aspect_ratio: 1.5 # [-] - picked from ADSEE
+        leading_edge_sweep: 0.5 # [rad] - picked from ADSEE
+        volume_coefficient: 0.09 # [-] - General Aviation Design
       HorizontalTail:
-        test_pop: 1
+        toverc: 0.1 # [-] - NACA0010
+        xovercmax: 0.3 # [-] - picked from ADSEE
+        taper: 0.3 # [-] - picked from ADSEE
+        aspect_ratio: 4 # [-] - picked from ADSEE
+        three_quarter_chord_sweep: 0 # [rad] - picked from ADSEE
+        volume_coefficient: 1.0 # [-] General Aviation Design
     Power:
       FuelCells:
-        conversion_efficiency: 0.5  # [-]
-        current_density: 8  # [Amps/m2]
-        duration_flight: 8  # [h]
+        conversion_efficiency: 0.5 # [-] - multiple literature source
+        current_density: 8 # [Amps/m2] - same paper as above
+        duration_flight: 8 # [h]
       Batteries:
         test_prop: 69
     Fuselage:
@@ -22,15 +32,15 @@ Aircraft:
       CargoBay:
         test_prop: 1
       Cabin:
-        passengers: 1000  # [-]
-        max_seats_abreast: 18  # [-]
-        max_rows_per_floor: 30  # [-]
-        seat_width: 0.6  # [m]
-        aisle_width: 0.7  # [m]
-        floor_height: 2.5  # [m]
+        passengers: 1000 # [-]
+        max_seats_abreast: 18 # [-]
+        max_rows_per_floor: 30 # [-]
+        seat_width: 0.6 # [m]
+        aisle_width: 0.7 # [m]
+        floor_height: 2.5 # [m]
         # Largest k from the ADSEE I formula sheet
         k_cabin: 1.17
-        cabin_pressure_altitude: 3000  # [m]
+        cabin_pressure_altitude: 3000 # [m]
       FuelContainer:
         tank_pressure: 120000 # [Pa]
         density_H2: 70.85 # [kg/m3]
@@ -47,9 +57,9 @@ Aircraft:
     test_prop_wing: 10
 
     Wing:
-      aspect_ratio: 8  # [-]
-      taper_ratio: 0.8  # [-]
-      thickness_chord_ratio: 0.12  # [-]
+      aspect_ratio: 8 # [-]
+      taper_ratio: 0.8 # [-]
+      thickness_chord_ratio: 0.12 # [-]
 
       HLDs:
         test_prop: 1

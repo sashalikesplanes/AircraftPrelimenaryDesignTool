@@ -26,6 +26,7 @@ class VerticalTail(Component):
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)    # [lbs]
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
         F_tail = 1  # [0 for conventional, 1 for T-tail]
+        
         # TODO: Size these properly
         S_VT = None  # [ft2]
         sweep_VT = None   # [-]

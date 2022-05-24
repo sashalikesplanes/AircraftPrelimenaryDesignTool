@@ -22,7 +22,7 @@ def get_constraints(aircraft):
 
     C_D_min = aircraft.C_D_min  
     C_L_max = aircraft.C_L_max  
-    required_climb_rate = 10  # from regulation I believe but I cannot find anything about it
+    required_climb_rate = aircraft.required_climb_rate  # from regulation I believe but I cannot find anything about it
     #therefore we take ot from the yamel and it is something we change in order to make it work
 
     #Start calculating the functions
@@ -124,7 +124,7 @@ def get_constraints(aircraft):
     #save results into the aircraft
     aircraft.thrust_over_weight = TW
     aircraft.weight_over_surface = WS
-    #save stall speed
+    aircraft.clean_stall_speed = V_stall
 
     return 
 
