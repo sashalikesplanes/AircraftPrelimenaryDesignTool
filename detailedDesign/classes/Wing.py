@@ -28,7 +28,6 @@ class Wing(Component):
         self._freeze()
 
     def size_AR(self):
-        print(f'sizing the Aspect Ratio')
         range_ = self.WingGroup.Aircraft.states['cruise'].range
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
