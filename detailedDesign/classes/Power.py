@@ -3,8 +3,6 @@ from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuelCells import FuelCells
 import numpy as np
 
-from detailedDesign.classes.FuselageGroup import FuselageGroup
-
 
 class Power(Component):
     def __init__(self, FuselageGroup, design_config):
@@ -13,7 +11,8 @@ class Power(Component):
         self.FuselageGroup = FuselageGroup
 
         self.FuelCells = FuelCells(self, self.design_config)
-        self.components = [self.FuelCells]
+        self.Batteries = Batteries(self, self.design_config)
+        self.components = [self.FuelCells, self.Batteries]
         self.own_power = None
 
         # Create all the parameters that this component must have here:
@@ -21,25 +20,22 @@ class Power(Component):
         self._freeze()
 
     def size_self(self):
-        P_motor = FuselageGroup.Aircraft.WingGroup.Engines.P_motor
+        P_motor = Engines.P_motor
         n_motor = self.FuselageGroup.Aircraft.WingGroup.Engines.amount_motor
         percent_prop = self.percentage_propulsion_power
         eff_inverter = self.eff_inverter
         eff_converter = self.eff_converter
         cable_contingency = self.cable_contingency
+        T_avg = self.Fuselagegroup.Aircraft.cruise_drag
+        V = self.FuselageGroup.Aircraft.states['cruise'].velocity
 
-        # necessary power output from fuel cells
-        P_output_fuelcells = (n_motor * P_motor) / \
-            (percent_prop * eff_inverter * eff_converter)
+        # necessary power output from fuel cells + taking into account cable losses
+        P_avg_prop = T_avg * V
+        P_rest_aircraft = (P_avg_prop / percent_prop ) * (1-percent_prop)
+        P_required_avg = P_avg_prop / (percent_prop * eff_inverter * eff_converter) * cable_contingency
 
-        # taking into account cable losses, thus required power from fuel cells
-        P_required = P_output_fuelcells * cable_contingency
+        P_required_peak = ((n_motor * P_motor) + P_rest_aircraft) / (eff_inverter * eff_converter) * cable_contingency
 
-        self.own_power = P_required
+        self.own_power_average = P_required_avg
+        self.own_power_peak = P_required_peak
 
-    def get_sized(self):
-        self.size_self()
-        for component in self.components:
-            component.get_sized()
-
-        self.own_mass = self.get_mass()
