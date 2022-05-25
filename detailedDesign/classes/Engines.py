@@ -89,4 +89,4 @@ class Engines(Component):
         self.own_lenght_unit = length_unit
         self.own_width_unit = width_unit
         self.own_height_unit = height_unit
-        self.own_
+        self.own_amount_motor = n_motor

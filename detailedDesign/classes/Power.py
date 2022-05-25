@@ -1,7 +1,6 @@
 # To check
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuelCells import FuelCells
-from detailedDesign.classes.Batteries import Batteries
 import numpy as np
 
 
@@ -27,12 +26,16 @@ class Power(Component):
         eff_inverter = self.eff_inverter
         eff_converter = self.eff_converter
         cable_contingency = self.cable_contingency
+        T_avg = self.Fuselagegroup.Aircraft.cruise_drag
+        V = self.FuselageGroup.Aircraft.states['cruise'].velocity
 
-        # necessary power output from fuel cells
-        P_output_fuelcells = (n_motor * P_motor) / (percent_prop * eff_inverter * eff_converter)
+        # necessary power output from fuel cells + taking into account cable losses
+        P_avg_prop = T_avg * V
+        P_rest_aircraft = (P_avg_prop / percent_prop ) * (1-percent_prop)
+        P_required_avg = P_avg_prop / (percent_prop * eff_inverter * eff_converter) * cable_contingency
 
-        # taking into account cable losses, thus required power from fuel cells
-        P_required = P_output_fuelcells * cable_contingency
+        P_required_peak = ((n_motor * P_motor) + P_rest_aircraft) / (eff_inverter * eff_converter) * cable_contingency
 
-        self.own_power = P_required
+        self.own_power_average = P_required_avg
+        self.own_power_peak = P_required_peak
 

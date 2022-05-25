@@ -25,7 +25,7 @@ Aircraft:
       Percentage_propulsion_power : 0.95 #percentage of total power that goes to propulsion system
       eff_inverter : 0.995
       eff_converter : 0.95
-      cable_contingency : 1.1
+      cable_contingency : 1.05          #cable losses
       FuelCells:
         conversion_efficiency: 0.5 # [-] - multiple literature source
         current_density: 8 # [Amps/m2] - same paper as above
