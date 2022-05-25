@@ -25,7 +25,6 @@ def detail_design():
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
     aircraft = Aircraft(openData(config_file), states)
-    get_MTOM_from_historical_relations(aircraft)
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
 
     # TODO Create state
