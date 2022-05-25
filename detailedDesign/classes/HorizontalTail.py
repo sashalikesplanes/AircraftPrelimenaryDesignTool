@@ -14,7 +14,7 @@ class HorizontalTail(Component):
 
         self.tail_length = None
         self.surface_area = None
-        self.mean_aerodynamic_chord = None
+        self.mean_geometric_chord = None
         self.span = None
 
         # Create all the parameters that this component must have here:
@@ -38,7 +38,7 @@ class HorizontalTail(Component):
 
         self.span = np.sqrt(self.aspect_ratio * self.surface_area)  # [ft]
 
-        self.mean_aerodynamic_chord = self.span / self.aspect_ratio
+        self.mean_geometric_chord = self.span / self.aspect_ratio
         root_chord_thickness_HT = None  # [inches]
 
     def size_self_mass(self):
