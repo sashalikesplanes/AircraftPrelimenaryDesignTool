@@ -21,10 +21,11 @@ class FuelCells(Component):
         self._freeze()
 
     def size_self(self):
-        powertest = 200e6 #[W], CHANGE!!!!
+        powertest = 132e6 #[W], CHANGE!!!!
 
         self.mass = powertest/self.mass_power_density #[kg]
         self.size = self.mass/self.W_Size  #[m3]
+
 
 
 
