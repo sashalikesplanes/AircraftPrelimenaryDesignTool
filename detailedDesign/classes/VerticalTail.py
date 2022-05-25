@@ -14,37 +14,37 @@ class VerticalTail(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
-        self.tail_length = None
-        self.surface_area = None
-        self.mean_geometric_chord = None
-        self.span = None
-        self.root_chord = None
-        self.quarter_shord_sweep = None
+        self.tail_length = None # [m]
+        self.surface_area = None # [m2]
+        self.mean_geometric_chord = None # [m]
+        self.span = None # [m]
+        self.root_chord = None # [m]
+        self.quarter_shord_sweep = None # [rad]
 
         self._freeze()
 
     def size_self(self):
-        # Mass Sizing
         self.size_self_geometry()
         self.size_self_mass()
 
     def size_self_geometry(self):
-
-        wing_area = self.Tail.FuselageGroup.Aircraft.reference_area
-        wing_span = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span
-        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / 2
+        #Sizing dimensions
+        wing_area = self.Tail.FuselageGroup.Aircraft.reference_area  # [m2]
+        wing_span = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span  # [m]
+        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / 2   #[m]
 
         self.tail_length = np.sqrt(
-            (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * 2 * fuselage_radius))
+            (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * 2 * fuselage_radius)) # [m]
 
-        self.surface_area = self.volume_coefficient * \
-            wing_area * wing_span / self.tail_length
+        self.surface_area = (self.volume_coefficient * \
+            wing_area * wing_span) / self.tail_length  # [m2]
 
-        average_chord = self.span / self.aspect_ratio
-        self.root_chord = (2 * average_chord)/(1 + self.taper)  # [inches]
-        self.mean_geometric_chord = 2/3 * self.root_chord * ((1+ self.taper +self.taper**2)/(1+ self.taper))
+        average_chord = self.span / self.aspect_ratio  # [m]
+        self.root_chord = (2 * average_chord)/(1 + self.taper)  # [m]
+        self.mean_geometric_chord = 2/3 * self.root_chord * ((1+ self.taper +self.taper**2)/(1+ self.taper))  # [m]
 
     def size_self_mass(self):
+        #Sizing mass
         WingGroup = self.Tail.FuselageGroup.Aircraft.WingGroup
         FuselageGroup = self.Tail.FuselageGroup
 
@@ -57,9 +57,10 @@ class VerticalTail(Component):
         F_tail = 1  # [0 for conventional, 1 for T-tail]
 
         self.quarter_chord_sweep = np.arctan2(np.tan( self.leading_edge_sweep +  self.root_chord / (2 * self.span )
-            * (self.taper - 1)))   # [-]
+            * (self.taper - 1)))   # [rad]
 
         mass_lbs = 0.073 * (1 + 0.2 * F_tail) * (n_z * W_O) ** 0.376 * q ** 0.122 * self.surface_area ** 0.873 * (
             (100 * thickness_to_chord) / np.cos(self.quarter_chord_sweep)) ** (-0.49) * (
             self.aspect_ratio / np.cos(self.quarter_chord_sweep) ** 2) ** 0.357 * self.taper ** 0.039
+            
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
