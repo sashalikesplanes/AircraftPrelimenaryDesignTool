@@ -21,13 +21,10 @@ class FuelCells(Component):
         self._freeze()
 
     def size_self(self):
-        powertest = 132e6 #[W], CHANGE!!!!
+        powertest = 132e6  # [W], CHANGE!!!!
 
-        self.mass = powertest/self.mass_power_density #[kg]
-        self.size = self.mass/self.W_Size  #[m3]
-
-
-
+        self.mass = powertest / self.mass_power_density  # [kg]
+        self.size = self.mass / self.W_Size  # [m3]
 
         #
         # self.voltage = 1.2*self.conversion_efficiency
@@ -40,7 +37,5 @@ class FuelCells(Component):
         # self.flow_H2 = powertest/(self.voltage*self.conversion_efficiency*2*96500*500)
         print("mass:", self.mass)
         print("total size:", self.size)
-        print("number of plates:",self.numberplates)
+        print("number of plates:", self.numberplates)
         print("power produced per plate", self.power_produced)
-
-
