@@ -10,7 +10,7 @@ def get_constraints(aircraft):
 
     #Parameters needed
     aspect_ratio = aircraft.WingGroup.Wing.AspectRatio
-    oswald_efficiency = 1.78 * (1 - 0.045 * aspect_ratio ** 0.68) - 0.64
+    oswald_efficiency = aircraft.WingGroup.Wing.get_oswald()
     lift_induced_drag_constant = 1 / (np.pi * aspect_ratio * oswald_efficiency)
 
     velocity = aircraft.states['cruise'].velocity

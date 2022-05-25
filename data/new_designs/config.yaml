@@ -1,5 +1,6 @@
 Aircraft:
   test_prop: 10
+  C_L_max: 1.276 # from DATCOM method2 
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
@@ -25,6 +26,8 @@ Aircraft:
         conversion_efficiency: 0.5 # [-] - multiple literature source
         current_density: 8 # [Amps/m2] - same paper as above
         duration_flight: 8 # [h]
+        mass_power_density: 8000 #[W/kg]
+        W_Size: 1200 #[kg/m3]
       Batteries:
         test_prop: 69
     Fuselage:
@@ -33,6 +36,7 @@ Aircraft:
         test_prop: 1
       Cabin:
         passengers: 1000 # [-]
+        mass_per_passenger: 120 # [kg]
         max_seats_abreast: 18 # [-]
         max_rows_per_floor: 30 # [-]
         seat_width: 0.6 # [m]
