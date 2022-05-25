@@ -22,6 +22,10 @@ Aircraft:
         three_quarter_chord_sweep: 0 # [rad] - picked from ADSEE
         volume_coefficient: 1.0 # [-] General Aviation Design
     Power:
+      Percentage_propulsion_power : 0.95 #percentage of total power that goes to propulsion system
+      eff_inverter : 0.995
+      eff_converter : 0.95
+      cable_contingency : 1.1
       FuelCells:
         conversion_efficiency: 0.5 # [-] - multiple literature source
         current_density: 8 # [Amps/m2] - same paper as above
@@ -76,7 +80,6 @@ Aircraft:
       m_specific_motor : 10000   # [W/kg] for the 2MW motor
       m_specific_inverter : 30000 # [W/kg]
       vol_specific_inverter : 20000000 # [W/m3]
-      eff_inverter : 0.995
       clearance : 0.025          # distance between fuselage and engine from literature
       m_propellor : 535.9418132  # [kg] from the excel extrapollation
       eff_gearbox : 0.9                  # efficiency of a gearbox connection

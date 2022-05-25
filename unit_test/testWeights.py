@@ -32,10 +32,16 @@ class TestWeights(unittest.TestCase):
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
         self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass = 50000  # [kg]
-        self.aircraft.WingGroup.Wing.sweep = 5  # [deg]
+        self.aircraft.WingGroup.Wing.sweep = 0.0872665  # [rad]
         self.aircraft.WingGroup.Wing.taper_ratio = 0.6  # [-]
         self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
         self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
+
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.surface_area = 6 # [m2]
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio = 5 # [-]
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.three_quarter_chord_sweep = 0 # [rad]
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.taper = 0.2 # [-]
+
 
         # Imperial constants from test params:
         # l_FS = 492.12598    # [ft]
@@ -79,10 +85,10 @@ class TestWeights(unittest.TestCase):
         self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_horizontal_tail_mass(self):
-        self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self()
-        x = self.aircraft.FuselageGroup.Tail.HorizontalTail.own_mass
-        y = 1
-        self.assertAlmostEqual(x, y, delta=0.3 * testMargin)
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self_mass()
+        model_mass = self.aircraft.FuselageGroup.Tail.HorizontalTail.own_mass # [kg]
+        analytical_mass = 182.5222796    # [kg]
+        self.assertAlmostEqual(model_mass, analytical_mass, delta = analytical_mass * testMargin)
 
     def test_vertical_tail_mass(self):
         pass
