@@ -128,7 +128,7 @@ class TestWeights(unittest.TestCase):
 
         # Air Conditioning
         x6 = misc.W_AC
-        state6 = State("cruise")
+        state6 = State("test_state_2")
         M = state6.velocity / state6.speed_of_sound
         y6 = (20619.097013151862 * M ** 0.08) * 0.453592
         self.assertAlmostEqual(x6, y6, delta=y6 * testMargin)
