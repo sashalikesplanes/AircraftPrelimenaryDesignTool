@@ -26,6 +26,7 @@ class TestWeights(unittest.TestCase):
 
         self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
+        self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
 
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
@@ -86,9 +87,55 @@ class TestWeights(unittest.TestCase):
         pass
 
     def test_misc_mass(self):
-        self.aircraft.FuselageGroup.Miscellaneous.size_self()
-        x = self.aircraft.FuselageGroup.Miscellaneous.own_mass
-        print(f"Mass of miscellaneous group: {x} [kg]")
+        print(self.aircraft.FuselageGroup.Fuselage.Cabin.diameter)
+        misc = self.aircraft.FuselageGroup.Miscellaneous
 
-        y = 0
-        self.assertAlmostEqual(x, y, y * testMargin)
+        misc.size_self()
+        # Boat stuff
+        # This y should be the sum of all specified fake fuselage components
+        x1 = misc.W_boat
+        y1 = 20000
+        self.assertAlmostEqual(x1, y1, delta=y1*testMargin)
+
+        # Flight control system
+        x2 = misc.W_flight_control_system
+        y2 = 32031.317760363490379
+        self.assertAlmostEqual(x2, y2, delta=y2 * testMargin)
+
+        # Hydraulics
+        x3 = misc.W_hydraulics
+        y3 = 99.999999008956208968
+        self.assertAlmostEqual(x3, y3, delta=y3 * testMargin)
+
+        # Avionics
+        x4 = misc.W_avionics
+        # THIS IS STILL A MAGICAL DISNEY NUMBER SO CHANGE WHEN SHIT CHANGES
+        W_UAV = 420  # [lbs]
+        y4 = (2.117 * W_UAV ** 0.933) * 0.453592
+        W_AV = y4 / 0.453592  # [lbs]
+        self.assertAlmostEqual(x4, y4, delta=y4 * testMargin)
+
+        # Electrical
+        x5 = misc.W_electrical
+        # THIS ONCE AGAIN DEPENDS ON THE SAME MAGICAL DISNEY NUMBER
+        z5 = (y4 + 50000) * 2.20462
+        y5 = 0.453592 * (12.57 * z5 ** 0.51)
+        self.assertAlmostEqual(x5, y5, delta=y5 * testMargin)
+
+        # Air Conditioning
+        x6 = misc.W_AC
+        state6 = State("cruise")
+        M = state6.velocity / state6.speed_of_sound
+        y6 = (20619.097013151862 * M ** 0.08) * 0.453592
+        self.assertAlmostEqual(x6, y6, delta=y6 * testMargin)
+
+        # Furnishing
+        x7 = misc.W_furnishing
+        y7 = 12765.903532 * 0.453592
+        self.assertAlmostEqual(x7, y7, delta=y7 * testMargin)
+
+        x = self.aircraft.FuselageGroup.Miscellaneous.own_mass
+        print(f"Mass of miscellaneous group: {x}")
+        y = y1 + y2 + y3 + y4 + y5 + y6 + y7
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
+
