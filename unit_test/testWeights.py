@@ -77,7 +77,7 @@ class TestWeights(unittest.TestCase):
         # Define params
         self.aircraft.WingGroup.Wing.size_self()
         x =self.aircraft.WingGroup.Wing.own_mass
-        y = 1
+        y = 1449.007258  # [kg]
         self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
 
     def test_horizontal_tail_mass(self):
