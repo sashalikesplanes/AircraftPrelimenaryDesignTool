@@ -11,13 +11,14 @@ def run_test():
     states = {"cruise": State('cruise')}
     aircraft = Aircraft(openData(config_file), states)
 
-    aircraft.reference_area = 10
-
-    # init parameters
-    aircraft.FuselageGroup.Fuselage.Cabin.diameter = 12
+    Engines = aircraft.WingGroup.Engines
 
     # call python file
-    aircraft.FuselageGroup.Fuselage.FuelContainer.size_self()
+    aircraft.WingGroup.Wing.span = 10
+
+    Engines.size_self()
+
+    print(Engines.own_mass)
 
     # print
     # print(mass_H2)
