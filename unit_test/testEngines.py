@@ -8,7 +8,7 @@ from detailedDesign.classes.State import State
 from detailedDesign.classes.Aircraft import Aircraft
 
 
-class TestFuelTank(unittest.TestCase):
+class TestEngines(unittest.TestCase):
     def setUp(self):
         config_file = Path('data', 'new_designs', 'config.yaml')
         states = {"test_state_1": State('test_state_1'), "cruise": State("test_state_2")}
@@ -46,17 +46,16 @@ class TestFuelTank(unittest.TestCase):
         # V_p = 277360.9475   # [ft3] for test_state_1
         # Delta_P = 0         # [psi] for test_state_1
 
-    def test_fuel_cell(self):
+    def test_motor(self):
         pass
 
-    def test_batteries(self):
+    def test_prop(self):
         pass
 
-    def test_removable_fuel_container(self):
+    def test_engines(self):
         pass
 
-    def test_non_removable_fuel_container(self):
+    def test_power(self):
         pass
 
-    def test_fuel_container(self):
-        pass
+
