@@ -10,6 +10,8 @@ class Aircraft(Component):
     def __init__(self, design_config, states_dict):
         super().__init__(design_config)
 
+        del self.own_mass  # Not needed as Aircraft has no additional mass itself
+
         self.WingGroup = WingGroup(self, self.design_config)
         self.FuselageGroup = FuselageGroup(self, self.design_config)
         self.components = [self.WingGroup, self.FuselageGroup]

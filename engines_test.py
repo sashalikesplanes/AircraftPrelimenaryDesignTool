@@ -21,8 +21,9 @@ def run_test():
 
     Engines.size_self()
 
-    print('total mass ',Engines.own_mass)
-    print('amount of propellors',Engines.own_amount_prop)
+    print('total mass ', Engines.own_mass)
+    print('amount of propellors', Engines.own_amount_prop)
+
 
 if __name__ == "__main__":
     run_test()

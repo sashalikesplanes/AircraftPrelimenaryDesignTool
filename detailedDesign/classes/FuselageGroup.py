@@ -17,12 +17,16 @@ class FuselageGroup(Component):
         self.Fuselage = Fuselage(self, self.design_config)
         self.Miscellaneous = Miscellaneous(self, self.design_config)
 
-        self.components = [self.Tail, self.Power, self.Fuselage]
+        self.components = [self.Tail, self.Power,
+                           self.Fuselage, self.Miscellaneous]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
         self._freeze()
 
-    def size_self(self):
-        pass
+    def get_sized(self):
+        for component in self.components:
+            component.get_sized()
+
+        self.own_mass = self.get_mass()

@@ -4,6 +4,7 @@ from detailedDesign.classes.FuelCells import FuelCells
 from detailedDesign.classes.Batteries import Batteries
 import numpy as np
 
+
 class Power(Component):
     def __init__(self, FuselageGroup, design_config):
         super().__init__(design_config)
@@ -13,6 +14,7 @@ class Power(Component):
         self.FuelCells = FuelCells(self, self.design_config)
         self.Batteries = Batteries(self, self.design_config)
         self.components = [self.FuelCells, self.Batteries]
+        self.own_power = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -26,10 +28,10 @@ class Power(Component):
         eff_converter = self.eff_converter
         cable_contingency = self.cable_contingency
 
-        #necessary power output from fuel cells
+        # necessary power output from fuel cells
         P_output_fuelcells = (n_motor * P_motor) / (percent_prop * eff_inverter * eff_converter)
 
-        #taking into account cable losses, thus required power from fuel cells
+        # taking into account cable losses, thus required power from fuel cells
         P_required = P_output_fuelcells * cable_contingency
 
         self.own_power = P_required

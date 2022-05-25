@@ -12,11 +12,14 @@ class WingGroup(Component):
 
         self.Wing = Wing(self, self.design_config)
         self.Engines = Engines(self, self.design_config)
-        self.components += [self.Wing, self.Engines]
+        self.components = [self.Wing, self.Engines]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self._freeze()
 
-    def size_self(self):
-        pass
+    def get_sized(self):
+        for component in self.components:
+            component.get_sized()
+
+        self.own_mass = self.get_mass()

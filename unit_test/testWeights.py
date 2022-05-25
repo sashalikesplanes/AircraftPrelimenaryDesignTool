@@ -44,7 +44,7 @@ class TestWeights(unittest.TestCase):
 
 
         # Imperial constants from test params:
-        # l_FS = 492.12598 # [ft]
+        # l_FS = 492.12598    # [ft]
         # S_fus = 55308.51562 # [ft2]
         # W_o = 220462.2622   # [lbs]
         # l_HT = 270.74245    # [ft]
@@ -68,10 +68,10 @@ class TestWeights(unittest.TestCase):
             Delta_P = 0
 
         analytical_mass_lbs = 0.052 * 55308.51562 ** 1.086 * 440924.5244 ** 0.177 * 270.74245 ** -0.051 * (
-                    492.12598 / 32.8084) ** (
+                492.12598 / 32.8084) ** (
                                   -0.072) * q ** 0.241 + 11.9 * (277360.9475 * Delta_P) ** 0.271
 
-        analytical_mass_kg = lbs_to_kg(analytical_mass_lbs)
+        analytical_mass_kg = lbs_to_kg(analytical_mass_lbs)     # cruise state
 
         # analytical_mass_kg = 6443.190189 # test_state_1
 
@@ -90,7 +90,6 @@ class TestWeights(unittest.TestCase):
         analytical_mass = 82.79071338    # [kg]
         self.assertAlmostEqual(model_mass, analytical_mass, delta = analytical_mass * testMargin)
 
-
     def test_vertical_tail_mass(self):
         self.aircraft.FuselageGroup.Tail.VerticalTail.size_self_mass()
 
@@ -102,7 +101,7 @@ class TestWeights(unittest.TestCase):
         # This y should be the sum of all specified fake fuselage components
         x1 = misc.W_boat
         y1 = 20000
-        self.assertAlmostEqual(x1, y1, delta=y1*testMargin)
+        self.assertAlmostEqual(x1, y1, delta=y1 * testMargin)
 
         # Flight control system
         x2 = misc.W_flight_control_system
@@ -144,4 +143,3 @@ class TestWeights(unittest.TestCase):
         x = self.aircraft.FuselageGroup.Miscellaneous.own_mass
         y = y1 + y2 + y3 + y4 + y5 + y6 + y7
         self.assertAlmostEqual(x, y, delta=y * testMargin)
-
