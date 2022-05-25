@@ -27,6 +27,7 @@ class TestWeights(unittest.TestCase):
         self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
         self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
+        self.aircraft.reference_area = 50
 
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
@@ -35,6 +36,7 @@ class TestWeights(unittest.TestCase):
         self.aircraft.WingGroup.Wing.taper_ratio = 0.6  # [-]
         self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
         self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
+
 
 
         # Imperial constants from test params:
@@ -74,9 +76,9 @@ class TestWeights(unittest.TestCase):
     def test_wing_mass(self):
         # Define params
         self.aircraft.WingGroup.Wing.size_self()
-        x =self.aircraft.WingGroup.Wing.own_mass
+        x = self.aircraft.WingGroup.Wing.own_mass
         y = 1449.007258  # [kg]
-        self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_horizontal_tail_mass(self):
         self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self()
