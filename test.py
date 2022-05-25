@@ -6,6 +6,8 @@ from unit_test.testSizing import TestSizing
 from unit_test.testFuselage import TestFuselage
 from unit_test.testState import TestState
 from unit_test.testMisc import TestMisc
+from unit_test.testFuelTank import TestFuelTank
+from unit_test.testEngines import TestEngines
 
 
 if __name__ == '__main__':

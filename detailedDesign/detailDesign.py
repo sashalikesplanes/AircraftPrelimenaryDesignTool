@@ -7,6 +7,7 @@ from detailedDesign.performAnalyses import perform_analyses
 from detailedDesign.getConstraints import get_constraints
 from detailedDesign.classes.State import State
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
+from detailedDesign.potato_diagram import make_potato_diagram
 
 
 def get_ultimate_load_factor():
@@ -39,6 +40,8 @@ def detail_design():
 
         aircraft.get_sized()
 
+
+    make_potato_diagram(aircraft)
     perform_analyses(aircraft)
 
     print(aircraft.get_mass())
