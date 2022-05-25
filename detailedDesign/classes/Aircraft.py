@@ -28,7 +28,6 @@ class Aircraft(Component):
 
         # Drag states
         self.C_D_min = 0.1  # Initial Value
-        self.C_L_max = None
 
         self.ultimate_load_factor = None
         self.clean_stall_speed = None

@@ -1,5 +1,6 @@
 Aircraft:
   test_prop: 10
+  C_L_max: 1.276 # from DATCOM method2 
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
