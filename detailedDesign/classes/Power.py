@@ -40,6 +40,7 @@ class Power(Component):
         self.own_power = P_required
 
     def get_sized(self):
+        self.size_self()
         for component in self.components:
             component.get_sized()
 
