@@ -54,6 +54,7 @@ class HorizontalTail(Component):
         state = FuselageGroup.Aircraft.states["cruise"]
 
         q = pa_to_psf(0.5 * state.density * state.velocity ** 2)   # [psi]
+        print('Dynamic pressure:', q)
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)   # [lbs]
 
@@ -61,7 +62,7 @@ class HorizontalTail(Component):
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
 
         # TODO: check MDN
-        self.quarter_chord_sweep = np.arctan2(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
+        self.quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
             /(1 + self.taper))))  # [rad]
 
         #this is now literally taken from Raymer, might have to take both sweeps of the horizontal tail
