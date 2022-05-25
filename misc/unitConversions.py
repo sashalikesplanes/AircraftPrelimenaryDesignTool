@@ -84,7 +84,7 @@ def pa_to_psi(pa):
     :param pa: Pascal
     :return: PSI
     """
-    psi = pa * 0.000145038
+    psi = pa / 0.000145038
     return psi
 
 
@@ -114,8 +114,7 @@ def m2_to_ft2(m2):
     :param m2: m2
     :return: ft2
     """
-
-    ft2 = 0.092903 * m2
+    ft2 = 10.7639 * m2
     return ft2
 
 

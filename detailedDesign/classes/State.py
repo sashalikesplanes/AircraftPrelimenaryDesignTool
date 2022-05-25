@@ -7,17 +7,36 @@ class State:
     def __init__(self, name):
         self.name = name
 
-        source = openData(Path('data', 'states', f'{name}.yaml'))
-        for key in source:
-            print(key, source[key])
+        self.source = openData(Path('data', 'states', f'{name}.yaml'))
 
-        self.velocity = source["velocity"]
-        self.altitude = source["altitude"]
-        self.range = source["range"]
+    @property
+    def velocity(self):
+        return self.source["velocity"]
 
-        h = self.altitude
+    @property
+    def altitude(self):
+        return self.source["altitude"]
 
-        self.pressure = getPressure(h)
-        self.density = getDensity(h)
-        self.temperature = getTemperature(h)
-        self.speed_of_sound = getSpeedOfSound(h)
+    @property
+    def range(self):
+        return self.source["range"]
+
+    @property
+    def duration(self):
+        return self.source["range"] / self.source["speed"]
+
+    @property
+    def pressure(self):
+        return getPressure(self.altitude)
+
+    @property
+    def density(self):
+        return getDensity(self.altitude)
+
+    @property
+    def temperature(self):
+        return getTemperature(self.altitude)
+
+    @property
+    def speed_of_sound(self):
+        return getSpeedOfSound(self.altitude)

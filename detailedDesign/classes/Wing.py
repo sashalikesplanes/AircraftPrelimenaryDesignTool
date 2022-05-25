@@ -38,14 +38,27 @@ class Wing(Component):
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2
 
         C_D_min = self.WingGroup.Aircraft.C_D_min
-        # [g/kNs]
-        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption
-        c_t_Imp = c_t_SI * 9.81 / 1e6 * 3600
+        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption  # [g/kNs]
+        c_t_Imp = c_t_SI * 9.81 / 1e6 
 
-        optimal_effective_AR = C_LC * C_LC / np.pi / (V_C / range_
-                                                      * C_LC / c_t_Imp * np.log(W_initial_cruise
-                                                                                / W_end_cruise) - C_D_min)
-        print(optimal_effective_AR)
+        optimal_effective_AR = C_LC * C_LC / np.pi * 1 / (((V_C / range_) \
+                                * (C_LC / c_t_Imp) * np.log(W_initial_cruise \
+                                / W_end_cruise)) - C_D_min)
+        print(f'{optimal_effective_AR = }')
+
+    def determine_C_L_alpha(self):
+        V_C = self.WingGroup.Aircraft.states['cruise'].velocity
+        MACHNUMBER = self.WingGroup.Aircraft.states['cruise'].speed_of_sound
+        aspect_ratio = 8
+        beta = np.sqrt((1 - (V_C/MACHNUMBER)**2))
+        k = 0.95 # from Sam
+        semi_chord_sweep = self.root_chord / (2 * self.span)\
+        * (self.taper_ratio - 1)
+        CLALPHA = 2 * np.pi * aspect_ratio / (2 + np.sqrt(((aspect_ratio*beta) / k) ** 2\
+                * (1 + np.tan(semi_chord_sweep) ** 2 / (beta ** 2)) + 4))
+
+        print(np.deg2rad(CLALPHA))
+        return ("happy holidays")
 
     def size_self(self):
         self.wing_area = self.WingGroup.Aircraft.reference_area
@@ -58,18 +71,22 @@ class Wing(Component):
         self.tip_chord = self.root_chord * self.taper_ratio
 
         self.sweep = 0  # M < 0.7
+        print(self.determine_C_L_alpha())
         # print(self.root_chord, self.tip_chord)
 
         # Mass Sizing
         state = self.WingGroup.Aircraft.states["cruise"]
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)
-        S_W = m2_to_ft2(self.wing_area)
-        W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
-        sweep = np.pi / 180. * self.sweep  # put it in radians
-        n_z = self.WingGroup.Aircraft.ultimate_load_factor
-        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)
 
-        self.own_mass = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
+        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)    # [psi]
+        S_W = m2_to_ft2(self.wing_area)     # [ft2]
+        W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
+        sweep = np.pi / 180. * self.sweep  # [rads]
+        n_z = self.WingGroup.Aircraft.ultimate_load_factor
+        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)   # [lbs]
+
+        mass_lbs = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
             * (self.aspect_ratio / np.cos(sweep) ** 2) ** 0.6 * q ** 0.006 \
             * self.taper_ratio ** 0.04 * ((100 * self.thickness_chord_ratio)
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
+
+        self.own_mass = lbs_to_kg(mass_lbs)     # [kg]
