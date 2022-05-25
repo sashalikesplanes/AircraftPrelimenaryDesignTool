@@ -53,7 +53,7 @@ class HorizontalTail(Component):
 
         state = FuselageGroup.Aircraft.states["cruise"]
 
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)   # [psi]
+        q = pa_to_psf(0.5 * state.density * state.velocity ** 2)   # [psi]
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)   # [lbs]
 

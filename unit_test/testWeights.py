@@ -81,7 +81,11 @@ class TestWeights(unittest.TestCase):
         self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
 
     def test_horizontal_tail_mass(self):
-        pass
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self()
+        x = self.aircraft.FuselageGroup.Tail.HorizontalTail.own_mass
+        y = 1
+        self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
+
 
     def test_vertical_tail_mass(self):
         pass
