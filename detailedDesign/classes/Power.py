@@ -14,8 +14,7 @@ class Power(Component):
         self.FuselageGroup = FuselageGroup
 
         self.FuelCells = FuelCells(self, self.design_config)
-        self.Batteries = Batteries(self, self.design_config)
-        self.components = [self.FuelCells, self.Batteries]
+        self.components = [self.FuelCells]
         self.own_power = None
 
         # Create all the parameters that this component must have here:
