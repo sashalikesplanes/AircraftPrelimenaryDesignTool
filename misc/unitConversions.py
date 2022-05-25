@@ -93,7 +93,7 @@ def pa_to_psf(pa):
     :param pa: Pascal
     :return: PSF
     """
-    psf = pa * 47.8803
+    psf = pa / 47.8803
     return psf
 
 def bar_to_pa(bar):

@@ -36,10 +36,13 @@ class Aircraft(Component):
 
         self._freeze()
 
-    def size_self(self):
+    def get_sized(self):
         # TODO Calculate payload mass
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
+
+        for component in self.components:
+            component.get_sized()
 
         self.payload_mass = self.get_payload_mass()
 

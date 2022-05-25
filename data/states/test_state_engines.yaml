@@ -1,0 +1,4 @@
+
+velocity: 139 # [m/s]
+altitude: 1000  # [m]
+range: 100000  # [m]

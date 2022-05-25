@@ -12,7 +12,7 @@ class TestWeights(unittest.TestCase):
 
     def setUp(self):
         config_file = Path('data', 'new_designs', 'config.yaml')
-        states = {"test_state_1": State('test_state_1'), "cruise": State("cruise")}
+        states = {"test_state_1": State('test_state_1'), "cruise": State("test_state_2")}
         self.aircraft = Aircraft(openData(config_file), states)
         # self.aircraft.FuselageGroup.get_sized()
 
@@ -27,6 +27,7 @@ class TestWeights(unittest.TestCase):
         self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
         self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
+        self.aircraft.reference_area = 50
 
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
@@ -40,6 +41,7 @@ class TestWeights(unittest.TestCase):
         self.aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio = 5 # [-]
         self.aircraft.FuselageGroup.Tail.HorizontalTail.three_quarter_chord_sweep = 0 # [rad]
         self.aircraft.FuselageGroup.Tail.HorizontalTail.taper = 0.2 # [-]
+
 
         # Imperial constants from test params:
         # l_FS = 492.12598 # [ft]
@@ -73,16 +75,14 @@ class TestWeights(unittest.TestCase):
 
         # analytical_mass_kg = 6443.190189 # test_state_1
 
-        print(f"Mass of fuselage: {model_mass} [kg]")
-
         self.assertAlmostEqual(model_mass, analytical_mass_kg, delta=analytical_mass_kg * testMargin)
 
     def test_wing_mass(self):
         # Define params
         self.aircraft.WingGroup.Wing.size_self()
-        x =self.aircraft.WingGroup.Wing.own_mass
-        y = 1
-        self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
+        x = self.aircraft.WingGroup.Wing.own_mass
+        y = 1449.007258  # [kg]
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_horizontal_tail_mass(self):
         self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self_mass()
@@ -95,7 +95,6 @@ class TestWeights(unittest.TestCase):
         pass
 
     def test_misc_mass(self):
-        print(self.aircraft.FuselageGroup.Fuselage.Cabin.diameter)
         misc = self.aircraft.FuselageGroup.Miscellaneous
 
         misc.size_self()
@@ -132,7 +131,7 @@ class TestWeights(unittest.TestCase):
 
         # Air Conditioning
         x6 = misc.W_AC
-        state6 = State("cruise")
+        state6 = State("test_state_2")
         M = state6.velocity / state6.speed_of_sound
         y6 = (20619.097013151862 * M ** 0.08) * 0.453592
         self.assertAlmostEqual(x6, y6, delta=y6 * testMargin)
@@ -143,7 +142,6 @@ class TestWeights(unittest.TestCase):
         self.assertAlmostEqual(x7, y7, delta=y7 * testMargin)
 
         x = self.aircraft.FuselageGroup.Miscellaneous.own_mass
-        print(f"Mass of miscellaneous group: {x}")
         y = y1 + y2 + y3 + y4 + y5 + y6 + y7
         self.assertAlmostEqual(x, y, delta=y * testMargin)
 
