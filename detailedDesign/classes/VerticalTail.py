@@ -39,6 +39,8 @@ class VerticalTail(Component):
         self.surface_area = (self.volume_coefficient * \
             wing_area * wing_span) / self.tail_length  # [m2]
 
+        self.span = np.sqrt(self.aspect_ratio * self.surface_area)  # [m]
+
         average_chord = self.span / self.aspect_ratio  # [m]
         self.root_chord = (2 * average_chord)/(1 + self.taper)  # [m]
         self.mean_geometric_chord = 2/3 * self.root_chord * ((1+ self.taper +self.taper**2)/(1+ self.taper))  # [m]
