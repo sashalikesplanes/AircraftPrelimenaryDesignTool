@@ -34,6 +34,7 @@ Aircraft:
         test_prop: 1
       Cabin:
         passengers: 1000 # [-]
+        mass_per_passenger: 120 # [kg]
         max_seats_abreast: 18 # [-]
         max_rows_per_floor: 30 # [-]
         seat_width: 0.6 # [m]

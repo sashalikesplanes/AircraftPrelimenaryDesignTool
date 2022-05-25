@@ -20,7 +20,8 @@ class Aircraft(Component):
         # Use self.property = None
         self.mtom = 1  # Initial Value
         self.oem = None
-        self.fuel_mass = None
+        self.fuel_mass = 0
+        self.payload_mass = None
         self.thrust_over_weight = 1  # Initial Value
         self.weight_over_surface = 1  # Initial Value
         self.reference_area = None
@@ -31,14 +32,28 @@ class Aircraft(Component):
 
         self.ultimate_load_factor = None
         self.clean_stall_speed = None
+        self.cruise_drag = None
 
         self._freeze()
 
     def size_self(self):
+        # TODO Calculate payload mass
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
+        self.payload_mass = self.get_payload_mass()
+
         self.oem = self.get_mass()
 
-        drag, CDs = get_drag(self)
-        # Update CDmin
+        total_C_D_min, CDi, CD, total_drag = get_drag(self)
+        self.C_D_min = total_C_D_min
+        self.cruise_drag = total_drag
+
+        self.mtom = self.oem + self.payload_mass + self.fuel_mass
+
+    def get_payload_mass(self):
+        # Right now only count passengers. Their mass includes their luggage
+        num_of_pax = self.FuselageGroup.Fuselage.Cabin.passengers
+        mass_per_pax = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger
+
+        return num_of_pax * mass_per_pax

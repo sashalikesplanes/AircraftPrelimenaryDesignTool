@@ -42,7 +42,7 @@ class Fuselage(Component):
             return self.outer_diameter
 
     def size_self(self):
-        self.diameter = 1.045 * self.Cabin.diameter + 0.084
+        self.diameter = 1.045 * self.Cabin.diameter + 0.084     # [m]
 
         # if self.CargoBay.width is not None:
         #     S_cabin = self.Cabin.width * self.Cabin.height
@@ -56,7 +56,7 @@ class Fuselage(Component):
 
         l_FS = m_to_ft(self.length)  # [ft]
 
-        S_FUS_m = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * l_FS
+        S_FUS_m = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * self.length  # [m2]
         S_FUS = m2_to_ft2(S_FUS_m)  # [ft2]
 
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
@@ -79,8 +79,7 @@ class Fuselage(Component):
         if Delta_P < 0:
             Delta_P = 0
 
-        mass_lbs = lbs_to_kg(0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) **
-                             -0.072 * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271)
+        mass_lbs = 0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) **(-0.072) * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271
 
         self.own_mass = lbs_to_kg(mass_lbs)
 

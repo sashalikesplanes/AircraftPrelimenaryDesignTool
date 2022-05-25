@@ -18,6 +18,8 @@ class VerticalTail(Component):
         self.surface_area = None
         self.mean_geometric_chord = None
         self.span = None
+        self.root_chord = None
+        self.quarter_shord_sweep = None
 
         self._freeze()
 
@@ -38,7 +40,9 @@ class VerticalTail(Component):
         self.surface_area = self.volume_coefficient * \
             wing_area * wing_span / self.tail_length
 
-        # TODO Calculate Mean Geometric Chord
+        average_chord = self.span / self.aspect_ratio
+        self.root_chord = (2 * average_chord)/(1 + self.taper)  # [inches]
+        self.mean_geometric_chord = 2/3 * self.root_chord * ((1+ self.taper +self.taper**2)/(1+ self.taper))
 
     def size_self_mass(self):
         WingGroup = self.Tail.FuselageGroup.Aircraft.WingGroup
@@ -52,13 +56,10 @@ class VerticalTail(Component):
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
         F_tail = 1  # [0 for conventional, 1 for T-tail]
 
-        # TODO: Size these properly
-        S_VT = None  # [ft2]
-        sweep_VT = None   # [-]
-        taper_VT = None   # [-]
-        aspect_ratio_VT = None  # [-]
+        self.quarter_chord_sweep = np.arctan2(np.tan( self.leading_edge_sweep +  self.root_chord / (2 * self.span )
+            * (self.taper - 1)))   # [-]
 
-        mass_lbs = 0.073 * (1 + 0.2 * F_tail) * (n_z * W_O) ** 0.376 * q ** 0.122 * S_VT ** 0.873 * (
-            (100 * thickness_to_chord) / np.cos(sweep_VT)) ** (-0.49) * (
-            aspect_ratio_VT / np.cos(sweep_VT) ** 2) ** 0.357 * taper_VT ** 0.039
+        mass_lbs = 0.073 * (1 + 0.2 * F_tail) * (n_z * W_O) ** 0.376 * q ** 0.122 * self.surface_area ** 0.873 * (
+            (100 * thickness_to_chord) / np.cos(self.quarter_chord_sweep)) ** (-0.49) * (
+            self.aspect_ratio / np.cos(self.quarter_chord_sweep) ** 2) ** 0.357 * self.taper ** 0.039
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
