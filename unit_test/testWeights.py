@@ -27,18 +27,24 @@ class TestWeights(unittest.TestCase):
         self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
         self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
+        self.aircraft.reference_area = 50
 
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
         self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass = 50000  # [kg]
-        self.aircraft.WingGroup.Wing.sweep = 5  # [deg]
+        self.aircraft.WingGroup.Wing.sweep = 0.0872665  # [rad]
         self.aircraft.WingGroup.Wing.taper_ratio = 0.6  # [-]
         self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
         self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
 
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.surface_area = 6 # [m2]
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio = 5 # [-]
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.three_quarter_chord_sweep = 0 # [rad]
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.taper = 0.2 # [-]
+
 
         # Imperial constants from test params:
-        # l_FS = 492.12598 # [ft]
+        # l_FS = 492.12598    # [ft]
         # S_fus = 55308.51562 # [ft2]
         # W_o = 220462.2622   # [lbs]
         # l_HT = 270.74245    # [ft]
@@ -62,36 +68,32 @@ class TestWeights(unittest.TestCase):
             Delta_P = 0
 
         analytical_mass_lbs = 0.052 * 55308.51562 ** 1.086 * 440924.5244 ** 0.177 * 270.74245 ** -0.051 * (
-                    492.12598 / 32.8084) ** (
+                492.12598 / 32.8084) ** (
                                   -0.072) * q ** 0.241 + 11.9 * (277360.9475 * Delta_P) ** 0.271
 
-        analytical_mass_kg = lbs_to_kg(analytical_mass_lbs)
+        analytical_mass_kg = lbs_to_kg(analytical_mass_lbs)     # cruise state
 
         # analytical_mass_kg = 6443.190189 # test_state_1
-
-        print(f"Mass of fuselage: {model_mass} [kg]")
 
         self.assertAlmostEqual(model_mass, analytical_mass_kg, delta=analytical_mass_kg * testMargin)
 
     def test_wing_mass(self):
         # Define params
         self.aircraft.WingGroup.Wing.size_self()
-        x =self.aircraft.WingGroup.Wing.own_mass
+        x = self.aircraft.WingGroup.Wing.own_mass
         y = 1449.007258  # [kg]
-        self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_horizontal_tail_mass(self):
-        self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self()
-        x = self.aircraft.FuselageGroup.Tail.HorizontalTail.own_mass
-        y = 1
-        self.assertAlmostEqual(x,y, delta= 0.3* testMargin)
-
+        self.aircraft.FuselageGroup.Tail.HorizontalTail.size_self_mass()
+        model_mass = self.aircraft.FuselageGroup.Tail.HorizontalTail.own_mass # [kg]
+        analytical_mass = 182.5222796    # [kg]
+        self.assertAlmostEqual(model_mass, analytical_mass, delta = analytical_mass * testMargin)
 
     def test_vertical_tail_mass(self):
         pass
 
     def test_misc_mass(self):
-        print(self.aircraft.FuselageGroup.Fuselage.Cabin.diameter)
         misc = self.aircraft.FuselageGroup.Miscellaneous
 
         misc.size_self()
@@ -99,7 +101,7 @@ class TestWeights(unittest.TestCase):
         # This y should be the sum of all specified fake fuselage components
         x1 = misc.W_boat
         y1 = 20000
-        self.assertAlmostEqual(x1, y1, delta=y1*testMargin)
+        self.assertAlmostEqual(x1, y1, delta=y1 * testMargin)
 
         # Flight control system
         x2 = misc.W_flight_control_system
@@ -139,7 +141,5 @@ class TestWeights(unittest.TestCase):
         self.assertAlmostEqual(x7, y7, delta=y7 * testMargin)
 
         x = self.aircraft.FuselageGroup.Miscellaneous.own_mass
-        print(f"Mass of miscellaneous group: {x}")
         y = y1 + y2 + y3 + y4 + y5 + y6 + y7
         self.assertAlmostEqual(x, y, delta=y * testMargin)
-
