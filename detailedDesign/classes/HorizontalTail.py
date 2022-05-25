@@ -54,7 +54,6 @@ class HorizontalTail(Component):
         state = FuselageGroup.Aircraft.states["cruise"]
 
         q = pa_to_psf(0.5 * state.density * state.velocity ** 2)   # [psi]
-        print('Dynamic pressure:', q)
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)   # [lbs]
 
@@ -65,8 +64,8 @@ class HorizontalTail(Component):
         self.quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
                                                                                                                             / (1 + self.taper))))  # [rad]
 
-        # this is now literally taken from Raymer, might have to take both sweeps of the horizontal tail
-        mass_lbs = 0.016 * (n_z * W_O) ** 0.414 * q ** 0.168 * S_HT ** 0.896 * ((100 * thickness_to_chord) / np.cos(
-            WingGroup.Wing.sweep)) ** (-0.12) * (self.aspect_ratio / np.cos(self.quarter_chord_sweep) ** 2) ** 0.043 * self.taper ** (-0.02)
+        #this is now literally taken from Raymer, might have to take both sweeps of the horizontal tail
+        mass_lbs = 0.016 * ( (n_z * W_O) ** 0.414) * (q ** 0.168 )* (S_HT ** 0.896 )* (((100 * thickness_to_chord) / np.cos(
+            WingGroup.Wing.sweep)) ** (-0.12)) * ((self.aspect_ratio / (np.cos(self.quarter_chord_sweep) ** 2)) ** 0.043) * (self.taper ** (-0.02))
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
