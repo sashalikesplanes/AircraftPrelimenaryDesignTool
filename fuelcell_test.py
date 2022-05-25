@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 from pathlib import Path
 from misc.openData import openData
@@ -13,15 +12,7 @@ def run_test():
 
     aircraft.reference_area = 10
 
-    # init parameters
-    aircraft.FuselageGroup.Fuselage.Cabin.diameter = 12
-
-    # call python file
-    aircraft.FuselageGroup.Fuselage.FuelContainer.size_self()
-
-    # print
-    # print(mass_H2)
-
+    aircraft.FuselageGroup.Power.FuelCells.size_self()
 
 if __name__ == "__main__":
     run_test()
