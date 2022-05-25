@@ -10,14 +10,12 @@ class HorizontalTail(Component):
 
         self.Tail = Tail
 
-        self.MGC = 1
-
         self.tail_length = None  # [m]
         self.surface_area = None  # [m2]
         self.mean_geometric_chord = None  # [m]
         self.span = None  # [m]
         self.root_chord = None  # [m]
-        self.quarter_chord_sweep = None # [rad]
+        self.quarter_chord_sweep = None  # [rad]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -30,11 +28,13 @@ class HorizontalTail(Component):
     def size_self_geometry(self):
         # Sizing dimensions
         wing_area = self.Tail.FuselageGroup.Aircraft.reference_area  # [m2]
-        wing_mean_geometric_chord = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord  # [m]
-        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / 2  # [m]
+        # [m]
+        wing_mean_geometric_chord = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord
+        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / \
+            2  # [m]
 
         self.tail_length = np.sqrt((2 * self.volume_coefficient * wing_area * wing_mean_geometric_chord
-                                    )/(np.pi * (2 * fuselage_radius))) # [m]
+                                    )/(np.pi * (2 * fuselage_radius)))  # [m]
 
         self.surface_area = (self.volume_coefficient * wing_area *
                              wing_mean_geometric_chord) / self.tail_length   # [m2]
@@ -43,8 +43,8 @@ class HorizontalTail(Component):
 
         average_chord = self.span / self.aspect_ratio  # [m]
         self.root_chord = (2 * average_chord)/(1 + self.taper)  # [m]
-        self.mean_geometric_chord = 2/3 * self.root_chord * ((1+ self.taper +self.taper**2)/(1+ self.taper)) #[m]
-        
+        self.mean_geometric_chord = 2/3 * self.root_chord * \
+            ((1 + self.taper + self.taper**2)/(1 + self.taper))  # [m]
 
     def size_self_mass(self):
         # Sizing mass
@@ -61,11 +61,11 @@ class HorizontalTail(Component):
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
 
         # TODO: check MDN
-        self.quarter_chord_sweep = np.arctan2(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
-            /(1 + self.taper))))  # [rad]
+        self.quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
+                                                                                                                            / (1 + self.taper))))  # [rad]
 
         #this is now literally taken from Raymer, might have to take both sweeps of the horizontal tail
-        mass_lbs = 0.016 * (n_z * W_O) ** 0.414 * q ** 0.168 * S_HT ** 0.896 * ((100 * thickness_to_chord) / np.cos(
-            WingGroup.Wing.sweep)) ** (-0.12) * (self.aspect_ratio / np.cos(self.quarter_chord_sweep) ** 2) ** 0.043 * self.taper ** (-0.02)
+        mass_lbs = 0.016 * ( (n_z * W_O) ** 0.414) * (q ** 0.168 )* (S_HT ** 0.896 )* (((100 * thickness_to_chord) / np.cos(
+            WingGroup.Wing.sweep)) ** (-0.12)) * ((self.aspect_ratio / (np.cos(self.quarter_chord_sweep) ** 2)) ** 0.043) * (self.taper ** (-0.02))
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]

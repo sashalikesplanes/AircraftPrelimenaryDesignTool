@@ -19,7 +19,7 @@ class VerticalTail(Component):
         self.mean_geometric_chord = None # [m]
         self.span = None # [m]
         self.root_chord = None # [m]
-        self.quarter_shord_sweep = None # [rad]
+        self.quarter_chord_sweep = None # [rad]
 
         self._freeze()
 
@@ -50,17 +50,18 @@ class VerticalTail(Component):
 
         state = WingGroup.Aircraft.states["cruise"]
 
-        q = pa_to_psf(0.5 * state.density * state.velocity ** 2)    # [psi]
+        q = pa_to_psf(0.5 * state.density * state.velocity ** 2)    # [psf]
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)    # [lbs]
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
         F_tail = 1  # [0 for conventional, 1 for T-tail]
 
-        self.quarter_chord_sweep = np.arctan2(np.tan( self.leading_edge_sweep +  self.root_chord / (2 * self.span )
+
+        self.quarter_chord_sweep = np.arctan(np.tan( self.leading_edge_sweep +  self.root_chord / (2 * self.span )
             * (self.taper - 1)))   # [rad]
 
-        mass_lbs = 0.073 * (1 + 0.2 * F_tail) * (n_z * W_O) ** 0.376 * q ** 0.122 * self.surface_area ** 0.873 * (
-            (100 * thickness_to_chord) / np.cos(self.quarter_chord_sweep)) ** (-0.49) * (
-            self.aspect_ratio / np.cos(self.quarter_chord_sweep) ** 2) ** 0.357 * self.taper ** 0.039
+        mass_lbs = 0.073 * (1 + 0.2 * F_tail) * ((n_z * W_O) ** 0.376) * (q ** 0.122) * (m2_to_ft2(self.surface_area) ** 0.873) * ((
+            (100 * thickness_to_chord) / np.cos(self.quarter_chord_sweep)) ** (-0.49)) * ((
+            self.aspect_ratio / (np.cos(self.quarter_chord_sweep) ** 2)) ** 0.357) * (self.taper ** 0.039)
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
