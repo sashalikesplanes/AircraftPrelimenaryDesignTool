@@ -50,7 +50,7 @@ class VerticalTail(Component):
 
         state = WingGroup.Aircraft.states["cruise"]
 
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)    # [psi]
+        q = pa_to_psf(0.5 * state.density * state.velocity ** 2)    # [psi]
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)    # [lbs]
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
@@ -62,5 +62,5 @@ class VerticalTail(Component):
         mass_lbs = 0.073 * (1 + 0.2 * F_tail) * (n_z * W_O) ** 0.376 * q ** 0.122 * self.surface_area ** 0.873 * (
             (100 * thickness_to_chord) / np.cos(self.quarter_chord_sweep)) ** (-0.49) * (
             self.aspect_ratio / np.cos(self.quarter_chord_sweep) ** 2) ** 0.357 * self.taper ** 0.039
-            
+
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
