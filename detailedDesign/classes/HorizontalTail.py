@@ -32,7 +32,7 @@ class HorizontalTail(Component):
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)   # [lbs]
 
-        S_HT = None  # [ft2]
+        S_HT = self.surface_area  # [ft2]
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
         sweep_HT = None   # [-]
         taper_HT = None   # [-]
@@ -44,7 +44,8 @@ class HorizontalTail(Component):
         # TODO: check MDN
         # TODO: Size these properly
 
-        self.tail_length = np.sqrt((2)/(np.pi * (FuselageGroup.Fuselage.diameter)))
+        self.tail_length = np.sqrt(
+            (2)/(np.pi * (FuselageGroup.Fuselage.diameter)))
         span_HT = None  # [ft]
         root_chord_thickness_HT = None  # [inches]
         aspect_ratio_HT = None  # [-]
