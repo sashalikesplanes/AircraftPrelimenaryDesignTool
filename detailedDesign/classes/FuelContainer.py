@@ -46,7 +46,7 @@ class FuelContainer(Component):
         self.thickness = max(thickness_fatigue, thickness_yield)
 
         # Fuel tank sizing
-        powertest = 300000000  # CHANGE THIS!!!!
+        powertest = 132000000  # CHANGE THIS!!!!
 
         self.mass_H2 = powertest * self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight / (
             32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)

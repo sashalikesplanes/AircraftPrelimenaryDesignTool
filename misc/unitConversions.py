@@ -84,9 +84,17 @@ def pa_to_psi(pa):
     :param pa: Pascal
     :return: PSI
     """
-    psi = pa / 0.000145038
+    psi = pa * 0.000145038
     return psi
 
+def pa_to_psf(pa):
+    """
+    this function converts Pa to PSF
+    :param pa: Pascal
+    :return: PSF
+    """
+    psf = pa / 47.8803
+    return psf
 
 def bar_to_pa(bar):
     """
