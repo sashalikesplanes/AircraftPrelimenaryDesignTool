@@ -21,7 +21,8 @@ class FuelCells(Component):
         self._freeze()
 
     def size_self(self):
-        powertest = 132e6 #[W], CHANGE!!!!
+        powertest = 132e6 #[W], CHANGE!!!! # use peak power for this, since the fuel stack has to be able to provide this
+
 
         self.mass = powertest/self.mass_power_density #[kg]
         self.size = self.mass/self.W_Size  #[m3]
