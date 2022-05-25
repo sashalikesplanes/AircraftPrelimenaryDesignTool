@@ -21,6 +21,7 @@ class Aircraft(Component):
         self.mtom = 1  # Initial Value
         self.oem = None
         self.fuel_mass = None
+        self.payload_mass = None
         self.thrust_over_weight = 1  # Initial Value
         self.weight_over_surface = 1  # Initial Value
         self.reference_area = None
@@ -36,10 +37,13 @@ class Aircraft(Component):
         self._freeze()
 
     def size_self(self):
+        # TODO Calculate payload mass
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
         self.oem = self.get_mass()
 
-        drag, CDs = get_drag(self)
+        total_C_D_min, CDi, CD, total_drag = get_drag(self)
+        self.C_D_min = total_C_D_min
         # Update CDmin
+        # TODO Figure out fuel stuff
