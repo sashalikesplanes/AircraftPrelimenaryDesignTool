@@ -42,6 +42,13 @@ class TestWeights(unittest.TestCase):
         self.aircraft.FuselageGroup.Tail.HorizontalTail.three_quarter_chord_sweep = 0 # [rad]
         self.aircraft.FuselageGroup.Tail.HorizontalTail.taper = 0.2 # [-]
 
+        self.aircraft.FuselageGroup.Tail.VerticalTail.surface_area = 6 # [m2]
+        self.aircraft.FuselageGroup.Tail.VerticalTail.leading_edge_sweep = 0.2 # [rad]
+        self.aircraft.FuselageGroup.Tail.VerticalTail.root_chord = 2 # [m]
+        self.aircraft.FuselageGroup.Tail.VerticalTail.span = 4 # [m]
+        self.aircraft.FuselageGroup.Tail.VerticalTail.taper = 0.4 # [-]
+        self.aircraft.FuselageGroup.Tail.VerticalTail.aspect_ratio = 2 #[-]
+
 
         # Imperial constants from test params:
         # l_FS = 492.12598    # [ft]
@@ -92,6 +99,11 @@ class TestWeights(unittest.TestCase):
 
     def test_vertical_tail_mass(self):
         self.aircraft.FuselageGroup.Tail.VerticalTail.size_self_mass()
+        model_mass = self.aircraft.FuselageGroup.Tail.VerticalTail.own_mass # [kg]
+        analytical_mass = 107.0831322   # [kg]
+        self.assertAlmostEqual(model_mass, analytical_mass, delta = analytical_mass * testMargin)
+
+
 
     def test_misc_mass(self):
         misc = self.aircraft.FuselageGroup.Miscellaneous
