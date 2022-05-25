@@ -7,7 +7,10 @@ from misc.ISA import *
 
 class TestMisc(unittest.TestCase):
     def test_isa(self):
-        pass
+        self.assertAlmostEqual(getTemperature(7000), 242.650, delta=242.650*testMargin)
+        self.assertAlmostEqual(getPressure(5000), 54019.9, delta=54019.9*testMargin)
+        self.assertAlmostEqual(getDensity(6000), 0.659697, delta=0.659697*testMargin)
+        self.assertAlmostEqual(getSpeedOfSound(9000), 303.793, delta=303.793*testMargin)
 
     def test_unit_conversion_1(self):
         self.assertAlmostEqual(lbs_to_kg(1), 0.453592, delta=0.453592*testMargin)
