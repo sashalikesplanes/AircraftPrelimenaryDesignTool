@@ -1,7 +1,6 @@
 # To check
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuelCells import FuelCells
-from detailedDesign.classes.Batteries import Batteries
 import numpy as np
 
 from detailedDesign.classes.FuselageGroup import FuselageGroup
