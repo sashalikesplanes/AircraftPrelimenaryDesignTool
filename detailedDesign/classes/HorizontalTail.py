@@ -27,15 +27,16 @@ class HorizontalTail(Component):
         self.size_self_mass()
 
     def size_self_geometry(self):
-        #Sizing dimensions
+        # Sizing dimensions
         wing_area = self.Tail.FuselageGroup.Aircraft.reference_area
         wing_mean_geometric_chord = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord
         fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / 2
 
-        self.tail_length = np.sqrt((2 * self.volume_coefficient * wing_area * wing_mean_geometric_chord \
-            )/(np.pi * (2 * fuselage_radius)))
+        self.tail_length = np.sqrt((2 * self.volume_coefficient * wing_area * wing_mean_geometric_chord
+                                    )/(np.pi * (2 * fuselage_radius)))
 
-        self.surface_area = (self.volume_coefficient * wing_area * wing_mean_geometric_chord) / self.tail_length   # [ft2]
+        self.surface_area = (self.volume_coefficient * wing_area *
+                             wing_mean_geometric_chord) / self.tail_length   # [ft2]
 
         self.span = np.sqrt(self.aspect_ratio * self.surface_area)  # [ft]
 
@@ -45,7 +46,7 @@ class HorizontalTail(Component):
         
 
     def size_self_mass(self):
-        #Sizing mass
+        # Sizing mass
         WingGroup = self.Tail.FuselageGroup.Aircraft.WingGroup
         FuselageGroup = self.Tail.FuselageGroup
 
@@ -55,6 +56,7 @@ class HorizontalTail(Component):
         n_z = FuselageGroup.Aircraft.ultimate_load_factor   # [-]
         W_O = kg_to_lbs(FuselageGroup.Aircraft.mtom)   # [lbs]
 
+        S_HT = m2_to_ft2(self.surface_area)  # [ft2]
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
 
         l_FS_m = FuselageGroup.Fuselage.length
