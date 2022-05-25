@@ -14,27 +14,24 @@ class Aircraft(Component):
         self.FuselageGroup = FuselageGroup(self, self.design_config)
         self.components = [self.WingGroup, self.FuselageGroup]
 
-        # FAKE REFERENCE AREA FOR TESTING PURPOSES
-        self.reference_area = 500
-        # I SWEAR TO GOD THIS TEST VALUE SHOULDN'T BE HERE
-
-
-        # REMOVE BECAUSE MAGICAL DISNEY VALUE
         self.states = states_dict
 
         # Create all the parameters that this component must have here:
         # Use self.property = None
-        self.mtom = None
+        self.mtom = 1  # Initial Value
         self.oem = None
         self.fuel_mass = None
-        self.thrust_over_weight = None
-        self.weight_over_surface = None
+        self.thrust_over_weight = 1  # Initial Value
+        self.weight_over_surface = 1  # Initial Value
         self.reference_area = None
         self.reference_thrust = None
 
         # Drag states
-        self.C_D_min = None
+        self.C_D_min = 0.1  # Initial Value
         self.C_L_max = None
+
+        self.ultimate_load_factor = None
+        self.clean_stall_speed = None
 
         self._freeze()
 

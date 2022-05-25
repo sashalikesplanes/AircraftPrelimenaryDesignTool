@@ -25,6 +25,22 @@ class Fuselage(Component):
 
         self._freeze()
 
+    @property
+    def length(self):
+        return self.Cabin.length + self.FuelContainer.length
+
+    @property
+    def inner_diameter(self):
+        return self.Cabin.diameter
+
+    @property
+    def outer_diameter(self):
+        if self.diameter is not None:
+            return self.diameter
+        else:
+            self.diameter = self.inner_diameter * 1.045 + 0.084
+            return self.outer_diameter
+
     def size_self(self):
         self.diameter = 1.045 * self.Cabin.diameter + 0.084
 
@@ -38,22 +54,35 @@ class Fuselage(Component):
         # MAKE MASS OF THING
         state = self.FuselageGroup.Aircraft.states["cruise"]
 
-        l_FS = self.Cabin.length + self.FuelContainer.length
-        S_FUS = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * l_FS
+        l_FS = m_to_ft(self.length)  # [ft]
+
+        S_FUS_m = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * l_FS
+        S_FUS = m2_to_ft2(S_FUS_m)  # [ft2]
+
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
-        W_O = kg_to_lbs(self.FuselageGroup.Aircraft.mtom)
+
+        W_O = kg_to_lbs(self.FuselageGroup.Aircraft.mtom)   # [lbs]
+
         # TODO: check MDN
         MAGICAL_DISNEY_NUMBER = 0.55
-        l_HT = l_FS * MAGICAL_DISNEY_NUMBER
-        d_FS = self.diameter
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)
-        V_p = m3_to_ft3(np.pi * self.Cabin.diameter ** 2 / 4 * self.Cabin.length)
-        Delta_P = pa_to_psi(getPressure(self.Cabin.cabin_pressure_altitude) - state.pressure)
+        l_HT = l_FS * MAGICAL_DISNEY_NUMBER     # [ft]
+
+        d_FS = m_to_ft(self.diameter)      # [ft]
+
+        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)  # [psi]
+
+        V_p = m3_to_ft3(np.pi * self.Cabin.diameter ** 2 /
+                        4 * self.Cabin.length)   # [ft3]
+
+        Delta_P = pa_to_psi(getPressure(
+            self.Cabin.cabin_pressure_altitude) - state.pressure)   # [psi]
         if Delta_P < 0:
             Delta_P = 0
 
-        self.own_mass = lbs_to_kg(0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) ** \
-                        -0.072 * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271)
+        mass_lbs = lbs_to_kg(0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) **
+                             -0.072 * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271)
+
+        self.own_mass = lbs_to_kg(mass_lbs)
 
     def get_sized(self):
         for component in self.components:
