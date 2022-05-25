@@ -56,7 +56,7 @@ class Fuselage(Component):
 
         l_FS = m_to_ft(self.length)  # [ft]
 
-        S_FUS_m = np.pi * self.diameter ** 2 / 4 * 2 + np.pi * self.diameter * self.length  # [m2]
+        S_FUS_m = (np.pi * self.diameter ** 2) / 4 * 2 + np.pi * self.diameter * self.length  # [m2]
         S_FUS = m2_to_ft2(S_FUS_m)  # [ft2]
 
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
@@ -69,7 +69,7 @@ class Fuselage(Component):
 
         d_FS = m_to_ft(self.diameter)      # [ft]
 
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)  # [psi]
+        q = pa_to_psf(0.5 * state.density * state.velocity ** 2)  # [psf]
 
         V_p = m3_to_ft3(np.pi * self.Cabin.diameter ** 2 /
                         4 * self.Cabin.length)   # [ft3]
