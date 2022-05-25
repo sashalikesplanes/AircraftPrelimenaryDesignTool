@@ -28,10 +28,10 @@ class TestWeights(unittest.TestCase):
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
         self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass = 50000  # [kg]
-        self.aircraft.WingGroup.Wing.sweep = 1
-        self.aircraft.WingGroup.Wing.taper_ratio = 1
-        self.aircraft.WingGroup.Wing.aspect_ratio = 1
-        self.aircraft.WingGroup.Wing.thickness_chord_ratio = 1
+        self.aircraft.WingGroup.Wing.sweep = 5  # [deg]
+        self.aircraft.WingGroup.Wing.taper_ratio = 0.6  # [-]
+        self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
+        self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
 
 
     def test_fuselage_mass(self):
