@@ -40,7 +40,7 @@ class FuelCells(Component):
         # self.flow_H2 = powertest/(self.voltage*self.conversion_efficiency*2*96500*500)
         print("mass:", self.mass)
         print("total size:", self.size)
-        print("number of plates:",self.numberplates)
-        print("power produced per plate", self.power_produced)
+        # print("number of plates:",self.numberplates)
+        # print("power produced per plate", self.power_produced)
 
 
