@@ -41,8 +41,8 @@ def calc_CDffus(Sref, cfus, dfus, Cf):
     return CDf
 
 
-def calc_CDftail(toverc, Sref, Cf):
-    Swet = Sref * (1.977 + 0.52 * toverc)
+def calc_CDftail(toverc, Stail, Sref, Cf):
+    Swet = Stail * (1.977 + 0.52 * toverc)
     CDf = Swet/Sref*Cf
     return CDf
 
@@ -106,8 +106,10 @@ def get_drag(aircraft):
     tovercHT = aircraft.FuselageGroup.Tail.HorizontalTail.toverc  # from NACA0010
     xovercmaxVT = aircraft.FuselageGroup.Tail.VerticalTail.xovercmax  # from NACA0010
     xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax  # from NACA0010
+    StailVT = aircraft.FuselageGroup.Tail.VerticalTail.surface_area
+    StailHT = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
     cVT = 9.05  # TODO link to vertical tail
-    cHT = aircraft.FuselageGroup.Tail.HorizontalTail.MGC
+    cHT = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
     cfus = 183  # TODO link to Fuselage. (length of the fuselage)
     AR = 6      # TODO Link AR, e, CL to Wing
     e = 0.8
@@ -134,14 +136,14 @@ def get_drag(aircraft):
     # run Vtail part
     ReVT = calc_reynolds(rho, V, cVT, T)
     CfVT = calc_Cf(ReVT, Xtrovercwing)
-    CDfVT = calc_CDftail(tovercVT, Sref, CfVT)
+    CDfVT = calc_CDftail(tovercVT, StailVT, Sref, CfVT)
     FFVT = calc_FFwing(tovercVT, M, xovercmaxVT)
     CDmin_VT = calc_CDmin_tail(CDfVT, FFVT, IF)
 
     # run Htail part
     ReHT = calc_reynolds(rho, V, cHT, T)
     CfHT = calc_Cf(ReHT, Xtrovercwing)
-    CDfHT = calc_CDftail(tovercHT, Sref, CfHT)
+    CDfHT = calc_CDftail(tovercHT, StailHT, Sref, CfHT)
     FFHT = calc_FFwing(tovercHT, M, xovercmaxHT)
     CDmin_HT = calc_CDmin_tail(CDfHT, FFHT, IF)
 

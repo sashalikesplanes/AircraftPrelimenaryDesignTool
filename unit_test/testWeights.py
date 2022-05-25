@@ -14,15 +14,16 @@ class TestWeights(unittest.TestCase):
         self.aircraft = Aircraft(openData(config_file), states)
         # self.aircraft.FuselageGroup.get_sized()
 
-    def test_fuselage_mass(self):
         # Define params
-        self.aircraft.FuselageGroup.Fuselage.Cabin.diameter = 10    # [m]
-        self.aircraft.FuselageGroup.Fuselage.FuelContainer.length = 50    # [m]
+        self.aircraft.FuselageGroup.Fuselage.Cabin.diameter = 10  # [m]
+        self.aircraft.FuselageGroup.Fuselage.FuelContainer.length = 50  # [m]
         self.aircraft.FuselageGroup.Fuselage.Cabin.length = 100
-        self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2    # [-]
+        self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude = 1000   # [m]
+        self.aircraft.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude = 1000  # [m]
+        self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
 
+    def test_fuselage_mass(self):
         # Test
         self.aircraft.FuselageGroup.Fuselage.size_self()
         x = self.aircraft.FuselageGroup.Fuselage.own_mass
@@ -32,7 +33,7 @@ class TestWeights(unittest.TestCase):
 
     def test_wing_mass(self):
         # Define params
-        self.aircraft.WingGroup.Wing.wing_area = 50
+
 
 
 
