@@ -46,10 +46,19 @@ class FuelContainer(Component):
         self.thickness = max(thickness_fatigue, thickness_yield)
 
         # Fuel tank sizing
-        powertest = 132000000  # CHANGE THIS!!!!
+        # powertest = 132000000  # CHANGE THIS!!!!
+        # self.mass_H2 = powertest * self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight / (
+        #     32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
 
-        self.mass_H2 = powertest * self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight / (
+        peakpower = 150000000
+        averagepower = 132000000
+        duration_peak = 0.5 #[h]
+        mass_H2_peak = peakpower * duration_peak / (
             32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
+        mass_H2_average = averagepower * (self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight-duration_peak) / (
+            32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
+        self.mass_H2 = mass_H2_peak+mass_H2_average
+
 
         self.volume_tank = self.mass_H2*(1+self.Vi)/self.density_H2
         self.length = (self.volume_tank - 4*np.pi*self.inner_radius**3/3)/(np.pi *
@@ -90,3 +99,4 @@ class FuelContainer(Component):
         # print("mass tank=", self.mass_tank)
         # print("area tank=", self.area_tank)
         # print("thickness tank=", self.thickness)
+
