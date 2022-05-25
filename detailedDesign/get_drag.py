@@ -91,7 +91,6 @@ def calc_CDi(CL, A, e):
 
 
 def get_drag(aircraft):
-    # aircraft.reference_area
     rho = aircraft.states['cruise'].density
     V = aircraft.states['cruise'].velocity
     cWMGC = aircraft.WingGroup.Wing.mean_geometric_chord
@@ -148,7 +147,7 @@ def get_drag(aircraft):
     CDmin_HT = calc_CDmin_tail(CDfHT, FFHT, IF)
 
     # add the stuff
-    TotalCDmin = CDmin_HT + CDmin_VT + CDmin_fus + CDmin_wing + 0.0025
+    TotalCDmin = CDmin_HT + CDmin_VT + CDmin_fus + CDmin_wing + 0.0025 #25 DC for misc
     #print('FF,W-F-H-V', FFwing, FFfus, FFHT, FFVT)
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
