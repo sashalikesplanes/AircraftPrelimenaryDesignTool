@@ -1,7 +1,5 @@
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
-from misc.ISA import getSpeedOfSound
-
 
 class Miscellaneous(Component):
     def __init__(self, FuselageGroup, design_config):
@@ -15,6 +13,10 @@ class Miscellaneous(Component):
         self.W_furnishing = None
         self.W_hydraulics = None
         self.W_flight_control_system = None
+        self.W_apu = None
+        self.W_oxy = None
+        self.W_paint = None
+        self.W_crew = None
 
         self._freeze()
 
@@ -29,19 +31,12 @@ class Miscellaneous(Component):
         n_pax = self.FuselageGroup.Fuselage.Cabin.passengers  # [-]
         pilot_count = 3  # [-]
         passengers_per_flight_attendent = 50
-        N_OCC = n_pax + n_pax // passengers_per_flight_attendent + 1 + pilot_count  # [-]
-        # This needs to be in meters since the mach number requires metric units for speed of sound
-        h = self.FuselageGroup.Aircraft.states["cruise"].altitude  # [m]
-        # [-]
-        M = self.FuselageGroup.Aircraft.states["cruise"].velocity / \
-            getSpeedOfSound(h)
-        W_FS = kg_to_lbs(
-            self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
+        W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
 
-        # MAGICAL DISNEY NUMBER WARNING (MDN)
-        W_UAV = 420  # [lbs]
+        # MDN
+        W_UAV = 2000  # [lbs]
 
-        # MAGICAL DISNEY FACTOR (MDF)
+        # MDF TODO: find better one
         self.W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.2
 
         self.W_flight_control_system = lbs_to_kg(
@@ -54,23 +49,33 @@ class Miscellaneous(Component):
         self.W_electrical = lbs_to_kg(
             12.57 * (W_FS + kg_to_lbs(self.W_avionics)) ** 0.51)
 
-        # self.W_AC = lbs_to_kg(0.265 * W_O ** 0.52 * N_OCC **
-        #                       0.68 * kg_to_lbs(self.W_avionics) ** 0.17 * M ** 0.08)
-
-        self.W_AC = lbs_to_kg(14 * m_to_ft(self.FuselageGroup.Fuselage.Cabin.length) **1.28)
+        self.W_AC = lbs_to_kg(14 * m_to_ft(self.FuselageGroup.Fuselage.Cabin.length) ** 1.28)
 
         self.W_furnishing = lbs_to_kg(0.0582 * W_O - 65)
 
-        # self.W_apu = lbs_to_kg(2.2 * 0.001 * W_O
+        self.W_apu = lbs_to_kg(2.2 * 0.001 * W_O)
+
+        self.W_oxy = lbs_to_kg(40 + 2.4 * n_pax)
+
+        self.W_paint = 0.006 * mtom
+
+        self.W_crew = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger * (
+                    n_pax // passengers_per_flight_attendent + 1 + pilot_count)
 
         self.logger.debug(f"Boat mass: {self.W_boat:.4E} [kg]")
-        self.logger.debug(
-            f"Flight control system mass: {self.W_flight_control_system:.4E} [kg]")
+        self.logger.debug(f"Flight control system mass: {self.W_flight_control_system:.4E} [kg]")
         self.logger.debug(f"Hydraulics mass: {self.W_hydraulics:.4E} [kg]")
         self.logger.debug(f"Avionics mass: {self.W_avionics:.4E} [kg]")
         self.logger.debug(f"Electrical mass: {self.W_electrical:.4E} [kg]")
         self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
         self.logger.debug(f"Furnishing mass: {self.W_furnishing:.4E} [kg]")
+        self.logger.debug(f"APU mass: {self.W_apu:.4E} [kg]")
+        self.logger.debug(f"Oxygen system mass: {self.W_oxy:.4E} [kg]")
+        self.logger.debug(f"Paint mass: {self.W_paint:.4E} [kg]")
+        self.logger.debug(f"Crew mass: {self.W_crew:.4E} [kg]")
+
+
+
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
-            self.W_hydraulics + self.W_flight_control_system + self.W_boat
+               self.W_hydraulics + self.W_flight_control_system + self.W_boat + self.W_apu + self.W_oxy + self.W_crew
         self.own_mass = mass
