@@ -1,7 +1,5 @@
-# To check
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuelCells import FuelCells
-import numpy as np
 
 
 class Power(Component):

@@ -76,8 +76,7 @@ class Cabin(Component):
         self.diameter = 2 * ((0.5 * self.width) ** 2 +
                              (0.5 * self.height) ** 2) ** 0.5
 
-        # Debug print statements
-
-        print(self.height, self.width, self.length)
-        print(self.diameter)
-        print(self.height * self.width * self.length)
+        # Debug statements
+        self.logger.debug(f"height x width x length: {(self.height, self.width, self.length)} [m]")
+        self.logger.debug(f"Cabin diameter{self.diameter} [m]")
+        self.logger.debug(f"Cabin volume: {self.height * self.width * self.length} [m3]")
