@@ -17,7 +17,7 @@ class Fuselage(Component):
         self.Cabin.get_sized()
         self.CargoBay = CargoBay(self, self.design_config)
         self.FuelContainer = FuelContainer(self, self.design_config)
-        self.components = [self.CargoBay, self.Cabin, self.FuelContainer]
+        self.components = [self.Cabin, self.CargoBay, self.FuelContainer]
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 

@@ -29,7 +29,9 @@ def detail_design():
     aircraft = Aircraft(openData(config_file), states)
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
 
-    # TODO Create state
+    pre_run = aircraft.FuselageGroup.Fuselage
+    pre_run.Cabin.size_self()
+    pre_run.CargoBay.size_self()
 
     # TODO Loop
     # Magical Disney Loop

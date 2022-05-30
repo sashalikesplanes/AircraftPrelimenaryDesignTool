@@ -1,7 +1,6 @@
 # To Check
 import numpy as np
 from detailedDesign.classes.Component import Component
-from detailedDesign.classes.HLDs import HLDs
 from misc.unitConversions import *
 
 

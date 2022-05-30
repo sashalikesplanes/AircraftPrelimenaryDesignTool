@@ -11,8 +11,8 @@ class Power(Component):
         self.FuselageGroup = FuselageGroup
 
         self.FuelCells = FuelCells(self, self.design_config)
-        self.Batteries = Batteries(self, self.design_config)
-        self.components = [self.FuelCells, self.Batteries]
+        # self.Batteries = Batteries(self, self.design_config)
+        self.components = [self.FuelCells]
         self.own_power = None
 
         # Create all the parameters that this component must have here:
@@ -20,13 +20,13 @@ class Power(Component):
         self._freeze()
 
     def size_self(self):
-        P_motor = Engines.P_motor
+        P_motor = self.FuselageGroup.Aircraft.WingGroup.Engines.P_motor
         n_motor = self.FuselageGroup.Aircraft.WingGroup.Engines.amount_motor
         percent_prop = self.percentage_propulsion_power
         eff_inverter = self.eff_inverter
         eff_converter = self.eff_converter
         cable_contingency = self.cable_contingency
-        T_avg = self.Fuselagegroup.Aircraft.cruise_drag
+        T_avg = self.FuselageGroup.Aircraft.cruise_drag
         V = self.FuselageGroup.Aircraft.states['cruise'].velocity
 
         # necessary power output from fuel cells + taking into account cable losses

@@ -18,14 +18,19 @@ class Engines(Component):
         self.own_lenght_unit = 0
         self.own_width_unit = 0
         self.own_height_unit = 0
+        self.own_amount_motor = None
 
         self._freeze()
+
+    @property
+    def amount_motor(self):
+        return self.own_amount_motor
 
     def size_self(self):
         S = self.WingGroup.Wing.span
         V = self.WingGroup.Aircraft.states['cruise'].velocity
         T = self.WingGroup.Aircraft.reference_thrust
-        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.diameter
+        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
 
         # Ref aircraft An-22 data
         P_eng = self.P_eng_an22   # [W] Power of one engine of the An-22
