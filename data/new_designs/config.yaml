@@ -31,8 +31,6 @@ Aircraft:
         current_density: 8 # [Amps/m2] - same paper as above
         mass_power_density: 8000 # [W/kg]
         W_Size: 1200 # [kg/m3]
-        duration_flight: 8 # [h]
-        amount_cells: 300
       Batteries:
         test_prop: 69
     Fuselage:

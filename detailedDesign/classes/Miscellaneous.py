@@ -52,10 +52,15 @@ class Miscellaneous(Component):
         self.W_electrical = lbs_to_kg(
             12.57 * (W_FS + kg_to_lbs(self.W_avionics)) ** 0.51)
 
-        self.W_AC = lbs_to_kg(0.265 * W_O ** 0.52 * N_OCC **
-                              0.68 * kg_to_lbs(self.W_avionics) ** 0.17 * M ** 0.08)
+        # self.W_AC = lbs_to_kg(0.265 * W_O ** 0.52 * N_OCC **
+        #                       0.68 * kg_to_lbs(self.W_avionics) ** 0.17 * M ** 0.08)
+
+        self.W_AC = lbs_to_kg(14 * m_to_ft(self.FuselageGroup.Fuselage.Cabin.length) **1.28)
 
         self.W_furnishing = lbs_to_kg(0.0582 * W_O - 65)
+
+        # self.W_apu = lbs_to_kg(2.2 * 0.001 * W_O
+
         self.logger.debug(f"Boat mass: {self.W_boat:.4E} [kg]")
         self.logger.debug(
             f"Flight control system mass: {self.W_flight_control_system:.4E} [kg]")
@@ -64,8 +69,7 @@ class Miscellaneous(Component):
         self.logger.debug(f"Electrical mass: {self.W_electrical:.4E} [kg]")
         self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
         self.logger.debug(f"Furnishing mass: {self.W_furnishing:.4E} [kg]")
-        # TODO REMOVE OR FIX
-        # self.W_AC = 0 
+
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
             self.W_hydraulics + self.W_flight_control_system + self.W_boat
         self.own_mass = mass

@@ -28,7 +28,7 @@ def detail_design(debug=False):
     aircraft = Aircraft(openData(config_file), states, debug=True)
 
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
-    previous_mtom = aircraft.mtom  # For checking convergence
+    previous_mtom = 0  # For checking convergence
 
     # Size the cabin and cargo bay as it is constant and is a dependency for other components
     pre_run = aircraft.FuselageGroup.Fuselage
