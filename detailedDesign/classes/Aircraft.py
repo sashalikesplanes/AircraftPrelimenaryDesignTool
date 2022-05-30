@@ -52,8 +52,6 @@ class Aircraft(Component):
         self.logger.debug(f"[{type(self).__name__}] { self.mtom = :.4E} kg")
         for component in self.components:
             component.get_sized()
-            self.logger.debug(
-                f"{type(component).__name__} {component.get_mass() = :.4E}")
 
         self.payload_mass = self.get_payload_mass()
 
@@ -64,6 +62,8 @@ class Aircraft(Component):
         self.cruise_drag = total_drag
 
         self.mtom = self.oem + self.payload_mass + self.fuel_mass
+
+        self.print_component_masses()
 
     def get_payload_mass(self):
         # Right now only count passengers. Their mass includes their luggage

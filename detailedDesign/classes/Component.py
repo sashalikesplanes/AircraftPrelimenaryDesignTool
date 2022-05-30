@@ -37,6 +37,12 @@ class Component:
         for component in self.components:
             component.get_sized()
 
+    # Recursivly print the masses of all the components
+    def print_component_masses(self, depth=0):
+        self.logger.debug(f"{' ' * depth * 4} Mass of {type(self).__name__} is {self.get_mass():.4E} [kg]")
+        for component in self.components:
+            component.print_component_masses(depth=depth+1)
+
     def unwrap_design_config(self, design_config):
         return design_config[type(self).__name__]
 
