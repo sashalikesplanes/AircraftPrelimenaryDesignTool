@@ -8,6 +8,7 @@ from detailedDesign.getConstraints import get_constraints
 from detailedDesign.classes.State import State
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
 from detailedDesign.log import setup_custom_logger
+from detailedDesign.potatoPlot import make_potato_plot
 
 
 def get_ultimate_load_factor():
@@ -34,7 +35,7 @@ def detail_design(debug=False):
     pre_run.Cabin.size_self()
     pre_run.CargoBay.size_self()
 
-    for iteration in range(10000):
+    for iteration in range(1):
         get_constraints(aircraft)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
@@ -54,6 +55,8 @@ def detail_design(debug=False):
             break
         previous_mtom = aircraft.mtom
 
+
+    make_potato_plot(aircraft)
     perform_analyses(aircraft)
 
 
