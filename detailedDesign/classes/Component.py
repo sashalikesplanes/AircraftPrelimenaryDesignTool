@@ -60,10 +60,15 @@ class Component:
             component.get_sized()
 
     # Recursivly print the masses of all the components
-    def print_component_masses(self, depth=0):
-        self.logger.debug(f"{' ' * depth * 4} Mass of {type(self).__name__} is {self.get_mass():.4E} [kg]")
+    def print_component_masses(self, prev_mass=None, depth=0):
+        if prev_mass:
+            percent_mass = self.get_mass() / prev_mass * 100
+        else:
+            percent_mass = 100
+
+        self.logger.debug(f"{' ' * depth * 2}{type(self).__name__:<15}{self.get_mass():<20.4E}[kg]{percent_mass:>20.2f} %")
         for component in self.components:
-            component.print_component_masses(depth=depth+1)
+            component.print_component_masses(prev_mass=self.get_mass(), depth=depth+1)
 
     def unwrap_design_config(self, design_config):
         return design_config[type(self).__name__]

@@ -28,7 +28,8 @@ class Miscellaneous(Component):
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor  # [-]
         n_pax = self.FuselageGroup.Fuselage.Cabin.passengers  # [-]
         pilot_count = 3  # [-]
-        N_OCC = n_pax + n_pax // 50 + 1 + pilot_count  # [-]
+        passengers_per_flight_attendent = 50
+        N_OCC = n_pax + n_pax // passengers_per_flight_attendent + 1 + pilot_count  # [-]
         # This needs to be in meters since the mach number requires metric units for speed of sound
         h = self.FuselageGroup.Aircraft.states["cruise"].altitude  # [m]
         # [-]
@@ -65,7 +66,8 @@ class Miscellaneous(Component):
         self.logger.debug(f"Electrical mass: {self.W_electrical:.4E} [kg]")
         self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
         self.logger.debug(f"Furnishing mass: {self.W_furnishing:.4E} [kg]")
-
+        # TODO REMOVE OR FIX
+        self.W_AC = 0 
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
             self.W_hydraulics + self.W_flight_control_system + self.W_boat
         self.own_mass = mass

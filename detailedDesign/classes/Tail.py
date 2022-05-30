@@ -22,5 +22,3 @@ class Tail(Component):
     def get_sized(self):
         for component in self.components:
             component.get_sized()
-
-        self.own_mass = self.get_mass()
