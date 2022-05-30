@@ -7,6 +7,7 @@ from detailedDesign.performAnalyses import perform_analyses
 from detailedDesign.getConstraints import get_constraints
 from detailedDesign.classes.State import State
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
+import logging
 
 
 def get_ultimate_load_factor():
@@ -17,6 +18,13 @@ def get_ultimate_load_factor():
 
 
 def detail_design(debug=False):
+
+    logging.basicConfig()
+    logger = logging.getLogger('main_logger')
+    if debug:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.INFO)
 
     states = {"cruise": State('cruise')}
 

@@ -81,8 +81,8 @@ class FuelContainer(Component):
             mass_total.append(total_boiloff+self.mass_tank+mass_insulation)
 
         self.own_mass = np.array(mass_total).min()
-        print(f"I am the mass of the fuel contrainer {self.own_mass}")
         self.Fuselage.FuselageGroup.Aircraft.fuel_mass = self.mass_H2
+        # if self.Fuselage.FuselageGroup.Aircraft.debug:
 
         # plotting
         # plt.plot(thickness_insulation, mass_total)
