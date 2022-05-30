@@ -28,6 +28,7 @@ class Aircraft(Component):
         self.weight_over_surface = 1  # Initial Value
         self.reference_area = None
         self.reference_thrust = None
+        self.own_mass = 0
 
         # Drag states
         self.C_D_min = 0.1  # Initial Value
