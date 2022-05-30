@@ -32,8 +32,7 @@ class Miscellaneous(Component):
         N_OCC = n_pax + n_pax // passengers_per_flight_attendent + 1 + pilot_count  # [-]
         # This needs to be in meters since the mach number requires metric units for speed of sound
         h = self.FuselageGroup.Aircraft.states["cruise"].altitude  # [m]
-        M = self.FuselageGroup.Aircraft.states["cruise"].velocity \ # [-]
-            / getSpeedOfSound(h)
+        M = self.FuselageGroup.Aircraft.states["cruise"].velocity / getSpeedOfSound(h)
         W_FS = kg_to_lbs(
             self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
 
