@@ -43,6 +43,10 @@ class Aircraft(Component):
         # TODO Calculate payload mass
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
+        print(f"{ self.reference_area = } m2")
+
+        print(f"{ self.reference_thrust = } N")
+        print(f"{ self.mtom = } kg")
 
         for component in self.components:
             component.get_sized()

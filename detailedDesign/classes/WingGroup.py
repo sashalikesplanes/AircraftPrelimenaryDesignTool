@@ -22,4 +22,6 @@ class WingGroup(Component):
         for component in self.components:
             component.get_sized()
 
+            print(f"{type(component).__name__} {component.get_mass() = }")
+
         self.own_mass = self.get_mass()

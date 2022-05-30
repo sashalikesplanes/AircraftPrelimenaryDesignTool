@@ -1,5 +1,5 @@
 Aircraft:
-  test_prop: 10
+  required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
   FuselageGroup:
     Miscellaneous:

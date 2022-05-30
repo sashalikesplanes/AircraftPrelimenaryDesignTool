@@ -28,24 +28,30 @@ def detail_design(debug=False):
     config_file = Path('data', 'new_designs', 'config.yaml')
     aircraft = Aircraft(openData(config_file), states)
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
-
+    previous_mtom = aircraft.mtom  # For checking convergence
     pre_run = aircraft.FuselageGroup.Fuselage
     pre_run.Cabin.size_self()
     pre_run.CargoBay.size_self()
 
     # TODO Loop
     # Magical Disney Loop
-    for i in range(10):
-        # aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
-        #     aircraft, states)
+    while True:
+        get_constraints(aircraft)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
         if debug:
             print(f"{ aircraft.mtom = }")
+        # Check divergence
         if np.isnan(aircraft.mtom):
             break
+
+        # Check convergence
+        if aircraft.mtom - previous_mtom < 5:
+            print("CONVERGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            break
+        previous_mtom = aircraft.mtom
 
     perform_analyses(aircraft)
 
