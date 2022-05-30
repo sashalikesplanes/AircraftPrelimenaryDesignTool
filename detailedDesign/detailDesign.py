@@ -35,7 +35,7 @@ def detail_design(debug=False):
     pre_run.Cabin.size_self()
     pre_run.CargoBay.size_self()
 
-    for iteration in range(1):
+    for iteration in range(10000):
         get_constraints(aircraft)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
@@ -48,7 +48,7 @@ def detail_design(debug=False):
             break
 
         # Check convergence
-        if abs(aircraft.mtom - previous_mtom) < 5:
+        if abs(aircraft.mtom - previous_mtom) < 0.1:
             logger.warn("CONVERGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             logger.debug(f"Took {iteration} iterations")
             break
