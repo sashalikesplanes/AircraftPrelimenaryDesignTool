@@ -29,4 +29,4 @@ class FuselageGroup(Component):
         for component in self.components:
             component.get_sized()
 
-            self.logger.debug(f"Component mass: {component.own_mass}")
+            self.logger.debug(f"Component mass: {component.own_mass:.4E}")

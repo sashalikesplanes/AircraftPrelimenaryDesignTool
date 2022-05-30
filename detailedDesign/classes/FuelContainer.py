@@ -89,12 +89,12 @@ class FuelContainer(Component):
 
         self.empty_space_thickness = self.total_tank_thickness
 
-        # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness} [m]")
-        self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness} [m]")
-        self.logger.debug(f"Total hydrogen mass: {self.mass_H2} [kg]")
-        self.logger.debug(f"Total tank mass: {self.own_mass} [kg]")
+        # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")
+        self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness:.4E} [m]")
+        self.logger.debug(f"Total hydrogen mass: {self.mass_H2:.4E} [kg]")
+        self.logger.debug(f"Total tank mass: {self.own_mass:.4E} [kg]")
 
-        # print(f"I am the mass of the fuel contrainer {self.own_mass}")
+        # print(f"I am the mass of the fuel contrainer {self.own_mass:.4E}")
         # self.Fuselage.FuselageGroup.Aircraft.fuel_mass = self.mass_H2
         # self.own_mass = np.array(mass_total).min()
         # self.Fuselage.FuselageGroup.Aircraft.fuel_mass = self.mass_H2

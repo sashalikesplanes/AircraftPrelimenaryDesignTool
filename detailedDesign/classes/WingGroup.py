@@ -22,6 +22,6 @@ class WingGroup(Component):
         for component in self.components:
             component.get_sized()
 
-            self.logger.debug(f"Wing Group Mass: {component.get_mass()}")
+            self.logger.debug(f"Wing Group Mass: {component.get_mass():.4E}")
 
         self.own_mass = self.get_mass()

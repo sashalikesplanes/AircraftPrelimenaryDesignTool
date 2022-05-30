@@ -34,14 +34,13 @@ def detail_design(debug=False):
     pre_run.Cabin.size_self()
     pre_run.CargoBay.size_self()
 
-    for iteration in range(10000):
+    for iteration in range(10):
         get_constraints(aircraft)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
-        logger.debug(f"{ aircraft.mtom = }")
-        # Check divergence
+        
         # Check divergence
         if np.isnan(aircraft.mtom):
             logger.warn("DIVERGED :(")
@@ -53,6 +52,9 @@ def detail_design(debug=False):
             logger.debug(f"Took {iteration} iterations")
             break
         previous_mtom = aircraft.mtom
+        logger.debug("---------------------------")
+        logger.debug("---------------------------")
+        logger.debug("---------------------------")
 
     perform_analyses(aircraft)
 
