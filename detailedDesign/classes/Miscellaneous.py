@@ -58,14 +58,13 @@ class Miscellaneous(Component):
                               0.68 * kg_to_lbs(self.W_avionics) ** 0.17 * M ** 0.08)
 
         self.W_furnishing = lbs_to_kg(0.0582 * W_O - 65)
-        self.logger.warning(f"Boat mass: {self.W_boat} [kg]")
-        self.logger.warning(f"Flight control system mass: {self.W_flight_control_system} [kg]")
-        self.logger.warning(f"Hydraulics mass: {self.W_hydraulics} [kg]")
-        self.logger.warning(f"Avionics mass: {self.W_avionics} [kg]")
-        self.logger.warning(f"Electrical mass: {self.W_electrical} [kg]")
-        self.logger.warning(f"Air conditioning mass: {self.W_AC} [kg]")
-        self.logger.warning(f"Furnishing mass: {self.W_furnishing} [kg]")
-
+        self.logger.debug(f"Boat mass: {self.W_boat} [kg]")
+        self.logger.debug(f"Flight control system mass: {self.W_flight_control_system} [kg]")
+        self.logger.debug(f"Hydraulics mass: {self.W_hydraulics} [kg]")
+        self.logger.debug(f"Avionics mass: {self.W_avionics} [kg]")
+        self.logger.debug(f"Electrical mass: {self.W_electrical} [kg]")
+        self.logger.debug(f"Air conditioning mass: {self.W_AC} [kg]")
+        self.logger.debug(f"Furnishing mass: {self.W_furnishing} [kg]")
 
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
             self.W_hydraulics + self.W_flight_control_system + self.W_boat
