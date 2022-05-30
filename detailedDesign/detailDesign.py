@@ -48,7 +48,7 @@ def detail_design(debug=False):
             break
 
         # Check convergence
-        if abs(aircraft.mtom - previous_mtom) < 0.1:
+        if abs(aircraft.mtom - previous_mtom) < 5:
             logger.warn("CONVERGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             logger.debug(f"Took {iteration} iterations")
             break
