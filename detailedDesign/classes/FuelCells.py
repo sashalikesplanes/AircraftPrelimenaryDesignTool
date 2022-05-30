@@ -15,7 +15,6 @@ class FuelCells(Component):
         self.power_produced = None
         self.flow_H2 = None
         self.numberplates = None
-        self.mass = None
         self.size = None
 
         self._freeze()
@@ -24,8 +23,8 @@ class FuelCells(Component):
         # use peak power for this, since the fuel stack has to be able to provide this
         power_peak = self.Power.own_power_peak
 
-        self.mass = power_peak/self.mass_power_density # [kg]
-        self.size = self.mass/self.W_Size  # [m3]
+        self.own_mass = power_peak/self.mass_power_density # [kg]
+        self.size = self.own_mass/self.W_Size  # [m3]
 
         # self.voltage = 1.2*self.conversion_efficiency
         # self.numberplates = power_peak / (self.voltage * self.current_density * self.size)
