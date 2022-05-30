@@ -1,4 +1,4 @@
-import imp
+import logging
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
@@ -7,7 +7,7 @@ from detailedDesign.get_drag import get_drag
 
 
 class Aircraft(Component):
-    def __init__(self, design_config, states_dict):
+    def __init__(self, design_config, states_dict, debug=False):
         super().__init__(design_config)
 
         del self.own_mass  # Not needed as Aircraft has no additional mass itself
@@ -30,6 +30,13 @@ class Aircraft(Component):
         self.reference_thrust = None
         self.own_mass = 0
 
+        self.debug = debug
+        self.logger = logging.getLogger("main_logger")
+        if self.debug:
+            self.logger.setLevel(logging.DEBUG)
+        else:
+            self.logger.setLevel(logging.INFO)
+
         # Drag states
         self.C_D_min = 0.1  # Initial Value
 
@@ -43,14 +50,15 @@ class Aircraft(Component):
         # TODO Calculate payload mass
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
-        print(f"{ self.reference_area = } m2")
 
-        print(f"{ self.reference_thrust = } N")
-        print(f"{ self.mtom = } kg")
+        self.logger.debug(f"[{type(self).__name__}] { self.reference_area = } m2")
+        self.logger.debug(f"[{type(self).__name__}] { self.reference_thrust = } N")
+        self.logger.debug(f"[{type(self).__name__}] { self.mtom = } kg")
 
         for component in self.components:
             component.get_sized()
-            print(f"{type(component).__name__} {component.get_mass() = }")
+            if self.debug:
+                print(f"{type(component).__name__} {component.get_mass() = }")
 
         self.payload_mass = self.get_payload_mass()
 

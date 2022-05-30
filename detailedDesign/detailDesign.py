@@ -26,7 +26,7 @@ def detail_design(debug=False):
 
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
-    aircraft = Aircraft(openData(config_file), states)
+    aircraft = Aircraft(openData(config_file), states, debug=True)
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
     previous_mtom = aircraft.mtom  # For checking convergence
     pre_run = aircraft.FuselageGroup.Fuselage
