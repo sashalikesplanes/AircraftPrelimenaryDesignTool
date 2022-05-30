@@ -64,8 +64,14 @@ class FuelContainer(Component):
         self.mass_H2 = mass_H2_peak+mass_H2_average
 
         self.volume_tank = self.mass_H2*(1+self.Vi)/self.density_H2
-        self.length = (self.volume_tank - 4*np.pi*self.inner_radius**3/3)/(np.pi *
-                                                                           self.inner_radius**2)  # we constrained the radius as being an integral tank,\
+        # we constrained the radius as being an integral tank,\
+        self.length = (self.volume_tank - 4*np.pi*self.inner_radius**3/3)/(np.pi * self.inner_radius**2)
+
+        # If the length is negative we will set it to zero and size the tank radius accordingly
+        if self.length < 0:
+            self.length = 0
+            self.inner_radius = (self.volume_tank * 3 / 4 / np.pi) ** (1/3)
+
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
             self.radius_tank + self.thickness) ** 2 * self.length - self.volume_tank)
@@ -107,4 +113,9 @@ class FuelContainer(Component):
         # plt.title("Effect of insulation thickness on total tank weight")
         # plt.show()
 
-
+    def cg_self(self):
+        x_cg = 0.5 * self.length + self.inner_radius + self.total_tank_thickness
+        y_cg = 0
+        z_cg = 0
+        self.own_cg = np.array([x_cg, y_cg, z_cg])
+        print(self.length)

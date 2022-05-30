@@ -80,3 +80,10 @@ class Cabin(Component):
         self.logger.debug(f"height x width x length: ({self.height:.4E} {self.width:.4E} {self.length:.4E}) [m]")
         self.logger.debug(f"Cabin diameter{self.diameter:.4E} [m]")
         self.logger.debug(f"Cabin volume: {self.height * self.width * self.length:.4E} [m3]")
+
+    def cg_self(self):
+        x_cg = self.length * 0.5
+        # Assume that the zero point goes through the centre of the cylindrical fuselage
+        y_cg = 0
+        z_cg = 0
+        self.own_cg = np.array([x_cg, y_cg, z_cg])

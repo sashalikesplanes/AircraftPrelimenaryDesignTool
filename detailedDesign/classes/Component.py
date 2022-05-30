@@ -10,6 +10,7 @@ class Component:
     def __init__(self, design_config):
         self.own_mass = 0
         self.own_cg = np.array([0., 0., 0.])
+        self.pos = np.array([0., 0., 0.])
         self.components = []
 
         self.logger = logging.getLogger("logger")
