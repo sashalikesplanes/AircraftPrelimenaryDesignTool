@@ -41,7 +41,6 @@ class Miscellaneous(Component):
         W_UAV = 420  # [lbs]
 
         # MAGICAL DISNEY FACTOR (MDF)
-        self.logger.debug(f" {self.FuselageGroup.Fuselage.get_mass() = }")
         self.W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.2
 
         self.W_flight_control_system = lbs_to_kg(
