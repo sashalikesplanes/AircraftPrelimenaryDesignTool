@@ -8,27 +8,28 @@ ARh = 5
 M = 0.61
 eta = 0.95
 halfchordsweep = 0.001  # rad approx
-halfchordsweeph = 10 / 180 * np.pi  # approx [rad]
-
-bf = 12  #width of fuselage
-hf = 12
-lfn = 100 # approx length of fuselage
+halfchordsweeph = 10 / 180 * np.pi  #TODO approx [rad]
 b = 120
-
 S = 2326
 taperratio = 0.852
 quarterchordsweep = 0  # [rad]
-lh = 50  # approx
 croot = 2*S/((1+taperratio)*b)
 ctip = taperratio*croot
-Snet = S - croot * (1 + taperratio + (b - bf) / b) * bf / 2  # Surface area wing - area inside the fuselage
 cMAC = 19.73
 cMGC = 19.73
+
+widthfuselage = 12  #width of fuselage
+heightfuselage = 12
+lengthfuselage = 100 # approx length of fuselage
+
+taillength = 50  # TODO approx
 VhoverV = 0.85  # if fuselage mounted
 SM = 0.05
 Xacw = 0.22
 kn = -4.0
-print(croot,ctip)
+
+Snet = S - croot * (1 + taperratio + (b - widthfuselage) / b) * widthfuselage / 2  # Surface area wing - area inside the fuselage
+
 
 def calc_CLalpha(aspect_ratio, beta, semi_chord_sweep):
     C_L_alpha = 2 * np.pi * aspect_ratio / (2 + np.sqrt(4 + ((aspect_ratio * beta) / eta) ** 2 \
@@ -40,20 +41,19 @@ beta = np.sqrt(1 - M ** 2)
 dedalpha = 4 / (AR + 2)
 CLalphawing = calc_CLalpha(AR, beta, halfchordsweep)
 CLalphatail = calc_CLalpha(ARh, beta, halfchordsweeph)
-CLalphatailless = CLalphawing * (1 + 2.15 * bf / b) * Snet / S + np.pi / 2 * bf ** 2 / S
-Xacwf = Xacw - 1.8 / CLalphatailless * bf * hf * lfn / S / cMAC + 0.273 / (1 + taperratio) * bf * cMGC * (b - bf) / (
-            cMAC ** 2 * (b + 2.15 * bf)) * np.tan(quarterchordsweep)
+CLalphatailless = CLalphawing * (1 + 2.15 * widthfuselage / b) * Snet / S + np.pi / 2 * widthfuselage ** 2 / S
+Xacwf = Xacw - 1.8 / CLalphatailless * widthfuselage * heightfuselage * lengthfuselage / S / cMAC + 0.273 / (1 + taperratio) * widthfuselage * cMGC * (b - widthfuselage) / (
+            cMAC ** 2 * (b + 2.15 * widthfuselage)) * np.tan(quarterchordsweep)
 '''In the code the contribution of the nacelles to Xacwf is neglected as it is -0.0003 per engine'''
 
 print('deda=', dedalpha, 'CLaw=', CLalphawing, 'CLah=', CLalphatail)
 print("CLalpha A-h =", CLalphatailless)
 print("Xac/c=", Xacwf)
-print(1.8 / CLalphatailless * bf * hf * lfn / S / cMAC)
-Xcg = np.arange(-1, 1, 0.05)
-print(Xcg)
+print(1.8 / CLalphatailless * widthfuselage * heightfuselage * lengthfuselage / S / cMAC)
 print('snet',Snet)
 
-STABILITYTERM = CLalphatail / CLalphatailless * (1 - dedalpha) * lh / cMAC * VhoverV ** 2
+Xcg = np.arange(-1, 1.5, 0.05)
+STABILITYTERM = CLalphatail / CLalphatailless * (1 - dedalpha) * taillength / cMAC * VhoverV ** 2
 ShoverSstability = 1 / STABILITYTERM * Xcg - (Xacwf - SM) / STABILITYTERM
 
 plt.plot(Xcg, ShoverSstability)
@@ -66,20 +66,22 @@ plt.grid()
 
 CLh = -0.8  # from slide 17 lecture 8
 Wfin  = 1879000*9.81
-Vlanding = 77  # from boeing 787
+Vlanding = 77  # from boeing 787 increasing is better 93 from A380
 rho_sealevel = 1.225
-CLaminush = Wfin/(0.5*rho_sealevel*Vlanding**2*S)
+CLaminush =  Wfin/(0.5*rho_sealevel*Vlanding**2*S)
+
 
 ###'''Cmaerodynamiccentre calculation'''###
 #wing
-Cm0foil = 1
+Cm0foil = -0.083
 Cmaerocwing = Cm0foil*(AR*np.cos(quarterchordsweep)**2/(AR+2*np.cos(quarterchordsweep)))  # sweep assumed quarter chord sweep
 
 #fuselage
-CL0 = 1  # CL0 is the lift coefficient of the flapped wing at zero angle of attack
-betaslow = 1
-CLalphataillessslow = calc_CLalpha(AR,betaslow,halfchordsweep)
-deltafus_Cmaeroc = -1.8*(1-2.5*bf/lfn)*np.pi*bf*hf*lfn/(4*S*cMAC)*CL0/CLalphataillessslow
+CL0 = CLalphawing/180*np.pi*3  # CL0 is the lift coefficient of the flapped wing at zero angle of attack
+Mlanding = 0.2263 #77m/s at sealevel
+betalanding = np.sqrt(1-Mlanding**2)
+CLalphataillessslow = calc_CLalpha(AR,betalanding,halfchordsweep)
+deltafus_Cmaeroc = -1.8*(1-2.5*widthfuselage/lengthfuselage)*np.pi*widthfuselage*heightfuselage*lengthfuselage/(4*S*cMAC)*CL0/CLalphataillessslow
 
 #flaps
 deltaClmax = 1.45+0.56  # added 0.56 for droop nose. Check for correctness
@@ -107,10 +109,12 @@ deltaf_Cmaeroc = deltaCmquarter-CLwing*(0.25-Xacwf)
 Cmaeroc = Cmaerocwing + deltaf_Cmaeroc + deltafus_Cmaeroc  # + deltanac_Cmaeroc, neglecting nacelles for now
 print('Cmac', Cmaeroc)
 
-CONTROLLABILITYTERM = CLh / CLaminush * lh / cMAC * VhoverV ** 2
+CONTROLLABILITYTERM = CLh / CLaminush * taillength / cMAC * VhoverV ** 2
 
 ShoverScontrollability = 1 / CONTROLLABILITYTERM * Xcg + (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
 
+
 plt.plot(Xcg,ShoverScontrollability)
+plt.xlim(0,1)
 plt.ylim(0,1)
 plt.show()
