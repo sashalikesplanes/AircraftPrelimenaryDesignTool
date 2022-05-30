@@ -18,13 +18,13 @@ class TestFuelTank(unittest.TestCase):
 
         # ----- Define test params -----
         self.aircraft.FuselageGroup.Power.own_power_peak = 100e6
+        self.aircraft.FuselageGroup.Power.own_power_average = 50e6
+
         self.aircraft.FuselageGroup.Power.FuelCells.mass_power_density = 10000
-        self.aircraft.FuselageGroup.Power.FuelCells.W_size = 1000
+        self.aircraft.FuselageGroup.Power.FuelCells.W_Size = 1000
 
         # Fuel tank
-        self.aircraft.FuselageGroup.Fuselage.inner_diameter = 10
-        self.aircraft.FuselageGroup.Fuselage.FuelContainer.thickness = 0.001
-
+        self.aircraft.FuselageGroup.Fuselage.Cabin.diameter = 10
 
         # Imperial constants from test params:
         # l_FS = 492.12598    # [ft]
@@ -37,18 +37,15 @@ class TestFuelTank(unittest.TestCase):
         # Delta_P = 0         # [psi] for test_state_1
 
     def test_fuel_cell(self):
-
         self.aircraft.FuselageGroup.Power.FuelCells.size_self()
         model_mass = self.aircraft.FuselageGroup.Power.FuelCells.mass
         model_size = self.aircraft.FuselageGroup.Power.FuelCells.size
 
         analytical_mass_kg = 10000
         analytical_size = 10
-        print("mass: ", analytical_mass_kg)
-        print("size: ", analytical_size)
+
         self.assertAlmostEqual(model_mass, analytical_mass_kg, delta=analytical_mass_kg * testMargin)
         self.assertAlmostEqual(model_size, analytical_size, delta=analytical_size * testMargin)
-
 
     def test_batteries(self):
         pass
@@ -67,8 +64,9 @@ class TestFuelTank(unittest.TestCase):
         model_tank_volume = self.aircraft.FuselageGroup.Fuselage.FuelContainer.volume_tank
         model_tank_area = self.aircraft.FuselageGroup.Fuselage.FuelContainer.area_tank
         model_structural_mass = self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass
+        model_total_tank_thickness = self.aircraft.FuselageGroup.Fuselage.FuelContainer.total_tank_thickness
 
-        analytical_thickness = None
+        analytical_thickness = 0.0083883495
         analytical_mass_H2 = None
         analytical_tank_volume = None
         analytical_tank_area = None
