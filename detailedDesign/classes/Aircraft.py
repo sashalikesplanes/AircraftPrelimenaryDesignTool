@@ -1,4 +1,3 @@
-import logging
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
@@ -43,12 +42,12 @@ class Aircraft(Component):
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
-        self.logger.debug(
-            f"[{type(self).__name__}] { self.reference_area = } m2")
-        self.logger.debug(
-            f"[{type(self).__name__}] { self.reference_thrust = } N")
-        self.logger.debug(f"[{type(self).__name__}] { self.mtom = } kg")
-
+        # self.logger.debug(
+        #     f"[{type(self).__name__}] { self.reference_area = } m2")
+        # self.logger.debug(
+        #     f"[{type(self).__name__}] { self.reference_thrust = } N")
+        # self.logger.debug(f"[{type(self).__name__}] { self.mtom = } kg")
+        self.logger.debug("test")
         for component in self.components:
             component.get_sized()
             # if self.debug:
