@@ -21,16 +21,12 @@ class FuelCells(Component):
         self._freeze()
 
     def size_self(self):
-        # powertest = 132e6 #[W], CHANGE!!!! # use peak power for this, since the fuel stack has to be able to provide this
+        # use peak power for this, since the fuel stack has to be able to provide this
         powertest = self.Power.own_power_peak
 
-        self.mass = powertest/self.mass_power_density #[kg]
-        self.size = self.mass/self.W_Size  #[m3]
+        self.mass = powertest/self.mass_power_density # [kg]
+        self.size = self.mass/self.W_Size  # [m3]
 
-
-
-
-        #
         # self.voltage = 1.2*self.conversion_efficiency
         # self.numberplates = powertest / (self.voltage * self.current_density * self.size)
         # self.power_produced = powertest/self.numberplates #power that has to be/will be produced per plate
@@ -39,8 +35,8 @@ class FuelCells(Component):
         #
         # # self.power_produced = self.voltage*self.Power.FuelCells.current_density* areafuelcell
         # self.flow_H2 = powertest/(self.voltage*self.conversion_efficiency*2*96500*500)
-        print("mass:", self.mass)
-        print("total size:", self.size)
+        # print("mass:", self.mass)
+        # print("total size:", self.size)
         # print("number of plates:",self.numberplates)
         # print("power produced per plate", self.power_produced)
 

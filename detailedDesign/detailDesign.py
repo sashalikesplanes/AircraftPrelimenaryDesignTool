@@ -16,7 +16,7 @@ def get_ultimate_load_factor():
     return GUESS_AT_LOAD_FACTOR
 
 
-def detail_design():
+def detail_design(debug=False):
 
     states = {"cruise": State('cruise')}
 
@@ -35,13 +35,17 @@ def detail_design():
 
     # TODO Loop
     # Magical Disney Loop
-    for i in range(2):
+    for i in range(10):
         # aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
         #     aircraft, states)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
+        if debug:
+            print(f"{ aircraft.mtom = }")
+        if np.isnan(aircraft.mtom):
+            break
 
     perform_analyses(aircraft)
 
@@ -49,4 +53,4 @@ def detail_design():
 
 
 if __name__ == "__main__":
-    detail_design()
+    detail_design(debug=True)
