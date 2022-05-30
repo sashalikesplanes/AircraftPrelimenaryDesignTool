@@ -34,7 +34,7 @@ class Aircraft(Component):
 
         self.ultimate_load_factor = None
         self.clean_stall_speed = None
-        self.cruise_drag = 10000
+        self.cruise_drag = 10000  # needed as drag comes from previous iteration
 
         self._freeze()
 
