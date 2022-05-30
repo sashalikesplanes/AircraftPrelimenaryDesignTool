@@ -1,6 +1,7 @@
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
 
+
 class Miscellaneous(Component):
     def __init__(self, FuselageGroup, design_config):
         super().__init__(design_config)
@@ -73,8 +74,6 @@ class Miscellaneous(Component):
         self.logger.debug(f"Oxygen system mass: {self.W_oxy:.4E} [kg]")
         self.logger.debug(f"Paint mass: {self.W_paint:.4E} [kg]")
         self.logger.debug(f"Crew mass: {self.W_crew:.4E} [kg]")
-
-
 
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
                self.W_hydraulics + self.W_flight_control_system + self.W_boat + self.W_apu + self.W_oxy + self.W_crew
