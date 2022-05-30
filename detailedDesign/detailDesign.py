@@ -19,23 +19,21 @@ def get_ultimate_load_factor():
 
 def detail_design(debug=False):
 
-    setup_custom_logger("logger", debug)
+    logger = setup_custom_logger("logger", debug)
     states = {"cruise": State('cruise')}
-
-    # Things that update on sizing - attributes of Aircraft and sub components
-
-    # Things defining the sizing - in /new_designs/config.yaml
 
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
     aircraft = Aircraft(openData(config_file), states, debug=True)
+
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
     previous_mtom = aircraft.mtom  # For checking convergence
+
+    # Size the cabin and cargo bay as it is constant and is a dependency for other components
     pre_run = aircraft.FuselageGroup.Fuselage
     pre_run.Cabin.size_self()
     pre_run.CargoBay.size_self()
 
-    # TODO Loop
     # Magical Disney Loop
     while True:
         get_constraints(aircraft)
@@ -43,22 +41,20 @@ def detail_design(debug=False):
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
-        if debug:
-            print(f"{ aircraft.mtom = }")
+        logger.debug(f"{ aircraft.mtom = }")
+        # Check divergence
         # Check divergence
         if np.isnan(aircraft.mtom):
+            logger.warn("DIVERGED :(")
             break
 
         # Check convergence
         if aircraft.mtom - previous_mtom < 5:
-            print("CONVERGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            logger.warn("CONVERGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             break
         previous_mtom = aircraft.mtom
 
     perform_analyses(aircraft)
-
-    print(
-        f"MTOM = {aircraft.mtom} kg, OEM = {aircraft.oem} kg, Fuel Mass = {aircraft.fuel_mass}")
 
 
 if __name__ == "__main__":
