@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 
 
 class Component:
@@ -8,7 +9,7 @@ class Component:
 
     def __init__(self, design_config):
         self.own_mass = 0
-        self.own_cg = [0, 0, 0]
+        self.own_cg = np.array([0., 0., 0.])
         self.components = []
 
         self.logger = logging.getLogger("logger")
@@ -25,11 +26,31 @@ class Component:
         return total_mass
 
     def get_cg(self):
-        # TODO
-        pass
+        total_mass_factor = self.own_mass
+        cg_pos = self.own_cg * self.own_mass
+
+        for component in self.components:
+            cg_pos += component.get_cg() * component.get_mass()
+            total_mass_factor += component.get_mass()
+
+        if total_mass_factor != 0:
+            cg_pos = cg_pos / total_mass_factor
+        else:
+            cg_pos = self.own_cg
+
+        return cg_pos
 
     def size_self(self):
-        print(f"WARNING! {self} IS NOT BEING SIZE")
+        self.logger.warning(f"{self} is not being sized")
+
+    def cg_self(self):
+        self.logger.warning(f"{self} is not being cged")
+
+    def get_cged(self):
+        self.cg_self()
+
+        for component in self.components:
+            component.get_cged()
 
     def get_sized(self):
         self.size_self()
