@@ -13,10 +13,11 @@ class Fuselage(Component):
         super().__init__(design_config)
         self.FuselageGroup = FuselageGroup
 
-        self.CargoBay = CargoBay(self, self.design_config)
         self.Cabin = Cabin(self, self.design_config)
+        self.Cabin.get_sized()
+        self.CargoBay = CargoBay(self, self.design_config)
         self.FuelContainer = FuelContainer(self, self.design_config)
-        self.components = [self.CargoBay, self.Cabin, self.FuelContainer]
+        self.components = [self.Cabin, self.CargoBay, self.FuelContainer]
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
@@ -27,6 +28,7 @@ class Fuselage(Component):
 
     @property
     def length(self):
+        # TODO add tail cone, nose cone etc
         return self.Cabin.length + self.FuelContainer.length
 
     @property
@@ -56,7 +58,8 @@ class Fuselage(Component):
 
         l_FS = m_to_ft(self.length)  # [ft]
 
-        S_FUS_m = (np.pi * self.diameter ** 2) / 4 * 2 + np.pi * self.diameter * self.length  # [m2]
+        S_FUS_m = (np.pi * self.diameter ** 2) / 4 * 2 + \
+            np.pi * self.diameter * self.length  # [m2]
         S_FUS = m2_to_ft2(S_FUS_m)  # [ft2]
 
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor
@@ -79,11 +82,14 @@ class Fuselage(Component):
         if Delta_P < 0:
             Delta_P = 0
 
-        mass_lbs = 0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (l_FS / d_FS) **(-0.072) * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271
+        mass_lbs = 0.052 * S_FUS ** 1.086 * (n_z * W_O) ** 0.177 * l_HT ** -0.051 * (
+            l_FS / d_FS) ** (-0.072) * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271
 
         self.own_mass = lbs_to_kg(mass_lbs)
 
     def get_sized(self):
+        # TODO update this to work
+
         for component in self.components:
             component.get_sized()
 

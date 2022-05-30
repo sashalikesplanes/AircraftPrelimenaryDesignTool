@@ -11,36 +11,31 @@ class FuelCells(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
-        self.voltage = 0
-        self.power_produced = 0
-        self.flow_H2 = 0
-        self.numberplates = 0
-        self.mass = 0
-        self.size = 0
+        self.voltage = None
+        self.power_produced = None
+        self.flow_H2 = None
+        self.numberplates = None
+        self.size = None
 
         self._freeze()
 
     def size_self(self):
-        powertest = 132e6 #[W], CHANGE!!!! # use peak power for this, since the fuel stack has to be able to provide this
+        # use peak power for this, since the fuel stack has to be able to provide this
+        power_peak = self.Power.own_power_peak
 
+        self.own_mass = power_peak/self.mass_power_density # [kg]
+        self.size = self.own_mass/self.W_Size  # [m3]
 
-        self.mass = powertest/self.mass_power_density #[kg]
-        self.size = self.mass/self.W_Size  #[m3]
-
-
-
-
-        #
-        # self.voltage = 1.2*self.conversion_efficiency
-        # self.numberplates = powertest / (self.voltage * self.current_density * self.size)
-        # self.power_produced = powertest/self.numberplates #power that has to be/will be produced per plate
+        # self.voltage = 1.2*self.conversion_efficiency*self.amount_cells
+        # self.numberplates = power_peak / (self.voltage * self.current_density * self.size)
+        # self.power_produced = power_peak/self.numberplates #power that has to be/will be produced per plate
         # self.area_fuelcell = self.power_produced / (self.voltage * self.current_density)
 
         #
         # # self.power_produced = self.voltage*self.Power.FuelCells.current_density* areafuelcell
-        # self.flow_H2 = powertest/(self.voltage*self.conversion_efficiency*2*96500*500)
-        print("mass:", self.mass)
-        print("total size:", self.size)
+        # self.flow_H2 = power_peak/(self.voltage*self.conversion_efficiency*2*96500*500)
+        # print("mass:", self.mass)
+        # print("total size:", self.size)
         # print("number of plates:",self.numberplates)
         # print("power produced per plate", self.power_produced)
 

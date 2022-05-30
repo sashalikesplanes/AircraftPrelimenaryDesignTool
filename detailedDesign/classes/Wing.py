@@ -1,7 +1,6 @@
 # To Check
 import numpy as np
 from detailedDesign.classes.Component import Component
-from detailedDesign.classes.HLDs import HLDs
 from misc.unitConversions import *
 
 
@@ -47,20 +46,20 @@ class Wing(Component):
         optimal_effective_AR = C_LC * C_LC / np.pi * 1 / (((V_C / range_)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min)
-        print(f'{optimal_effective_AR = }')
+        # print(f'{optimal_effective_AR = }')
 
     def determine_C_L_alpha(self):
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
         speed_of_sound = self.WingGroup.Aircraft.states['cruise'].speed_of_sound
         aspect_ratio = self.aspect_ratio
-        beta = np.sqrt((1 - (V_C/speed_of_sound)**2))
+        beta = np.sqrt((1 - (V_C / speed_of_sound) ** 2))
         k = 0.95  # from Sam
-        semi_chord_sweep = self.root_chord / (2 * self.span)\
+        semi_chord_sweep = self.root_chord / (2 * self.span) \
             * (self.taper_ratio - 1)
-        C_L_alpha = 2 * np.pi * aspect_ratio / (2 + np.sqrt(((aspect_ratio*beta) / k) ** 2
+        C_L_alpha = 2 * np.pi * aspect_ratio / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
                                                             * (1 + np.tan(semi_chord_sweep) ** 2 / (beta ** 2)) + 4))
 
-        print(f'{np.deg2rad(C_L_alpha) = }')
+        # print(f'{np.deg2rad(C_L_alpha) = }')
         return np.deg2rad(C_L_alpha)
 
     def get_C_L(self, alpha):
@@ -73,31 +72,35 @@ class Wing(Component):
     def size_self(self):
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
-        self.size_AR()
+        # self.size_AR()
         self.span = (self.wing_area * self.aspect_ratio) ** 0.5
-        # print(self.span)
+        self.logger.debug(f"Span: {self.span}")
         self.root_chord = (2 * self.wing_area) / \
-            (self.span * (1 + self.taper_ratio))
+                          (self.span * (1 + self.taper_ratio))
         self.tip_chord = self.root_chord * self.taper_ratio
-
+        self.mean_geometric_chord = 2 / 3 * self.root_chord * \
+            ((1 + self.taper_ratio + self.taper_ratio ** 2) /
+             (1 + self.taper_ratio))  # [m]
         self.sweep = 0  # M < 0.7
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
-        # print(self.root_chord, self.tip_chord)
+
+        self.logger.debug(f"Root Chord: {self.root_chord}")
+        self.logger.debug(f"Tip Chord: {self.tip_chord}")
 
         # Mass Sizing
         state = self.WingGroup.Aircraft.states["cruise"]
 
-        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)    # [psi]
-        S_W = m2_to_ft2(self.wing_area)     # [ft2]
+        q = pa_to_psi(0.5 * state.density * state.velocity ** 2)  # [psi]
+        S_W = m2_to_ft2(self.wing_area)  # [ft2]
         W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
         sweep = np.pi / 180. * self.sweep  # [rads]
         n_z = self.WingGroup.Aircraft.ultimate_load_factor
-        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)   # [lbs]
+        W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)  # [lbs]
 
-        mass_lbs = 0.036 * S_W ** 0.758 * W_FW ** 0.0035  \
+        mass_lbs = 0.036 * S_W ** 0.758 * W_FW ** 0.0035 \
             * (self.aspect_ratio / np.cos(sweep) ** 2) ** 0.6 * q ** 0.006 \
             * self.taper_ratio ** 0.04 * ((100 * self.thickness_chord_ratio)
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
 
-        self.own_mass = lbs_to_kg(mass_lbs)     # [kg]
+        self.own_mass = lbs_to_kg(mass_lbs)  # [kg]

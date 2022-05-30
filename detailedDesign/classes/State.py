@@ -23,7 +23,7 @@ class State:
 
     @property
     def duration(self):
-        return self.source["range"] / self.source["speed"]
+        return self.source["range"] / self.source["velocity"]
 
     @property
     def pressure(self):

@@ -7,42 +7,56 @@ from detailedDesign.performAnalyses import perform_analyses
 from detailedDesign.getConstraints import get_constraints
 from detailedDesign.classes.State import State
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
+from detailedDesign.log import setup_custom_logger
+from detailedDesign.potatoPlot import make_potato_plot
 
 
 def get_ultimate_load_factor():
+    # N_max_des = None # from maneuver/gust diagram
+    # N_ult = 1.5*N_max_des # CS25 reg (sam's summaries)
     GUESS_AT_LOAD_FACTOR = 3
     return GUESS_AT_LOAD_FACTOR
 
 
-def detail_design():
+def detail_design(debug=False):
 
+    logger = setup_custom_logger("logger", debug)
     states = {"cruise": State('cruise')}
-
-    # Things that update on sizing - attributes of Aircraft and sub components
-
-    # Things defining the sizing - in /new_designs/config.yaml
 
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
-    aircraft = Aircraft(openData(config_file), states)
+    aircraft = Aircraft(openData(config_file), states, debug=True)
+
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
+    previous_mtom = 0  # For checking convergence
 
-    # TODO Create state
+    # Size the cabin and cargo bay as it is constant and is a dependency for other components
+    pre_run = aircraft.FuselageGroup.Fuselage
+    pre_run.Cabin.size_self()
+    pre_run.CargoBay.size_self()
 
-    # TODO Loop
-    # Magical Disney Loop
-    for i in range(2):
-        # aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
-        #     aircraft, states)
+    for iteration in range(10000):
+        get_constraints(aircraft)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
 
-    perform_analyses(aircraft)
+        # Check divergence
+        if np.isnan(aircraft.mtom):
+            logger.warn("DIVERGED :(")
+            break
 
-    print(aircraft.get_mass())
+        # Check convergence
+        if abs(aircraft.mtom - previous_mtom) < 0.1:
+            logger.warn("CONVERGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            logger.debug(f"Took {iteration} iterations")
+            break
+        previous_mtom = aircraft.mtom
+
+    make_potato_plot(aircraft)
+    perform_analyses(aircraft)
 
 
 if __name__ == "__main__":
-    detail_design()
+    detail_design(debug=True)

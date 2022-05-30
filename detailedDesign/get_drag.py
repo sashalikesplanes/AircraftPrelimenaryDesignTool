@@ -145,9 +145,10 @@ def get_drag(aircraft):
     CDfHT = calc_CDftail(tovercHT, StailHT, Sref, CfHT)
     FFHT = calc_FFwing(tovercHT, M, xovercmaxHT)
     CDmin_HT = calc_CDmin_tail(CDfHT, FFHT, IF)
-
+    # test
     # add the stuff
-    TotalCDmin = CDmin_HT + CDmin_VT + CDmin_fus + CDmin_wing + 0.0025 #25 DC for misc
+    TotalCDmin = CDmin_HT + CDmin_VT + CDmin_fus + \
+        CDmin_wing + 0.0025  # 25 DC for misc
     #print('FF,W-F-H-V', FFwing, FFfus, FFHT, FFVT)
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
