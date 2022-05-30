@@ -39,7 +39,7 @@ dedalpha =4/(AR+2)
 CLalphawing = calc_CLalpha(AR, beta, halfchordsweep)
 CLalphatail = calc_CLalpha(ARh, beta, halfchordsweeph)
 CLalphatailless = CLalphawing*(1+2.15*bf/b)*Snet/S+np.pi/2*bf**2/S
-Xacwf = Xacw -1.8/CLalphatailless*bf*hf*lfn/S/cMAC+0.273/(1+taperratio)*bf*cMGC*(b-bf)/cMAC**2*(b+2.15*bf)*np.tan(quarterchordsweep)
+Xacwf = Xacw -1.8/CLalphatailless*bf*hf*lfn/S/cMAC+0.273/(1+taperratio)*bf*cMGC*(b-bf)/(cMAC**2*(b+2.15*bf))*np.tan(quarterchordsweep)
 '''In the code the contribution of the nacelles to Xacwf is neglected as it is -0.0003 per engine'''
 
 print('deda=', dedalpha, 'CLaw=', CLalphawing, 'CLah=', CLalphatail)

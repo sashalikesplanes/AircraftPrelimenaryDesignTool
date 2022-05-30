@@ -50,9 +50,9 @@ class FuelContainer(Component):
         # self.mass_H2 = powertest * self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight / (
         #     32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
 
-        peakpower = 150000000
-        averagepower = 132000000
-        duration_peak = 0.5 #[h]
+        peakpower = self.Fuselage.FuselageGroup.Power.own_power_peak
+        averagepower = self.Fuselage.FuselageGroup.Power.own_power_average
+        duration_peak = 0.5  # [h]
         mass_H2_peak = peakpower * duration_peak / (
             32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
         mass_H2_average = averagepower * (self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight-duration_peak) / (
