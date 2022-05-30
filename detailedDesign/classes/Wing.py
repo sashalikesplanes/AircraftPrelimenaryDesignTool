@@ -78,7 +78,9 @@ class Wing(Component):
         self.root_chord = (2 * self.wing_area) / \
             (self.span * (1 + self.taper_ratio))
         self.tip_chord = self.root_chord * self.taper_ratio
-
+        self.mean_geometric_chord = 2/3 * self.root_chord * \
+            ((1 + self.taper_ratio + self.taper_ratio**2) /
+             (1 + self.taper_ratio))  # [m]
         self.sweep = 0  # M < 0.7
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
