@@ -1,5 +1,6 @@
 from detailedDesign.classes.Component import Component
 import numpy as np
+
 import matplotlib.pyplot as plt
 
 
@@ -37,6 +38,8 @@ class FuelContainer(Component):
         self._freeze()
 
     def size_self(self):
+        state = self.Fuselage.FuselageGroup.Aircraft.states["cruise"]
+
         # basic sizing
         # self.empty_space_thickness = 0
         self.inner_diameter = self.Fuselage.inner_diameter - self.empty_space_thickness * 2
@@ -59,7 +62,7 @@ class FuelContainer(Component):
         duration_peak = 0.5  # [h] TODO: find the right value (Take off, etc...)
         mass_H2_peak = peakpower * duration_peak / (
             32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        mass_H2_average = averagepower * (self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight-duration_peak) / (
+        mass_H2_average = averagepower * (state.duration / 3600 - duration_peak) / (
             32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
         self.mass_H2 = mass_H2_peak+mass_H2_average
 
@@ -78,7 +81,7 @@ class FuelContainer(Component):
         Q_flow = Q_conduction * self.area_tank
         boiloff_rate = Q_flow / self.E_boiloff
         total_boiloff = boiloff_rate * \
-                        self.Fuselage.FuselageGroup.Power.FuelCells.duration_flight * 3600
+                        state.duration
         mass_insulation = self.area_tank * thickness_insulation * self.density_insulation
         mass_total = total_boiloff + self.mass_tank + mass_insulation
 

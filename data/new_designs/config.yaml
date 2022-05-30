@@ -29,7 +29,6 @@ Aircraft:
       FuelCells:
         conversion_efficiency: 0.5 # [-] - multiple literature source
         current_density: 8 # [Amps/m2] - same paper as above
-        duration_flight: 8 # [h]
         mass_power_density: 8000 # [W/kg]
         W_Size: 1200 # [kg/m3]
       Batteries:
