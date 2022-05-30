@@ -35,7 +35,7 @@ def detail_design(debug=False):
 
     # TODO Loop
     # Magical Disney Loop
-    for i in range(100):
+    for i in range(10):
         # aircraft.thrust_over_weight, aircraft.weight_over_surface = get_constraints(
         #     aircraft, states)
 
@@ -43,7 +43,9 @@ def detail_design(debug=False):
 
         aircraft.get_sized()
         if debug:
-            print(f"{ aircraft.mtow = }")
+            print(f"{ aircraft.mtom = }")
+        if np.isnan(aircraft.mtom):
+            break
 
     perform_analyses(aircraft)
 
