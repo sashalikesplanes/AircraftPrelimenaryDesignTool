@@ -13,7 +13,9 @@ class Power(Component):
         self.FuelCells = FuelCells(self, self.design_config)
         # self.Batteries = Batteries(self, self.design_config)
         self.components = [self.FuelCells]
-        self.own_power = None
+
+        self.own_power_average = None
+        self.own_power_peak = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
