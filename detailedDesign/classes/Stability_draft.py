@@ -3,27 +3,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-AR = 8
-ARh = 5
-M = 0.61
+AR = 10.619#8
+ARh = 4.57# 5
+M = 0.82 #0.61
 eta = 0.95
-halfchordsweep = 0.001  # rad approx
+halfchordsweep = 0.384 #0.001  # rad approx
 halfchordsweeph = 10/180*np.pi # approx [rad]
 
 
-bf = 12  #width of fuselage
-hf = 12
-lfn = 100 # approx length of fuselage
-b = 120
-croot = 21
-S = 2326
-taperratio = 0.852
-quarterchordsweep = 0  # [rad]
+bf = 2.69 #12  #width of fuselage
+hf = 2.69 #12
+lfn = 36.57# 100 # approx length of fuselage
+b = 26.17# 120
+croot = 3.48 #21
+S = 77.39#2326
+taperratio = 0.2485 #0.852
+quarterchordsweep = 0.4564# 0  # [rad]
 Snet = S-croot*(1+taperratio+(b-bf)/b)*bf/2  # Surface area wing - area inside the fuselage
-lh = 50  # approx
-cMAC = 19.73
-cMGC = 19.73
-VhoverV = 0.85  # if fuselage mounted
+lh = 17.3#50  # approx
+cMAC = 3.48# 19.73
+cMGC = 3.19 #19.73
+VhoverV = 1#0.85  # if fuselage mounted
 SM = 0.05
 Xacw = 0.22
 kn = -4.0
@@ -43,7 +43,7 @@ Xacwf = Xacw -1.8/CLalphatailless*bf*hf*lfn/S/cMAC+0.273/(1+taperratio)*bf*cMGC*
 '''In the code the contribution of the nacelles to Xacwf is neglected as it is -0.0003 per engine'''
 
 print('deda=', dedalpha, 'CLaw=', CLalphawing, 'CLah=', CLalphatail)
-print(Xacwf)
+print("Xac/c=",Xacwf)
 
 Xcg = np.arange(0,1,0.05)
 print(Xcg)
