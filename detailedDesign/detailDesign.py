@@ -20,7 +20,11 @@ def get_ultimate_load_factor():
 def detail_design(debug=False):
 
     logging.basicConfig()
+    formatter = logging.Formatter(fmt='%(module)s')
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
     logger = logging.getLogger('main_logger')
+    logger.addHandler(handler)
     if debug:
         logger.setLevel(logging.DEBUG)
     else:
