@@ -32,15 +32,13 @@ class Miscellaneous(Component):
         N_OCC = n_pax + n_pax // passengers_per_flight_attendent + 1 + pilot_count  # [-]
         # This needs to be in meters since the mach number requires metric units for speed of sound
         h = self.FuselageGroup.Aircraft.states["cruise"].altitude  # [m]
-        # [-]
-        M = self.FuselageGroup.Aircraft.states["cruise"].velocity / \
-            getSpeedOfSound(h)
+        M = self.FuselageGroup.Aircraft.states["cruise"].velocity \ # [-]
+            / getSpeedOfSound(h)
         W_FS = kg_to_lbs(
             self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
 
         # MAGICAL DISNEY NUMBER WARNING (MDN)
-        W_UAV = 420  # [lbs]
-
+        W_UAV = 2000  # [lbs]
         # MAGICAL DISNEY FACTOR (MDF)
         self.W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.2
 
@@ -67,7 +65,7 @@ class Miscellaneous(Component):
         self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
         self.logger.debug(f"Furnishing mass: {self.W_furnishing:.4E} [kg]")
         # TODO REMOVE OR FIX
-        self.W_AC = 0 
+        # self.W_AC = 0 
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
             self.W_hydraulics + self.W_flight_control_system + self.W_boat
         self.own_mass = mass
