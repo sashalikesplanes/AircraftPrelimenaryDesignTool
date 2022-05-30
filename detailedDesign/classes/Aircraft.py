@@ -34,7 +34,7 @@ class Aircraft(Component):
 
         self.ultimate_load_factor = None
         self.clean_stall_speed = None
-        self.cruise_drag = None
+        self.cruise_drag = 10000
 
         self._freeze()
 
