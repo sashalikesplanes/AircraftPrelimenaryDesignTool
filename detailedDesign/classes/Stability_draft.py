@@ -44,7 +44,7 @@ Xacwf = Xacw -1.8/CLalphatailless*bf*hf*lfn/S/cMAC+0.273/(1+taperratio)*bf*cMGC*
 
 print('deda=', dedalpha, 'CLaw=', CLalphawing, 'CLah=', CLalphatail)
 print("Xac/c=",Xacwf)
-
+print(1.8/CLalphatailless*bf*hf*lfn/S/cMAC)
 Xcg = np.arange(0,1,0.05)
 print(Xcg)
 
