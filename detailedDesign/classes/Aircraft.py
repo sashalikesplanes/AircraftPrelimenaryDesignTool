@@ -42,16 +42,15 @@ class Aircraft(Component):
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
-        # self.logger.debug(
-        #     f"[{type(self).__name__}] { self.reference_area = } m2")
-        # self.logger.debug(
-        #     f"[{type(self).__name__}] { self.reference_thrust = } N")
-        # self.logger.debug(f"[{type(self).__name__}] { self.mtom = } kg")
-        self.logger.debug("test")
+        self.logger.debug(
+            f"[{type(self).__name__}] { self.reference_area = } m2")
+        self.logger.debug(
+            f"[{type(self).__name__}] { self.reference_thrust = } N")
+        self.logger.debug(f"[{type(self).__name__}] { self.mtom = } kg")
         for component in self.components:
             component.get_sized()
-            # if self.debug:
-            #     print(f"{type(component).__name__} {component.get_mass() = }")
+            self.logger.debug(
+                f"{type(component).__name__} {component.get_mass() = }")
 
         self.payload_mass = self.get_payload_mass()
 

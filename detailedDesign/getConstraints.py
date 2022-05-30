@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import logging
+
+logger = logging.getLogger("logger")
 
 
 def get_constraints(aircraft):
@@ -119,7 +122,7 @@ def get_constraints(aircraft):
         optimum_index = thrust_conditions.index(TW)
         WS = weight_conditions[optimum_index]
 
-    print(TW, WS)
+    logger.debug(f"{ TW = } { WS = }")
 
     # Vstall regulated by CS 25.103: not really specified
     # I actually have to calculate the stall speed from the CLmax
