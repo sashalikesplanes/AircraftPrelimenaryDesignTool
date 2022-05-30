@@ -7,7 +7,7 @@ from detailedDesign.performAnalyses import perform_analyses
 from detailedDesign.getConstraints import get_constraints
 from detailedDesign.classes.State import State
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
-import logging
+from detailedDesign.log import setup_custom_logger
 
 
 def get_ultimate_load_factor():
@@ -19,13 +19,7 @@ def get_ultimate_load_factor():
 
 def detail_design(debug=False):
 
-    logging.basicConfig()
-    logger = logging.getLogger('main_logger')
-    if debug:
-        logger.setLevel(logging.DEBUG)
-    else:
-        logger.setLevel(logging.INFO)
-
+    setup_custom_logger("logger", debug)
     states = {"cruise": State('cruise')}
 
     # Things that update on sizing - attributes of Aircraft and sub components

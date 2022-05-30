@@ -11,7 +11,7 @@ class Component:
         self.own_cg = [0, 0, 0]
         self.components = []
 
-        self.logger = logging.getLogger("main_logger")
+        self.logger = logging.getLogger("logger")
         self.design_config = self.unwrap_design_config(design_config)
 
         for prop in self.design_config:
