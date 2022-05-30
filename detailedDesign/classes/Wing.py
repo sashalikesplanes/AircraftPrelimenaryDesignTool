@@ -46,7 +46,7 @@ class Wing(Component):
         optimal_effective_AR = C_LC * C_LC / np.pi * 1 / (((V_C / range_)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min)
-        print(f'{optimal_effective_AR = }')
+        # print(f'{optimal_effective_AR = }')
 
     def determine_C_L_alpha(self):
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
@@ -59,7 +59,7 @@ class Wing(Component):
         C_L_alpha = 2 * np.pi * aspect_ratio / (2 + np.sqrt(((aspect_ratio*beta) / k) ** 2
                                                             * (1 + np.tan(semi_chord_sweep) ** 2 / (beta ** 2)) + 4))
 
-        print(f'{np.deg2rad(C_L_alpha) = }')
+        # print(f'{np.deg2rad(C_L_alpha) = }')
         return np.deg2rad(C_L_alpha)
 
     def get_C_L(self, alpha):
