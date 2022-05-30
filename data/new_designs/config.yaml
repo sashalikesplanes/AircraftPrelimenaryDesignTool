@@ -25,13 +25,13 @@ Aircraft:
       percentage_propulsion_power: 0.95 #percentage of total power that goes to propulsion system
       eff_inverter: 0.995
       eff_converter: 0.95
-      cable_contingency: 1.05 #cable losses
+      cable_contingency: 1.05 # cable losses
       FuelCells:
         conversion_efficiency: 0.5 # [-] - multiple literature source
         current_density: 8 # [Amps/m2] - same paper as above
         duration_flight: 8 # [h]
-        mass_power_density: 8000 #[W/kg]
-        W_Size: 1200 #[kg/m3]
+        mass_power_density: 8000 # [W/kg]
+        W_Size: 1200 # [kg/m3]
       Batteries:
         test_prop: 69
     Fuselage:
@@ -50,6 +50,7 @@ Aircraft:
         k_cabin: 1.17
         cabin_pressure_altitude: 3000 # [m]
       FuelContainer:
+        empty_space_thickness: 0.2 # [m] - the space between the fuselage and the tank, must be more than insulation
         tank_pressure: 120000 # [Pa]
         density_H2: 70.85 # [kg/m3]
         Vi: 0.072 # cte, extra volume needed for boiloff
@@ -60,7 +61,7 @@ Aircraft:
         temp_room: 293 # [K]
         thermal_cond: 0.0046 # [W/mK]
         E_boiloff: 446592 # [J/kg]
-        density_insulation: 49.8 #[kg/m3]
+        density_insulation: 49.8 # [kg/m3]
   WingGroup:
     test_prop_wing: 10
 

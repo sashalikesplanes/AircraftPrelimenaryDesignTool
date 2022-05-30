@@ -6,6 +6,7 @@ from misc.unitConversions import *
 from misc.ISA import *
 from detailedDesign.classes.State import State
 from detailedDesign.classes.Aircraft import Aircraft
+from detailedDesign.classes.FuelCells import FuelCells
 
 
 class TestFuelTank(unittest.TestCase):
@@ -15,26 +16,15 @@ class TestFuelTank(unittest.TestCase):
         self.aircraft = Aircraft(openData(config_file), states)
         # self.aircraft.FuselageGroup.get_sized()
 
-        # Define test params
-        self.aircraft.FuselageGroup.Fuselage.Cabin.diameter = 10  # [m]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.length = 100  # [m]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude = 2000  # [m]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.passengers = 250  # [-]
+        # ----- Define test params -----
+        self.aircraft.FuselageGroup.Power.own_power_peak = 100e6
+        self.aircraft.FuselageGroup.Power.FuelCells.mass_power_density = 10000
+        self.aircraft.FuselageGroup.Power.FuelCells.W_size = 1000
 
-        self.aircraft.FuselageGroup.Fuselage.FuelContainer.length = 50  # [m]
+        # Fuel tank
+        self.aircraft.FuselageGroup.Fuselage.inner_diameter = 10
+        self.aircraft.FuselageGroup.Fuselage.FuelContainer.thickness = 0.001
 
-        self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
-        self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
-        self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
-        self.aircraft.reference_area = 50
-
-        self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
-        self.aircraft.WingGroup.Wing.span = 20  # [m]
-        self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass = 50000  # [kg]
-        self.aircraft.WingGroup.Wing.sweep = 5  # [deg]
-        self.aircraft.WingGroup.Wing.taper_ratio = 0.6  # [-]
-        self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
-        self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
 
         # Imperial constants from test params:
         # l_FS = 492.12598    # [ft]
@@ -47,7 +37,18 @@ class TestFuelTank(unittest.TestCase):
         # Delta_P = 0         # [psi] for test_state_1
 
     def test_fuel_cell(self):
-        pass
+
+        self.aircraft.FuselageGroup.Power.FuelCells.size_self()
+        model_mass = self.aircraft.FuselageGroup.Power.FuelCells.mass
+        model_size = self.aircraft.FuselageGroup.Power.FuelCells.size
+
+        analytical_mass_kg = 10000
+        analytical_size = 10
+        print("mass: ", analytical_mass_kg)
+        print("size: ", analytical_size)
+        self.assertAlmostEqual(model_mass, analytical_mass_kg, delta=analytical_mass_kg * testMargin)
+        self.assertAlmostEqual(model_size, analytical_size, delta=analytical_size * testMargin)
+
 
     def test_batteries(self):
         pass
@@ -59,4 +60,16 @@ class TestFuelTank(unittest.TestCase):
         pass
 
     def test_fuel_container(self):
-        pass
+        self.aircraft.FuselageGroup.Fuselage.FuelContainer.size_self()
+
+        model_thickness = self.aircraft.FuselageGroup.Fuselage.FuelContainer.thickness
+        model_mass_H2 = self.aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2
+        model_tank_volume = self.aircraft.FuselageGroup.Fuselage.FuelContainer.volume_tank
+        model_tank_area = self.aircraft.FuselageGroup.Fuselage.FuelContainer.area_tank
+        model_structural_mass = self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass
+
+        analytical_thickness = None
+        analytical_mass_H2 = None
+        analytical_tank_volume = None
+        analytical_tank_area = None
+        analytical_structural_mass = None
