@@ -41,8 +41,7 @@ def detail_design(debug=False):
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
-        logger.debug(f"{ aircraft.mtom = }")
-        # Check divergence
+
         # Check divergence
         if np.isnan(aircraft.mtom):
             logger.warn("DIVERGED :(")
@@ -54,7 +53,6 @@ def detail_design(debug=False):
             logger.debug(f"Took {iteration} iterations")
             break
         previous_mtom = aircraft.mtom
-
 
     make_potato_plot(aircraft)
     perform_analyses(aircraft)
