@@ -21,7 +21,6 @@ class Aircraft(Component):
         # Use self.property = None
         self.mtom = 1  # Initial Value
         self.oem = None
-        self.fuel_mass = 0
         self.payload_mass = None
         self.thrust_over_weight = 1  # Initial Value
         self.weight_over_surface = 1  # Initial Value
