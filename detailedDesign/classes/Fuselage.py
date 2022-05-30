@@ -92,5 +92,6 @@ class Fuselage(Component):
 
         for component in self.components:
             component.get_sized()
+            print(f"{type(component).__name__} {component.get_mass() = }")
 
         self.size_self()

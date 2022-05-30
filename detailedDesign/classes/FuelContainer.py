@@ -59,7 +59,6 @@ class FuelContainer(Component):
             32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
         self.mass_H2 = mass_H2_peak+mass_H2_average
 
-
         self.volume_tank = self.mass_H2*(1+self.Vi)/self.density_H2
         self.length = (self.volume_tank - 4*np.pi*self.inner_radius**3/3)/(np.pi *
                                                                            self.inner_radius**2)  # we constrained the radius as being an integral tank,\
@@ -81,8 +80,9 @@ class FuelContainer(Component):
             mass_insulation = self.area_tank*i*self.density_insulation
             mass_total.append(total_boiloff+self.mass_tank+mass_insulation)
 
-        self.own_mass = 0  # TODO add total mass of everything structural
-        self.Fuselage.FuselageGroup.Aircraft.fuel_mass = 0  # TODO save fuel mass here
+        self.own_mass = np.array(mass_total).min()
+        print(f"I am the mass of the fuel contrainer {self.own_mass}")
+        self.Fuselage.FuselageGroup.Aircraft.fuel_mass = self.mass_H2
 
         # plotting
         # plt.plot(thickness_insulation, mass_total)
@@ -99,4 +99,3 @@ class FuelContainer(Component):
         # print("mass tank=", self.mass_tank)
         # print("area tank=", self.area_tank)
         # print("thickness tank=", self.thickness)
-

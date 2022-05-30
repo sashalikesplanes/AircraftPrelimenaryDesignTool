@@ -19,8 +19,6 @@ class FuselageGroup(Component):
 
         self.components = [self.Tail, self.Power,
                            self.Fuselage, self.Miscellaneous]
-        for component in self.components:
-            print(f"{type(component).__name__} {component.own_mass}")
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -31,4 +29,4 @@ class FuselageGroup(Component):
         for component in self.components:
             component.get_sized()
 
-        self.own_mass = self.get_mass()
+            print(f"{type(component).__name__} {component.own_mass}")

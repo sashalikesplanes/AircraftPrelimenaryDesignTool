@@ -43,21 +43,21 @@ def get_constraints(aircraft):
         lift_induced_drag_constant / dynamic_pressure * wing_loading_points
 
     # Plot the fuctions
-    fig, ax = plt.subplots()
+    # fig, ax = plt.subplots()
 
-    ax.plot(wing_loading_points, thrust_loading_cruise,
-            'r', label='Cruise speed')
+    # ax.plot(wing_loading_points, thrust_loading_cruise,
+    #         'r', label='Cruise speed')
 
-    ax.plot(wing_loading_points, thrust_loading_constant_turn,
-            'b', label='Constant turn')
+    # ax.plot(wing_loading_points, thrust_loading_constant_turn,
+    #         'b', label='Constant turn')
 
-    ax.plot(wing_loading_points, thrust_loading_climb_rate,
-            'g', label='Climb rate')
+    # ax.plot(wing_loading_points, thrust_loading_climb_rate,
+    #         'g', label='Climb rate')
 
-    ax.set_xlabel('W/S')
-    ax.set_ylabel('T/W')
+    # ax.set_xlabel('W/S')
+    # ax.set_ylabel('T/W')
 
-    plt.legend()
+    # plt.legend()
 
 #    plt.show()
 

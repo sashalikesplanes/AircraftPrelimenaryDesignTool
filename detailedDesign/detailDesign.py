@@ -55,7 +55,8 @@ def detail_design(debug=False):
 
     perform_analyses(aircraft)
 
-    print(aircraft.get_mass())
+    print(
+        f"MTOM = {aircraft.mtom} kg, OEM = {aircraft.oem} kg, Fuel Mass = {aircraft.fuel_mass}")
 
 
 if __name__ == "__main__":
