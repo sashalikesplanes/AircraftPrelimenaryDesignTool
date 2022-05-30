@@ -27,7 +27,7 @@ class FuelCells(Component):
         self.mass = power_peak/self.mass_power_density # [kg]
         self.size = self.mass/self.W_Size  # [m3]
 
-        # self.voltage = 1.2*self.conversion_efficiency
+        # self.voltage = 1.2*self.conversion_efficiency*self.amount_cells
         # self.numberplates = power_peak / (self.voltage * self.current_density * self.size)
         # self.power_produced = power_peak/self.numberplates #power that has to be/will be produced per plate
         # self.area_fuelcell = self.power_produced / (self.voltage * self.current_density)

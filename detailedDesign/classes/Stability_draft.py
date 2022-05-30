@@ -64,11 +64,11 @@ plt.grid()
 
 '''From here controllability, controllability is sized for landing'''
 
-CLaminush = 1  # TODO get from lift eq for landing
 CLh = -0.8  # from slide 17 lecture 8
 Wfin  = 1879000*9.81
 Vlanding = 77  # from boeing 787
 rho_sealevel = 1.225
+CLaminush = Wfin/(0.5*rho_sealevel*Vlanding**2*S)
 
 ###'''Cmaerodynamiccentre calculation'''###
 #wing
