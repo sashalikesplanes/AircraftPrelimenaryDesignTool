@@ -107,7 +107,7 @@ def get_drag(aircraft):
     xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax  # from NACA0010
     StailVT = aircraft.FuselageGroup.Tail.VerticalTail.surface_area
     StailHT = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
-    cVT = aircraft.FuselageGroup.Tail.VerticalTail.mean_geometric_chord # TODO link to vertical tail
+    cVT = aircraft.FuselageGroup.Tail.VerticalTail.mean_geometric_chord  # TODO link to vertical tail
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
     cfus = aircraft.FuselageGroup.Fuselage.length   # TODO link to Fuselage. (length of the fuselage)
     AR = aircraft.WingGroup.Wing.aspect_ratio     # TODO Link AR, e, CL to Wing
