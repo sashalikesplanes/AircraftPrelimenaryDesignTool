@@ -10,7 +10,7 @@ from detailedDesign.classes.FuelCells import FuelCells
 from detailedDesign.get_drag import *
 
 
-class TestFuelTank(unittest.TestCase):
+class TestDrag(unittest.TestCase):
     def setUp(self):
         config_file = Path('data', 'new_designs', 'config.yaml')
         states = {"test_state_1": State('test_state_1'), "cruise": State("test_state_2")}

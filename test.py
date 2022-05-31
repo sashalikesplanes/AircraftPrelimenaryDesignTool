@@ -8,6 +8,8 @@ from unit_test.testState import TestState
 from unit_test.testMisc import TestMisc
 from unit_test.testFuelTank import TestFuelTank
 from unit_test.testWing import TestWing
+from unit_test.testDrag import TestDrag
+
 
 if __name__ == '__main__':
     unittest.main()
