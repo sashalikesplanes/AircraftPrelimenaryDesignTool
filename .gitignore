@@ -1,6 +1,6 @@
 # Ignore VSCode config
 .vscode
-
+generate_commits.sh
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
