@@ -56,7 +56,7 @@ def detail_design(debug=False):
             break
         previous_mtom = aircraft.mtom
 
-    plt.plot(range(len(lst)), lst)
+    plt.plot(range(len(lst)), lst, "o-")
     plt.xlabel("Iterations [-]")
     plt.ylabel("Maximum take-off mass [kg]")
     plt.title("MTOM over iterations")
