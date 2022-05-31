@@ -40,6 +40,10 @@ class Aircraft(Component):
     def fuel_mass(self):
         return self.FuselageGroup.Fuselage.FuelContainer.mass_H2
 
+    @property
+    def reserve_fuel_mass(self)
+        return self.FuselageGroup.Fuselage.FuelContainer.reserve_mass_H2
+
     def get_sized(self):
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight

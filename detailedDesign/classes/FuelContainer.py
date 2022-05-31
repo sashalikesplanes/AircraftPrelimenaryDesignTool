@@ -24,6 +24,7 @@ class FuelContainer(Component):
         self.voltage = None
         self.flow_H2 = None
         self.mass_H2 = None
+        self.reserve_mass_H2 = None
         self.volume_tank = None
         self.radius_tank = None
         self.mass_tank = None
@@ -61,7 +62,10 @@ class FuelContainer(Component):
                 32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
         mass_H2_average = averagepower * (state.duration / 3600 - duration_peak) / (
                 32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        self.mass_H2 = mass_H2_peak + mass_H2_average
+        self.reserve_mass_H2 =  averagepower * (self.Fuselage.FuselageGroup.Aircraft.reserve_duration) / (32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
+  
+        self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2 
+
 
         # Tank sizing
         self.volume_tank = self.mass_H2 * (1 + self.Vi) / self.density_H2
