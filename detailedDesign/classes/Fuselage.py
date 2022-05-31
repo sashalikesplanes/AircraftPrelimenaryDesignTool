@@ -30,6 +30,8 @@ class Fuselage(Component):
     def length(self):
         # TODO add tail cone, nose cone etc
         length = self.Cabin.length + self.FuelContainer.length + self.FuelContainer.radius_tank * 2
+        self.logger.debug(f"Cabin length: {self.Cabin.length}")
+        self.logger.debug(f"Fuel Compartment Length: {self.FuelContainer.length + self.FuelContainer.radius_tank * 2}")
         return length + self.cockpit_length + self.tail_length
 
     @property
