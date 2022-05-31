@@ -85,7 +85,7 @@ class Wing(Component):
         self.sweep = 0  # M < 0.7
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
-        self.oswald = get_oswald()
+        self.oswald = self.get_oswald()
 
         self.logger.debug(f"Root Chord: {self.root_chord}")
         self.logger.debug(f"Tip Chord: {self.tip_chord}")
