@@ -45,11 +45,6 @@ def calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep):
     Cmaerocwing = Cm0foil * (AR * np.cos(quarterchordsweep) ** 2 / (AR + 2 * np.cos(quarterchordsweep)))  # sweep assumed quarter chord sweep
     return Cmaerocwing
 
-# def calc_Swf(deltaCLmax, S, sweephingeline):
-#     deltaClmax = 1.45 + 0.56  # added 0.56 for droop nose. Check for correctness
-#     Swf = deltaCLmax * S / (0.9 * deltaClmax * np.cos(sweephingeline))
-#     return Swf
-
 
 def calc_deltafus_Cmaeroc(widthfuselage, lengthfuselage, heightfuselage, cMAC, CL0, CLalphataillessslow, S):
     deltafus_Cmaeroc = -1.8 * (1 - 2.5 * widthfuselage / lengthfuselage) * np.pi * widthfuselage * heightfuselage * lengthfuselage / (
@@ -91,32 +86,32 @@ def get_xplot(aircraft):
     croot = 2 * S / ((1 + taperratio) * b)
     ctip = taperratio * croot
     cMGC = aircraft.WingGroup.Wing.mean_geometric_chord
-    cMAC = cMGC*1 #TODO confirm this is correct
+    cMAC = cMGC*1
     halfchordsweep = np.arctan(np.tan(quarterchordsweep)-4/AR*(0.5-0.25*(1-taperratio)/(1+taperratio)))  # rad approx from eq9-11 snorri
     quarterchordsweeph = aircraft.FuselageGroup.Tail.HorizontalTail.quarter_chord_sweep
-    halfchordsweeph = np.arctan(np.tan(quarterchordsweeph)-4/AR*(0.5-0.25*(1-taperratio)/(1+taperratio)))  # TODO approx [rad]
+    halfchordsweeph = np.arctan(np.tan(quarterchordsweeph)-4/AR*(0.5-0.25*(1-taperratio)/(1+taperratio)))
 
 
 
     widthfuselage = aircraft.FuselageGroup.Fuselage.diameter  # At this stage the same due to circular
     heightfuselage = aircraft.FuselageGroup.Fuselage.diameter
-    lengthfuselage = 100  # approx length of fuselage
+    lengthfuselage = aircraft.FuselageGroup.Fuselage.length
 
-    taillength = aircraft.FuselageGroup.Tail.HorizontalTail.tail_length  # TODO approx
+    taillength = aircraft.FuselageGroup.Tail.HorizontalTail.tail_length
     VhoverV = 0.85  # if fuselage mounted
     SM = 0.05 # as defined in ADSEE
-    Xacw = 0.22  # increasing shifts stability line to right, which is nice
-    Xacwlanding = 0.24  #TODO, check
+    Xacw = 0.23  # increasing shifts stability line to right, which is nice
+    Xacwlanding = 0.24  #TODO, check for final landing, slide 31, adsee3PPT7
 
     CLh = -0.8  # from slide 17 lecture 8
-    Wfin = 1879000 * 9.81  # from midterm report
+    Wfin = aircraft.mtom - aircraft.fuel_mass # TODO check for reserve fuel
     rho_sealevel = 1.225
     CLaminush = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S) - CLh
 
     CLalphawing = calc_CLalpha(AR, calc_beta(M), halfchordsweep, eta)
     CLalphawinglanding = calc_CLalpha(AR, calc_beta(Mlanding), halfchordsweep, eta)
     CLalphatail = calc_CLalpha(ARh, calc_beta(M), halfchordsweeph, eta)
-    CLalphataillanding = calc_CLalpha(ARh, calc_beta(Mlanding), halfchordsweeph, eta)
+    #CLalphataillanding = calc_CLalpha(ARh, calc_beta(Mlanding), halfchordsweeph, eta)
 
     CLalphatailless = CLalphawing * (1 + 2.15 * widthfuselage / b) * calc_Snet(S, croot, taperratio, b,
                                                                                widthfuselage) / S + np.pi / 2 * widthfuselage ** 2 / S
@@ -124,13 +119,11 @@ def get_xplot(aircraft):
                                                                                              widthfuselage) / S + np.pi / 2 * widthfuselage ** 2 / S
     Xacwf = calc_Xacwf(Xacw, CLalphatailless, widthfuselage, heightfuselage, lengthfuselage, S, cMAC, taperratio, cMGC,
                        b,quarterchordsweep)
-    Xacwflanding = calc_Xacwf(Xacwlanding, CLalphatailless, widthfuselage, heightfuselage, lengthfuselage, S, cMAC, taperratio, cMGC,
-                       b, quarterchordsweep)  # TODO at this stage CLalpha tailless is for cruise should it be for landing?
+    Xacwflanding = calc_Xacwf(Xacwlanding, CLalphataillesslanding, widthfuselage, heightfuselage, lengthfuselage, S, cMAC, taperratio, cMGC,
+                       b, quarterchordsweep)
 
     Xcg = np.arange(-1, 1.5, 0.05)
     ShoverSstability = calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xcg, Xacwf, SM)
-
-
 
     ###'''Cmaerodynamiccentre calculation'''###
     # wing
@@ -138,24 +131,17 @@ def get_xplot(aircraft):
     Cmaerocwing = calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep)
 
     # fuselage
-
     CL0 = CLalphawing / 180 * np.pi * 3  # CL0 is the lift coefficient of the flapped wing at zero angle of attack
-
     deltafus_Cmaeroc = calc_deltafus_Cmaeroc(widthfuselage, lengthfuselage, heightfuselage, cMAC, CL0,
                                              CLalphataillesslanding, S)
 
     # flaps
-
     deltaCLmax = 1.1 * 0.975 * 1 * 1.3  # from DATCOM 1978 eq8.4
     sweephingeline = 0  # neglegible and saves a lot of time
-
     CLwing = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S)  # all flaps must be deployed
-    # print('Swf=',Swf, 'flapoverb', flappedspanoverb)
-
     deltaflap_Cmaeroc = calc_deltaflap_Cmaeroc(cMAC, CLwing, deltaCLmax, sweephingeline, S, Xacwflanding)
-
     Cmaeroc = Cmaerocwing + deltaflap_Cmaeroc + deltafus_Cmaeroc  # + deltanac_Cmaeroc, neglecting nacelles for now, and no formulas for it
-    print('Cmac', Cmaeroc)
+    #print('Cmac', Cmaeroc)
 
     ShoverScontrollability = calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf)
 
@@ -166,40 +152,18 @@ def get_xplot(aircraft):
     plt.xlabel("xcg/c")
     plt.ylabel("Sh/S")
     plt.grid()
-    plt.xlim(0, 1)
+    plt.xlim(-0.5, 1)
     plt.ylim(0, 1)
     plt.title("X-plot")
     plt.show()
+    return
 
 
 
 
 
 # '''In the code the contribution of the nacelles to Xacwf is neglected as it is -0.0003 per engine'''
-#
-# print('deda=', calc_depsilondalpha(AR), 'CLaw=', CLalphawing, 'CLah=', CLalphatail)
-# print("CLalpha A-h =", CLalphatailless)
-# print("Xac/c=", Xacwf)
-# print(1.8 / CLalphatailless * widthfuselage * heightfuselage * lengthfuselage / S / cMAC)
-# print('snet', calc_Snet(S, croot, taperratio, b, widthfuselage))
-
-
-
-# plt.plot(Xcg, ShoverSstability)
-# plt.xlabel("xcg/c")
-# plt.ylabel("Sh/S")
-# plt.grid()
-# plt.show()
-
-'''From here controllability, controllability is sized for landing'''
-
-
-
-
-
-
-#Swf = calc_Swf(deltaCLmax, S, sweephingeline)
-
+# Controllability is sized for landing
 # '''formulas to get the constants'''
 # xf = 0.019 * cMAC  # 0.019 from Snorri book page 422 NACA651213
 # cprimeoverc = (cMAC + xf) / cMAC
@@ -213,4 +177,3 @@ def get_xplot(aircraft):
 
 
 
-# get_xplot()
