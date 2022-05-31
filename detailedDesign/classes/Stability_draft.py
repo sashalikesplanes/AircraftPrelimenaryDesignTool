@@ -108,49 +108,63 @@ CLaminush = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S)
 ###'''Cmaerodynamiccentre calculation'''###
 # wing
 Cm0foil = -0.083
-
 Cmaerocwing = calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep)
+
+
 # fuselage
+def calc_deltafus_Cmaeroc(widthfuselage, lengthfuselage, heightfuselage, cMAC, CL0, CLalphataillessslow):
+    deltafus_Cmaeroc = -1.8 * (1 - 2.5 * widthfuselage / lengthfuselage) * np.pi * widthfuselage * heightfuselage * lengthfuselage / (
+                               4 * S * cMAC) * CL0 / CLalphataillessslow
+    return deltafus_Cmaeroc
+
+
 CL0 = CLalphawing / 180 * np.pi * 3  # CL0 is the lift coefficient of the flapped wing at zero angle of attack
 Mlanding = 0.2263  # 77m/s at sealevel
-betalanding = calc_beta(Mlanding)
-CLalphataillessslow = calc_CLalpha(AR, betalanding, halfchordsweep)
-deltafus_Cmaeroc = -1.8 * (
-            1 - 2.5 * widthfuselage / lengthfuselage) * np.pi * widthfuselage * heightfuselage * lengthfuselage / (
-                               4 * S * cMAC) * CL0 / CLalphataillessslow
+CLalphataillessslow = calc_CLalpha(AR, calc_beta(Mlanding), halfchordsweep)
+deltafus_Cmaeroc = calc_deltafus_Cmaeroc(widthfuselage, lengthfuselage, heightfuselage, cMAC, CL0, CLalphataillessslow)
+
 
 # flaps
+def calc_deltaflap_Cmaeroc(cMAC, mu1, mu2, deltaClmax, CLwing, Swf, S, Xacwf):
+    xf = 0.019 * cMAC  # 0.019 from Snorri book page 422 NACA651213
+    cprimeoverc = (cMAC + xf) / cMAC
+    deltaCmquarter = mu2 * (-mu1 * deltaClmax * cprimeoverc - (CLwing + deltaClmax * (1 - Swf / S)) / 8 * cprimeoverc * (cprimeoverc - 1))  # neglecting sweep term
+    deltaflap_Cmaeroc = deltaCmquarter - CLwing * (0.25 - Xacwf)
+    return deltaflap_Cmaeroc
+
+
 deltaClmax = 1.45 + 0.56  # added 0.56 for droop nose. Check for correctness
-xf = 0.019 * cMAC  # 0.019 from Snorri book page 422 NACA651213
-cprimeoverc = (cMAC + xf) / cMAC
 deltaCLmax = 1.1 * 0.975 * 1 * 1.3  # from DATCOM 1978 eq8.4
 sweephingeline = 0  # neglegible and saves a lot of time
 Swf = calc_Swf(deltaCLmax, S, deltaClmax, sweephingeline)
 
+'''formulas to get the constants'''
+xf = 0.019 * cMAC  # 0.019 from Snorri book page 422 NACA651213
+cprimeoverc = (cMAC + xf) / cMAC
 cfoverc = 0.336
 cfovercprime = cfoverc / cprimeoverc
 print('cfcprime', cfovercprime)
 flappedspan = 46.135 * 2  # 46.135 comes from trapezoidal relation, gives a nonlinear system of equations
 flappedspanoverb = flappedspan / b
 
+
 mu1 = 0.17  # mu comes from graphs
 mu2 = 0.8
-
 CLwing = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S)
 # print('Swf=',Swf, 'flapoverb', flappedspanoverb)
 
+deltaflap_Cmaeroc = calc_deltaflap_Cmaeroc(cMAC, mu1, mu2, deltaClmax, CLwing, Swf, S, Xacwf)
 
-deltaCmquarter = mu2 * (-mu1 * deltaClmax * cprimeoverc - (CLwing + deltaClmax * (1 - Swf / S)) / 8 * cprimeoverc * (
-            cprimeoverc - 1))  # neglecting sweep term
-deltaf_Cmaeroc = deltaCmquarter - CLwing * (0.25 - Xacwf)
-Cmaeroc = Cmaerocwing + deltaf_Cmaeroc + deltafus_Cmaeroc  # + deltanac_Cmaeroc, neglecting nacelles for now
+Cmaeroc = Cmaerocwing + deltaflap_Cmaeroc + deltafus_Cmaeroc  # + deltanac_Cmaeroc, neglecting nacelles for now, and no formulas for it
 print('Cmac', Cmaeroc)
 
-CONTROLLABILITYTERM = CLh / CLaminush * taillength / cMAC * VhoverV ** 2
+def calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf):
+    CONTROLLABILITYTERM = CLh / CLaminush * taillength / cMAC * VhoverV ** 2
+    ShoverScontrollability = 1 / CONTROLLABILITYTERM * Xcg + (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
+    return ShoverScontrollability
 
-ShoverScontrollability = 1 / CONTROLLABILITYTERM * Xcg + (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
 
-plt.plot(Xcg, ShoverScontrollability)
+plt.plot(Xcg, calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf))
 plt.xlim(0, 1)
 plt.ylim(0, 1)
 plt.show()
