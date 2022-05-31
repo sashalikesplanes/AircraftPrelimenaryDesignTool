@@ -2,6 +2,7 @@
 import numpy as np
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
+from sympy import symbols 
 
 
 class Wing(Component):
@@ -26,9 +27,10 @@ class Wing(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
         self._freeze()
-
+         
     def size_AR(self):
         #this should be used to check the validity of the aspect ratio assumed in the config and shgould be run outside of the iterations
+        #at the end when there is a final product to get a guideline on the aspect ratio value
         range = self.WingGroup.Aircraft.states['cruise'].range   # [m]
         range_ = m_to_ft(range)  # [ft]
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
@@ -42,14 +44,14 @@ class Wing(Component):
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2    # [-]
 
         C_D_min = self.WingGroup.Aircraft.C_D_min    # [-]
-        # [g/kNs]
-        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption
-        c_t_Imp = c_t_SI * 9.81 / 1e6
+        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption # [g/kNs]
+        c_t_Imp = c_t_SI * 9.81 / 1e6   # [1/s]
 
-        optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((V_C / range_)
+        optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((m_to_ft(V_C) / range_)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min))
-        # print(f'{optimal_ARe = }')
+        return optimal_ARe
+
 
     def determine_C_L_alpha(self):
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
@@ -59,11 +61,11 @@ class Wing(Component):
         k = 0.95  # from Sam
         #this takes into account no sweep for the wing
         semi_chord_sweep = np.arctan(np.tan(self.sweep - (4 / aspect_ratio) * ((0.5-0.25)* ((1 - self.taper_ratio)/(1 + self.taper_ratio)))))  # [rad]
-        C_L_alpha = (2 * np.pi * aspect_ratio) / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
+        self.C_L_alpha = (2 * np.pi * aspect_ratio) / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
                                                             * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
 
         # print(f'{np.deg2rad(C_L_alpha) = }')
-        return np.deg2rad(C_L_alpha)
+        return np.deg2rad(self.C_L_alpha)
 
     def get_C_L(self, alpha):
         # ALPHA IS IN DEGREES
@@ -72,17 +74,17 @@ class Wing(Component):
     def get_oswald(self):
         return 1.78 * (1 - 0.045 * self.aspect_ratio ** 0.68) - 0.64
 
-    def size_self(self):
+    def size_self(self): #parameters unit tested manually: equations are correct
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
         # self.size_AR()
         self.span = (self.wing_area * self.aspect_ratio) ** 0.5
         self.logger.debug(f"Span: {self.span}")
         self.root_chord = (2 * self.wing_area) / \
-                          (self.span * (1 + self.taper_ratio))
-        self.tip_chord = self.root_chord * self.taper_ratio
-        self.mean_geometric_chord = 2 / 3 * self.root_chord * \
-            ((1 + self.taper_ratio + self.taper_ratio ** 2) /
+                          (self.span * (1 + self.taper_ratio))  # [m]
+        self.tip_chord = self.root_chord * self.taper_ratio     # [m]
+        self.mean_geometric_chord = (2 / 3) * self.root_chord * \
+            ((1 + self.taper_ratio + self.taper_ratio ** 2) / \
              (1 + self.taper_ratio))  # [m]
         self.sweep = 0  # M < 0.7
         self.C_L_alpha = self.determine_C_L_alpha()

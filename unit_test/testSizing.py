@@ -93,3 +93,6 @@ class TestSizing(unittest.TestCase):
         model_mean_aerodynamic_chord = self.aircraft.FuselageGroup.Tail.VerticalTail.mean_geometric_chord # [kg]
         analytical_mean_aerodynamic_chord = 4.297891051  # [kg]
         self.assertAlmostEqual(model_mean_aerodynamic_chord, analytical_mean_aerodynamic_chord, delta = analytical_mean_aerodynamic_chord * testMargin)
+
+
+
