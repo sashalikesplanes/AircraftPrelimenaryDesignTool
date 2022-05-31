@@ -29,11 +29,10 @@ class Aircraft(Component):
         self.own_mass = 0
 
         # Drag states
-        self.C_D_min = 0.1  # Initial Value
+        self.C_D_min = 0.055  # Initial Value
 
         self.ultimate_load_factor = None
-        self.clean_stall_speed = None
-        self.cruise_drag = 10000  # needed as drag comes from previous iteration
+        self.cruise_drag = 500000  # needed as drag comes from previous iteration
 
         self._freeze()
 
@@ -55,14 +54,17 @@ class Aircraft(Component):
 
         self.payload_mass = self.get_payload_mass()
 
-        self.oem = self.get_mass()
+        self.oem = self.get_mass() * self.oem_contingency
 
         total_C_D_min, CDi, CD, total_drag = get_drag(self)
         self.C_D_min = total_C_D_min
-        self.cruise_drag = total_drag
+        self.cruise_drag = total_drag * self.cruise_drag_contingency
+        self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")
 
-        self.mtom = self.oem + self.payload_mass + self.fuel_mass
-
+        new_mtom = self.oem + self.payload_mass + self.fuel_mass
+        # Take a weighted average to prevent ossilitaions
+        # self.mtom = (new_mtom * 0.1 + self.mtom * 0.9) 
+        self.mtom = new_mtom
         self.print_component_masses()
 
     def get_payload_mass(self):
