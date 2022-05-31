@@ -85,8 +85,8 @@ def calc_CDmin(CDmin_wing, CDmin_fuselage, CDmin_tail):
     return CDmin
 
 
-def calc_CDi(CL, A, e):
-    CDi = CL**2/(np.pi*A*e)
+def calc_CDi(C_L, A, e):
+    CDi = C_L**2/(np.pi*A*e)
     return CDi
 
 
@@ -107,12 +107,16 @@ def get_drag(aircraft):
     xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax  # from NACA0010
     StailVT = aircraft.FuselageGroup.Tail.VerticalTail.surface_area
     StailHT = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
-    cVT = 9.05  # TODO link to vertical tail
+    cVT = aircraft.FuselageGroup.Tail.VerticalTail.mean_geometric_chord # TODO link to vertical tail
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
-    cfus = 183  # TODO link to Fuselage. (length of the fuselage)
-    AR = 6      # TODO Link AR, e, CL to Wing
-    e = 0.8
-    CL = 0.521
+    cfus = aircraft.FuselageGroup.Fuselage.length   # TODO link to Fuselage. (length of the fuselage)
+    AR = aircraft.WingGroup.Wing.aspect_ratio     # TODO Link AR, e, CL to Wing
+    V_C = aircraft.states['cruise'].velocity
+    W_cruise = aircraft.mtom * 9.81
+    dynamic_pressure = 0.5 * aircraft.states['cruise'].density \
+        * V_C * V_C
+    C_L = W_cruise / (dynamic_pressure * aircraft.WingGroup.Wing.wing_area )
+    e = aircraft.WingGroup.Wing.oswald
 
     IF = dict({'wing': 1,  # high or mid wing
                'fuselage': 1.5,  # TODO know it is 50 % to take care of the hull, refine
@@ -153,7 +157,7 @@ def get_drag(aircraft):
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
 
-    CDi = calc_CDi(CL, AR, e)
+    CDi = calc_CDi(C_L, AR, e)
     CD = CDi+TotalCDmin
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)

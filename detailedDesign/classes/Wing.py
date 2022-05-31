@@ -21,6 +21,7 @@ class Wing(Component):
         self.C_L_alpha = 0  # Initial Value
         self.alpha_zero_lift = -3.0  # [deg]
         self.C_L_0_wing = 0
+        self.oswald = 0
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
@@ -32,7 +33,7 @@ class Wing(Component):
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
             * V_C * V_C
         W_initial_cruise = self.WingGroup.Aircraft.mtom * 9.81
-        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 * .7
+        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mas_H2 * 9.81
         C_L_initial_cruise = W_initial_cruise / \
             (dynamic_pressure * self.wing_area)
         C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)
@@ -43,10 +44,10 @@ class Wing(Component):
         c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption
         c_t_Imp = c_t_SI * 9.81 / 1e6
 
-        optimal_effective_AR = C_LC * C_LC / np.pi * 1 / (((V_C / range_)
+        optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((V_C / range_)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
-                                                                                       / W_end_cruise)) - C_D_min)
-        # print(f'{optimal_effective_AR = }')
+                                                                                       / W_end_cruise)) - C_D_min))
+        # print(f'{optimal_ARe = }')
 
     def determine_C_L_alpha(self):
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
@@ -84,6 +85,7 @@ class Wing(Component):
         self.sweep = 0  # M < 0.7
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
+        self.oswald = self.get_oswald()
 
         self.logger.debug(f"Root Chord: {self.root_chord}")
         self.logger.debug(f"Tip Chord: {self.tip_chord}")
