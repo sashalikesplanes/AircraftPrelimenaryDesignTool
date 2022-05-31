@@ -87,7 +87,7 @@ class FuelContainer(Component):
         mass_total = total_boiloff + self.mass_tank + mass_insulation
 
         self.own_mass = np.array(mass_total).min()
-        self.own_mass = self.own_mass * 0.35
+        self.own_mass = self.own_mass
 
         index = np.argmin(np.array(mass_total))
         self.thickness_insulation = thickness_insulation[index]
