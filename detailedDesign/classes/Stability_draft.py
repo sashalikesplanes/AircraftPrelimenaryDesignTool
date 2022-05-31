@@ -94,6 +94,11 @@ plt.grid()
 def calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep):
     Cmaerocwing = Cm0foil * (AR * np.cos(quarterchordsweep) ** 2 / (AR + 2 * np.cos(quarterchordsweep)))  # sweep assumed quarter chord sweep
     return Cmaerocwing
+
+def calc_Swf(deltaCLmax, S, deltaClmax, sweephingeline):
+    Swf = deltaCLmax * S / (0.9 * deltaClmax * np.cos(sweephingeline))
+    return Swf
+
 CLh = -0.8  # from slide 17 lecture 8
 Wfin = 1879000 * 9.81
 Vlanding = 77  # from boeing 787, increasing is better, 93 from A380
@@ -104,7 +109,7 @@ CLaminush = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S)
 # wing
 Cm0foil = -0.083
 
-Cmaerowing = calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep)
+Cmaerocwing = calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep)
 # fuselage
 CL0 = CLalphawing / 180 * np.pi * 3  # CL0 is the lift coefficient of the flapped wing at zero angle of attack
 Mlanding = 0.2263  # 77m/s at sealevel
@@ -120,12 +125,12 @@ xf = 0.019 * cMAC  # 0.019 from Snorri book page 422 NACA651213
 cprimeoverc = (cMAC + xf) / cMAC
 deltaCLmax = 1.1 * 0.975 * 1 * 1.3  # from DATCOM 1978 eq8.4
 sweephingeline = 0  # neglegible and saves a lot of time
-Swf = deltaCLmax * S / (0.9 * deltaClmax * np.cos(sweephingeline))
+Swf = calc_Swf(deltaCLmax, S, deltaClmax, sweephingeline)
 
 cfoverc = 0.336
 cfovercprime = cfoverc / cprimeoverc
 print('cfcprime', cfovercprime)
-flappedspan = 46.135 * 2
+flappedspan = 46.135 * 2  # 46.135 comes from trapezoidal relation, gives a nonlinear system of equations
 flappedspanoverb = flappedspan / b
 
 mu1 = 0.17  # mu comes from graphs
