@@ -59,7 +59,7 @@ class Component:
         for component in self.components:
             component.get_sized()
 
-    # Recursivly print the masses of all the components
+    # Recursively print the masses of all the components
     def print_component_masses(self, prev_mass=None, depth=0):
         if prev_mass:
             percent_mass = self.get_mass() / prev_mass * 100
