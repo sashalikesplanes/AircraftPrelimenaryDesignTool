@@ -152,6 +152,7 @@ def make_flight_envelope(aircraft, test_state):
     plt.title("GET LIMIT LOADS AND MULTIPLY BY 1.5 TO GET ULTIMATE LOADS")
     figpath = Path("plots", f'flightEnvelope{test_state}')
     plt.savefig(figpath, dpi=600)
+    plt.cla()
 
 
 def get_gust_load(K_g, U_ds, V, C_L_alpha, wing_loading):
