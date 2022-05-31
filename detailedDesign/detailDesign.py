@@ -29,7 +29,7 @@ def detail_design(debug=False):
 
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
     previous_mtom = 0  # For checking convergence
-    lst = [0]
+    lst = [aircraft.mtom]
 
     # Size the cabin and cargo bay as it is constant and is a dependency for other components
     pre_run = aircraft.FuselageGroup.Fuselage
@@ -50,7 +50,7 @@ def detail_design(debug=False):
             break
 
         # Check convergence
-        if abs(aircraft.mtom - previous_mtom) < 1:
+        if abs(aircraft.mtom - previous_mtom) < 0.01:
             logger.warn("CONVERGED :)")
             logger.debug(f"Took {i} iterations")
             break

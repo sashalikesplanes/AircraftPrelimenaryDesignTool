@@ -18,3 +18,5 @@ def print_summary(aircraft):
     logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
     logger.debug(f"Amoung of motors: {engines.own_amount_motor} [-]")
     logger.debug(f"Unit dimensions (L x W x H) ({engines.own_lenght_unit:.3f} x {engines.own_width_unit:.3f} x {engines.own_height_unit:.3f}) [m]")
+    logger.debug(f"Clean stall speed : {aircraft.clean_stall_speed} m/s")
+    logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
