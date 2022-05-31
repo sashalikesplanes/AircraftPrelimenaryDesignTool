@@ -111,12 +111,12 @@ def get_drag(aircraft):
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
     cfus = aircraft.FuselageGroup.Fuselage.length   # TODO link to Fuselage. (length of the fuselage)
     AR = aircraft.WingGroup.Wing.aspect_ratio     # TODO Link AR, e, CL to Wing
-    V_C = self.WingGroup.Aircraft.states['cruise'].velocity
+    V_C = aircraft.states['cruise'].velocity
     W_cruise = aircraft.mtom * 9.81
     dynamic_pressure = 0.5 * aircraft.states['cruise'].density \
         * V_C * V_C
-    C_L = W_cruise / (dynamic_pressure * aircraft.WingGroup.Wing.wing_area
-    e = 0.8
+    C_L = W_cruise / (dynamic_pressure * aircraft.WingGroup.Wing.wing_area )
+    e = aircraft.WingGroup.Wing.oswald
 
     IF = dict({'wing': 1,  # high or mid wing
                'fuselage': 1.5,  # TODO know it is 50 % to take care of the hull, refine
