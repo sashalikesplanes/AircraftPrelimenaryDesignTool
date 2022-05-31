@@ -28,18 +28,20 @@ class Wing(Component):
         self._freeze()
 
     def size_AR(self):
-        range_ = self.WingGroup.Aircraft.states['cruise'].range
-        V_C = self.WingGroup.Aircraft.states['cruise'].velocity
+        #this should be used to check the validity of the aspect ratio assumed in the config and shgould be run outside of the iterations
+        range = self.WingGroup.Aircraft.states['cruise'].range   # [m]
+        range_ = m_to_ft(range)  # [ft]
+        V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
-            * V_C * V_C
-        W_initial_cruise = self.WingGroup.Aircraft.mtom * 9.81
-        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mas_H2 * 9.81
+            * V_C * V_C   # [Pa]
+        W_initial_cruise = self.WingGroup.Aircraft.mtom * 9.81   # [N]
+        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mas_H2 * 9.81   # [N]
         C_L_initial_cruise = W_initial_cruise / \
-            (dynamic_pressure * self.wing_area)
-        C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)
-        C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2
+            (dynamic_pressure * self.wing_area)    # [-]
+        C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)    # [-]
+        C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2    # [-]
 
-        C_D_min = self.WingGroup.Aircraft.C_D_min
+        C_D_min = self.WingGroup.Aircraft.C_D_min    # [-]
         # [g/kNs]
         c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption
         c_t_Imp = c_t_SI * 9.81 / 1e6
@@ -55,10 +57,10 @@ class Wing(Component):
         aspect_ratio = self.aspect_ratio
         beta = np.sqrt((1 - (V_C / speed_of_sound) ** 2))
         k = 0.95  # from Sam
-        semi_chord_sweep = self.root_chord / (2 * self.span) \
-            * (self.taper_ratio - 1)
-        C_L_alpha = 2 * np.pi * aspect_ratio / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
-                                                            * (1 + np.tan(semi_chord_sweep) ** 2 / (beta ** 2)) + 4))
+        #this takes into account no sweep for the wing
+        semi_chord_sweep = np.arctan(np.tan(self.sweep - (4 / aspect_ratio) * ((0.5-0.25)* ((1 - self.taper_ratio)/(1 + self.taper_ratio)))))  # [rad]
+        C_L_alpha = (2 * np.pi * aspect_ratio) / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
+                                                            * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
 
         # print(f'{np.deg2rad(C_L_alpha) = }')
         return np.deg2rad(C_L_alpha)
