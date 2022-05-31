@@ -83,10 +83,10 @@ print('snet', calc_Snet(S, croot, taperratio, b, widthfuselage))
 Xcg = np.arange(-1, 1.5, 0.05)
 ShoverSstability = calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xcg, Xacwf, SM)
 
-plt.plot(Xcg, ShoverSstability)
-plt.xlabel("xcg/c")
-plt.ylabel("Sh/S")
-plt.grid()
+# plt.plot(Xcg, ShoverSstability)
+# plt.xlabel("xcg/c")
+# plt.ylabel("Sh/S")
+# plt.grid()
 # plt.show()
 
 '''From here controllability, controllability is sized for landing'''
@@ -100,7 +100,7 @@ def calc_Swf(deltaCLmax, S, deltaClmax, sweephingeline):
     return Swf
 
 CLh = -0.8  # from slide 17 lecture 8
-Wfin = 1879000 * 9.81
+Wfin = 1879000 * 9.81 # from midterm report
 Vlanding = 77  # from boeing 787, increasing is better, 93 from A380
 rho_sealevel = 1.225
 CLaminush = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S)
@@ -163,8 +163,14 @@ def calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, 
     ShoverScontrollability = 1 / CONTROLLABILITYTERM * Xcg + (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
     return ShoverScontrollability
 
-
-plt.plot(Xcg, calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf))
-plt.xlim(0, 1)
-plt.ylim(0, 1)
-plt.show()
+ShoverScontrollability = calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf)
+def get_xplot(Xcg, ShoverSstability, ShoverScontrollability):
+    plt.plot(Xcg, ShoverSstability)
+    plt.plot(Xcg, ShoverScontrollability)
+    plt.xlabel("xcg/c")
+    plt.ylabel("Sh/S")
+    plt.grid()
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    plt.show()
+get_xplot(Xcg, ShoverSstability, ShoverScontrollability)
