@@ -74,8 +74,7 @@ class FuelContainer(Component):
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
                 self.radius_tank + self.thickness) ** 2 * self.length - self.volume_tank)
-        self.area_tank = 4 * np.pi * self.radius_tank ** 2 + \
-                         2 * np.pi * self.radius_tank * self.length
+        self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length
 
         # Insulation mass/thickness sizing
         thickness_insulation = np.arange(0.001, 0.09, 0.000001)
@@ -96,6 +95,7 @@ class FuelContainer(Component):
 
         # Debugging
         # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")
+        self.logger.debug(f"Metal tank thiccness: {self.thickness:.4E} [m]")
         self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness:.4E} [m]")
         self.logger.debug(f"Total hydrogen mass: {self.mass_H2:.4E} [kg]")
         self.logger.debug(f"Total tank mass: {self.own_mass:.4E} [kg]")
