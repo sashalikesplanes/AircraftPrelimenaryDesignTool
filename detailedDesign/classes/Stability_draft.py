@@ -152,7 +152,7 @@ def get_xplot(aircraft):
     plt.xlabel("xcg/c")
     plt.ylabel("Sh/S")
     plt.grid()
-    plt.xlim(0, 1)
+    plt.xlim(-0.5, 1)
     plt.ylim(0, 1)
     plt.title("X-plot")
     plt.show()

@@ -1,11 +1,12 @@
 import logging
-
+from detailedDesign.classes.Stability_draft import get_xplot
 
 logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft):
     print_summary(aircraft)
+    get_xplot(aircraft)
 
 
 def print_summary(aircraft):
