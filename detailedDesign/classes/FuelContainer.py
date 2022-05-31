@@ -31,8 +31,9 @@ class FuelContainer(Component):
 
         self.SF = 1.5
 
-        self.thickness_insulation = None
+        self.thickness_insulation = None 
         self.total_tank_thickness = None
+        self.empty_space_thickness = 0.1 # [m] - the space between the fuselage and the tank, must be more than insulation
 
         self._freeze()
 
@@ -42,6 +43,7 @@ class FuelContainer(Component):
         # Tank thickness sizing
         self.inner_diameter = self.Fuselage.inner_diameter - self.empty_space_thickness * 2
         # self.inner_diameter = 10 #manual change for non-integral tank
+        self.logger.debug(f"{ self.inner_diameter = }")
         self.inner_radius = self.inner_diameter / 2  # for integral tank
         self.radius_tank = self.inner_radius  # change here if non-integral tank
 
@@ -69,13 +71,14 @@ class FuelContainer(Component):
         # If the length is negative we will set it to zero and size the tank radius accordingly
         if self.length < 0:
             self.length = 0
-            self.inner_radius = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
+            self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
 
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
                 self.radius_tank + self.thickness) ** 2 * self.length - self.volume_tank)
-        self.area_tank = 4 * np.pi * self.radius_tank ** 2 + \
-                         2 * np.pi * self.radius_tank * self.length
+        self.logger.debug(f" { self.radius_tank = }, {self.mass_tank = }")
+
+        self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length
 
         # Insulation mass/thickness sizing
         thickness_insulation = np.arange(0.001, 0.09, 0.000001)
@@ -85,28 +88,30 @@ class FuelContainer(Component):
         total_boiloff = boiloff_rate * state.duration
         mass_insulation = self.area_tank * thickness_insulation * self.density_insulation
         mass_total = total_boiloff + self.mass_tank + mass_insulation
-
+        self.logger.debug
         self.own_mass = np.array(mass_total).min()
         self.own_mass = self.own_mass
-
         index = np.argmin(np.array(mass_total))
         self.thickness_insulation = thickness_insulation[index]
         self.total_tank_thickness = self.thickness_insulation + self.thickness
+        self.logger.debug(f"Empty thickness before: {self.empty_space_thickness} m")
         self.empty_space_thickness = self.total_tank_thickness
-
+        self.logger.debug(f"Empty thickness after: {self.empty_space_thickness} m")
+        
         # Debugging
         # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")
+        self.logger.debug(f"Metal tank thiccness: {self.thickness:.4E} [m]")
         self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness:.4E} [m]")
         self.logger.debug(f"Total hydrogen mass: {self.mass_H2:.4E} [kg]")
         self.logger.debug(f"Total tank mass: {self.own_mass:.4E} [kg]")
         self.logger.debug(f"Total tank volume: {self.volume_tank:.4E} [m3]")
 
         # plotting
-        # plt.plot(thickness_insulation, mass_total)
-        # plt.ylabel("Total mass boiloff, tank, insulation [kg]")
-        # plt.xlabel("Insulation thickness [m]")
-        # plt.title("Effect of insulation thickness on total tank weight")
-        # plt.show()
+        #plt.plot(thickness_insulation, mass_total)
+        #plt.ylabel("Total mass boiloff, tank, insulation [kg]")
+        #plt.xlabel("Insulation thickness [m]")
+        #plt.title("Effect of insulation thickness on total tank weight")
+        #plt.show()
 
     def cg_self(self):
         x_cg = 0.5 * self.length + self.inner_radius + self.total_tank_thickness

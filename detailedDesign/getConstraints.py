@@ -30,39 +30,56 @@ def get_constraints(aircraft):
     # therefore we take ot from the yamel and it is something we change in order to make it work
 
     # Start calculating the functions
-    wing_loading_points = np.linspace(2000, 100000, 1000)
+    wing_loading_points = np.linspace(1000, 10000, 1000)
 
     # q using turning speed and associated altitude
-    thrust_loading_constant_turn = dynamic_pressure * \
-        (C_D_min / wing_loading_points + lift_induced_drag_constant *
-         (load_factor / dynamic_pressure) ** 2 * wing_loading_points)
+    def thrust_loading_constant_turn_f(wing_loading):
+        return dynamic_pressure * \
+            (C_D_min / wing_loading + lift_induced_drag_constant *
+             (load_factor / dynamic_pressure) ** 2 * wing_loading)
+    
+    def thrust_loading_climb_rate_f(wing_loading):
+        return required_climb_rate / velocity + dynamic_pressure / \
+            wing_loading * C_D_min + lift_induced_drag_constant / \
+            dynamic_pressure * wing_loading
 
+    def thrust_loading_cruise_f(wing_loading):
+        return dynamic_pressure * C_D_min / wing_loading + \
+            lift_induced_drag_constant / dynamic_pressure * wing_loading
+
+    thrust_loading_constant_turn = thrust_loading_constant_turn_f(wing_loading_points) 
+    thrust_loading_climb_rate = thrust_loading_climb_rate_f(wing_loading_points)
+    thrust_loading_cruise = thrust_loading_cruise_f(wing_loading_points)
     # q using climb airspeed and associated altitude
-    thrust_loading_climb_rate = required_climb_rate / velocity + dynamic_pressure / \
-        wing_loading_points * C_D_min + lift_induced_drag_constant / \
-        dynamic_pressure * wing_loading_points
 
-    thrust_loading_cruise = dynamic_pressure * C_D_min / wing_loading_points + \
-        lift_induced_drag_constant / dynamic_pressure * wing_loading_points
+
+    q_stall = 0.5 * density * aircraft.clean_stall_speed ** 2
+    weight_over_surface_stall = C_L_max * q_stall
+ #   logger.debug(f"{ C_L_max = }")
+
+    WS = weight_over_surface_stall
+    logger.debug(f"{thrust_loading_constant_turn_f(WS) = }")
+    TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS))
 
     # Plot the fuctions
     # fig, ax = plt.subplots()
 
     # ax.plot(wing_loading_points, thrust_loading_cruise,
     #         'r', label='Cruise speed')
-
     # ax.plot(wing_loading_points, thrust_loading_constant_turn,
     #         'b', label='Constant turn')
 
     # ax.plot(wing_loading_points, thrust_loading_climb_rate,
     #         'g', label='Climb rate')
 
+    # ax.vlines(weight_over_surface_stall, 0, 1)
+
     # ax.set_xlabel('W/S')
     # ax.set_ylabel('T/W')
 
     # plt.legend()
 
-#    plt.show()
+    # plt.show()
 
     # Calculate optimum
     # If they do not intersect
@@ -74,53 +91,53 @@ def get_constraints(aircraft):
     # Optimum is the max of those
 
     # calculate intersections
-    thrust_intersections = []
-    weight_intersections = []
-    idx1 = np.argwhere(
-        np.diff(np.sign(thrust_loading_cruise - thrust_loading_climb_rate))).flatten()
-    idx2 = np.argwhere(np.diff(
-        np.sign(thrust_loading_cruise - thrust_loading_constant_turn))).flatten()
-    idx3 = np.argwhere(np.diff(
-        np.sign(thrust_loading_climb_rate - thrust_loading_constant_turn))).flatten()
+    # thrust_intersections = []
+    # weight_intersections = []
+    # idx1 = np.argwhere(
+    #     np.diff(np.sign(thrust_loading_cruise - thrust_loading_climb_rate))).flatten()
+    # idx2 = np.argwhere(np.diff(
+    #     np.sign(thrust_loading_cruise - thrust_loading_constant_turn))).flatten()
+    # idx3 = np.argwhere(np.diff(
+    #     np.sign(thrust_loading_climb_rate - thrust_loading_constant_turn))).flatten()
 
-    thrust_intersections += [thrust_loading_cruise[idx1],
-                             thrust_loading_cruise[idx2], thrust_loading_climb_rate[idx3]]
-    thrust_intersections = list(filter(None, thrust_intersections))
-    weight_intersections += [wing_loading_points[idx1],
-                             wing_loading_points[idx2], wing_loading_points[idx3]]
-    weight_intersections = list(filter(None, weight_intersections))
-    thrust_intersections = [i[0] for i in thrust_intersections]
-    weight_intersections = [i[0] for i in weight_intersections]
+    # thrust_intersections += [thrust_loading_cruise[idx1],
+    #                          thrust_loading_cruise[idx2], thrust_loading_climb_rate[idx3]]
+    # thrust_intersections = list(filter(None, thrust_intersections))
+    # weight_intersections += [wing_loading_points[idx1],
+    #                          wing_loading_points[idx2], wing_loading_points[idx3]]
+    # weight_intersections = list(filter(None, weight_intersections))
+    # thrust_intersections = [i[0] for i in thrust_intersections]
+    # weight_intersections = [i[0] for i in weight_intersections]
 
-    # calculate minimum of each curve
-    thrust_conditions = []
-    weight_conditions = []
-    thrust_loading_cruise = thrust_loading_cruise.tolist()
-    thrust_loading_climb_rate = thrust_loading_climb_rate.tolist()
-    thrust_loading_constant_turn = thrust_loading_constant_turn.tolist()
-    thrust_conditions += [min(thrust_loading_cruise),
-                          min(thrust_loading_climb_rate), min(thrust_loading_constant_turn)]
-    weight_conditions += [wing_loading_points[thrust_loading_cruise.index(min(thrust_loading_cruise))], wing_loading_points[thrust_loading_climb_rate.index(min(thrust_loading_climb_rate))],
-                          wing_loading_points[thrust_loading_constant_turn.index(min(thrust_loading_constant_turn))]]
+    # # calculate minimum of each curve
+    # thrust_conditions = []
+    # weight_conditions = []
+    # thrust_loading_cruise = thrust_loading_cruise.tolist()
+    # thrust_loading_climb_rate = thrust_loading_climb_rate.tolist()
+    # thrust_loading_constant_turn = thrust_loading_constant_turn.tolist()
+    # thrust_conditions += [min(thrust_loading_cruise),
+    #                       min(thrust_loading_climb_rate), min(thrust_loading_constant_turn)]
+    # weight_conditions += [wing_loading_points[thrust_loading_cruise.index(min(thrust_loading_cruise))], wing_loading_points[thrust_loading_climb_rate.index(min(thrust_loading_climb_rate))],
+    #                       wing_loading_points[thrust_loading_constant_turn.index(min(thrust_loading_constant_turn))]]
 
-    # when there are intersections
-    thrust = []
-    weight = []
-    if len(thrust_intersections) > 0:
-        thrust += [thrust_intersections, thrust_conditions]
-        weight += [weight_intersections, weight_conditions]
-        thrust = [item for sublist in thrust for item in sublist]
-        weight = [item for sublist in weight for item in sublist]
+    # # when there are intersections
+    # thrust = []
+    # weight = []
+    # if len(thrust_intersections) > 0:
+    #     thrust += [thrust_intersections, thrust_conditions]
+    #     weight += [weight_intersections, weight_conditions]
+    #     thrust = [item for sublist in thrust for item in sublist]
+    #     weight = [item for sublist in weight for item in sublist]
 
-        TW = max(thrust)
-        optimum_index = thrust.index(TW)
-        WS = weight[optimum_index]
+    #     TW = max(thrust)
+    #     optimum_index = thrust.index(TW)
+    #     WS = weight[optimum_index]
 
-    # when there are no intersections
-    else:
-        TW = max(thrust_conditions)
-        optimum_index = thrust_conditions.index(TW)
-        WS = weight_conditions[optimum_index]
+    # # when there are no intersections
+    # else:
+    #     TW = max(thrust_conditions)
+    #     optimum_index = thrust_conditions.index(TW)
+    #     WS = weight_conditions[optimum_index]
 
     logger.debug(f"{ TW = } { WS = }")
 
@@ -134,7 +151,7 @@ def get_constraints(aircraft):
     # save results into the aircraft
     aircraft.thrust_over_weight = TW
     aircraft.weight_over_surface = WS
-    aircraft.clean_stall_speed = V_stall
+    # aircraft.clean_stall_speed = V_stall
 
     return
 
