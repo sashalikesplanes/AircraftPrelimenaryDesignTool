@@ -9,7 +9,7 @@ from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.FuelCells import FuelCells
 
 
-class TestFuelTank(unittest.TestCase):
+class TestWing(unittest.TestCase):
     def setUp(self):
         config_file = Path('data', 'new_designs', 'config.yaml')
         states = {"test_state_1": State('test_state_1'), "cruise": State("test_state_2")}
@@ -44,29 +44,24 @@ class TestFuelTank(unittest.TestCase):
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
         self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass = 50000  # [kg]
-        self.aircraft.WingGroup.Wing.sweep = 0.0872665  # [rad]
-        self.aircraft.WingGroup.Wing.taper_ratio = 0.6  # [-]
+        self.aircraft.WingGroup.Wing.sweep = 0  # [rad]
+        self.aircraft.WingGroup.Wing.taper_ratio = 0.8  # [-]
         self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
         self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
 
-        # Imperial constants from test params:
-        # l_FS = 492.12598    # [ft]
-        # S_fus = 55308.51562 # [ft2]
-        # W_o = 220462.2622   # [lbs]
-        # l_HT = 270.74245    # [ft]
-        # d_FS = 32.8084      # [ft]
-        # q = 0.0080615       # [psi] for test_state_1
-        # V_p = 277360.9475   # [ft3] for test_state_1
-        # Delta_P = 0         # [psi] for test_state_1
 
     def test_AR(self):
         pass
 
     def test_CL_alpha(self):
-        pass
+        model_CL_alpha = self.aircraft.WingGroup.Wing.determine_C_L_alpha()   # [1/deg]
+        analytical_CL_alpha =  0.0724558   # [1/deg]
+        self.assertAlmostEqual(model_CL_alpha, analytical_CL_alpha, delta = analytical_CL_alpha * testMargin)
 
     def test_oswald(self):
-        pass
+        model_oswald = self.aircraft.WingGroup.Wing.get_oswald()   # [1/deg]
+        analytical_oswald =  0.9007058   # [1/deg]
+        self.assertAlmostEqual(model_oswald, analytical_oswald, delta = analytical_oswald * testMargin)
 
     def test_wing_params(self):
         # span
