@@ -34,7 +34,8 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
-      test_prop: 1
+      cockpit_length: 4  # [m]
+      tail_length: 10  # [m]
       CargoBay:
         test_prop: 1
       Cabin:
