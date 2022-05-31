@@ -8,7 +8,6 @@ def perform_analyses(aircraft):
     print_summary(aircraft)
     get_xplot(aircraft)
 
-
 def print_summary(aircraft):
     logger.debug(
             f"MTOM = {aircraft.mtom:.4E} kg, OEM = {aircraft.oem:.4E} kg, Fuel Mass = {aircraft.fuel_mass:.4E}")
