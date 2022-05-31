@@ -36,7 +36,7 @@ def detail_design(debug=False):
     pre_run.Cabin.size_self()
     pre_run.CargoBay.size_self()
 
-    for iteration in range(1000):
+    for i in range(1000):
         get_constraints(aircraft)
 
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
