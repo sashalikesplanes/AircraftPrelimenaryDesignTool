@@ -29,28 +29,6 @@ def propellor_sizing(Span, V_cuise, Thrust, Diameter_fuselage):
     gearbox_unit_mass_contingency= 1.2
     width_gearbox_contingency= 1.3
 
-    # # Calculations
-    # P_aircraft = T*V                             # power the aircraft needs  [W]
-    # group = np.ceil(P_eng/ (P_motor * eff))      # amount of motors per propellor
-    # n_prop = np.ceil( P_aircraft/P_eng)
-    # n_motor = group * n_prop
-    # #n_prop = np.ceil((P_aircraft/P_eng)/2)*2    # we want an even number of propelors
-    # #n_motor = np.ceil((group * n_prop)/2)*2
-    #
-    # l_min_group_motor = np.ceil(group/2) * d_motor * spacing_motor_contingency # [m] asuming they are connected in series
-    # #width_group_motor = 2 * l_motor * width_gearbox
-    # S_fit = n_prop * D_prop_an22 +2*clearance + (1/3)* D_prop_an22 * (n_prop-2) + D_fus   # ideal span to fit all propellers needed
-    # n_prop_fit = np.floor((S - 2* clearance -D_fus + (2/3)*D_prop_an22)/((4/3)*D_prop_an22))       # amount of propellors needed to fit in the desired span
-    # if S_fit > S :
-    #     print('The propellors dont fit in the Span. The span should be at least', S_fit, 'but it is', S,
-    #           '. The maximun amount of propellors that fit in the span of S=',S,'is n_max_prop=', n_prop_fit)
-    # d_max_prop = (S-D_fus-2*clearance)/((4/3)*n_prop-(2/3))  # from the geometry with spacing of 1/3 of d_prop
-    # m_allmotors = (n_motor * P_motor) / m_specific_motor  #mass of the motors needed to produce the thrust
-    # vol_motor = d_motor * d_motor * l_motor    # [m3] the volume is calculated as if the motor had a box like shape instead of being a cilinder
-    # m_pm = m_allmotors + m_propellor * n_prop  # mass of prop plus group of motors
-    # m_pmg = m_pm * gearbox_mass_contingency    # mass of a propellong unit (group of motors, one prop and gearbox)
-
-
 
     # Calculations
     P_aircraft = T * V  # power the aircraft needs  [W]
