@@ -71,7 +71,7 @@ class Engines(Component):
         width_unit = 2 * (l_motor + l_inverter) * width_gearbox_contingency
         height_unit = d_motor * height_unit_contingency
 
-        S_fit = n_prop * D_prop_an22 + 2 * clearance + (1 / 3) * D_prop_an22 * (
+        S_fit = (n_prop-1) * D_prop_an22 + 2 * clearance + (1 / 3) * D_prop_an22 * (
             n_prop - 2) + D_fus  # ideal span to fit all propellers needed
         n_prop_fit = np.floor((S - 2 * clearance - D_fus + (2 / 3) * D_prop_an22) / (
             (4 / 3) * D_prop_an22))  # amount of propellors needed to fit in the desired span

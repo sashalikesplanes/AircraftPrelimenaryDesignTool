@@ -31,7 +31,7 @@ class Miscellaneous(Component):
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor  # [-]
         n_pax = self.FuselageGroup.Fuselage.Cabin.passengers  # [-]
         pilot_count = 3  # [-]
-        passengers_per_flight_attendent = 50
+        passengers_per_flight_attendant = 50
         W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
 
         # MDN
@@ -61,7 +61,7 @@ class Miscellaneous(Component):
         self.W_paint = 0.006 * mtom
 
         self.W_crew = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger * (
-                    n_pax // passengers_per_flight_attendent + 1 + pilot_count)
+                    n_pax // passengers_per_flight_attendant + 1 + pilot_count)
 
         self.logger.debug(f"Boat mass: {self.W_boat:.4E} [kg]")
         self.logger.debug(f"Flight control system mass: {self.W_flight_control_system:.4E} [kg]")
