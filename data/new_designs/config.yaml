@@ -69,6 +69,7 @@ Aircraft:
       taper_ratio: 0.852 # [-]
       thickness_chord_ratio: 0.12 # [-] from airfoil
       xovercmax: 0.4 # [-] from airfoil
+      C_L_min: -0.61 # Bs number
 
       HLDs:
         test_prop: 1

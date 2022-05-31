@@ -85,7 +85,7 @@ class Wing(Component):
         self.sweep = 0  # M < 0.7
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
-        self.oswald = get_oswald()
+        self.oswald = self.get_oswald()
 
         self.logger.debug(f"Root Chord: {self.root_chord}")
         self.logger.debug(f"Tip Chord: {self.tip_chord}")
@@ -96,7 +96,7 @@ class Wing(Component):
         q = pa_to_psi(0.5 * state.density * state.velocity ** 2)  # [psi]
         S_W = m2_to_ft2(self.wing_area)  # [ft2]
         W_FW = 1  # Fuel in wings. There is no fuel in the wings therefore = 1
-        sweep = np.pi / 180. * self.sweep  # [rads]
+        sweep = np.deg2rad(self.sweep)  # [rads]
         n_z = self.WingGroup.Aircraft.ultimate_load_factor
         W_O = kg_to_lbs(self.WingGroup.Aircraft.mtom)  # [lbs]
 

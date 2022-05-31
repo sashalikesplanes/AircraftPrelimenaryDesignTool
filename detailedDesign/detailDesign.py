@@ -10,6 +10,7 @@ from detailedDesign.classes.State import State
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
 from detailedDesign.log import setup_custom_logger
 from detailedDesign.potatoPlot import make_potato_plot
+from detailedDesign.flightEnvelope import make_flight_envelope
 
 
 def get_ultimate_load_factor():
@@ -21,7 +22,7 @@ def get_ultimate_load_factor():
 
 def detail_design(debug=False):
     logger = setup_custom_logger("logger", debug)
-    states = {"cruise": State('cruise')}
+    states = {"cruise": State('cruise'), "take-off": State('take-off')}
 
     # State in state
     config_file = Path('data', 'new_designs', 'config.yaml')
@@ -64,6 +65,8 @@ def detail_design(debug=False):
 
     make_potato_plot(aircraft)
     perform_analyses(aircraft)
+    make_flight_envelope(aircraft, "cruise")
+    make_flight_envelope(aircraft, "take-off")
 
 
 if __name__ == "__main__":
