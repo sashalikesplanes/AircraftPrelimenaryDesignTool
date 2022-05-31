@@ -36,6 +36,7 @@ class Aircraft(Component):
 
         self._freeze()
 
+<<<<<<< HEAD
     @property
     def fuel_mass(self):
         return self.FuselageGroup.Fuselage.FuelContainer.mass_H2
@@ -44,14 +45,16 @@ class Aircraft(Component):
     def reserve_fuel_mass(self)
         return self.FuselageGroup.Fuselage.FuelContainer.reserve_mass_H2
 
+=======
+>>>>>>> 3ddd737f1d4d2a170d3611577a1ec7697abb545e
     def get_sized(self):
         self.reference_area = self.mtom * const.g / self.weight_over_surface
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
         self.logger.debug(
-                f"{ self.reference_area = :.4E} m2")
+            f"{ self.reference_area = :.4E} m2")
         self.logger.debug(
-                f"{ self.reference_thrust = :.4E} N")
+            f"{ self.reference_thrust = :.4E} N")
         self.logger.debug(f"{ self.mtom = :.4E} kg")
         for component in self.components:
             component.get_sized()
@@ -66,7 +69,7 @@ class Aircraft(Component):
         self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")
 
         new_mtom = self.oem + self.payload_mass + self.fuel_mass
-        # Take a weighted average to prevent ossilitaions
+        # Take a weighted average to prevent oscillations
         # self.mtom = (new_mtom * 0.1 + self.mtom * 0.9) 
         self.mtom = new_mtom
         self.print_component_masses()
@@ -77,3 +80,11 @@ class Aircraft(Component):
         mass_per_pax = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger
 
         return num_of_pax * mass_per_pax
+
+    @property
+    def fuel_mass(self):
+        return self.FuselageGroup.Fuselage.FuelContainer.mass_H2
+
+    @property
+    def oew(self):
+        return self.oem

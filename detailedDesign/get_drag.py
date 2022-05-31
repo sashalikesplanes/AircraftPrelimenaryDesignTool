@@ -20,11 +20,8 @@ def calc_reynolds(rho, V, c, T):
 
 
 def calc_Cf(Re, Xtroverc):
-    if Xtroverc < 0.01:
-        Cf = 0.455/np.log10(Re)**2.58
-    else:
-        X0overc = 36.9 * Xtroverc ** 0.625 / Re ** 0.375
-        Cf = 0.074/Re**0.2*(1-(Xtroverc-X0overc))**0.8
+    X0overc = 36.9 * Xtroverc ** 0.625 / Re ** 0.375
+    Cf = 0.074/Re**0.2*(1-(Xtroverc-X0overc))**0.8
     return Cf
 
 

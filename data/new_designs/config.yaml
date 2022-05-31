@@ -5,6 +5,7 @@ Aircraft:
   clean_stall_speed: 100 # m/spicked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
+  count_pilot: 3
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
