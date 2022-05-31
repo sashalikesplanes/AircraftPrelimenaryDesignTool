@@ -156,6 +156,7 @@ def get_xplot(aircraft):
     plt.ylim(0, 1)
     plt.title("X-plot")
     plt.show()
+    return
 
 
 
