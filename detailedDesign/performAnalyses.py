@@ -22,3 +22,7 @@ def print_summary(aircraft):
     logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
 
     logger.debug(f"Wing Span: {aircraft.WingGroup.Wing.span} m")
+
+    logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
+    logger.debug(f"H Tail Length: {aircraft.FuselageGroup.Tail.VerticalTail.tail_length} m")
+    logger.debug(f"V Tail Length: {aircraft.FuselageGroup.Tail.HorizontalTail.tail_length} m")
