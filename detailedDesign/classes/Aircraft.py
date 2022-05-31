@@ -46,10 +46,10 @@ class Aircraft(Component):
         self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
 
         self.logger.debug(
-                f"[{type(self).__name__}] { self.reference_area = :.4E} m2")
+                f"{ self.reference_area = :.4E} m2")
         self.logger.debug(
-                f"[{type(self).__name__}] { self.reference_thrust = :.4E} N")
-        self.logger.debug(f"[{type(self).__name__}] { self.mtom = :.4E} kg")
+                f"{ self.reference_thrust = :.4E} N")
+        self.logger.debug(f"{ self.mtom = :.4E} kg")
         for component in self.components:
             component.get_sized()
 
