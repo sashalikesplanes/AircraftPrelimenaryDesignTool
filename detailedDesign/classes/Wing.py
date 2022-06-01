@@ -45,7 +45,7 @@ class Wing(Component):
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2    # [-]
 
         C_D_min = self.WingGroup.Aircraft.C_D_min    # [-]
-        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption # [g/kNs]
+        c_t_SI = ((self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 * 1000 )/ range) * V_C * (1000/self.WingGroup.Aircraft.reference_thrust)  # [g/kNs]
         c_t_Imp = c_t_SI * 9.81 / 1e6   # [1/s]
 
         value = (range_ft * c_t_Imp * C_D_min)/(C_LC * np.log(W_initial_cruise/W_end_cruise))
