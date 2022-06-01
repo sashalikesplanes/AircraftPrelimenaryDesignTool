@@ -17,8 +17,8 @@ class FuselageGroup(Component):
         self.Fuselage = Fuselage(self, self.design_config)
         self.Miscellaneous = Miscellaneous(self, self.design_config)
 
-        self.components = [self.Tail, self.Power,
-                           self.Fuselage, self.Miscellaneous]
+        self.components = [self.Power, self.Fuselage,
+                           self.Tail, self.Miscellaneous]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
