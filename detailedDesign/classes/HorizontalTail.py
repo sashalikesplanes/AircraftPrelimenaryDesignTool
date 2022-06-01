@@ -24,6 +24,7 @@ class HorizontalTail(Component):
     def size_self(self):
         self.size_self_geometry()
         self.size_self_mass()
+        self.pos = np.array([self.Tail.FuselageGroup.Fuselage.length - self.mean_geometric_chord, 0., 0.])
 
     def size_self_geometry(self):
         # Sizing dimensions
@@ -69,3 +70,9 @@ class HorizontalTail(Component):
             WingGroup.Wing.sweep)) ** (-0.12)) * ((self.aspect_ratio / (np.cos(self.quarter_chord_sweep) ** 2)) ** 0.043) * (self.taper ** (-0.02))
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
+
+    def cg_self(self):
+        x_cg = 0.4 * self.mean_geometric_chord
+        y_cg = 0
+        z_cg = 0  # might change with changing alpha incidence
+        self.own_cg = np.array([x_cg, y_cg, z_cg])
