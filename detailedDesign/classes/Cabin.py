@@ -22,13 +22,7 @@ class Cabin(Component):
         self.rows_per_floor = None
         self.aisle_count = None
 
-        # self.passengers = my_config["passengers"]
         self.passengers = []
-
-        self.height = None
-        self.width = None
-        self.length = 1  # Initial Value
-        self.diameter = None
 
         self._freeze()
 
@@ -69,13 +63,7 @@ class Cabin(Component):
         self.aisle_count = n_aisles
 
         # Calculate the dimensions of the rectangular cabin
-        self.height = n_floors * self.floor_height
-        self.width = n_sa * \
-            self.seat_width + n_aisles * self.aisle_width
-        self.length = n_rows * self.k_cabin
-        # Find the diameter of the cabin using the width and the height and the smallest circle
-        self.diameter = 2 * ((0.5 * self.width) ** 2 +
-                             (0.5 * self.height) ** 2) ** 0.5
+        # This is now done using properties because cool
 
         # Debug statements
         self.logger.debug(f"height x width x length: ({self.height:.4E} {self.width:.4E} {self.length:.4E}) [m]")
@@ -83,9 +71,46 @@ class Cabin(Component):
         self.logger.debug(f"Cabin volume: {self.height * self.width * self.length:.4E} [m3]")
         self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])
 
+    @property
+    def height(self):
+        return self.floor_count * self.floor_height
+
+    @property
+    def width(self):
+        return self.seats_abreast * self.seat_width + self.aisle_count * self.aisle_width
+
+    @property
+    def length(self):
+        return self.rows_per_floor * self.k_cabin
+
+    @property
+    def diameter(self):
+        # Find the diameter of the cabin using the width and the height and the smallest circle
+        return 2 * ((0.5 * self.width) ** 2 + (0.5 * self.height) ** 2) ** 0.5
+
     def cg_self(self):
         x_cg = self.length * 0.5
         # Assume that the zero point goes through the centre of the cylindrical fuselage
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
+
+    def get_cg(self):
+        """Calculate the cg of this component and all its sub-components"""
+        total_mass_factor = self.own_mass
+        cg_pos = self.own_cg * self.own_mass
+
+        for passenger in self.passengers:
+            cg_pos += passenger.pos * passenger.mass
+            total_mass_factor += passenger.mass
+
+        for component in self.components:
+            cg_pos += (component.get_cg() + component.pos) * component.get_mass()
+            total_mass_factor += component.get_mass()
+
+        if total_mass_factor != 0:
+            cg_pos = cg_pos / total_mass_factor
+        else:
+            cg_pos = self.own_cg
+
+        return cg_pos
