@@ -32,3 +32,6 @@ def print_summary(aircraft):
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
     logger.debug(f"H Tail Length: {aircraft.FuselageGroup.Tail.VerticalTail.tail_length} m")
     logger.debug(f"V Tail Length: {aircraft.FuselageGroup.Tail.HorizontalTail.tail_length} m")
+
+    cabin = aircraft.FuselageGroup.Fuselage.Cabin
+    logger.debug(f"{ cabin.length = } {cabin.width = } {cabin.height = }")
