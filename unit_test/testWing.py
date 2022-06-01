@@ -20,8 +20,9 @@ class TestWing(unittest.TestCase):
 
         # Aircraft
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
-        self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
         self.aircraft.reference_area = 50  # [m2]
+        self.aircraft.C_D_min = 0.07
+        self.aircraft.reference_thrust = 1e6 # [N]
 
         # Wing
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
@@ -33,9 +34,12 @@ class TestWing(unittest.TestCase):
         self.aircraft.WingGroup.Wing.C_L_0_wing = 0.4  # [-]
         self.aircraft.WingGroup.Wing.C_L_alpha = 0.10966 # [1/deg]
 
+        #Fuselage
+        self.aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 = 10000 # [kg]
+
     def test_AR(self):
         model_ARe = self.aircraft.WingGroup.Wing.size_AR()[0]  # [-]
-        analytical_ARe = 1  # [-]
+        analytical_ARe = 11.43670084  # [-]
         self.assertAlmostEqual(model_ARe, analytical_ARe, delta = analytical_ARe * testMargin)
 
     def test_CL_alpha(self):

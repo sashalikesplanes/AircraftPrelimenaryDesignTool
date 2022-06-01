@@ -28,6 +28,7 @@ class VerticalTail(Component):
     def size_self(self):
         self.size_self_geometry()
         self.size_self_mass()
+        self.pos = np.array([- self.mean_geometric_chord, 0., 0.])
 
     def size_self_geometry(self):
         # Sizing dimensions
@@ -67,3 +68,9 @@ class VerticalTail(Component):
         mass_lbs = 0.073 * (1 + 0.2 * F_tail) * ((n_z * W_O) ** 0.376) * (q ** 0.122) * (m2_to_ft2(self.surface_area) ** 0.873) * (((100 * thickness_to_chord) / np.cos(self.quarter_chord_sweep)) ** (-0.49)) * ((self.aspect_ratio / (np.cos(self.quarter_chord_sweep) ** 2)) ** 0.357) * (self.taper ** 0.039)
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
+
+    def cg_self(self):
+        x_cg = 0.4 * self.mean_geometric_chord
+        y_cg = 0
+        z_cg = -self.span/3
+        self.own_cg = np.array([x_cg, y_cg, z_cg])
