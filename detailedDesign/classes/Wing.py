@@ -1,4 +1,3 @@
-# To Check
 import numpy as np
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
@@ -51,17 +50,22 @@ class Wing(Component):
         value = (range_ft * c_t_Imp * C_D_min)/(C_LC * np.log(W_initial_cruise/W_end_cruise))
 
         if m_to_ft(V_C) > value:
-            optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
+            optimal_ARe = ((C_LC **2) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min))
-            #x = Symbol('x')
-            #ARs = solve( (0.0801* x )**1.68 - 1.14 * x + optimal_ARe, x , dict = True, warn = True)
-            #print(f'The ideal aspect ratios for the range of {range} m are {ARs}.')
-            return optimal_ARe#, #ARs
+            if optimal_ARe < 10.685:
+                x = Symbol('x')
+                ARs = solve( (0.0801* x )**1.68 - 1.14 * x + optimal_ARe, x , dict = True, warn = True)
+                print(f'The ideal aspect ratios for the range of {range} m are {ARs}.')
+                return optimal_ARe, ARs
+
+            else:
+                print(f'Not possible to find the ideal aspect ratio for the required range')
+                return optimal_ARe, 0
 
         else:
             print(f'Not possible to find the ideal aspect ratio for the required range')
-            return 'not available', 'not available'
+            return 0, 0
 
 
     def determine_C_L_alpha(self):

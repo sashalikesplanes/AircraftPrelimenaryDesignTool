@@ -39,7 +39,7 @@ class TestWing(unittest.TestCase):
 
     def test_AR(self):
         model_ARe = self.aircraft.WingGroup.Wing.size_AR()[0]  # [-]
-        analytical_ARe = 11.43670084  # [-]
+        analytical_ARe = 13.70401976  # [-]
         self.assertAlmostEqual(model_ARe, analytical_ARe, delta = analytical_ARe * testMargin)
 
     def test_CL_alpha(self):
