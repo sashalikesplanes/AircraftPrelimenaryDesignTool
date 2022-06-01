@@ -6,7 +6,7 @@ from detailedDesign.classes.FuelContainer import FuelContainer
 from detailedDesign.classes.CargoBay import CargoBay
 from misc.ISA import getPressure
 from misc.unitConversions import *
-
+# from detailedDesign.classes.RemovableFuelContainer import FuelContainer
 
 class Fuselage(Component):
     def __init__(self, FuselageGroup, design_config):
