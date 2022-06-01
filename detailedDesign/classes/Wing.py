@@ -38,7 +38,7 @@ class Wing(Component):
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
             * V_C * V_C   # [Pa]
         W_initial_cruise = self.WingGroup.Aircraft.mtom * 9.81   # [N]
-        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mas_H2 * 9.81   # [N]
+        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 * 9.81   # [N]
         C_L_initial_cruise = W_initial_cruise / \
             (dynamic_pressure * self.wing_area)    # [-]
         C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)    # [-]
