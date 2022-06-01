@@ -63,11 +63,11 @@ def detail_design(debug=False):
     plt.title("MTOM over iterations")
     plt.show()
 
-    make_potato_plot(aircraft)
+    # make_potato_plot(aircraft)
     perform_analyses(aircraft)
-    make_flight_envelope(aircraft, "cruise")
-    make_flight_envelope(aircraft, "take-off")
-    aircraft.WingGroup.Wing.size_AR(aircraft)
+    # make_flight_envelope(aircraft, "cruise")
+    # make_flight_envelope(aircraft, "take-off")
+    # aircraft.WingGroup.Wing.size_AR(aircraft)
 
 
 if __name__ == "__main__":

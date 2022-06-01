@@ -92,8 +92,10 @@ class FuelContainer(Component):
 
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
-                self.radius_tank + self.thickness) ** 2 * self.length_tank - self.volume_tank)
-        self.logger.debug(f" { self.radius_tank = }, {self.mass_tank = }")
+                self.radius_tank + self.thickness) ** 2 * (self.length_tank - 2 * self.radius_tank) - self.volume_tank) * self.n_tanks
+        self.logger.debug(f" { self.length_tank = }, {self.mass_tank = }")
+        
+        self.logger.debug(f"{self.volume_tank = }")
 
         self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length_tank
 

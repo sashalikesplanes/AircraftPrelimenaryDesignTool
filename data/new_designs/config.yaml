@@ -1,6 +1,6 @@
 Aircraft:
   reserve_duration: 0 # seconds, duration of reserve flight for reserve fuel
-  oem_contingency: 1.1 # multiplier of OEM
+  oem_contingency: 1. # multiplier of OEM
   cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/spicked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
@@ -45,10 +45,10 @@ Aircraft:
       CargoBay:
         test_prop: 1
       Cabin:
-        passengers: 1000 # [-]
+        passengers: 2000 # [-]
         mass_per_passenger: 120 # [kg]
-        max_seats_abreast: 18 # [-]
-        max_rows_per_floor: 50 # [-]
+        max_seats_abreast: 10 # [-]
+        max_rows_per_floor: 100 # [-]
         seat_width: 0.6 # [m]
         aisle_width: 0.7 # [m]
         floor_height: 2.5 # [m]
