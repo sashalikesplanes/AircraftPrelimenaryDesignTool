@@ -40,13 +40,6 @@ class Cabin(Component):
         # if n_sa > self.max_seats_abreast:
         #    n_sa = self.max_seats_abreast
 
-        # Get the amount of aisles while preventing more than 4 seats needing to be placed
-        # next to one another.
-        # if n_sa <= 6:
-        #     n_aisles = 1
-        # else:
-        #     n_aisles = np.ceil(n_sa - 6) / 4 + 1
-
         # Calculate the amount of rows for the case where there is only one floor
         # n_rows = np.ceil(n_pax / n_sa)
 
