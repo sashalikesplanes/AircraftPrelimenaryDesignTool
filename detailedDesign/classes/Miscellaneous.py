@@ -111,6 +111,8 @@ class Miscellaneous(Component):
         # in the centre of the cabin
         pos_w_crew = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
 
+        mass = self.own_mass
+
         cg_pos = pos_w_boat * self.W_boat
         cg_pos += pos_w_flight_controls * self.W_flight_control_system
         cg_pos += pos_w_hydraulics * self.W_hydraulics
@@ -122,5 +124,5 @@ class Miscellaneous(Component):
         cg_pos += pos_w_oxy * self.W_oxy
         cg_pos += pos_w_paint * self.W_paint
         cg_pos += pos_w_crew * self.W_crew
-        return cg_pos
+        return cg_pos / mass
 

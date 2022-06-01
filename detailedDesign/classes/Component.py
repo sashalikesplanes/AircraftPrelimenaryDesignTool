@@ -42,6 +42,19 @@ class Component:
 
         return cg_pos
 
+    def plot_cgs(self):
+        lst = []
+        for component in self.components:
+            new_lst = component.plot_cgs()
+            for i in range(len(new_lst)):
+                # print(new_lst[i][0], component.pos)
+                new_lst[i][0] = component.pos + new_lst[i][0]
+                # print(new_lst[i])
+            lst += new_lst
+
+        lst.append([self.own_cg, f"{str(self)}"])
+        return lst
+
     def size_self(self):
         self.logger.warning(f"{self} is not being sized")
 
