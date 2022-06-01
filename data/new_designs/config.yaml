@@ -40,6 +40,8 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
+      inner_width: 8  # [m]
+      inner_height: 10  # [m]
       cockpit_length: 4  # [m]
       tail_length: 10  # [m]
       CargoBay:
