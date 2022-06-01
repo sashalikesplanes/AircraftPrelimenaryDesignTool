@@ -20,7 +20,7 @@ class Tail(Component):
         self._freeze()  # Last line
 
     def size_self(self):
-        self.pos = np.array([self.FuselageGroup.Fuselage.length, 0., 0.])
+        self.pos = np.array([self.FuselageGroup.Fuselage.length, 0., -self.FuselageGroup.Fuselage.outer_diameter/2])
 
     def get_sized(self):
         for component in self.components:
