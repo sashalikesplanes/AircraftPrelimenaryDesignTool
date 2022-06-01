@@ -54,10 +54,10 @@ class Wing(Component):
             optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min))
-            x = Symbol('x')
-            ARs = solve( (0.0801* x )**1.68 - 1.14 * x + optimal_ARe, x , dict = True)
-            print(f'The ideal aspect ratios for the range of {range} m are {ARs}.')
-            return optimal_ARe, ARs
+            #x = Symbol('x')
+            #ARs = solve( (0.0801* x )**1.68 - 1.14 * x + optimal_ARe, x , dict = True, warn = True)
+            #print(f'The ideal aspect ratios for the range of {range} m are {ARs}.')
+            return optimal_ARe#, #ARs
 
         else:
             print(f'Not possible to find the ideal aspect ratio for the required range')
