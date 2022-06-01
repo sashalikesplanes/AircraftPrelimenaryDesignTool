@@ -126,5 +126,7 @@ class Miscellaneous(Component):
         cg_pos += pos_w_oxy * self.W_oxy
         cg_pos += pos_w_paint * self.W_paint
         cg_pos += pos_w_crew * self.W_crew
-        return cg_pos / mass
+
+        self.own_cg = cg_pos / mass
+        return self.own_cg
 
