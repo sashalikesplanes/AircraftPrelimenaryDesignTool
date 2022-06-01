@@ -114,3 +114,11 @@ class Cabin(Component):
             cg_pos = self.own_cg
 
         return cg_pos
+
+    def get_mass(self):
+        mass = 0
+
+        for passenger in self.passengers:
+            mass += passenger.mass
+
+        return mass

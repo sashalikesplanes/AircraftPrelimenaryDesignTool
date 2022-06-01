@@ -69,10 +69,10 @@ def detail_design(debug=False):
     print(f"Aircraft CG: {aircraft.get_cg()}")
 
     make_potato_plot(aircraft)
-    perform_analyses(aircraft)
-    make_flight_envelope(aircraft, "cruise")
-    make_flight_envelope(aircraft, "take-off")
-    aircraft.WingGroup.Wing.size_AR()
+    # perform_analyses(aircraft)
+    # make_flight_envelope(aircraft, "cruise")
+    # make_flight_envelope(aircraft, "take-off")
+    # aircraft.WingGroup.Wing.size_AR()
 
 
 if __name__ == "__main__":

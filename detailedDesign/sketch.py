@@ -8,7 +8,7 @@ def sketch_aircraft(aircraft):
     for thing in things:
         plt.scatter(thing[0][0], thing[0][2])
         plt.annotate(thing[1], (thing[0][0], thing[0][2]))
-        print(thing[1], (thing[0][0], thing[0][2]))
+        # print(thing[1], (thing[0][0], thing[0][2]))
     plt.title("CG positions relative to nose")
     plt.xlabel("Longitudanal postion [m]")
     plt.ylabel("Height position [m]")
