@@ -24,7 +24,7 @@ class HorizontalTail(Component):
     def size_self(self):
         self.size_self_geometry()
         self.size_self_mass()
-        self.pos = np.array([self.Tail.FuselageGroup.Fuselage.length - self.mean_geometric_chord, 0., 0.])
+        self.pos = np.array([- self.mean_geometric_chord, 0., 0.])
 
     def size_self_geometry(self):
         # Sizing dimensions
