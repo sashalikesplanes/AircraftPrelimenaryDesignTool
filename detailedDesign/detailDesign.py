@@ -16,7 +16,7 @@ from detailedDesign.flightEnvelope import make_flight_envelope
 def get_ultimate_load_factor():
     # N_max_des = None # from maneuver/gust diagram
     # N_ult = 1.5*N_max_des # CS25 reg (sam's summaries)
-    GUESS_AT_LOAD_FACTOR = 3
+    GUESS_AT_LOAD_FACTOR = 3.75 
     return GUESS_AT_LOAD_FACTOR
 
 

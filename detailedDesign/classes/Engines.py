@@ -29,7 +29,7 @@ class Engines(Component):
     def size_self(self):
         S = self.WingGroup.Wing.span
         V = self.WingGroup.Aircraft.states['cruise'].velocity
-        range = self.WingGroup.Aircraft.states['cruise'].range
+        range_ = self.WingGroup.Aircraft.states['cruise'].range
         T = self.WingGroup.Aircraft.reference_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
 
@@ -59,7 +59,7 @@ class Engines(Component):
 
         # Calculations
         P_aircraft = T * V  # power the aircraft needs  [W]
-        self.thrust_specific_fuel_consumption = (self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mass_H2 / range) * V * (1000/T)  # [g/kNs]
+        self.thrust_specific_fuel_consumption = (self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 / range_) * V * (1000/T)  # [g/kNs]
         # amount of motors per propellor
         group = np.ceil(P_eng / (P_motor * eff_gearbox))
         n_prop = np.ceil(P_aircraft / P_eng)
