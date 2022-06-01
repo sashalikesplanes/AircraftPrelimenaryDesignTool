@@ -31,7 +31,7 @@ class Miscellaneous(Component):
         l_FS = m_to_ft(self.FuselageGroup.Fuselage.length)  # [ft]
         b = m_to_ft(self.FuselageGroup.Aircraft.WingGroup.Wing.span)  # [ft]
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor  # [-]
-        n_pax = self.FuselageGroup.Fuselage.Cabin.passengers  # [-]
+        n_pax = self.FuselageGroup.Fuselage.Cabin.passenger_count  # [-]
         pilot_count = 3  # [-]
         passengers_per_flight_attendant = 50
         W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]

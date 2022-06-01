@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def get_MTOM_from_historical_relations(aircraft, plot=False):
-    designPAX = aircraft.FuselageGroup.Fuselage.Cabin.passengers
+    designPAX = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
 
     # second 400 pax is iffy
     aircraftPaxMTOW = np.array(

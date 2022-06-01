@@ -73,7 +73,7 @@ class Aircraft(Component):
 
     def get_payload_mass(self):
         # Right now only count passengers. Their mass includes their luggage
-        num_of_pax = self.FuselageGroup.Fuselage.Cabin.passengers
+        num_of_pax = self.FuselageGroup.Fuselage.Cabin.passenger_count
         mass_per_pax = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger
 
         return num_of_pax * mass_per_pax

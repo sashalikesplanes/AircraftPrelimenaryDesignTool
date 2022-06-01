@@ -23,6 +23,7 @@ class Cabin(Component):
         self.aisle_count = None
 
         # self.passengers = my_config["passengers"]
+        self.passengers = []
 
         self.height = None
         self.width = None
@@ -36,7 +37,7 @@ class Cabin(Component):
         # TODO: improve model to work better with circular fuselages
         # Do stuff
         n_floors = 1
-        n_pax = self.passengers
+        n_pax = self.passenger_count
         # ADSEE I formula for seats abreast
         n_sa = np.ceil(0.45 * n_pax ** 0.5)
 
