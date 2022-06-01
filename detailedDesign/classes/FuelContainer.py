@@ -123,3 +123,7 @@ class FuelContainer(Component):
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
+
+    @property
+    def total_length(self):
+        return self.length + 2 * self.inner_radius + self.total_tank_thickness * 2

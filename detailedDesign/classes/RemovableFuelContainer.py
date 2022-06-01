@@ -36,7 +36,7 @@ class FuelContainer(Component):
         self.thickness_insulation = None
         self.total_tank_thickness = None
         self.length_tank = None
-        self.empty_space_thickness = 0.1 # [m] - the space between the fuselage and the tank, must be more than insulation
+        self.empty_space_thickness = 0.1  # [m] - the space between the fuselage and the tank, must be more than insulation
 
         self.n_tanks = None
 
@@ -52,9 +52,8 @@ class FuelContainer(Component):
         # self.inner_radius = self.inner_diameter / 2  # for integral tank
         #
 
-        self.radius_tank = 2.5/2  # change here if non-integral tank
+        self.radius_tank = 2.5 / 2  # change here if non-integral tank
         self.length_tank = 12.2  # change here if non-integral tank
-
 
         thickness_fatigue = self.tank_pressure * \
                             self.radius_tank * self.SF / self.fatiguestrength
@@ -70,18 +69,19 @@ class FuelContainer(Component):
                 32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
         mass_H2_average = averagepower * (state.duration / 3600 - duration_peak) / (
                 32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        self.reserve_mass_H2 = averagepower * self.Fuselage.FuselageGroup.Aircraft.reserve_duration / (32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
+        self.reserve_mass_H2 = averagepower * self.Fuselage.FuselageGroup.Aircraft.reserve_duration / (
+                    32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
 
         self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2
 
-
         # Tank sizing
-        self.volume_tank = 4/3*np.pi*self.radius_tank**3 + np.pi*self.radius_tank**2*(self.length_tank-2*self.radius_tank)
+        self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * (
+                    self.length_tank - 2 * self.radius_tank)
         self.total_volume = self.mass_H2 * (1 + self.Vi) / self.density_H2
 
         self.n_tanks = self.total_volume / self.volume_tank
 
-        self.length = self.n_tanks/12 *self.length_tank
+        self.length = self.n_tanks / 12 * self.length_tank
         # we constrained the radius as being an integral tank,\
         # self.length = (self.volume_tank - 4 * np.pi * self.inner_radius ** 3 / 3) / (np.pi * self.inner_radius ** 2)
 
@@ -116,9 +116,6 @@ class FuelContainer(Component):
         self.logger.debug(f"Empty thickness before: {self.empty_space_thickness} m")
         self.empty_space_thickness = self.total_tank_thickness
         self.logger.debug(f"Empty thickness after: {self.empty_space_thickness} m")
-
-
-
 
         # Debugging
         # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")

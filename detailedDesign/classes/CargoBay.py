@@ -1,3 +1,5 @@
+import numpy as np
+
 from detailedDesign.classes.Component import Component
 
 
@@ -33,3 +35,5 @@ class CargoBay(Component):
             # print(h, w, S)
             self.height = h
             self.width = w
+
+        self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])

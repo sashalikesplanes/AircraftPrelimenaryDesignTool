@@ -1,4 +1,5 @@
-# To check
+import numpy as np
+
 from detailedDesign.classes.Component import Component
 
 
@@ -39,4 +40,5 @@ class FuelCells(Component):
         # print("number of plates:",self.numberplates)
         # print("power produced per plate", self.power_produced)
 
-
+    def cg_self(self):
+        self.own_cg = np.array([self.Power.FuselageGroup.Fuselage.FuelContainer.total_length / 2, 0., 0.])

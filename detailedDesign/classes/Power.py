@@ -1,3 +1,5 @@
+import numpy as np
+
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuelCells import FuelCells
 
@@ -40,3 +42,5 @@ class Power(Component):
 
         self.own_power_average = P_required_avg
         self.own_power_peak = P_required_peak
+
+        self.pos = np.array([self.FuselageGroup.Fuselage.cockpit_length + self.FuselageGroup.Fuselage.Cabin.length, 0., 0.])

@@ -51,14 +51,11 @@ class Wing(Component):
         c_t_Imp = c_t_SI * 9.81 / 1e6   # [1/s]
 
         value = (range_ft * c_t_Imp * C_D_min)/(C_LC * np.log(W_initial_cruise/W_end_cruise))
-        print(f'{value = }')
-        print(f'{m_to_ft(V_C) = }')
 
         if m_to_ft(V_C) > value:
             self.optimal_ARe = ((C_LC **2) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min))
-            print(f'{self.optimal_ARe = }')
             if self.optimal_ARe < 10.685:
                 ARs = fsolve(self.solve_AR, self.optimal_ARe)
                 print(f'The ideal aspect ratios for the range of {range_} m are {ARs}.')
