@@ -125,7 +125,7 @@ class Wing(Component):
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
-        self.pos = np.array([self.WingGroup.Aircraft.x_lemac, 0., -self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter/2])
+        self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
