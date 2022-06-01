@@ -1,5 +1,4 @@
 import numpy as np
-
 from detailedDesign.classes.Component import Component
 
 
@@ -51,7 +50,7 @@ class Cabin(Component):
         # n_rows = np.ceil(n_rows / n_floors)
 
         # Save seating arrangement into the object
-        n_rows = np.ciel(n_pax / (self.floor_count * self.seats_abreast))
+        n_rows = np.ceil(n_pax / (self.floor_count * self.seats_abreast))
         self.rows_per_floor = n_rows
 
         # Calculate the dimensions of the rectangular cabin
