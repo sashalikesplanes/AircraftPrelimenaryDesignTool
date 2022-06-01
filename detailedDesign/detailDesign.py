@@ -39,7 +39,6 @@ def detail_design(debug=False):
 
     for i in range(1000):
         get_constraints(aircraft)
-
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
@@ -49,7 +48,6 @@ def detail_design(debug=False):
         if np.isnan(aircraft.mtom):
             logger.warn("DIVERGED :(")
             break
-
         # Check convergence
         if abs(aircraft.mtom - previous_mtom) < 0.01:
             logger.warn("CONVERGED :)")
@@ -57,17 +55,35 @@ def detail_design(debug=False):
             break
         previous_mtom = aircraft.mtom
 
-    plt.plot(range(len(lst)), lst, "o-")
-    plt.xlabel("Iterations [-]")
-    plt.ylabel("Maximum take-off mass [kg]")
-    plt.title("MTOM over iterations")
-    plt.show()
+    aircraft.get_cged()
 
-    make_potato_plot(aircraft)
-    perform_analyses(aircraft)
-    make_flight_envelope(aircraft, "cruise")
-    make_flight_envelope(aircraft, "take-off")
-    aircraft.WingGroup.Wing.size_AR(aircraft)
+    # plt.plot(range(len(lst)), lst, "o-")
+    # plt.xlabel("Iterations [-]")
+    # plt.ylabel("Maximum take-off mass [kg]")
+    # plt.title("MTOM over iterations")
+    # plt.show()
+
+    # print("Plotting things")
+    # plt.clf()
+    # things = aircraft.plot_cgs()
+    # print(things)
+    # for thing in things:
+    #     plt.scatter(thing[0][0], thing[0][2])
+    #     plt.annotate(thing[1], (thing[0][0], thing[0][2]))
+    # plt.title("CG positions relative to nose")
+    # plt.xlabel("Longitudanal postion [m]")
+    # plt.ylabel("Height position [m]")
+    # plt.gca().invert_yaxis()
+    # plt.show()
+    print(f"Aircraft CG: {aircraft.get_cg()}")
+    # print("Plotted things")
+
+    # make_potato_plot(aircraft)
+    # perform_analyses(aircraft)
+
+    # make_flight_envelope(aircraft, "cruise")
+    # make_flight_envelope(aircraft, "take-off")
+    # aircraft.WingGroup.Wing.size_AR(aircraft)
 
 
 if __name__ == "__main__":
