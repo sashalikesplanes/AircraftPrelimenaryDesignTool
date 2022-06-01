@@ -62,7 +62,7 @@ class Aircraft(Component):
 
         total_C_D_min, CDi, CD, total_drag = get_drag(self)
         self.C_D_min = total_C_D_min
-        self.cruise_drag = total_drag * self.cruise_drag_contingency
+        self.cruise_drag = total_drag
         self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")
 
         new_mtom = self.oem + self.payload_mass + self.fuel_mass
@@ -73,7 +73,7 @@ class Aircraft(Component):
 
     def get_payload_mass(self):
         # Right now only count passengers. Their mass includes their luggage
-        num_of_pax = self.FuselageGroup.Fuselage.Cabin.passengers
+        num_of_pax = self.FuselageGroup.Fuselage.Cabin.passenger_count
         mass_per_pax = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger
 
         return num_of_pax * mass_per_pax

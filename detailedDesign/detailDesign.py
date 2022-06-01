@@ -11,12 +11,13 @@ from detailedDesign.historicalRelations import get_MTOM_from_historical_relation
 from detailedDesign.log import setup_custom_logger
 from detailedDesign.potatoPlot import make_potato_plot
 from detailedDesign.flightEnvelope import make_flight_envelope
+from detailedDesign.sketch import sketch_aircraft
 
 
 def get_ultimate_load_factor():
     # N_max_des = None # from maneuver/gust diagram
     # N_ult = 1.5*N_max_des # CS25 reg (sam's summaries)
-    GUESS_AT_LOAD_FACTOR = 3
+    GUESS_AT_LOAD_FACTOR = 3.75 
     return GUESS_AT_LOAD_FACTOR
 
 
@@ -39,7 +40,6 @@ def detail_design(debug=False):
 
     for i in range(1000):
         get_constraints(aircraft)
-
         aircraft.ultimate_load_factor = get_ultimate_load_factor()
 
         aircraft.get_sized()
@@ -49,7 +49,6 @@ def detail_design(debug=False):
         if np.isnan(aircraft.mtom):
             logger.warn("DIVERGED :(")
             break
-
         # Check convergence
         if abs(aircraft.mtom - previous_mtom) < 0.01:
             logger.warn("CONVERGED :)")
@@ -57,11 +56,17 @@ def detail_design(debug=False):
             break
         previous_mtom = aircraft.mtom
 
+    aircraft.get_cged()
+
+    plt.figure(1)
     plt.plot(range(len(lst)), lst, "o-")
     plt.xlabel("Iterations [-]")
     plt.ylabel("Maximum take-off mass [kg]")
     plt.title("MTOM over iterations")
-    plt.show()
+
+    sketch_aircraft(aircraft)
+
+    print(f"Aircraft CG: {aircraft.get_cg()}")
 
     make_potato_plot(aircraft)
     perform_analyses(aircraft)

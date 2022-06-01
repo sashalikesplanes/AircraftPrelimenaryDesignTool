@@ -28,10 +28,10 @@ class Engines(Component):
     def size_self(self):
         S = self.WingGroup.Wing.span
         V = self.WingGroup.Aircraft.states['cruise'].velocity
-        range = self.WingGroup.Aircraft.states['cruise'].range
+        range_ = self.WingGroup.Aircraft.states['cruise'].range
         T = self.WingGroup.Aircraft.reference_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
-
+        self.logger.debug(f"{ range_ = }, { V = }")
         # Ref aircraft An-22 data
         P_eng = self.P_eng_an22  # [W] Power of one engine of the An-22
         D_prop_an22 = self.D_prop_an22  # [m] diameter of propeller of An-22
@@ -104,3 +104,10 @@ class Engines(Component):
         self.own_width_unit = width_unit
         self.own_height_unit = height_unit
         self.own_amount_motor = n_motor
+        self.pos = np.array([0., 0., 0.])
+
+    def cg_self(self):
+        x_cg = 0.5 * self.WingGroup.Wing.mean_geometric_chord #TODO now they are put in the middle of the wing
+        y_cg = 0
+        z_cg = 0
+        self.own_cg = np.array([x_cg, y_cg, z_cg])

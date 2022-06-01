@@ -1,7 +1,7 @@
 Aircraft:
   reserve_duration: 0 # seconds, duration of reserve flight for reserve fuel
   oem_contingency: 1.1 # multiplier of OEM
-  cruise_drag_contingency: 1.25 # multiplier of cruise drag
+  cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/spicked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
@@ -45,7 +45,7 @@ Aircraft:
       CargoBay:
         test_prop: 1
       Cabin:
-        passengers: 1000 # [-]
+        passenger_count: 1000 # [-]
         mass_per_passenger: 120 # [kg]
         max_seats_abreast: 18 # [-]
         max_rows_per_floor: 50 # [-]

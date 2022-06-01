@@ -31,7 +31,7 @@ class Miscellaneous(Component):
         l_FS = m_to_ft(self.FuselageGroup.Fuselage.length)  # [ft]
         b = m_to_ft(self.FuselageGroup.Aircraft.WingGroup.Wing.span)  # [ft]
         n_z = self.FuselageGroup.Aircraft.ultimate_load_factor  # [-]
-        n_pax = self.FuselageGroup.Fuselage.Cabin.passengers  # [-]
+        n_pax = self.FuselageGroup.Fuselage.Cabin.passenger_count  # [-]
         pilot_count = 3  # [-]
         passengers_per_flight_attendant = 50
         W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
@@ -84,6 +84,7 @@ class Miscellaneous(Component):
     def cg_self(self):
         # Position of the centre of the fuselage
         pos_centre = self.FuselageGroup.Fuselage.own_cg
+        pos_cabin = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
 
         # TODO: check things with "???" above them
         # Makes sense to be on the same x as the centre
@@ -91,7 +92,8 @@ class Miscellaneous(Component):
         # further down than centre of fuselage structure
         pos_w_boat[2] = self.FuselageGroup.Fuselage.outer_diameter / 3
         # in the cockpit
-        pos_w_flight_controls = np.array([0.5 * self.FuselageGroup.Fuselage.cockpit_length, 0., -0.25 * self.FuselageGroup.Fuselage.outer_diameter])
+        pos_w_flight_controls = pos_centre
+        # pos_w_flight_controls = np.array([0.5 * self.FuselageGroup.Fuselage.cockpit_length, 0., -0.25 * self.FuselageGroup.Fuselage.outer_diameter])
         # ???
         pos_w_hydraulics = pos_centre
         # ???
@@ -99,9 +101,9 @@ class Miscellaneous(Component):
         # Makes sense to put in centre
         pos_w_electrical = pos_centre
         # in the middle of cabin
-        pos_w_ac = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
+        pos_w_ac = pos_cabin
         # in the middle of cabin
-        pos_w_furnishing = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
+        pos_w_furnishing = pos_cabin
         # put it in the back of the tail
         pos_w_apu = np.array([self.FuselageGroup.Fuselage.length * 0.9, 0., 0.])
         # ???
@@ -109,7 +111,7 @@ class Miscellaneous(Component):
         # same cg as fuselage structure
         pos_w_paint = pos_centre
         # in the centre of the cabin
-        pos_w_crew = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
+        pos_w_crew = pos_cabin
 
         mass = self.own_mass
 
@@ -124,5 +126,7 @@ class Miscellaneous(Component):
         cg_pos += pos_w_oxy * self.W_oxy
         cg_pos += pos_w_paint * self.W_paint
         cg_pos += pos_w_crew * self.W_crew
-        return cg_pos / mass
+
+        self.own_cg = cg_pos / mass
+        return self.own_cg
 
