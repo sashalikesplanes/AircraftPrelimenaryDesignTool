@@ -107,10 +107,10 @@ class FuelContainer(Component):
         # plt.xlabel("Insulation thickness [m]")
         # plt.title("Effect of insulation thickness on total tank weight")
         # plt.show()
+        self.pos = np.array([self.Fuselage.cockpit_length + self.Fuselage.Cabin.length, 0., 0.])
 
     def cg_self(self):
         x_cg = 0.5 * self.length + self.inner_radius + self.total_tank_thickness
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
-        print(self.length)
