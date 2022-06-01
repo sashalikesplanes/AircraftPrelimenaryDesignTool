@@ -74,5 +74,5 @@ class HorizontalTail(Component):
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0
-        z_cg = 0  # might change with changing alpha incidence
+        z_cg = 0  # Might change with changing alpha incidence
         self.own_cg = np.array([x_cg, y_cg, z_cg])
