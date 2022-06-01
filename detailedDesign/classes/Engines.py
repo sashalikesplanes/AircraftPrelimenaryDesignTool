@@ -18,7 +18,6 @@ class Engines(Component):
         self.own_width_unit = 0
         self.own_height_unit = 0
         self.own_amount_motor = None
-        self.thrust_specific_fuel_consumption = 0
 
         self._freeze()
 
@@ -59,8 +58,6 @@ class Engines(Component):
 
         # Calculations
         P_aircraft = T * V  # power the aircraft needs  [W]
-        # thrust specific fuel consumption for the AR relation to range
-        self.thrust_specific_fuel_consumption = (self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 / range_) * V * (1000/T)  # [g/kNs]
         # amount of motors per propellor
         group = np.ceil(P_eng / (P_motor * eff_gearbox))
         n_prop = np.ceil(P_aircraft / P_eng)

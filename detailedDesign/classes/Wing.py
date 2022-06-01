@@ -38,14 +38,14 @@ class Wing(Component):
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
             * V_C * V_C   # [Pa]
         W_initial_cruise = self.WingGroup.Aircraft.mtom * 9.81   # [N]
-        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mas_H2 * 9.81   # [N]
+        W_end_cruise = self.WingGroup.Aircraft.mtom * 9.81 - 0.8 * self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 * 9.81   # [N]
         C_L_initial_cruise = W_initial_cruise / \
             (dynamic_pressure * self.wing_area)    # [-]
         C_L_end_cruise = W_end_cruise / (dynamic_pressure * self.wing_area)    # [-]
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2    # [-]
 
         C_D_min = self.WingGroup.Aircraft.C_D_min    # [-]
-        c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption # [g/kNs]
+        c_t_SI = ((self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 * 1000 )/ range) * V_C * (1000/self.WingGroup.Aircraft.reference_thrust)  # [g/kNs]
         c_t_Imp = c_t_SI * 9.81 / 1e6   # [1/s]
 
         value = (range_ft * c_t_Imp * C_D_min)/(C_LC * np.log(W_initial_cruise/W_end_cruise))
@@ -121,3 +121,10 @@ class Wing(Component):
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
+        self.pos = np.array([self.WingGroup.Aircraft.x_lemac, 0., -self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter/2])
+
+    def cg_self(self):
+        x_cg = 0.4 * self.mean_geometric_chord
+        y_cg = 0
+        z_cg = 0  # might change with changing alpha incidence
+        self.own_cg = np.array([x_cg, y_cg, z_cg])
