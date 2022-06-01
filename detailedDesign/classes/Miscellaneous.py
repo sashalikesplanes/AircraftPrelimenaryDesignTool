@@ -1,3 +1,5 @@
+import numpy as np
+
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
 
@@ -80,8 +82,45 @@ class Miscellaneous(Component):
         self.own_mass = mass
 
     def cg_self(self):
-        # pos_w_boat = np.array([0,0,0])
-        # pos_w_flight_controls = np.array([0,0,0])
-        # pos_w_ac = np.array([0,0,0])
-        pass
+        # Position of the centre of the fuselage
+        pos_centre = self.FuselageGroup.Fuselage.own_cg
+
+        # TODO: check things with "???" above them
+        # Makes sense to be on the same x as the centre
+        pos_w_boat = pos_centre.copy()
+        # further down than centre of fuselage structure
+        pos_w_boat[2] = self.FuselageGroup.Fuselage.outer_diameter / 3
+        # in the cockpit
+        pos_w_flight_controls = np.array([0.5 * self.FuselageGroup.Fuselage.cockpit_length, 0., -0.25 * self.FuselageGroup.Fuselage.outer_diameter])
+        # ???
+        pos_w_hydraulics = pos_centre
+        # ???
+        pos_w_avionics = pos_centre
+        # Makes sense to put in centre
+        pos_w_electrical = pos_centre
+        # in the middle of cabin
+        pos_w_ac = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
+        # in the middle of cabin
+        pos_w_furnishing = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
+        # put it in the back of the tail
+        pos_w_apu = np.array([self.FuselageGroup.Fuselage.length * 0.9, 0., 0.])
+        # ???
+        pos_w_oxy = pos_centre
+        # same cg as fuselage structure
+        pos_w_paint = pos_centre
+        # in the centre of the cabin
+        pos_w_crew = self.FuselageGroup.Fuselage.Cabin.own_cg + self.FuselageGroup.Fuselage.Cabin.pos
+
+        cg_pos = pos_w_boat * self.W_boat
+        cg_pos += pos_w_flight_controls * self.W_flight_control_system
+        cg_pos += pos_w_hydraulics * self.W_hydraulics
+        cg_pos += pos_w_avionics * self.W_avionics
+        cg_pos += pos_w_electrical * self.W_electrical
+        cg_pos += pos_w_ac * self.W_AC
+        cg_pos += pos_w_furnishing * self.W_furnishing
+        cg_pos += pos_w_apu * self.W_apu
+        cg_pos += pos_w_oxy * self.W_oxy
+        cg_pos += pos_w_paint * self.W_paint
+        cg_pos += pos_w_crew * self.W_crew
+        return cg_pos
 
