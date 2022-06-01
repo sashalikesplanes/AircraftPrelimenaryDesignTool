@@ -67,7 +67,7 @@ def detail_design(debug=False):
     perform_analyses(aircraft)
     make_flight_envelope(aircraft, "cruise")
     make_flight_envelope(aircraft, "take-off")
-    aircraft.WingGroup.Wing.size_AR(aircraft)
+    aircraft.WingGroup.Wing.size_AR()
 
 
 if __name__ == "__main__":
