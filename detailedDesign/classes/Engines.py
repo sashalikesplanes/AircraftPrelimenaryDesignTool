@@ -9,8 +9,6 @@ class Engines(Component):
 
         self.WingGroup = WingGroup
 
-        self.thrust_specific_fuel_consumption = 1
-
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self.volume = 0
@@ -20,6 +18,7 @@ class Engines(Component):
         self.own_width_unit = 0
         self.own_height_unit = 0
         self.own_amount_motor = None
+        self.thrust_specific_fuel_consumption = 0
 
         self._freeze()
 
@@ -30,6 +29,7 @@ class Engines(Component):
     def size_self(self):
         S = self.WingGroup.Wing.span
         V = self.WingGroup.Aircraft.states['cruise'].velocity
+        range = self.WingGroup.Aircraft.states['cruise'].range
         T = self.WingGroup.Aircraft.reference_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
 
@@ -59,7 +59,8 @@ class Engines(Component):
 
         # Calculations
         P_aircraft = T * V  # power the aircraft needs  [W]
-        # amount of motors per propeller
+        self.thrust_specific_fuel_consumption = (self.WingGroup.Aircraft.FuselageGroup.FuelContainer.mass_H2 / range) * V * (1000/T)  # [g/kNs]
+        # amount of motors per propellor
         group = np.ceil(P_eng / (P_motor * eff_gearbox))
         n_prop = np.ceil(P_aircraft / P_eng)
         n_motor = group * n_prop

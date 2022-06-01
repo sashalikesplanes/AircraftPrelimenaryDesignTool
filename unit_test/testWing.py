@@ -17,38 +17,21 @@ class TestWing(unittest.TestCase):
         # self.aircraft.FuselageGroup.get_sized()
 
         # ----- Define test params -----
-        self.aircraft.FuselageGroup.Power.own_power_peak = 100e6
-        self.aircraft.FuselageGroup.Power.own_power_average = 50e6
-
-        self.aircraft.FuselageGroup.Power.FuelCells.mass_power_density = 10000
-        self.aircraft.FuselageGroup.Power.FuelCells.W_Size = 1000
-
-        # Fuel tank
-        self.aircraft.FuselageGroup.Fuselage.Cabin.diameter = 10
-
-        # Fuselage
-        self.aircraft.FuselageGroup.Fuselage.Cabin.diameter = 10  # [m]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.length = 100  # [m]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude = 2000  # [m]
-        self.aircraft.FuselageGroup.Fuselage.Cabin.passengers = 250  # [-]
-
-        self.aircraft.FuselageGroup.Fuselage.FuelContainer.length = 50  # [m]
 
         # Aircraft
-        self.aircraft.FuselageGroup.Aircraft.ultimate_load_factor = 2  # [-]
         self.aircraft.FuselageGroup.Aircraft.mtom = 100000  # [kg]
         self.aircraft.FuselageGroup.Fuselage.own_mass = 50000  # [kg]
-        self.aircraft.reference_area = 50
+        self.aircraft.reference_area = 50  # [m2]
 
         # Wing
         self.aircraft.WingGroup.Wing.wing_area = 50  # [m2]
         self.aircraft.WingGroup.Wing.span = 20  # [m]
-        self.aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass = 50000  # [kg]
         self.aircraft.WingGroup.Wing.sweep = 0  # [rad]
         self.aircraft.WingGroup.Wing.taper_ratio = 0.8  # [-]
         self.aircraft.WingGroup.Wing.aspect_ratio = 5  # [-]
         self.aircraft.WingGroup.Wing.thickness_chord_ratio = 0.1  # [-]
-
+        self.aircraft.WingGroup.Wing.C_L_0_wing = 0.4  # [-]
+        self.aircraft.WingGroup.Wing.C_L_alpha = 0.10966 # [1/deg]
 
     def test_AR(self):
         pass
@@ -59,14 +42,12 @@ class TestWing(unittest.TestCase):
         self.assertAlmostEqual(model_CL_alpha, analytical_CL_alpha, delta = analytical_CL_alpha * testMargin)
 
     def test_oswald(self):
-        model_oswald = self.aircraft.WingGroup.Wing.get_oswald()   # [1/deg]
-        analytical_oswald =  0.9007058   # [1/deg]
+        model_oswald = self.aircraft.WingGroup.Wing.get_oswald()   # [-]
+        analytical_oswald =  0.9007058   # [-]
         self.assertAlmostEqual(model_oswald, analytical_oswald, delta = analytical_oswald * testMargin)
 
-    def test_wing_params(self):
-        # span
-        # root chord
-        # tip chord
-        # mean geo chord
-        # CL_0
-        pass
+    def test_C_L(self):
+     # alpha in [deg]
+        model_C_L = self.aircraft.WingGroup.Wing.get_C_L(5)
+        analytical_C_L = 0.9483 
+        self.assertAlmostEqual(model_C_L, analytical_C_L, delta = analytical_C_L * testMargin)

@@ -78,3 +78,10 @@ class Miscellaneous(Component):
         mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
                self.W_hydraulics + self.W_flight_control_system + self.W_boat + self.W_apu + self.W_oxy + self.W_crew
         self.own_mass = mass
+
+    def cg_self(self):
+        # pos_w_boat = np.array([0,0,0])
+        # pos_w_flight_controls = np.array([0,0,0])
+        # pos_w_ac = np.array([0,0,0])
+        pass
+
