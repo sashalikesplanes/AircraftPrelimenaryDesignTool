@@ -1,9 +1,7 @@
-# To Check
 import numpy as np
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
-from sympy.solvers import solve
-from sympy import Symbol
+from scipy.optimize import fsolve
 
 
 class Wing(Component):
@@ -24,16 +22,20 @@ class Wing(Component):
         self.alpha_zero_lift = -3.0  # [deg]
         self.C_L_0_wing = 0
         self.oswald = 0
+        self.optimal_ARe = 0
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
         self._freeze()
          
+    def solve_AR(self, x):
+        return 0.0801 * x**1.68 - 1.14 * x + self.optimal_ARe
+
     def size_AR(self):
         #this should be used to check the validity of the aspect ratio assumed in the config and shgould be run outside of the iterations
         #at the end when there is a final product to get a guideline on the aspect ratio value
-        range = self.WingGroup.Aircraft.states['cruise'].range   # [m]
-        range_ft = m_to_ft(range)  # [ft]
+        range_ = self.WingGroup.Aircraft.states['cruise'].range   # [m]
+        range_ft = m_to_ft(range_)  # [ft]
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
             * V_C * V_C   # [Pa]
@@ -45,23 +47,30 @@ class Wing(Component):
         C_LC = (C_L_initial_cruise + C_L_end_cruise) / 2    # [-]
 
         C_D_min = self.WingGroup.Aircraft.C_D_min    # [-]
-        c_t_SI = ((self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 * 1000 )/ range) * V_C * (1000/self.WingGroup.Aircraft.reference_thrust)  # [g/kNs]
+        c_t_SI = ((self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 * 1000 )/ range_) * V_C * (1000/self.WingGroup.Aircraft.reference_thrust)  # [g/kNs]
         c_t_Imp = c_t_SI * 9.81 / 1e6   # [1/s]
 
         value = (range_ft * c_t_Imp * C_D_min)/(C_LC * np.log(W_initial_cruise/W_end_cruise))
+        print(f'{value = }')
+        print(f'{m_to_ft(V_C) = }')
 
         if m_to_ft(V_C) > value:
-            optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
+            self.optimal_ARe = ((C_LC **2) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min))
-            x = Symbol('x')
-            ARs = solve( (0.0801* x )**1.68 - 1.14 * x + optimal_ARe, x , dict = True)
-            print(f'The ideal aspect ratios for the range of {range} m are {ARs}.')
-            return optimal_ARe, ARs
+            print(f'{self.optimal_ARe = }')
+            if self.optimal_ARe < 10.685:
+                ARs = fsolve(self.solve_AR, self.optimal_ARe)
+                print(f'The ideal aspect ratios for the range of {range_} m are {ARs}.')
+                return self.optimal_ARe, ARs
+
+            else:
+                print(f'Not possible to find the ideal aspect ratio for the required range')
+                return self.optimal_ARe, 0
 
         else:
             print(f'Not possible to find the ideal aspect ratio for the required range')
-            return 'not available', 'not available'
+            return 0, 0
 
 
     def determine_C_L_alpha(self):
@@ -121,7 +130,7 @@ class Wing(Component):
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
-        self.pos = np.array([self.WingGroup.Aircraft.x_lemac, 0., -self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter/2])
+        self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord

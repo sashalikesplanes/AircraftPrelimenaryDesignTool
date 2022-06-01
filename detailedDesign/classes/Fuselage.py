@@ -6,7 +6,7 @@ from detailedDesign.classes.FuelContainer import FuelContainer
 from detailedDesign.classes.CargoBay import CargoBay
 from misc.ISA import getPressure
 from misc.unitConversions import *
-
+# from detailedDesign.classes.RemovableFuelContainer import FuelContainer
 
 class Fuselage(Component):
     def __init__(self, FuselageGroup, design_config):
@@ -89,6 +89,9 @@ class Fuselage(Component):
             l_FS / d_FS) ** (-0.072) * q ** 0.241 + 11.9 * (V_p * Delta_P) ** 0.271
 
         self.own_mass = lbs_to_kg(mass_lbs)
+
+    def cg_self(self):
+        self.own_cg = np.array([0.5 * self.length, 0., 0.])
 
     def get_sized(self):
         # TODO update this to work

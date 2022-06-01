@@ -2,7 +2,7 @@
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.Wing import Wing
 from detailedDesign.classes.Engines import Engines
-
+import numpy as np
 
 class WingGroup(Component):
     def __init__(self, Aircraft, design_config):
@@ -23,4 +23,7 @@ class WingGroup(Component):
             component.get_sized()
 
             self.logger.debug(f"Mass of {type(component).__name__} : {component.get_mass():.4E} kg")
+        self.size_self()
 
+    def size_self(self):
+        self.pos = np.array([self.Aircraft.x_lemac, 0., -self.Aircraft.FuselageGroup.Fuselage.outer_diameter/2])

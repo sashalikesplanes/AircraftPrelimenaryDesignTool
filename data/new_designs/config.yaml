@@ -1,11 +1,12 @@
 Aircraft:
   reserve_duration: 0 # seconds, duration of reserve flight for reserve fuel
   oem_contingency: 1.1 # multiplier of OEM
+  cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/spicked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
   count_pilot: 3
-  x_lemac: 10 # optimize for stability
+  x_lemac: 25 # TODO optimize for stability
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
