@@ -58,6 +58,7 @@ Aircraft:
         k_cabin: 1.17  # [-] - for 2 aisle aircraft
         cabin_pressure_altitude: 3000 # [m]
       FuelContainer:
+        outer_area: 15.674 # [m2] from catia
         tank_pressure: 120000 # [Pa]
         density_H2: 70.85 # [kg/m3]
         Vi: 0.072 # cte, extra volume needed for boil-off
