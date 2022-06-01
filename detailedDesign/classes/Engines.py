@@ -104,3 +104,10 @@ class Engines(Component):
         self.own_width_unit = width_unit
         self.own_height_unit = height_unit
         self.own_amount_motor = n_motor
+        self.pos = np.array([0., 0., 0.])
+
+    def cg_self(self):
+        x_cg = 0.5 * self.WingGroup.Wing.mean_geometric_chord #TODO now they are put in the middle of the wing
+        y_cg = 0
+        z_cg = 0
+        self.own_cg = np.array([x_cg, y_cg, z_cg])
