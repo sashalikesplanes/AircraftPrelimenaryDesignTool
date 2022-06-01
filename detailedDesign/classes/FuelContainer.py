@@ -32,7 +32,7 @@ class FuelContainer(Component):
 
         self.SF = 1.5
 
-        self.thickness_insulation = None 
+        self.thickness_insulation = None
         self.total_tank_thickness = None
         self.empty_space_thickness = 0.1 # [m] - the space between the fuselage and the tank, must be more than insulation
 
@@ -63,8 +63,8 @@ class FuelContainer(Component):
         mass_H2_average = averagepower * (state.duration / 3600 - duration_peak) / (
                 32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
         self.reserve_mass_H2 =  averagepower * (self.Fuselage.FuselageGroup.Aircraft.reserve_duration) / (32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-  
-        self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2 
+
+        self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2
 
 
         # Tank sizing
@@ -101,7 +101,7 @@ class FuelContainer(Component):
         self.logger.debug(f"Empty thickness before: {self.empty_space_thickness} m")
         self.empty_space_thickness = self.total_tank_thickness
         self.logger.debug(f"Empty thickness after: {self.empty_space_thickness} m")
-        
+
         # Debugging
         # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")
         self.logger.debug(f"Metal tank thiccness: {self.thickness:.4E} [m]")
@@ -111,15 +111,15 @@ class FuelContainer(Component):
         self.logger.debug(f"Total tank volume: {self.volume_tank:.4E} [m3]")
 
         # plotting
-        #plt.plot(thickness_insulation, mass_total)
-        #plt.ylabel("Total mass boiloff, tank, insulation [kg]")
-        #plt.xlabel("Insulation thickness [m]")
-        #plt.title("Effect of insulation thickness on total tank weight")
-        #plt.show()
+        # plt.plot(thickness_insulation, mass_total)
+        # plt.ylabel("Total mass boiloff, tank, insulation [kg]")
+        # plt.xlabel("Insulation thickness [m]")
+        # plt.title("Effect of insulation thickness on total tank weight")
+        # plt.show()
+        self.pos = np.array([self.Fuselage.cockpit_length + self.Fuselage.Cabin.length, 0., 0.])
 
     def cg_self(self):
         x_cg = 0.5 * self.length + self.inner_radius + self.total_tank_thickness
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
-        print(self.length)
