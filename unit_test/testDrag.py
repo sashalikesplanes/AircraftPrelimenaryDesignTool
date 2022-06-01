@@ -61,50 +61,139 @@ class TestDrag(unittest.TestCase):
         # Delta_P = 0         # [psi] for test_state_1
 
     def test_viscosity(self):
-        T = 10
+        T = 178.84
 
         x = calc_viscosity(T)
-        y = 43245
+        y = 1.206e-5
         self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_reynolds(self):
-        pass
+        T = 178.84
+        rho = 1
+        V = 100
+        c = 3
+
+        x = calc_reynolds(rho, V, c, T)
+        y = 24.9e6
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
+
+        V_2 = 500
+        x_2 = calc_reynolds(rho, V_2, c, T) 
+        y_2 = 36.14e6
+        self.assertAlmostEqual(x_2, y_2, delta=y * testMargin)
+
 
     def test_Cf(self):
-        pass
+        Re = 24.0e9
+        Xtroverc = 0.15
+        x = calc_Cf(Re, Xtroverc)
+        y = 54.6e-5
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
+
 
     def test_CDfwing(self):
-        pass
+        dfus = 10
+        croot = 10
+        toverc = 0.15
+        Sref = 2000
+        Cf = 54.6e-5
+
+        x = calc_CDfwing(dfus, croot, toverc, Sref, Cf)
+        y = 1.07e-3
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
+
+
+
 
     def test_CDffus(self):
-        pass
+        dfus = 10
+        cfus = 100
+        Sref = 2000
+        Cf = 54.6e-5
+
+        x = calc_CDffus(Sref, cfus, dfus, Cf)
+        y = 9.28e-4
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_CDftail(self):
-        pass
+        toverc = 0.15
+        Stail = 500
+        Sref = 2000
+        Cf = 54.6e-5
+
+        x = calc_CDftail(toverc, Stail, Sref, Cf)
+        y = 2.81e-4
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_FFwing(self):
-        pass
+        toverc = 0.15
+        M = 0.6
+        xovercmax = 0.15
+
+        x = calc_FFwing(toverc, M, xovercmax)
+        y = 2.018
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
+
 
     def test_FFfuselage(self):
-        pass
+        l = 100
+        d = 10
+
+        x = calc_FFfuselage(l, d)
+        y = 1.085
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_FFnacele(self):
-        pass
+        l = 5
+        d = 3
+
+        x = calc_FFnacele(l, d)
+        y = 1.21
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_CDmin_wing(self):
-        pass
+        CDf = 1.07e-3
+        FFwing = 2.018
+        IF = {'wing': 1}
+
+        x = calc_CDmin_wing(CDf, FFwing, IF)
+        y = 2.16e-3
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_CDmin_fuselage(self):
-        pass
+        CDf = 9.28e-4
+        FFfuselage = 1.085
+        IF = {'fuselage' : 1.2}
+
+        x = calc_CDmin_fuselage(CDf, FFfuselage, IF)
+        y = 1.21e-3
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_CDmin_tail(self):
-        pass
+        CDf = 2.81e-4
+        FFtail = 2.018
+        IF = {'tail': 1.04}
+        x = calc_CDmin_tail(CDf, FFtail, IF)
+        y = 5.90e-4
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_CDmin(self):
-        pass
+        CDmin_wing = 0.01
+        CDmin_fuselage = 0.01
+        CDmin_tail = 0.01
+
+        x = calc_CDmin(CDmin_wing, CDmin_fuselage, CDmin_tail)
+        y = 0.0325
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_CDi(self):
-        pass
+        C_L = 0.5
+        A = 8
+        e = 0.8
+
+        x = calc_CDi(C_L, A, e)
+        y = 0.0124
+        self.assertAlmostEqual(x, y, delta=y * testMargin)
 
     def test_get_drag(self):
         pass

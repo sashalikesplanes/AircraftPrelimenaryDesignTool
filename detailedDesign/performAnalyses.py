@@ -1,5 +1,6 @@
 import logging
 from detailedDesign.classes.Stability_draft import get_xplot
+from detailedDesign.marketEstimations import market_estimations
 
 logger = logging.getLogger("logger")
 
@@ -7,13 +8,18 @@ logger = logging.getLogger("logger")
 def perform_analyses(aircraft):
     print_summary(aircraft)
     get_xplot(aircraft)
+    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary = market_estimations(aircraft)
+    print(f"Cost breakdown summary: {breakdown_summary}")
+    print(f"Aircraft Price [M$]: {price_ac / 1e6:.2f}")
+    print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
+
 
 def print_summary(aircraft):
     logger.debug(
-            f"MTOM = {aircraft.mtom:.4E} kg, OEM = {aircraft.oem:.4E} kg, Fuel Mass = {aircraft.fuel_mass:.4E}")
+        f"MTOM = {aircraft.mtom:.4E} kg, OEM = {aircraft.oem:.4E} kg, Fuel Mass = {aircraft.fuel_mass:.4E}")
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
-    
+
     engines = aircraft.WingGroup.Engines
     logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
     logger.debug(f"Amoung of motors: {engines.own_amount_motor} [-]")

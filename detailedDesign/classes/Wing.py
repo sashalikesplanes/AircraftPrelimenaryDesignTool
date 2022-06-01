@@ -2,7 +2,8 @@
 import numpy as np
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
-from sympy import symbols 
+from sympy.solvers import solve
+from sympy import Symbol
 
 
 class Wing(Component):
@@ -32,7 +33,7 @@ class Wing(Component):
         #this should be used to check the validity of the aspect ratio assumed in the config and shgould be run outside of the iterations
         #at the end when there is a final product to get a guideline on the aspect ratio value
         range = self.WingGroup.Aircraft.states['cruise'].range   # [m]
-        range_ = m_to_ft(range)  # [ft]
+        range_ft = m_to_ft(range)  # [ft]
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
         dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
             * V_C * V_C   # [Pa]
@@ -47,10 +48,20 @@ class Wing(Component):
         c_t_SI = self.WingGroup.Engines.thrust_specific_fuel_consumption # [g/kNs]
         c_t_Imp = c_t_SI * 9.81 / 1e6   # [1/s]
 
-        optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((m_to_ft(V_C) / range_)
+        value = (range_ft * c_t_Imp * C_D_min)/(C_LC * np.log(W_initial_cruise/W_end_cruise))
+
+        if m_to_ft(V_C) > value:
+            optimal_ARe = ((C_LC * C_LC) / np.pi) * (1 / (((m_to_ft(V_C) / range_ft)
                                                            * (C_LC / c_t_Imp) * np.log(W_initial_cruise
                                                                                        / W_end_cruise)) - C_D_min))
-        return optimal_ARe
+            x = Symbol('x')
+            ARs = solve( (0.0801* x )**1.68 - 1.14 * x + optimal_ARe, x , dict = True)
+            print(f'The ideal aspect ratios for the range of {range} m are {ARs}.')
+            return optimal_ARe, ARs
+
+        else:
+            print(f'Not possible to find the ideal aspect ratio for the required range')
+            return 'not available', 'not available'
 
 
     def determine_C_L_alpha(self):
@@ -77,7 +88,7 @@ class Wing(Component):
     def size_self(self): #parameters unit tested manually: equations are correct
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
-        # self.size_AR()
+        #self.size_AR()
         self.span = (self.wing_area * self.aspect_ratio) ** 0.5
         self.logger.debug(f"Span: {self.span}")
         self.root_chord = (2 * self.wing_area) / \

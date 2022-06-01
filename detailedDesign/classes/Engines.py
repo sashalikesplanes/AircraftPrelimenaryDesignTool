@@ -32,7 +32,7 @@ class Engines(Component):
         range_ = self.WingGroup.Aircraft.states['cruise'].range
         T = self.WingGroup.Aircraft.reference_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
-
+        self.logger.debug(f"{ range_ = }, { V = }")
         # Ref aircraft An-22 data
         P_eng = self.P_eng_an22  # [W] Power of one engine of the An-22
         D_prop_an22 = self.D_prop_an22  # [m] diameter of propeller of An-22
@@ -59,6 +59,7 @@ class Engines(Component):
 
         # Calculations
         P_aircraft = T * V  # power the aircraft needs  [W]
+        # thrust specific fuel consumption for the AR relation to range
         self.thrust_specific_fuel_consumption = (self.WingGroup.Aircraft.FuselageGroup.Fuselage.FuelContainer.mass_H2 / range_) * V * (1000/T)  # [g/kNs]
         # amount of motors per propellor
         group = np.ceil(P_eng / (P_motor * eff_gearbox))

@@ -1,7 +1,6 @@
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
-from detailedDesign.classes.State import State
 from misc.constants import *
 
 # Personnel constants
@@ -38,7 +37,7 @@ PMac = 0.0  # typically 20% profit margin for manufacturer
 DP = 14  # Depreciation period [yrs]
 
 
-def marketStuff(aircraft):
+def market_estimations(aircraft):
     # Initialise
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passengers
@@ -63,7 +62,6 @@ def marketStuff(aircraft):
     DOC_fees = flight_cycles * (payload * 0.1 + 0.01 * mtow + f_atc * flight_range / 1000 * (mtow / 50 / 1000) ** 0.5)
 
     # DOC crew
-
     count_attendant = np.ceil(n_pax / 50)  # [-]
     count_pilot = aircraft.count_pilot  # [-]
 
@@ -71,8 +69,7 @@ def marketStuff(aircraft):
 
     # DOC maintenance
     DOC_maint_material = oew / 1000 * (0.21 * block_time + 13.7) + 57.5
-    DOC_maint_personnel = salaryMaintenance * (1 + costBurden) * (
-            (0.655 + 0.01 * oew / 1000) * block_time + 0.254 + 0.01 * oew / 1000)
+    DOC_maint_personnel = salaryMaintenance * (1 + costBurden) * ((0.655 + 0.01 * oew / 1000) * block_time + 0.254 + 0.01 * oew / 1000)
     ton_force = aircraft.reference_thrust * 0.0001124
     DOC_maint_engine = n_motor * (1.5 * ton_force + 30.5 * block_time + 10.6)
     DOC_maintenance = flight_cycles * (DOC_maint_engine + DOC_maint_material + DOC_maint_personnel)  # [$]
@@ -80,8 +77,6 @@ def marketStuff(aircraft):
     # DOC capex (engines, fuel cell, fuel tak, cont. factor incl)
     # TODO: Revise price_ac calc. Should the other masses be subtracted from oew?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
-    # price_ac = (P_OEW * (oew - W_eng * params["engineCount"]) + W_eng * params["engineCount"] * P_eng + params[
-    # "balloonStructuralMass"] * P_tank + params["fuelCellMass"] * P_fc) * (1 + PMac + f_misc)
 
     price_ac = (P_OEW * (oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass
                          - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
@@ -89,8 +84,6 @@ def marketStuff(aircraft):
                 + aircraft.FuselageGroup.Power.FuelCells.own_mass * P_fc) * (1 + PMac + f_misc)
 
     DOC_cap = price_ac * (a + f_ins)
-
-    # print(price_ac)
 
     DOC = DOC_maintenance + DOC_crew + DOC_fees + DOC_fuel + DOC_cap  # [$]
     available_seat_km = flight_cycles * flight_range * n_pax / 1000
@@ -103,19 +96,26 @@ def marketStuff(aircraft):
     frac_fuel = DOC_fuel / DOC * 100
     frac_cap = DOC_cap / DOC * 100
 
-    # print(f"Aircraft Price [$]: {price_ac}")
-    # print(f"Direct Operating Cost / ASK [$/pax/km]: {params['costPerPassengerKilometer']}")
-    # print(f"Cost breakdown [%]: {frac_maintenance}, {frac_crew}, {frac_fees }, { frac_fuel}, {frac_cap}")
+    cost_breakdown = [
+        {"cost type": "Maintenance", "fraction": frac_maintenance},
+        {"cost type": "Crew", "fraction": frac_crew},
+        {"cost type": "Fees", "fraction": frac_fees},
+        {"cost type": "Fuel", "fraction": frac_fuel},
+        {"cost type": "CAPEX", "fraction": frac_cap}
+    ]
 
-    # # Make pie chart
-    # breakdown = np.array([frac_maintenance, frac_crew, frac_fees, frac_fuel, frac_cap])
-    # mylabels = ["Maintenance", "Crew", "Fees", "Fuel", "CAPEX"]
-    # colors = [plt.cm.Pastel1(i) for i in range(20)]
-    # plt.pie(breakdown, labels=mylabels, autopct='%1.1f%%', colors=colors, startangle=90)
-    # plt.title("Cost Breakdown [%]")
-    # plt.axis('equal')
+    cost_type = list(map(lambda x: x['cost type'], cost_breakdown))
+    cost_fraction = list(map(lambda x: x['fraction'], cost_breakdown))
+
+    breakdown_summary = list(map(lambda x: f"{x['cost type']} costs: {x['fraction']:.2f}%", cost_breakdown))
+
+    # Plotting pie chart
+    colors = [plt.cm.Pastel1(i) for i in range(20)]
+    plt.pie(cost_fraction, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Cost Breakdown [%]")
+    plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
     # plt.savefig(costBreakdownPath, dpi = 600)
-    # # plt.show()
+    plt.show()
 
-    return cost_per_passenger_km
+    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary

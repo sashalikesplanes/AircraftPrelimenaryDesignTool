@@ -34,7 +34,9 @@ class TestWing(unittest.TestCase):
         self.aircraft.WingGroup.Wing.C_L_alpha = 0.10966 # [1/deg]
 
     def test_AR(self):
-        pass
+        model_ARe = self.aircraft.WingGroup.Wing.size_AR()[0]  # [-]
+        analytical_ARe = 1  # [-]
+        self.assertAlmostEqual(model_ARe, analytical_ARe, delta = analytical_ARe * testMargin)
 
     def test_CL_alpha(self):
         model_CL_alpha = self.aircraft.WingGroup.Wing.determine_C_L_alpha()   # [1/deg]

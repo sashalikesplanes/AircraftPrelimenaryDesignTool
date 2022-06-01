@@ -148,14 +148,17 @@ def get_drag(aircraft):
     CDmin_HT = calc_CDmin_tail(CDfHT, FFHT, IF)
     # test
     # add the stuff
-    TotalCDmin = CDmin_HT + CDmin_VT + CDmin_fus + \
-        CDmin_wing + 0.0025  # 25 DC for misc
+    crud_factor = 1.25
+    TotalCDmin = (CDmin_HT + CDmin_VT + CDmin_fus + \
+        CDmin_wing + 0.0025) * crud_factor  # 25 DC for misc
+    
     #print('FF,W-F-H-V', FFwing, FFfus, FFHT, FFVT)
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
 
     CDi = calc_CDi(C_L, AR, e)
     CD = CDi+TotalCDmin
+
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)
     D = 0.5*rho*V**2*CD*Sref
