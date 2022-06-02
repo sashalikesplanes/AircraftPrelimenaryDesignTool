@@ -128,6 +128,10 @@ class Wing(Component):
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
         self.pos = np.array([0., 0., 0.])
 
+    # def sizing_ailerons(self):
+    #     C_l_p = -((self.C_L_alpha+self.CDmin_wing)*(self.C_L_alpha*9)*self.span)/(24*self.wing_area) #9 degrees alpha
+    #     C_l_da = 0
+
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0
