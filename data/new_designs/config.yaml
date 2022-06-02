@@ -47,7 +47,7 @@ Aircraft:
       CargoBay:
         test_prop: 1
       Cabin:
-        passenger_count: 1000 # [-]
+        passenger_count: 1500 # [-]
         mass_per_passenger: 120 # [kg]
         seats_abreast: 10 # [-]
         floor_count: 2  # [-]
@@ -58,6 +58,7 @@ Aircraft:
         k_cabin: 1.17  # [-] - for 2 aisle aircraft
         cabin_pressure_altitude: 3000 # [m]
       FuelContainer:
+        shape_factor: 1.5 # Factor to account for extra tank mass due to irregular shape
         outer_area: 15.674 # [m2] from catia
         tank_pressure: 120000 # [Pa]
         density_H2: 70.85 # [kg/m3]

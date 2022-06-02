@@ -17,23 +17,23 @@ class CargoBay(Component):
         self._freeze()
 
     def size_self(self):
-        diameter = self.Fuselage.Cabin.diameter
-        height = self.Fuselage.Cabin.height
-        width = self.Fuselage.Cabin.width
+        # diameter = self.Fuselage.Cabin.diameter
+        # height = self.Fuselage.Cabin.height
+        # width = self.Fuselage.Cabin.width
 
-        # print("Hello from CargoBay!")
-        # print(diameter)
-        # print(height, width)
+        # # print("Hello from CargoBay!")
+        # # print(diameter)
+        # # print(height, width)
 
-        if diameter is not None:
-            # Calculate the cross-sectional area of a rectangle of
-            # width half diameter which fits under the cabin
-            w = 0.5 * diameter
-            x = w / 2
-            h = (w ** 2 - x ** 2) ** 0.5 - 0.5 * height
-            S = h * w
-            # print(h, w, S)
-            self.height = h
-            self.width = w
+        # if diameter is not None:
+        #     # Calculate the cross-sectional area of a rectangle of
+        #     # width half diameter which fits under the cabin
+        #     w = 0.5 * diameter
+        #     x = w / 2
+        #     h = (w ** 2 - x ** 2) ** 0.5 - 0.5 * height
+        #     S = h * w
+        #     # print(h, w, S)
+        #     self.height = h
+        #     self.width = w
 
         self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])

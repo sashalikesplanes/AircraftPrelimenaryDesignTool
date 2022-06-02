@@ -16,10 +16,7 @@ class Cabin(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
-        self.seats_abreast = None
-        self.floor_count = None
         self.rows_per_floor = None
-        self.aisle_count = None
 
         self.passengers = []
 
@@ -58,7 +55,6 @@ class Cabin(Component):
 
         # Debug statements
         self.logger.debug(f"height x width x length: ({self.height:.4E} {self.width:.4E} {self.length:.4E}) [m]")
-        self.logger.debug(f"Cabin diameter{self.diameter:.4E} [m]")
         self.logger.debug(f"Cabin volume: {self.height * self.width * self.length:.4E} [m3]")
         self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])
 

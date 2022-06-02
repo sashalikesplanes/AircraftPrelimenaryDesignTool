@@ -15,7 +15,7 @@ def sketch_aircraft(aircraft):
 
     # plot fuselage
     length = aircraft.FuselageGroup.Fuselage.length
-    diameter = aircraft.FuselageGroup.Fuselage.outer_diameter
+    diameter = aircraft.FuselageGroup.Fuselage.outer_height
     radius = diameter / 2
 
     cabin_length = aircraft.FuselageGroup.Fuselage.Cabin.length

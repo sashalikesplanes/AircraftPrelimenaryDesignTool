@@ -30,7 +30,7 @@ class Engines(Component):
         V = self.WingGroup.Aircraft.states['cruise'].velocity
         range_ = self.WingGroup.Aircraft.states['cruise'].range
         T = self.WingGroup.Aircraft.reference_thrust
-        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
+        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
         self.logger.debug(f"{ range_ = }, { V = }")
         # Ref aircraft An-22 data
         P_eng = self.P_eng_an22  # [W] Power of one engine of the An-22
