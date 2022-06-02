@@ -40,7 +40,7 @@ def market_estimations(aircraft):
     # Initialise
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
-    n_motor = aircraft.WingGroup.Engines.own_amount_motor
+    n_motor = aircraft.WingGroup.Engines.own_amount_fans
 
     flight_range = state.range  # [m]
     block_time = state.duration / 3600 + block_time_supplement  # [h]
