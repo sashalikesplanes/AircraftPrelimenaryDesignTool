@@ -1,5 +1,4 @@
 from pathlib import Path
-from matplotlib import pyplot as plt
 
 from misc.openData import openData
 from detailedDesign.classes.Aircraft import Aircraft

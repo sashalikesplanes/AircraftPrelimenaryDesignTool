@@ -32,8 +32,8 @@ class Wing(Component):
         return 0.0801 * x**1.68 - 1.14 * x + self.optimal_ARe
 
     def size_AR(self):
-        #this should be used to check the validity of the aspect ratio assumed in the config and shgould be run outside of the iterations
-        #at the end when there is a final product to get a guideline on the aspect ratio value
+        # this should be used to check the validity of the aspect ratio assumed in the config and shgould be run outside of the iterations
+        # at the end when there is a final product to get a guideline on the aspect ratio value
         range_ = self.WingGroup.Aircraft.states['cruise'].range   # [m]
         range_ft = m_to_ft(range_)  # [ft]
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
@@ -69,14 +69,13 @@ class Wing(Component):
             print(f'Not possible to find the ideal aspect ratio for the required range')
             return 0, 0
 
-
     def determine_C_L_alpha(self):
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
         speed_of_sound = self.WingGroup.Aircraft.states['cruise'].speed_of_sound
         aspect_ratio = self.aspect_ratio
         beta = np.sqrt((1 - (V_C / speed_of_sound) ** 2))
         k = 0.95  # from Sam
-        #this takes into account no sweep for the wing
+        # this takes into account no sweep for the wing
         semi_chord_sweep = np.arctan(np.tan(self.sweep - (4 / aspect_ratio) * ((0.5-0.25)* ((1 - self.taper_ratio)/(1 + self.taper_ratio)))))  # [rad]
         self.C_L_alpha = (2 * np.pi * aspect_ratio) / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
                                                             * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
@@ -91,10 +90,10 @@ class Wing(Component):
     def get_oswald(self):
         return 1.78 * (1 - 0.045 * self.aspect_ratio ** 0.68) - 0.64
 
-    def size_self(self): #parameters unit tested manually: equations are correct
+    def size_self(self): # parameters unit tested manually: equations are correct
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
-        #self.size_AR()
+        # self.size_AR()
         self.span = (self.wing_area * self.aspect_ratio) ** 0.5
         self.logger.debug(f"Span: {self.span}")
         self.root_chord = (2 * self.wing_area) / \
