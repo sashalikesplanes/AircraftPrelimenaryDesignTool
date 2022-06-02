@@ -25,24 +25,8 @@ def detail_design(debug=False):
     # ########################################### #
     # ##   MAKE ALL THE COOL PLOTS AND STUFF   ## #
     # ########################################### #
-    # sketch_aircraft(aircraft)
-    # make_potato_plot(aircraft, debug=debug)
-    # print(f"Aircraft CG: {aircraft.get_cg()}")
-    # perform_analyses(aircraft)
-    # make_flight_envelope(aircraft, "cruise")
-    # make_flight_envelope(aircraft, "take-off")
-    # aircraft.WingGroup.Wing.size_AR(aircraft)
-    # make_potato_plot(aircraft)
-
-    # df = make_carrot_plot()
-    # print(df)
-
-
-if __name__ == "__main__":
-    detail_design(debug=True)
 
     perform_analyses(aircraft)
-
     # make_flight_envelope(aircraft, "cruise")
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)
