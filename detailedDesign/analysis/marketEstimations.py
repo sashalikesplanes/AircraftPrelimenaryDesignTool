@@ -1,7 +1,6 @@
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
-from misc.constants import *
 
 # Personnel constants
 salaryPilot = 69  # [$/h]
@@ -39,7 +38,6 @@ DP = 14  # Depreciation period [yrs]
 
 def market_estimations(aircraft):
     # Initialise
-    plt.figure(69)
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
     n_motor = aircraft.WingGroup.Engines.own_amount_motor
@@ -117,6 +115,6 @@ def market_estimations(aircraft):
     plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
     # plt.savefig(costBreakdownPath, dpi = 600)
-    plt.show()
+    plt.savefig(Path("plots", "market_pie.png"))
 
     return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary
