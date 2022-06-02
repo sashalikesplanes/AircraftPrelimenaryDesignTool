@@ -9,6 +9,7 @@ from detailedDesign.potatoPlot import make_potato_plot
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.run_aircraft import run_aircraft
 from detailedDesign.carrotPlot import make_carrot_plot
+from detailedDesign.classes.Stability_draft import get_xplot
 
 
 # def get_ultimate_load_factor():
@@ -39,7 +40,29 @@ def detail_design(debug=False):
     # aircraft.WingGroup.Wing.size_AR(aircraft)
 
     df = make_carrot_plot()
-    print(df)
+    f_stab, f_cont = get_xplot(aircraft)
+
+    plt.figure(5)
+    y_min = 1e6
+    z_min = None
+    for row in np.array(df):
+        z = row[1]
+        x1 = row[2]
+        x2 = row[3]
+        y1 = f_cont(row[2])
+        y2 = f_stab(row[3])
+        if y1 > y2:
+            y = y1
+        else:
+            y = y2
+
+        if y < y_min:
+            y_min = y
+            z_min = z
+        plt.plot([x1, x2], [y, y], "--")
+
+    print(f"Best Sh/S: {y_min}, best Xlemac/Lfus: {z_min}")
+    plt.show()
 
 
 if __name__ == "__main__":
