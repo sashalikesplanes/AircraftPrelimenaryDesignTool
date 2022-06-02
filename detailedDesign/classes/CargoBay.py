@@ -13,6 +13,7 @@ class CargoBay(Component):
         # Using self.property_name = value
         self.height = None
         self.width = None
+        self.current_cargo_mass = 0
 
         self._freeze()
 
@@ -37,3 +38,7 @@ class CargoBay(Component):
         #     self.width = w
 
         self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])
+
+    def get_mass(self):
+        mass = self.own_mass + self.current_cargo_mass
+        return mass

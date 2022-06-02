@@ -11,3 +11,5 @@ Xtrovercwing = 0.35 #transition location
 
 # Yes I know this shouldn't be here, but it is.
 mass_per_passenger = 120  # [kg]
+# Percentage of the passenger mass which shall be stored in the cargo bay
+cargo_cabin_fraction = 0.75  # [kg]

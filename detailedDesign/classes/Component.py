@@ -60,7 +60,8 @@ class Component:
 
     def cg_self(self):
         """Calculate this parts cg for later usage"""
-        self.logger.warning(f"{self} is not being cged")
+        if self.own_mass != 0:
+            self.logger.warning(f"{self} is not being cged")
 
     def get_cged(self):
         """Make the components calculate their individual cg"""

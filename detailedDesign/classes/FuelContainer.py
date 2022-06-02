@@ -29,6 +29,7 @@ class FuelContainer(Component):
         self.radius_tank = None
         self.mass_tank = None
         self.area_tank = None
+        self.current_fuel_mass = 0
 
         self.SF = 1.5
 
@@ -109,3 +110,7 @@ class FuelContainer(Component):
     @property
     def total_length(self):
         return self.length + 2 * self.inner_radius + self.total_tank_thickness * 2
+
+    def get_mass(self):
+        total_mass = self.own_mass + self.current_fuel_mass
+        return total_mass

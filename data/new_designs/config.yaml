@@ -1,5 +1,6 @@
 Aircraft:
   cargo_mass: 0 # [kg] extra cargo mass
+  ultimate_load_factor: 3.75  # [-]
   reserve_duration: 0 # seconds, duration of reserve flight for reserve fuel
   oem_contingency: 1. # multiplier of OEM
   cruise_drag_contingency: 1 # multiplier of cruise drag
