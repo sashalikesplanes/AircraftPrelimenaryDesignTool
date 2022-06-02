@@ -39,6 +39,7 @@ DP = 14  # Depreciation period [yrs]
 
 def market_estimations(aircraft):
     # Initialise
+    plt.figure(69)
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
     n_motor = aircraft.WingGroup.Engines.own_amount_motor

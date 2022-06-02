@@ -16,8 +16,8 @@ class AftFuelContainer(FuelContainer):
         self.length = (self.volume_tank - 4 / 3 * np.pi * self.inner_radius ** 3) / (np.pi * self.inner_radius ** 2)
         self.logger.debug(f"{self.length = }")
         if self.length < 0:
-              self.length = 0
-              self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
+            self.length = 0
+            self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
 
         self.pos = np.array([self.Fuselage.FuselageGroup.Aircraft.x_lemac + self.Fuselage.FuselageGroup.Aircraft.WingGroup.Wing.root_chord, 0.,     self.z_offset])
         self.logger.debug(f"{self.pos = }")
