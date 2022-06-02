@@ -27,11 +27,12 @@ class Component:
         return total_mass
 
     def get_cg(self):
+        """Calculate the cg of this component and all its sub-components"""
         total_mass_factor = self.own_mass
         cg_pos = self.own_cg * self.own_mass
 
         for component in self.components:
-            cg_pos += component.get_cg() * component.get_mass()
+            cg_pos += (component.get_cg() + component.pos) * component.get_mass()
             total_mass_factor += component.get_mass()
 
         if total_mass_factor != 0:
@@ -41,19 +42,35 @@ class Component:
 
         return cg_pos
 
+    def plot_cgs(self):
+        lst = []
+        for component in self.components:
+            new_lst = component.plot_cgs()
+            for i in range(len(new_lst)):
+                # print(new_lst[i][0], component.pos)
+                new_lst[i][0] = component.pos + new_lst[i][0]
+                # print(new_lst[i])
+            lst += new_lst
+
+        lst.append([self.own_cg, f"{str(self)}"])
+        return lst
+
     def size_self(self):
         self.logger.warning(f"{self} is not being sized")
 
     def cg_self(self):
+        """Calculate this parts cg for later usage"""
         self.logger.warning(f"{self} is not being cged")
 
     def get_cged(self):
+        """Make the components calculate their individual cg"""
         self.cg_self()
 
         for component in self.components:
             component.get_cged()
 
     def get_sized(self):
+        """Size the component based on actual values"""
         self.size_self()
 
         for component in self.components:

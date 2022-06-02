@@ -1,30 +1,37 @@
-#!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
+import misc.constants as const
+from pathlib import Path
+from misc.ISA import getDensity
 
 
-def funk(altitude, rho):
-    wing_span = 136.4 
-    wing_area = 4326
-    MGC = 17
-    W = 2119000 * 9.81
-    W_ZF = (2119000 - 240000) * 9.81
-    W_min = (2119000 - 120000 - 200000) * 9.81
-    W_max_land = (2119000 - 180000) * 9.81
-    wing_loading = W / wing_area  
-    C_L_alpha = 5.96 # [1/rad]
-    C_L_max = 1.276
-    C_L_min = - 0.75
+def make_flight_envelope(aircraft, test_state):
+    altitude = aircraft.states[test_state].altitude
+    rho = getDensity(altitude)
+    wing_span = aircraft.WingGroup.Wing.span
+    wing_area = aircraft.WingGroup.Wing.wing_area
+    MGC = aircraft.WingGroup.Wing.mean_geometric_chord
+    W = aircraft.mtom * const.g
+    W_ZF = W - aircraft.fuel_mass * const.g
+    W_min = W - aircraft.payload_mass * const.g - aircraft.fuel_mass * const.g
+    W_max_landing = W - aircraft.fuel_mass * const.g * 0.8 #TODO: make sure it's reasonable
+    wing_loading = aircraft.weight_over_surface
+    C_L_alpha = np.rad2deg(aircraft.WingGroup.Wing.C_L_alpha) # [1/rad]
+    C_L_max = aircraft.C_L_max
+    C_L_min = aircraft.WingGroup.Wing.C_L_min
     delta_C_L_TO = 1
     delta_C_L_land = 1.3 
-    V_H = 200
-    V_C_max = 180
+    V_H = 200 # TODO: Get number somewhere
+    V_C_max = aircraft.states[test_state].velocity
     V_D = V_C_max * 1.25
-    n_pos = get_n_pos(W)
     n_neg = -1
     n_pos_HLD = 2
     n_neg_HLD = 0
-    max_alt = 4572
+    max_alt = 7000
+
+
+
+    n_pos = get_n_pos(W)
     V_stall = np.sqrt(W / (0.5 * rho * C_L_max * wing_area))
     V_stall_inverted = np.sqrt(W / (0.5 * rho * abs(C_L_min) * wing_area))
     V_G = np.sqrt(2 * abs(n_neg) * W / (rho * wing_area * abs(C_L_min)))
@@ -41,34 +48,18 @@ def funk(altitude, rho):
     plt.hlines(n_neg, V_G, V_D, colors='k')
     plt.hlines(0, 0, 1.25*V_D, colors='grey')
     plt.hlines(n_pos, V_A, V_D, colors='k')
-    # plt.vlines(V_A, -2, 4, linestyle='dotted')
-    # plt.vlines(V_C_max, -2, 4, linestyle='dotted')
     plt.vlines(V_D, n_neg, n_pos, colors='k')
     plt.vlines(V_stall, 0, 1, colors='k')
     plt.vlines(V_stall_inverted, n_neg, 0, colors='k')
-    # plt.plot(V_G, n_neg, marker="o", markersize=20)
-    # plt.plot(V_A, n_pos, marker="o", markersize=20)
-    # plt.plot(V_stall, 1, marker="o", markersize=20)
-    # plt.plot(V_D, n_pos, marker="o", markersize=20)
-    # plt.plot(V_D, n_neg, marker="o", markersize=20)
 
-
-
-
-
-
-
-    W_max_landing = 0.9 * W
-    W_MTO = W
-    R_1 = W_max_landing / W_MTO
-    R_2 = W_ZF / W_MTO
+    R_1 = W_max_landing / W
+    R_2 = W_ZF / W
     F_gm = np.sqrt(R_2 * np.tan(np.pi * R_1 / 4))
     F_gz = 1 - max_alt / 76200
     F_g = 0.5 * (F_gz + F_gm)
     H = 107
     Hs = np.arange(9,109, 11)
-    alt = 4000
-    U_ref = 17.07 - (17.07-13.41)/4572 * alt
+    U_ref = 17.07 - (17.07-13.41)/4572 * altitude
     U_ds = U_ref * F_g * (H/107)**(1/6)
     U_ds_prime = 0.5 * U_ds
     mu_g = 2 * wing_loading  / (rho * MGC * C_L_alpha * 9.81)
@@ -79,11 +70,10 @@ def funk(altitude, rho):
     gust_lines_neg = get_gust_load(K_g, -U_ds, Vs, C_L_alpha, wing_loading)
     gust_lines_prime_neg = get_gust_load(K_g, -U_ds_prime, Vs, C_L_alpha, wing_loading)
 
-    print(F_g)
-    plt.plot(Vs, gust_lines)
-    plt.plot(Vs, gust_lines_prime)
-    plt.plot(Vs, gust_lines_neg)
-    plt.plot(Vs, gust_lines_prime_neg)
+    plt.plot(Vs, gust_lines, 'k')
+    plt.plot(Vs, gust_lines_prime, 'k')
+    plt.plot(Vs, gust_lines_neg, 'k')
+    plt.plot(Vs, gust_lines_prime_neg, 'k')
 
     # Check At V_A gust > Manoeuvre
     # V_A manoeuvre
@@ -105,7 +95,7 @@ def funk(altitude, rho):
     # V_C gust
     n_cruise = get_gust_load(K_g, U_ds, V_C_max, C_L_alpha, wing_loading)
     if n_cruise > n_pos:
-        plt.plot(V_C_max, n_cruise, marker="o", markersize=10)
+        plt.plot(V_C_max, n_cruise, 'k', marker="o", markersize=10)
 
 
 
@@ -125,33 +115,33 @@ def funk(altitude, rho):
         plt.plot([V_intersect, V_C_max], [n_neg, n_cruise_neg], 'k')
 
     if V_intersect < V_D:
-        plt.plot(V_intersect, n_neg, marker="o", markersize=10)
+        plt.plot(V_intersect, n_neg, 'k', marker="o", markersize=10)
         
 
     if altitude < 300:
         # Take off
-        V_stall_TO = np.sqrt(2 * W_MTO / (rho * (C_L_max + delta_C_L_TO) * wing_area))
+        V_stall_TO = np.sqrt(2 * W/ (rho * (C_L_max + delta_C_L_TO) * wing_area))
         V_F_TO = 1.6 * V_stall_TO
         V_A_TO = V_stall_TO * np.sqrt(n_pos_HLD)
 
         V_TO = np.linspace(V_stall_TO, V_A_TO)
-        positive_stall_line_TO = 0.5 * rho * V_TO**2 * wing_area * (C_L_max + delta_C_L_TO) / W_MTO
-        plt.vlines(V_F_TO, 0, 2)
-        plt.hlines(2, V_A_TO, V_F_TO)
-        plt.vlines(V_stall_TO, 0, 1)
-        plt.plot(V_TO, positive_stall_line_TO)
+        positive_stall_line_TO = 0.5 * rho * V_TO**2 * wing_area * (C_L_max + delta_C_L_TO) / W
+        plt.vlines(V_F_TO, 0, 2, colors='k')
+        plt.hlines(2, V_A_TO, V_F_TO, colors='k')
+        plt.vlines(V_stall_TO, 0, 1, colors='k')
+        plt.plot(V_TO, positive_stall_line_TO, 'k')
 
 
         # Land
-        V_stall_land = np.sqrt(2 * W_max_land / (rho * (C_L_max + delta_C_L_land) * wing_area))
+        V_stall_land = np.sqrt(2 * W_max_landing / (rho * (C_L_max + delta_C_L_land) * wing_area))
         V_F_land = 1.8 * V_stall_land
         V_A_land = V_stall_land * np.sqrt(n_pos_HLD)
         V_land = np.linspace(V_stall_land, V_A_land)
-        positive_stall_line_land = 0.5 * rho * V_land**2 * wing_area * (C_L_max + delta_C_L_land) / W_max_land
-        plt.vlines(V_F_land, 0, 2)
-        plt.hlines(2, V_A_land, V_F_land)
-        plt.vlines(V_stall_land, 0, 1)
-        plt.plot(V_land, positive_stall_line_land)
+        positive_stall_line_land = 0.5 * rho * V_land**2 * wing_area * (C_L_max + delta_C_L_land) / W_max_landing
+        plt.vlines(V_F_land, 0, 2, colors='k')
+        plt.hlines(2, V_A_land, V_F_land, colors='k')
+        plt.vlines(V_stall_land, 0, 1, colors='k')
+        plt.plot(V_land, positive_stall_line_land, 'k')
 
 
 
@@ -160,48 +150,15 @@ def funk(altitude, rho):
 
 
     plt.title("GET LIMIT LOADS AND MULTIPLY BY 1.5 TO GET ULTIMATE LOADS")
-    plt.show()
+    figpath = Path("plots", f'flightEnvelope{test_state}')
+    plt.savefig(figpath, dpi=600)
+    plt.cla()
 
 
 def get_gust_load(K_g, U_ds, V, C_L_alpha, wing_loading):
     n_g = 1 + (K_g * U_ds * V * 1.944 * 3.281 * C_L_alpha) / (498 * 0.021 * wing_loading)
     return n_g 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # s = np.arange(0, 2*H_max)
-    # Us = []
-    # for i in range(0, 4001, 1000):
-        # for h in H:
-            # s_prime = np.arange(0, 2 * h)
-            # Us.append(get_U(F_g, i, h, s_prime))
-            # plt.plot(s_prime, Us[-1])
-    # plt.show()
-
-# def get_U(F_g, alt, H, s):
-    # U_ref = 17.07 - (17.07-13.41)/4572 * alt
-    # U_ds = U_ref * F_g * (H/107)**(1/6)
-    # U = U_ds/2 * (1- np.cos(np.pi * s/ H))
-    # return U
-
-    
-    
 
 def get_n_pos(W):
     load_factor = 2.1 + 24000 / (W + 10000)
@@ -213,8 +170,3 @@ def get_n_pos(W):
         return 3.8
 
 
-
-
-if __name__ == "__main__":
-    funk(4000, 0.819)
-    funk(0, 1.225)

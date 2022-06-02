@@ -9,8 +9,6 @@ class Engines(Component):
 
         self.WingGroup = WingGroup
 
-        self.thrust_specific_fuel_consumption = 1
-
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self.volume = 0
@@ -30,21 +28,22 @@ class Engines(Component):
     def size_self(self):
         S = self.WingGroup.Wing.span
         V = self.WingGroup.Aircraft.states['cruise'].velocity
+        range_ = self.WingGroup.Aircraft.states['cruise'].range
         T = self.WingGroup.Aircraft.reference_thrust
-        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_diameter
-
+        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
+        self.logger.debug(f"{ range_ = }, { V = }")
         # Ref aircraft An-22 data
         P_eng = self.P_eng_an22  # [W] Power of one engine of the An-22
-        D_prop_an22 = self.D_prop_an22  # [m] diameter of propellor of An-22
+        D_prop_an22 = self.D_prop_an22  # [m] diameter of propeller of An-22
 
         # Constants
         P_motor = self.P_motor  # power of the electric motor [W]
         m_specific_motor = self.m_specific_motor  # [W/kg] for the 2MW motor
-        # [m] diameter of the 2MW motorusing the coca-cola method
+        # [m] diameter of the 2MW motor using the coca-cola method
         d_motor = self.d_motor
         l_motor = self.l_motor  # [m] length of a motor
         clearance = self.clearance  # distance between fuselage and engine from literature
-        m_propellor = self.m_propellor  # [kg] from the excel extrapollation
+        m_propeller = self.m_propellor  # [kg] from the excel extrapolation
         l_inverter = self.l_inverter
         m_specific_inverter = self.m_specific_inverter
         vol_specific_inverter = self.vol_specific_inverter
@@ -74,11 +73,11 @@ class Engines(Component):
         S_fit = (n_prop-1) * D_prop_an22 + 2 * clearance + (1 / 3) * D_prop_an22 * (
             n_prop - 2) + D_fus  # ideal span to fit all propellers needed
         n_prop_fit = np.floor((S - 2 * clearance - D_fus + (2 / 3) * D_prop_an22) / (
-            (4 / 3) * D_prop_an22))  # amount of propellors needed to fit in the desired span
+            (4 / 3) * D_prop_an22))  # amount of propellers needed to fit in the desired span
 
         if S_fit > S:
             self.logger.warning(
-                f"The propellors don't fit in the Span. The span should be at least {S_fit} but it is {S}. The maximum amount of propellors that fit is {n_prop_fit}")
+                f"The propellers don't fit in the Span. The span should be at least {S_fit} but it is {S}. The maximum amount of propellors that fit is {n_prop_fit}")
 
         d_max_prop = (S - D_fus - 2 * clearance) / (
             (4 / 3) * n_prop - (2 / 3))  # from the geometry with spacing of 1/3 of d_prop
@@ -87,7 +86,7 @@ class Engines(Component):
         m_motor = P_motor / m_specific_motor
         vol_motor = d_motor * d_motor * l_motor  # [m3]
         # the volume is calculated as if the motor had a box like shape
-        # instead of being a cilinder
+        # instead of being a cylinder
 
         m_inverter = P_motor / m_specific_inverter
         vol_inverter = P_motor / vol_specific_inverter
@@ -95,7 +94,7 @@ class Engines(Component):
         vol_unit = group * (vol_motor + vol_inverter) * \
             gearbox_unit_vol_contingency
         vol_total = n_prop * vol_unit
-        m_unit = ((m_motor + m_inverter) * group + m_propellor) * \
+        m_unit = ((m_motor + m_inverter) * group + m_propeller) * \
             gearbox_unit_mass_contingency
         m_total = n_prop * m_unit
 
@@ -105,3 +104,10 @@ class Engines(Component):
         self.own_width_unit = width_unit
         self.own_height_unit = height_unit
         self.own_amount_motor = n_motor
+        self.pos = np.array([0., 0., 0.])
+
+    def cg_self(self):
+        x_cg = 0.5 * self.WingGroup.Wing.mean_geometric_chord #TODO now they are put in the middle of the wing
+        y_cg = 0
+        z_cg = 0
+        self.own_cg = np.array([x_cg, y_cg, z_cg])

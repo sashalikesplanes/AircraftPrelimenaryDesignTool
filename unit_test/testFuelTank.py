@@ -57,6 +57,7 @@ class TestFuelTank(unittest.TestCase):
         pass
 
     def test_fuel_container(self):
+        # TODO: finish this after the tanks are resized
         self.aircraft.FuselageGroup.Fuselage.FuelContainer.size_self()
 
         model_thickness = self.aircraft.FuselageGroup.Fuselage.FuelContainer.thickness

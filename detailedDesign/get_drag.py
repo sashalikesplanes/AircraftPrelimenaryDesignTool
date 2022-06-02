@@ -20,11 +20,8 @@ def calc_reynolds(rho, V, c, T):
 
 
 def calc_Cf(Re, Xtroverc):
-    if Xtroverc < 0.01:
-        Cf = 0.455/np.log10(Re)**2.58
-    else:
-        X0overc = 36.9 * Xtroverc ** 0.625 / Re ** 0.375
-        Cf = 0.074/Re**0.2*(1-(Xtroverc-X0overc))**0.8
+    X0overc = 36.9 * Xtroverc ** 0.625 / Re ** 0.375
+    Cf = 0.074/Re**0.2*(1-(Xtroverc-X0overc))**0.8
     return Cf
 
 
@@ -85,8 +82,8 @@ def calc_CDmin(CDmin_wing, CDmin_fuselage, CDmin_tail):
     return CDmin
 
 
-def calc_CDi(CL, A, e):
-    CDi = CL**2/(np.pi*A*e)
+def calc_CDi(C_L, A, e):
+    CDi = C_L**2/(np.pi*A*e)
     return CDi
 
 
@@ -96,7 +93,8 @@ def get_drag(aircraft):
     cWMGC = aircraft.WingGroup.Wing.mean_geometric_chord
     T = aircraft.states['cruise'].temperature
     Sref = aircraft.reference_area
-    dfus = aircraft.FuselageGroup.Fuselage.diameter
+    # TODO CHECK HOW THIS WORKS FOR AN ELIPSE
+    dfus = (aircraft.FuselageGroup.Fuselage.outer_height + aircraft.FuselageGroup.Fuselage.outer_height) / 2
     croot = aircraft.WingGroup.Wing.root_chord
     toverc = aircraft.WingGroup.Wing.thickness_chord_ratio
     xovercmax = aircraft.WingGroup.Wing.xovercmax
@@ -107,12 +105,16 @@ def get_drag(aircraft):
     xovercmaxHT = aircraft.FuselageGroup.Tail.HorizontalTail.xovercmax  # from NACA0010
     StailVT = aircraft.FuselageGroup.Tail.VerticalTail.surface_area
     StailHT = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
-    cVT = 9.05  # TODO link to vertical tail
+    cVT = aircraft.FuselageGroup.Tail.VerticalTail.mean_geometric_chord  # TODO link to vertical tail
     cHT = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
-    cfus = 183  # TODO link to Fuselage. (length of the fuselage)
-    AR = 6      # TODO Link AR, e, CL to Wing
-    e = 0.8
-    CL = 0.521
+    cfus = aircraft.FuselageGroup.Fuselage.length   # TODO link to Fuselage. (length of the fuselage)
+    AR = aircraft.WingGroup.Wing.aspect_ratio     # TODO Link AR, e, CL to Wing
+    V_C = aircraft.states['cruise'].velocity
+    W_cruise = aircraft.mtom * 9.81
+    dynamic_pressure = 0.5 * aircraft.states['cruise'].density \
+        * V_C * V_C
+    C_L = W_cruise / (dynamic_pressure * aircraft.WingGroup.Wing.wing_area )
+    e = aircraft.WingGroup.Wing.oswald
 
     IF = dict({'wing': 1,  # high or mid wing
                'fuselage': 1.5,  # TODO know it is 50 % to take care of the hull, refine
@@ -147,14 +149,26 @@ def get_drag(aircraft):
     CDmin_HT = calc_CDmin_tail(CDfHT, FFHT, IF)
     # test
     # add the stuff
-    TotalCDmin = CDmin_HT + CDmin_VT + CDmin_fus + \
-        CDmin_wing + 0.0025  # 25 DC for misc
+    crud_factor = 1.25
+    TotalCDmin = (CDmin_HT + CDmin_VT + CDmin_fus + \
+        CDmin_wing + 0.0025) * crud_factor  # 25 DC for misc
+    
     #print('FF,W-F-H-V', FFwing, FFfus, FFHT, FFVT)
     #print('CDmin, W-F-H-V', CDmin_wing, CDmin_fus, CDmin_HT, CDmin_VT)
     #print('total CDmin=', TotalCDmin)
 
-    CDi = calc_CDi(CL, AR, e)
+    # hydrofoil ???
+    ReHF = calc_reynolds(rho, V, 2.5, T)
+    CfHF = calc_Cf(ReHF, 0.08)
+    CDfHF = calc_CDftail(0.08, 25, Sref, CfHF)
+    FFHF = calc_FFwing(0.08, M, .4)
+    CDmin_HF = calc_CDmin_tail(CDfHF, FFHF, IF) / 1.04
+
+    print(f'Drag of the hydrofoil without struct: {CDmin_HF} {CDmin_HF/TotalCDmin}')
+
+    CDi = calc_CDi(C_L, AR, e)
     CD = CDi+TotalCDmin
+
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)
     D = 0.5*rho*V**2*CD*Sref
