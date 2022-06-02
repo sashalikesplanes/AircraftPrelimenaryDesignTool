@@ -6,9 +6,10 @@ from detailedDesign.log import setup_custom_logger
 from detailedDesign.getConstraints import get_constraints
 
 
-def run_aircraft(aircraft, debug=False):
-    logger = setup_custom_logger("logger", debug)
+logger = setup_custom_logger("logger", False)
 
+
+def run_aircraft(aircraft, debug=False):
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
     previous_mtom = 0
     lst = [aircraft.mtom]
@@ -27,12 +28,12 @@ def run_aircraft(aircraft, debug=False):
         # Check divergence
         if np.isnan(aircraft.mtom):
             logger.warn("DIVERGED :(")
-            break
+            return aircraft
         # Check convergence
         if abs(aircraft.mtom - previous_mtom) < 0.01:
             logger.warn("CONVERGED :)")
             logger.debug(f"Took {i} iterations")
-            break
+            return aircraft
         previous_mtom = aircraft.mtom
 
     aircraft.get_cged()

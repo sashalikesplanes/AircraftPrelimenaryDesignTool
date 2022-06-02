@@ -76,8 +76,9 @@ class Engines(Component):
             (4 / 3) * D_prop_an22))  # amount of propellers needed to fit in the desired span
 
         if S_fit > S:
-            self.logger.warning(
-                f"The propellers don't fit in the Span. The span should be at least {S_fit} but it is {S}. The maximum amount of propellors that fit is {n_prop_fit}")
+            # self.logger.warning(
+            #     f"The propellers don't fit in the Span. The span should be at least {S_fit} but it is {S}. The maximum amount of propellors that fit is {n_prop_fit}")
+            pass
 
         d_max_prop = (S - D_fus - 2 * clearance) / (
             (4 / 3) * n_prop - (2 / 3))  # from the geometry with spacing of 1/3 of d_prop

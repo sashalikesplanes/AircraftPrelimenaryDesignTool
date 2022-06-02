@@ -1,25 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+import pandas as pd
 
 from detailedDesign.classes.Passenger import Passenger
 from misc.constants import mass_per_passenger, cargo_cabin_fraction
-from detailedDesign.classes.Aircraft import Aircraft
 
 
-def make_carrot_plot(aircraft):
-    max_length = aircraft.FuselageGroup.Fuselage.length
-    x_lemacs = np.arange(0, max_length)
-
-    for x_lemac in x_lemacs:
-        config_file = Path('data', 'new_designs', 'config.yaml')
-        aircraft = Aircraft(config_file, aircraft.states, debug=False)
-        aircraft.x_lemac = x_lemac
-
-
-
-def make_potato_plot(aircraft):
-    fig, axs = plt.subplots(2, 2)
+def make_potato_plot(aircraft, debug=False):
+    if debug:
+        fig, axs = plt.subplots(2, 2)
 
     aircraft.get_cged()
     cabin = aircraft.FuselageGroup.Fuselage.Cabin
@@ -76,7 +66,8 @@ def make_potato_plot(aircraft):
     cargo_mass = n_pax * mass_per_passenger * (1 - cargo_cabin_fraction)
     cargo_place.current_cargo_mass = cargo_mass
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs, c="b")
+    if debug:
+        plot_potato_curve(aircraft, plt_1, axs, c="b")
     plt_2 += plt_1
 
     # Y-Spud 1
@@ -104,7 +95,8 @@ def make_potato_plot(aircraft):
                         cabin.passengers.append(new_person)
                         cg = aircraft.get_cg()
                         plt_1.append((cg, aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs, c="r")
+    if debug:
+        plot_potato_curve(aircraft, plt_1, axs, c="r")
     plt_2 += plt_1
 
     # Y-Spud 2
@@ -132,7 +124,8 @@ def make_potato_plot(aircraft):
                         cabin.passengers.append(new_person)
                         cg = aircraft.get_cg()
                         plt_1.append((cg, aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs, c="r")
+    if debug:
+        plot_potato_curve(aircraft, plt_1, axs, c="r")
     plt_2 += plt_1
 
     # Z-Spud 1
@@ -153,7 +146,8 @@ def make_potato_plot(aircraft):
                 cabin.passengers.append(new_person)
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs, c="g")
+    if debug:
+        plot_potato_curve(aircraft, plt_1, axs, c="g")
     plt_2 += plt_1
 
     # Z-Spud 2
@@ -174,7 +168,8 @@ def make_potato_plot(aircraft):
                 cabin.passengers.append(new_person)
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs, c="g")
+    if debug:
+        plot_potato_curve(aircraft, plt_1, axs, c="g")
     plt_2 += plt_1
 
     # Fuel stuff
@@ -184,13 +179,14 @@ def make_potato_plot(aircraft):
     max_fuel_mass = fuel_storage.mass_H2
     fuel_storage.current_fuel_mass = max_fuel_mass
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs, c="b")
+    if debug:
+        plot_potato_curve(aircraft, plt_1, axs, c="b")
     plt_2 += plt_1
 
     cg_range = find_cg_range(plt_2, aircraft)
-    print(cg_range)
-
-    plt.show()
+    if debug:
+        plt.show()
+    return cg_range
 
 
 def plot_potato_curve(aircraft, data, axs, c="b"):
