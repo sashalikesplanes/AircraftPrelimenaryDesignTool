@@ -1,10 +1,13 @@
 from pathlib import Path
-from matplotlib import pyplot as plt
 
 from misc.openData import openData
 from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.State import State
 from detailedDesign.run_aircraft import run_aircraft
+<<<<<<< HEAD
+from detailedDesign.carrotPlot import make_carrot_plot
+=======
+>>>>>>> e5b48833aaeb5e9c14d4ef2295a10c84c46d88c0
 from detailedDesign.performAnalyses import perform_analyses
 
 
@@ -26,6 +29,21 @@ def detail_design(debug=False):
     # ########################################### #
     # ##   MAKE ALL THE COOL PLOTS AND STUFF   ## #
     # ########################################### #
+    # sketch_aircraft(aircraft)
+    # make_potato_plot(aircraft, debug=debug)
+    # print(f"Aircraft CG: {aircraft.get_cg()}")
+    # perform_analyses(aircraft)
+    # make_flight_envelope(aircraft, "cruise")
+    # make_flight_envelope(aircraft, "take-off")
+    # aircraft.WingGroup.Wing.size_AR(aircraft)
+    # make_potato_plot(aircraft)
+
+    # df = make_carrot_plot()
+    # print(df)
+
+
+if __name__ == "__main__":
+    detail_design(debug=True)
 
     perform_analyses(aircraft)
 

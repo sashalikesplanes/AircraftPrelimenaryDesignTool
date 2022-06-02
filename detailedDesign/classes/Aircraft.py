@@ -31,7 +31,7 @@ class Aircraft(Component):
         # Drag states
         self.C_D_min = 0.055  # Initial Value
 
-        self.cruise_drag = 500000  # needed as drag comes from previous iteration
+        self.cruise_drag = 1250000  # needed as drag comes from previous iteration
 
         self._freeze()
 
