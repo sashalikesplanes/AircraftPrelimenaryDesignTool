@@ -4,10 +4,6 @@ from misc.openData import openData
 from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.State import State
 from detailedDesign.run_aircraft import run_aircraft
-<<<<<<< HEAD
-from detailedDesign.carrotPlot import make_carrot_plot
-=======
->>>>>>> e5b48833aaeb5e9c14d4ef2295a10c84c46d88c0
 from detailedDesign.performAnalyses import perform_analyses
 
 
