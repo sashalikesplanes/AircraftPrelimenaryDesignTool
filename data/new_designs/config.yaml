@@ -22,6 +22,15 @@ Aircraft:
         aspect_ratio: 1.5 # [-] - picked from ADSEE
         leading_edge_sweep: 0.5 # [rad] - picked from ADSEE
         volume_coefficient: 0.09 # [-] - General Aviation Design
+        C_d_y: 0.7 #randomly chosen, 0.55-0.8 for conventional a/c, https://www.ripublication.com/ijaer18/ijaerv13n10_85.pdf
+        Kf1: 0.7 # randomly chosen, 0.65-0.75 for conventional a/c
+        Kf2: 1.4 # randomly chosen, 1.3-1.4 for conventional a/c
+        C_l_alpha_v: 6.8755 #[1/rad], NACA0010
+        deta_dbeta: 0
+        eta_v: 0.95 # really not sure about this value
+        Cr_Cv: 0.3 #typically 0.15-0.4, ratio rudder chord/VTP chord
+        tau_r: 0.517 # follows from figure Cr/Cv ratio
+        br_bv: 1 #typically 0.7-1, again randomly taken from above source, rudder height ratio
       HorizontalTail:
         toverc: 0.1 # [-] - NACA0010
         xovercmax: 0.3 # [-] - picked from ADSEE
