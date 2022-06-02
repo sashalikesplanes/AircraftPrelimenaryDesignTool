@@ -164,7 +164,7 @@ def get_drag(aircraft):
     FFHF = calc_FFwing(0.08, M, .4)
     CDmin_HF = calc_CDmin_tail(CDfHF, FFHF, IF) / 1.04
 
-    print(f'Drag of the hydrofoil without struct: {CDmin_HF} {CDmin_HF/TotalCDmin}')
+    # print(f'Drag of the hydrofoil without struct: {CDmin_HF} {CDmin_HF/TotalCDmin}')
 
     CDi = calc_CDi(C_L, AR, e)
     CD = CDi+TotalCDmin

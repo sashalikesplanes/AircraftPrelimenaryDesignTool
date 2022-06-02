@@ -31,7 +31,7 @@ class Aircraft(Component):
         # Drag states
         self.C_D_min = 0.055  # Initial Value
 
-        self.cruise_drag = 500000  # needed as drag comes from previous iteration
+        self.cruise_drag = 1250000  # needed as drag comes from previous iteration
 
         self._freeze()
 
@@ -64,7 +64,7 @@ class Aircraft(Component):
         self.cruise_drag = total_drag
         self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")
 
-        new_mtom = self.oem + self.payload_mass + self.fuel_mass
+        new_mtom = self.oem + self.payload_mass + self.fuel_mass + self.cargo_mass
         # Take a weighted average to prevent oscillations
         # self.mtom = (new_mtom * 0.1 + self.mtom * 0.9) 
         self.mtom = new_mtom
@@ -79,7 +79,7 @@ class Aircraft(Component):
 
     @property
     def fuel_mass(self):
-        return self.FuselageGroup.Fuselage.FuelContainer.mass_H2
+        return self.FuselageGroup.Power.mass_H2
 
     @property
     def oew(self):

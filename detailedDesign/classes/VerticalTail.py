@@ -71,6 +71,60 @@ class VerticalTail(Component):
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
 
+    def size_self_geometry_rudder(self):
+        state = self.Tail.FuselageGroup.Aircraft.states["cruise"]
+
+        self.Tail.FuselageGroup.Aircraft.get_cged()
+        V_stall = self.Tail.FuselageGroup.Aircraft.clean_stall_speed #TODO: ask for whether this is the correct Vs
+        V_appr = 1.1 * V_stall
+        V_crosswind = max(0.2*V_stall, 10.288889) #[m/s], 0.2 Vs or 20 kts # = V_w
+        V_tot = np.sqrt(V_appr**2+V_crosswind**2)
+        self.surface_area=100
+        S_s = 1.02*(self.Tail.FuselageGroup.Fuselage.Cabin.length* \
+                    self.Tail.FuselageGroup.Fuselage.Cabin.height+self.surface_area)
+        d_c = self.Tail.FuselageGroup.Fuselage.Cabin.length - self.Tail.FuselageGroup.Aircraft.get_cg()[0]
+        F_w = 0.5*state.density*V_crosswind**2*S_s*self.C_d_y
+        beta_sideslip = np.arctan(V_crosswind/V_appr)
+        C_n_beta = self.Kf2 * self.C_l_alpha_v*(1-self.deta_dbeta)*self.eta_v*self.volume_coefficient
+        C_y_beta = -self.Kf1 * self.C_l_alpha_v*(1-self.deta_dbeta)*self.eta_v * \
+                   self.surface_area/self.Tail.FuselageGroup.Aircraft.reference_area
+        C_n_deltar = -self.C_l_alpha_v*self.volume_coefficient*self.eta_v*self.tau_r*self.br_bv
+        C_y_deltar = self.C_l_alpha_v*self.eta_v*self.tau_r*self.br_bv*self.surface_area/self.Tail.FuselageGroup.Aircraft.reference_area
+
+        # self.Tail.FuselageGroup.Aircraft.get_cged()
+        # V_stall = 53.65
+        # V_appr = 1.1 * V_stall
+        # V_crosswind = 20.6  # [m/s], 0.2 Vs or 20 kts # = V_w
+        # V_tot = np.sqrt(V_appr ** 2 + V_crosswind ** 2)
+        # self.surface_area = 500
+        # S_s = 1.02 * (34.3*2.9 + 7)
+        # d_c = 34.3/2 - 15.26
+        # F_w = 0.5 * state.density * V_crosswind ** 2 * S_s * self.C_d_y
+        # beta_sideslip = np.arctan(V_crosswind / V_appr)
+        # C_n_beta = self.Kf2 * 4.5 * (1 - 0) * 0.95 * 0.084
+        # C_y_beta = -self.Kf1 * 4.5 * (1 - 0) * 0.95 * \
+        #            7 / 66
+        # C_n_deltar = -4.5 * 0.084 * 0.95 * self.tau_r * 1
+        # C_y_deltar = 4.5*0.95*self.tau_r*1*7/66
+        #
+
+
+
+        print("Tail area", self.surface_area, "wing area",self.Tail.FuselageGroup.Aircraft.reference_area)
+        print("V_w",V_crosswind, "V_t", V_tot, "Vappr", V_appr)
+        print("Ss",S_s)
+        # print("V_t", V_tot)
+        print("Fw",F_w)
+        # print("S",self.Tail.FuselageGroup.Aircraft.reference_area)
+        print("Cnbeta", C_n_beta)
+        print("Cybeta",C_y_beta)
+        print("Cndeltar", C_n_deltar)
+        print("Cydeltar",C_y_deltar)
+        print("beta",beta_sideslip)
+        print("dc", d_c)
+        print("span", self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span)
+        #solve eq 22&23 in https://www.ripublication.com/ijaer18/ijaerv13n10_85.pdf to find the deflections
+
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0

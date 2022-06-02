@@ -1,17 +1,25 @@
 import logging
-from detailedDesign.classes.Stability_draft import get_xplot
-from detailedDesign.marketEstimations import market_estimations
+import matplotlib.pyplot as plt
+
+from detailedDesign.analysis.marketEstimations import market_estimations
+from detailedDesign.analysis.find_stability import find_stability
+from detailedDesign.sketch import sketch_aircraft
 
 logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft):
+    sketch_aircraft(aircraft)
     print_summary(aircraft)
-    get_xplot(aircraft)
+    plt.figure(2)
+    find_stability(aircraft)
+    plt.figure(3)
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary = market_estimations(aircraft)
+    print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"Cost breakdown summary: {breakdown_summary}")
     print(f"Aircraft Price [M$]: {price_ac / 1e6:.2f}")
     print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
+    plt.show()
 
 
 def print_summary(aircraft):

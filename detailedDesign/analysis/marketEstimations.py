@@ -1,7 +1,6 @@
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
-from misc.constants import *
 
 # Personnel constants
 salaryPilot = 69  # [$/h]
@@ -78,9 +77,9 @@ def market_estimations(aircraft):
     # TODO: Revise price_ac calc. Should the other masses be subtracted from oew?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
 
-    price_ac = (P_OEW * (oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass
+    price_ac = (P_OEW * (oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass - aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass
                          - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
-                + aircraft.FuselageGroup.Fuselage.FuelContainer.own_mass * P_tank
+                + (aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass) * P_tank
                 + aircraft.FuselageGroup.Power.FuelCells.own_mass * P_fc) * (1 + PMac + f_misc)
 
     DOC_cap = price_ac * (a + f_ins)
@@ -116,6 +115,6 @@ def market_estimations(aircraft):
     plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
     # plt.savefig(costBreakdownPath, dpi = 600)
-    plt.show()
+    plt.savefig(Path("plots", "market_pie.png"))
 
     return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary
