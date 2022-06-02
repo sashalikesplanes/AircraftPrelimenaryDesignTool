@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from detailedDesign.classes.Passenger import Passenger
+from misc.constants import mass_per_passenger, cargo_cabin_fraction
 
 
 def make_potato_plot(aircraft):
@@ -51,87 +52,112 @@ def make_potato_plot(aircraft):
     vec_initial = np.array([vec_x[0] / 2, -(width - cabin.seat_width) / 2, -(n_floors - 1) * 0.5 * vec_z[2]])
     # print(vec_x, vec_y_seat, vec_y_aisle, vec_z)
 
-    # Curve 1
+    # Cargo stuff
+    cargo_place = aircraft.FuselageGroup.Fuselage.CargoBay
+    plt_1 = list()
+    plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
+    n_pax = n_sa * n_rows * n_floors
+    cargo_mass = n_pax * mass_per_passenger * (1 - cargo_cabin_fraction)
+    cargo_place.current_cargo_mass = cargo_mass
+    plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
+    plot_potato_curve(aircraft, plt_1, axs, c="b")
+
+    # # X-Spud 1
+    # cabin.passengers = []
+    # plt_1 = list()
+    # plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
+    # for x in range(int(n_rows)):
+    #     for y in range(int(n_sa)):
+    #         for z in range(n_floors):
+    #             # print(x, y, z)
+    #             n_cuts = 0
+    #             for cut in cuts:
+    #                 if cut < y:
+    #                     n_cuts += 1
+    #
+    #             vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
+    #             new_person = Passenger(vec3)
+    #             cabin.passengers.append(new_person)
+    #             cg = aircraft.get_cg()
+    #             plt_1.append((cg, aircraft.get_mass()))
+    # plot_potato_curve(aircraft, plt_1, axs)
+
+    # # X-Spud 2
+    # cabin.passengers = []
+    # plt_1 = list()
+    # plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
+    # for x in reversed(range(int(n_rows))):
+    #     for y in reversed(range(int(n_sa))):
+    #         for z in reversed(range(n_floors)):
+    #             # print(x, y, z)
+    #             n_cuts = 0
+    #             for cut in cuts:
+    #                 if cut < y:
+    #                     n_cuts += 1
+    #
+    #             vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
+    #             new_person = Passenger(vec3)
+    #             cabin.passengers.append(new_person)
+    #             cg = aircraft.get_cg()
+    #             plt_1.append((cg, aircraft.get_mass()))
+    # plot_potato_curve(aircraft, plt_1, axs)
+
+    # Y-Spud 1
     cabin.passengers = []
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    for x in range(int(n_rows)):
-        for y in range(int(n_sa)):
-            for z in range(n_floors):
-                # print(x, y, z)
-                n_cuts = 0
-                for cut in cuts:
-                    if cut < y:
-                        n_cuts += 1
-
-                vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
-                new_person = Passenger(vec3)
-                cabin.passengers.append(new_person)
-                cg = aircraft.get_cg()
-                plt_1.append((cg, aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs)
-
-    # Curve 2
-    cabin.passengers = []
-    plt_1 = list()
-    plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    for x in reversed(range(int(n_rows))):
-        for y in reversed(range(int(n_sa))):
-            for z in reversed(range(n_floors)):
-                # print(x, y, z)
-                n_cuts = 0
-                for cut in cuts:
-                    if cut < y:
-                        n_cuts += 1
-
-                vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
-                new_person = Passenger(vec3)
-                cabin.passengers.append(new_person)
-                cg = aircraft.get_cg()
-                plt_1.append((cg, aircraft.get_mass()))
-    plot_potato_curve(aircraft, plt_1, axs)
-
-    # Curve 3
-    cabin.passengers = []
-    plt_1 = list()
-    plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    for y in range(int(n_sa)):
+    for y_value in range(int(n_sa)):
+        if y_value % 2:
+            continue
         for x in range(int(n_rows)):
             for z in range(n_floors):
-                # print(x, y, z)
-                n_cuts = 0
-                for cut in cuts:
-                    if cut < y:
-                        n_cuts += 1
+                # print(x, y_value, z)
+                for y in [y_value, y_value + 1]:
+                    # print(n_sa - 1, y_value + 1)
+                    if n_sa <= y_value + 1:
+                        pass
+                    else:
+                        n_cuts = 0
+                        for cut in cuts:
+                            if cut < y:
+                                n_cuts += 1
 
-                vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
-                new_person = Passenger(vec3)
-                cabin.passengers.append(new_person)
-                cg = aircraft.get_cg()
-                plt_1.append((cg, aircraft.get_mass()))
+                        vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
+                        new_person = Passenger(vec3)
+                        cabin.passengers.append(new_person)
+                        cg = aircraft.get_cg()
+                        plt_1.append((cg, aircraft.get_mass()))
+    print(plt_1)
     plot_potato_curve(aircraft, plt_1, axs, c="r")
 
-    # Curve 4
+    # Y-Spud 2
     cabin.passengers = []
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    for y in reversed(range(int(n_sa))):
+    for y_value in reversed(range(int(n_sa))):
+        if y_value % 2:
+            continue
         for x in reversed(range(int(n_rows))):
             for z in reversed(range(n_floors)):
-                # print(x, y, z)
-                n_cuts = 0
-                for cut in cuts:
-                    if cut < y:
-                        n_cuts += 1
+                # print(x, y_value, z)
+                for y in [y_value, y_value + 1]:
+                    # print(n_sa - 1, y_value + 1)
+                    if n_sa <= y_value + 1:
+                        pass
+                    else:
+                        n_cuts = 0
+                        for cut in cuts:
+                            if cut < y:
+                                n_cuts += 1
 
-                vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
-                new_person = Passenger(vec3)
-                cabin.passengers.append(new_person)
-                cg = aircraft.get_cg()
-                plt_1.append((cg, aircraft.get_mass()))
+                        vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
+                        new_person = Passenger(vec3)
+                        cabin.passengers.append(new_person)
+                        cg = aircraft.get_cg()
+                        plt_1.append((cg, aircraft.get_mass()))
     plot_potato_curve(aircraft, plt_1, axs, c="r")
 
-    # Curve 5
+    # Z-Spud 1
     cabin.passengers = []
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
@@ -151,7 +177,7 @@ def make_potato_plot(aircraft):
                 plt_1.append((cg, aircraft.get_mass()))
     plot_potato_curve(aircraft, plt_1, axs, c="g")
 
-    # Curve 6
+    # Z-Spud 2
     cabin.passengers = []
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
@@ -170,6 +196,15 @@ def make_potato_plot(aircraft):
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
     plot_potato_curve(aircraft, plt_1, axs, c="g")
+
+    # Fuel stuff
+    fuel_storage = aircraft.FuselageGroup.Fuselage.FuelContainer
+    plt_1 = list()
+    plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
+    max_fuel_mass = fuel_storage.mass_H2
+    fuel_storage.current_fuel_mass = max_fuel_mass
+    plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
+    plot_potato_curve(aircraft, plt_1, axs, c="b")
 
     plt.show()
 
