@@ -1,5 +1,4 @@
 import numpy as np
-
 from detailedDesign.classes.Component import Component
 
 
@@ -17,10 +16,7 @@ class Cabin(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
-        self.seats_abreast = None
-        self.floor_count = None
         self.rows_per_floor = None
-        self.aisle_count = None
 
         self.passengers = []
 
@@ -28,46 +24,37 @@ class Cabin(Component):
 
     def size_self(self):
         """Function to size the cabin"""
-        # TODO: improve model to work better with circular fuselages
+        # TODO Fix Position
+
         # Do stuff
-        n_floors = 1
+        # n_floors = 1
         n_pax = self.passenger_count
         # ADSEE I formula for seats abreast
-        n_sa = np.ceil(0.45 * n_pax ** 0.5)
+        # n_sa = np.ceil(0.45 * n_pax ** 0.5)
 
         # If the maximum seats abreast is reached we will decrease the number to the maximum allowed
-        if n_sa > self.max_seats_abreast:
-            n_sa = self.max_seats_abreast
-
-        # Get the amount of aisles while preventing more than 4 seats needing to be placed
-        # next to one another.
-        if n_sa <= 6:
-            n_aisles = 1
-        else:
-            n_aisles = np.ceil(n_sa - 6) / 4 + 1
+        # if n_sa > self.max_seats_abreast:
+        #    n_sa = self.max_seats_abreast
 
         # Calculate the amount of rows for the case where there is only one floor
-        n_rows = np.ceil(n_pax / n_sa)
+        # n_rows = np.ceil(n_pax / n_sa)
 
         # find the amount of floors which satisfies the maximum rows in a floor
-        while n_rows / n_floors > self.max_rows_per_floor:
-            n_floors += 1
+        # while n_rows / n_floors > self.max_rows_per_floor:
+        #     n_floors += 1
 
-        # Calculate the average rows per floor
-        n_rows = np.ceil(n_rows / n_floors)
+        # # Calculate the average rows per floor
+        # n_rows = np.ceil(n_rows / n_floors)
 
         # Save seating arrangement into the object
-        self.seats_abreast = n_sa
+        n_rows = np.ceil(n_pax / (self.floor_count * self.seats_abreast))
         self.rows_per_floor = n_rows
-        self.floor_count = n_floors
-        self.aisle_count = n_aisles
 
         # Calculate the dimensions of the rectangular cabin
         # This is now done using properties because cool
 
         # Debug statements
         self.logger.debug(f"height x width x length: ({self.height:.4E} {self.width:.4E} {self.length:.4E}) [m]")
-        self.logger.debug(f"Cabin diameter{self.diameter:.4E} [m]")
         self.logger.debug(f"Cabin volume: {self.height * self.width * self.length:.4E} [m3]")
         self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])
 
@@ -82,11 +69,6 @@ class Cabin(Component):
     @property
     def length(self):
         return self.rows_per_floor * self.k_cabin
-
-    @property
-    def diameter(self):
-        # Find the diameter of the cabin using the width and the height and the smallest circle
-        return 2 * ((0.5 * self.width) ** 2 + (0.5 * self.height) ** 2) ** 0.5
 
     def cg_self(self):
         x_cg = self.length * 0.5

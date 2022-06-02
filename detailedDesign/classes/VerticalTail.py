@@ -34,10 +34,12 @@ class VerticalTail(Component):
         # Sizing dimensions
         wing_area = self.Tail.FuselageGroup.Aircraft.reference_area  # [m2]
         wing_span = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span  # [m]
-        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / 2  # [m]
+        # Fuselage semi minor and major dimensions (eclipse)
+        fuselage_a = self.Tail.FuselageGroup.Fuselage.outer_height / 2
+        fuselage_b = self.Tail.FuselageGroup.Fuselage.outer_width / 2
 
         self.tail_length = np.sqrt(
-            (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * 2 * fuselage_radius))  # [m]
+            (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * (fuselage_a + fuselage_b)))  # [m]
 
         self.surface_area = (self.volume_coefficient * \
                              wing_area * wing_span) / self.tail_length  # [m2]
@@ -72,5 +74,5 @@ class VerticalTail(Component):
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0
-        z_cg = -0.38*self.span #from adsee3lec3
+        z_cg = -self.span/3
         self.own_cg = np.array([x_cg, y_cg, z_cg])

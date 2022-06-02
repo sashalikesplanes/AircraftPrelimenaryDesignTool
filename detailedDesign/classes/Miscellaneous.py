@@ -90,7 +90,7 @@ class Miscellaneous(Component):
         # Makes sense to be on the same x as the centre
         pos_w_boat = pos_centre.copy()
         # further down than centre of fuselage structure
-        pos_w_boat[2] = self.FuselageGroup.Fuselage.outer_diameter / 3
+        pos_w_boat[2] = self.FuselageGroup.Fuselage.outer_height / 3
         # in the cockpit
         pos_w_flight_controls = pos_centre
         # pos_w_flight_controls = np.array([0.5 * self.FuselageGroup.Fuselage.cockpit_length, 0., -0.25 * self.FuselageGroup.Fuselage.outer_diameter])

@@ -26,4 +26,4 @@ class WingGroup(Component):
         self.size_self()
 
     def size_self(self):
-        self.pos = np.array([self.Aircraft.x_lemac, 0., -self.Aircraft.FuselageGroup.Fuselage.outer_diameter/2])
+        self.pos = np.array([self.Aircraft.x_lemac, 0., -self.Aircraft.FuselageGroup.Fuselage.outer_height/2])

@@ -93,7 +93,8 @@ def get_drag(aircraft):
     cWMGC = aircraft.WingGroup.Wing.mean_geometric_chord
     T = aircraft.states['cruise'].temperature
     Sref = aircraft.reference_area
-    dfus = aircraft.FuselageGroup.Fuselage.diameter
+    # TODO CHECK HOW THIS WORKS FOR AN ELIPSE
+    dfus = (aircraft.FuselageGroup.Fuselage.outer_height + aircraft.FuselageGroup.Fuselage.outer_height) / 2
     croot = aircraft.WingGroup.Wing.root_chord
     toverc = aircraft.WingGroup.Wing.thickness_chord_ratio
     xovercmax = aircraft.WingGroup.Wing.xovercmax
