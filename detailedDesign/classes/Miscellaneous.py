@@ -34,7 +34,7 @@ class Miscellaneous(Component):
         n_pax = self.FuselageGroup.Fuselage.Cabin.passenger_count  # [-]
         pilot_count = 3  # [-]
         passengers_per_flight_attendant = 50
-        W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.FuelContainer.get_mass())  # [lbs]
+        W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.AftFuelContainer.get_mass() + self.FuselageGroup.Fuselage.ForwardFuelContainer.get_mass())  # [lbs]
 
         # MDN
         W_UAV = 2000  # [lbs]

@@ -38,6 +38,7 @@ def detail_design(debug=False):
     # make_flight_envelope(aircraft, "cruise")
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)
+    # make_potato_plot(aircraft)
 
     df = make_carrot_plot()
     f_stab, f_cont = get_xplot(aircraft)
