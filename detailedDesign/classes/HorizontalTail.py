@@ -31,11 +31,11 @@ class HorizontalTail(Component):
         wing_area = self.Tail.FuselageGroup.Aircraft.reference_area  # [m2]
         # [m]
         wing_mean_geometric_chord = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord
-        fuselage_radius = self.Tail.FuselageGroup.Fuselage.outer_diameter / \
-            2  # [m]
 
-        self.tail_length = np.sqrt((2 * self.volume_coefficient * wing_area * wing_mean_geometric_chord
-                                    )/(np.pi * (2 * fuselage_radius)))  # [m]
+        fuselage_a = self.Tail.FuselageGroup.Fuselage.outer_height / 2
+        fuselage_b = self.Tail.FuselageGroup.Fuselage.outer_width / 2
+
+        self.tail_length = np.sqrt((2 * self.volume_coefficient * wing_area * wing_mean_geometric_chord)/(np.pi * (fuselage_a + fuselage_b)))  # [m]
 
         self.surface_area = (self.volume_coefficient * wing_area *
                              wing_mean_geometric_chord) / self.tail_length   # [m2]

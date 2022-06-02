@@ -93,8 +93,8 @@ def get_xplot(aircraft):
 
 
 
-    widthfuselage = aircraft.FuselageGroup.Fuselage.diameter  # At this stage the same due to circular
-    heightfuselage = aircraft.FuselageGroup.Fuselage.diameter
+    widthfuselage = aircraft.FuselageGroup.Fuselage.outer_width  # At this stage the same due to circular
+    heightfuselage = aircraft.FuselageGroup.Fuselage.outer_height
     lengthfuselage = aircraft.FuselageGroup.Fuselage.length
 
     taillength = aircraft.FuselageGroup.Tail.HorizontalTail.tail_length

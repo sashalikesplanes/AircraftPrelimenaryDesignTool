@@ -8,3 +8,6 @@ testMargin = 0.03  # [-] fraction of the margin that a unit_test can be wrong wi
 energyDensityHydrogen = 33.6e3 * 60 * 60  # [J/kg]
 Xtrovercfus = 0.0   #transition location
 Xtrovercwing = 0.35 #transition location
+
+# Yes I know this shouldn't be here, but it is.
+mass_per_passenger = 120  # [kg]

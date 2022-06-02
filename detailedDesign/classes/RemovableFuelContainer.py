@@ -72,6 +72,7 @@ class FuelContainer(Component):
         self.reserve_mass_H2 = averagepower * self.Fuselage.FuselageGroup.Aircraft.reserve_duration / (
                     32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
 
+
         self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2
 
         # Tank sizing
@@ -92,8 +93,10 @@ class FuelContainer(Component):
 
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
-                self.radius_tank + self.thickness) ** 2 * self.length_tank - self.volume_tank)
-        self.logger.debug(f" { self.radius_tank = }, {self.mass_tank = }")
+                self.radius_tank + self.thickness) ** 2 * (self.length_tank - 2 * self.radius_tank) - self.volume_tank) * self.n_tanks
+        self.logger.debug(f" { self.length_tank = }, {self.mass_tank = }")
+        
+        self.logger.debug(f"{self.volume_tank = }")
 
         self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length_tank
 

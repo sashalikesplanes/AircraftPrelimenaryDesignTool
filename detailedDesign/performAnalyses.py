@@ -35,3 +35,5 @@ def print_summary(aircraft):
 
     cabin = aircraft.FuselageGroup.Fuselage.Cabin
     logger.debug(f"{ cabin.length = } {cabin.width = } {cabin.height = }")
+
+    logger.debug(f"{aircraft.FuselageGroup.Power.FuelCells.size = }")
