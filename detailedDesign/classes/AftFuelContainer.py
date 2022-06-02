@@ -14,7 +14,7 @@ class AftFuelContainer(FuelContainer):
         self.volume_tank = self.mass_H2 / self.density_H2 * (1 + self.Vi)
 
         self.length = (self.volume_tank - 4 / 3 * np.pi * self.inner_radius ** 3) / (np.pi * self.inner_radius ** 2)
-
+        self.logger.debug(f"{self.length = }")
         if self.length < 0:
               self.length = 0
               self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)

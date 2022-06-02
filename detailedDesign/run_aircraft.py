@@ -6,7 +6,7 @@ from detailedDesign.log import setup_custom_logger
 from detailedDesign.getConstraints import get_constraints
 
 
-logger = setup_custom_logger("logger", False)
+logger = setup_custom_logger("logger", True)
 
 
 def run_aircraft(aircraft, debug=False):
