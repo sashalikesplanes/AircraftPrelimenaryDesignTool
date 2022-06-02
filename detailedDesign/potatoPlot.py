@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from detailedDesign.classes.Passenger import Passenger
-from misc.constants import mass_per_passenger, cargo_cabin_fraction
+from misc.constants import mass_per_passenger, cargo_cabin_fraction, safety_margin
 
 
 def make_potato_plot(aircraft, debug=False):
@@ -233,5 +233,5 @@ def find_cg_range(data, aircraft):
     for i in range(len(lst_x)):
         lst_x_lemac[i] = (lst_x[i] - aircraft.x_lemac) / aircraft.WingGroup.Wing.mean_geometric_chord
 
-    output = (min(lst_x_lemac), max(lst_x_lemac))
+    output = (min(lst_x_lemac) - safety_margin, max(lst_x_lemac) + safety_margin)
     return output

@@ -26,6 +26,10 @@ class FuelCells(Component):
 
         self.own_mass = power_peak/self.mass_power_density # [kg]
         self.size = self.own_mass/self.W_Size  # [m3]
+        # TODO Update
+        fuselage = self.Power.FuselageGroup.Fuselage
+        self.pos = np.array([fuselage.Cabin.length + fuselage.cockpit_length, 0, 0])
+
 
         # self.voltage = 1.2*self.conversion_efficiency*self.amount_cells
         # self.numberplates = power_peak / (self.voltage * self.current_density * self.size)
@@ -41,4 +45,4 @@ class FuelCells(Component):
         # print("power produced per plate", self.power_produced)
 
     def cg_self(self):
-        self.own_cg = np.array([self.Power.FuselageGroup.Fuselage.FuelContainer.total_length / 2, 0., 0.])
+        self.own_cg = np.array([0, 0., 0.])

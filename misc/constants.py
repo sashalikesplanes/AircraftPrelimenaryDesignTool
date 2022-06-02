@@ -13,3 +13,6 @@ Xtrovercwing = 0.35 #transition location
 mass_per_passenger = 120  # [kg]
 # Percentage of the passenger mass which shall be stored in the cargo bay
 cargo_cabin_fraction = 0.75  # [kg]
+
+# Safety margin for potato plot
+safety_margin = 0.02

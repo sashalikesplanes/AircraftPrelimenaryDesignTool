@@ -56,7 +56,7 @@ class Cabin(Component):
         # Debug statements
         self.logger.debug(f"height x width x length: ({self.height:.4E} {self.width:.4E} {self.length:.4E}) [m]")
         self.logger.debug(f"Cabin volume: {self.height * self.width * self.length:.4E} [m3]")
-        self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])
+        self.pos = np.array([self.Fuselage.cockpit_length, 0., self.z_offset])
 
     @property
     def height(self):

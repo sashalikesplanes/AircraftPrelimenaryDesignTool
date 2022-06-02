@@ -137,3 +137,4 @@ dmypy.json
 # SHIT
 /plots/costBreakdown.png
 /plots
+/data/dataframes/carrot.dat

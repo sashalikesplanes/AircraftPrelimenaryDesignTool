@@ -35,12 +35,24 @@ def calc_Xacwf(Xacw, CLalphatailless, widthfuselage, heightfuselage, lengthfusel
     return Xacwf
 
 
-def calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xcg, Xacwf, SM):
+def calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xacwf, SM):
     STABILITYTERM = CLalphatail / CLalphatailless * (1 - calc_depsilondalpha(AR)) * taillength / cMAC * VhoverV ** 2
-    ShoverSstability = 1 / STABILITYTERM * Xcg - (Xacwf - SM) / STABILITYTERM
-    return ShoverSstability
+    a = 1 / STABILITYTERM
+    b = - (Xacwf - SM) / STABILITYTERM
 
-'''control'''
+    # ShoverSstability = 1 / STABILITYTERM * Xcg - (Xacwf - SM) / STABILITYTERM
+    return lambda x: a * x + b
+
+
+def calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Cmaeroc, Xacwf):
+    CONTROLLABILITYTERM = CLh / CLaminush * taillength / cMAC * VhoverV ** 2
+    a = 1/CONTROLLABILITYTERM
+    b = (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
+
+    # ShoverScontrollability = 1 / CONTROLLABILITYTERM * Xcg + (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
+    return lambda x: a * x + b
+
+
 def calc_Cmaerocwing(Cm0foil, AR, quarterchordsweep):
     Cmaerocwing = Cm0foil * (AR * np.cos(quarterchordsweep) ** 2 / (AR + 2 * np.cos(quarterchordsweep)))  # sweep assumed quarter chord sweep
     return Cmaerocwing
@@ -62,12 +74,6 @@ def calc_deltaflap_Cmaeroc(cMAC, CLwing, deltaCLmax, sweephingeline, S, Xacwf):
     deltaCmquarter = mu2 * (-mu1 * deltaClmax * cprimeoverc - (CLwing + deltaClmax * (1 - Swf / S)) / 8 * cprimeoverc * (cprimeoverc - 1))  # neglecting sweep term
     deltaflap_Cmaeroc = deltaCmquarter - CLwing * (0.25 - Xacwf)
     return deltaflap_Cmaeroc
-
-
-def calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf):
-    CONTROLLABILITYTERM = CLh / CLaminush * taillength / cMAC * VhoverV ** 2
-    ShoverScontrollability = 1 / CONTROLLABILITYTERM * Xcg + (Cmaeroc / CLaminush - Xacwf) / CONTROLLABILITYTERM
-    return ShoverScontrollability
 
 
 def get_xplot(aircraft):
@@ -122,8 +128,6 @@ def get_xplot(aircraft):
     Xacwflanding = calc_Xacwf(Xacwlanding, CLalphataillesslanding, widthfuselage, heightfuselage, lengthfuselage, S, cMAC, taperratio, cMGC,
                        b, quarterchordsweep)
 
-    Xcg = np.arange(-1, 1.5, 0.05)
-    ShoverSstability = calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xcg, Xacwf, SM)
 
     ###'''Cmaerodynamiccentre calculation'''###
     # wing
@@ -140,26 +144,24 @@ def get_xplot(aircraft):
     sweephingeline = 0  # neglegible and saves a lot of time
     CLwing = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S)  # all flaps must be deployed
     deltaflap_Cmaeroc = calc_deltaflap_Cmaeroc(cMAC, CLwing, deltaCLmax, sweephingeline, S, Xacwflanding)
-    Cmaeroc = Cmaerocwing + deltaflap_Cmaeroc + deltafus_Cmaeroc  # + deltanac_Cmaeroc, neglecting nacelles for now, and no formulas for it
-    #print('Cmac', Cmaeroc)
+    Cmaeroc = Cmaerocwing + deltaflap_Cmaeroc + deltafus_Cmaeroc
+    # + deltanac_Cmaeroc, neglecting nacelles for now, and no formulas for it
 
-    ShoverScontrollability = calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Xcg, Cmaeroc, Xacwf)
+    Xcg = np.arange(-1, 1.5, 0.05)
+    f_stab = calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xacwf, SM)
+    f_cont = calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Cmaeroc, Xacwf)
 
-
-
-    plt.plot(Xcg, ShoverSstability)
-    plt.plot(Xcg, ShoverScontrollability)
+    plt.figure(5)
+    plt.plot(Xcg, f_stab(Xcg))
+    plt.plot(Xcg, f_cont(Xcg))
     plt.xlabel("xcg/c")
     plt.ylabel("Sh/S")
     plt.grid()
     plt.xlim(-0.5, 1)
     plt.ylim(0, 1)
     plt.title("X-plot")
-    plt.show()
-    return
 
-
-
+    return f_stab, f_cont
 
 
 # '''In the code the contribution of the nacelles to Xacwf is neglected as it is -0.0003 per engine'''
