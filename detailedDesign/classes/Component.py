@@ -88,6 +88,10 @@ class Component:
             component.print_component_masses(prev_mass=self.get_mass(), depth=depth+1)
 
     def unwrap_design_config(self, design_config):
+        # Allow Aft and Forward Fuel Container to use just Fuel Container 
+        if type(self).__name__ == "ForwardFuelContainer" or type(self).__name__ == "AftFuelContainer":
+            return design_config["FuelContainer"]
+
         return design_config[type(self).__name__]
 
     def __setattr__(self, key, value):

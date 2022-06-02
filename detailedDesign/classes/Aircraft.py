@@ -65,7 +65,7 @@ class Aircraft(Component):
         self.cruise_drag = total_drag
         self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")
 
-        new_mtom = self.oem + self.payload_mass + self.fuel_mass
+        new_mtom = self.oem + self.payload_mass + self.fuel_mass + self.cargo_mass
         # Take a weighted average to prevent oscillations
         # self.mtom = (new_mtom * 0.1 + self.mtom * 0.9) 
         self.mtom = new_mtom
@@ -80,7 +80,7 @@ class Aircraft(Component):
 
     @property
     def fuel_mass(self):
-        return self.FuselageGroup.Fuselage.FuelContainer.mass_H2
+        return self.FuselageGroup.Power.mass_H2
 
     @property
     def oew(self):

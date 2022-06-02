@@ -73,7 +73,7 @@ def detail_design(debug=False):
     # make_flight_envelope(aircraft, "cruise")
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)
-    make_potato_plot(aircraft)
+    # make_potato_plot(aircraft)
 
 
 if __name__ == "__main__":

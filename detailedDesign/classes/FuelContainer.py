@@ -38,43 +38,8 @@ class FuelContainer(Component):
 
         self._freeze()
 
-    def size_self(self):
-        state = self.Fuselage.FuselageGroup.Aircraft.states["cruise"]
-
-        # Tank thickness sizing
-        self.inner_diameter = np.sqrt(
-            4 * self.Fuselage.FuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2
-        # self.inner_diameter = 10 #manual change for non-integral tank
-        self.inner_radius = self.inner_diameter / 2  # for integral tank
-        self.radius_tank = self.inner_radius  # change here if non-integral tank
-
-        thickness_fatigue = self.tank_pressure * self.inner_radius * self.SF / self.fatiguestrength
-        thickness_yield = self.tank_pressure * self.inner_radius * self.SF / self.yieldstrength
-
-        self.thickness = max(thickness_fatigue, thickness_yield)
-
-        # Fuel mass sizing
-        peakpower = self.Fuselage.FuselageGroup.Power.own_power_peak
-        averagepower = self.Fuselage.FuselageGroup.Power.own_power_average
-        duration_peak = 0.5  # [h] TODO: find the right value (Take off, etc...)
-        mass_H2_peak = peakpower * duration_peak / (
-                32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        mass_H2_average = averagepower * (state.duration / 3600 - duration_peak) / (
-                32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        self.reserve_mass_H2 = averagepower * self.Fuselage.FuselageGroup.Aircraft.reserve_duration \
-                               / (32167 * self.Fuselage.FuselageGroup.Power.FuelCells.conversion_efficiency)
-
-        self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2
-
-        # Tank sizing
-        self.volume_tank = self.mass_H2 * (1 + self.Vi) / self.density_H2
-        # we constrained the radius as being an integral tank,\
-        self.length = (self.volume_tank - 4 * np.pi * self.inner_radius ** 3 / 3) / (np.pi * self.inner_radius ** 2)
-
-        # If the length is negative we will set it to zero and size the tank radius accordingly
-        if self.length < 0:
-            self.length = 0
-            self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
+    def weight_self(self):
+        state = self.Fuselage.FuselageGroup.Aircraft.states['cruise']
 
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
@@ -97,17 +62,34 @@ class FuelContainer(Component):
         self.total_tank_thickness = self.thickness_insulation + self.thickness
         self.empty_space_thickness = self.total_tank_thickness
 
+
+    def size_self(self):
+        state = self.Fuselage.FuselageGroup.Aircraft.states["cruise"]
+
+        # Tank thickness sizing
+        self.inner_diameter = np.sqrt(
+            4 * self.Fuselage.ForwardFuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2
+        # self.inner_diameter = 10 #manual change for non-integral tank
+        self.inner_radius = self.inner_diameter / 2  # for integral tank
+        self.radius_tank = self.inner_radius  # change here if non-integral tank
+
+        thickness_fatigue = self.tank_pressure * self.inner_radius * self.SF / self.fatiguestrength
+        thickness_yield = self.tank_pressure * self.inner_radius * self.SF / self.yieldstrength
+
+        self.thickness = max(thickness_fatigue, thickness_yield)
+
+
         # Debugging
-        self.logger.debug(f"{ self.inner_diameter = }")
-        self.logger.debug(f" { self.radius_tank = }, {self.mass_tank = }")
-        self.logger.debug(f"Empty thickness before: {self.empty_space_thickness} m")
-        self.logger.debug(f"Empty thickness after: {self.empty_space_thickness} m")
+        # self.logger.debug(f"{ self.inner_diameter = }")
+        # self.logger.debug(f" { self.radius_tank = }, {self.mass_tank = }")
+        # self.logger.debug(f"Empty thickness before: {self.empty_space_thickness} m")
+        # self.logger.debug(f"Empty thickness after: {self.empty_space_thickness} m")
         # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")
-        self.logger.debug(f"Metal tank thiccness: {self.thickness:.4E} [m]")
-        self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness:.4E} [m]")
-        self.logger.debug(f"Total hydrogen mass: {self.mass_H2:.4E} [kg]")
-        self.logger.debug(f"Total tank mass: {self.own_mass:.4E} [kg]")
-        self.logger.debug(f"Total tank volume: {self.volume_tank:.4E} [m3]")
+        # self.logger.debug(f"Metal tank thiccness: {self.thickness:.4E} [m]")
+        # self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness:.4E} [m]")
+        # self.logger.debug(f"Total hydrogen mass: {self.mass_H2:.4E} [kg]")
+        # self.logger.debug(f"Total tank mass: {self.own_mass:.4E} [kg]")
+        # self.logger.debug(f"Total tank volume: {self.volume_tank:.4E} [m3]")
 
         # plotting
         # plt.plot(thickness_insulation, mass_total)
@@ -115,13 +97,14 @@ class FuelContainer(Component):
         # plt.xlabel("Insulation thickness [m]")
         # plt.title("Effect of insulation thickness on total tank weight")
         # plt.show()
-        self.pos = np.array([self.Fuselage.cockpit_length + self.Fuselage.Cabin.length, 0., 0.])
 
     def cg_self(self):
+
         x_cg = 0.5 * self.length + self.inner_radius + self.total_tank_thickness
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
+        self.logger.debug(f"{self.own_cg = }")
 
     @property
     def total_length(self):

@@ -2,7 +2,8 @@ import numpy as np
 
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.Cabin import Cabin
-from detailedDesign.classes.FuelContainer import FuelContainer
+from detailedDesign.classes.ForwardFuelContainer import ForwardFuelContainer
+from detailedDesign.classes.AftFuelContainer import AftFuelContainer
 from detailedDesign.classes.CargoBay import CargoBay
 from misc.ISA import getPressure
 from misc.unitConversions import *
@@ -16,8 +17,9 @@ class Fuselage(Component):
         self.Cabin = Cabin(self, self.design_config)
         self.Cabin.get_sized()
         self.CargoBay = CargoBay(self, self.design_config)
-        self.FuelContainer = FuelContainer(self, self.design_config)
-        self.components = [self.Cabin, self.CargoBay, self.FuelContainer]
+        self.ForwardFuelContainer = ForwardFuelContainer(self, self.design_config)
+        self.AftFuelContainer = AftFuelContainer(self, self.design_config)
+        self.components = [self.Cabin, self.CargoBay, self.ForwardFuelContainer, self.AftFuelContainer]
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
 
@@ -27,8 +29,10 @@ class Fuselage(Component):
     def length(self):
         # TODO add tail cone, nose cone etc
         length = self.Cabin.length
+        self.logger.debug(f"Volume of Fuel: {self.ForwardFuelContainer.volume_tank + self.AftFuelContainer.volume_tank} m3")
         self.logger.debug(f"Cabin length: {self.Cabin.length}")
-        self.logger.debug(f"Fuel Compartment Length: {self.FuelContainer.length + self.FuelContainer.radius_tank * 2}")
+        self.logger.debug(f"Fuel Compartment Length: {self.ForwardFuelContainer.length + self.ForwardFuelContainer.radius_tank * 4 + self.AftFuelContainer.length}")
+        self.logger.debug(f"Wing box length: {self.FuselageGroup.Aircraft.WingGroup.Wing.root_chord }")
         return length + self.cockpit_length + self.tail_length
 
     @property
