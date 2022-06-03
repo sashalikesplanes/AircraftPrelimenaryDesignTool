@@ -9,6 +9,17 @@ def calc_viscosity(T):
     mu = 1.458e-6*T**1.5/(T+110.4)
     return mu
 
+def calc_sflap(root_chord, taper, span, fuselage_width):
+    fuselage_edge_chord = root_chord * 2 * taper / span * fuselage_width / 2
+    end_of_flapped_chord = root_chord * taper * 0.7 
+    flapped_area = span * (fuselage_edge_chord + end_of_flapped_chord) / 2
+    return flapped_area
+
+def calc_TO_CD_min(S_flap, S_ref):
+    delta_1 = 1.016
+    delta_2 = 0.0382
+    delta_CD = delta_1 * delta_2 * S_flap / S_ref
+    return delta_CD
 
 def calc_reynolds(rho, V, c, T):
     Re = rho*V*c/calc_viscosity(T)
@@ -95,7 +106,10 @@ def get_drag(aircraft):
     Sref = aircraft.reference_area
     # TODO CHECK HOW THIS WORKS FOR AN ELIPSE
     dfus = (aircraft.FuselageGroup.Fuselage.outer_height + aircraft.FuselageGroup.Fuselage.outer_height) / 2
+    fuselage_width = aircraft.FuselageGroup.Fuselage.outer_height
     croot = aircraft.WingGroup.Wing.root_chord
+    taper = aircraft.WingGroup.Wing.taper_ratio
+    span = aircraft.WingGroup.Wing.span
     toverc = aircraft.WingGroup.Wing.thickness_chord_ratio
     xovercmax = aircraft.WingGroup.Wing.xovercmax
     M = V/aircraft.states['cruise'].speed_of_sound
@@ -119,6 +133,10 @@ def get_drag(aircraft):
     IF = dict({'wing': 1,  # high or mid wing
                'fuselage': 1.5,  # TODO know it is 50 % to take care of the hull, refine
                'tail': 1.04})  # conventional or T tail
+
+    flapped_area = calc_sflap(croot, taper, span, fuselage_width)
+    delta_CD_min_TO = calc_TO_CD_min(flapped_area, Sref)
+
 
     # run Wing part
     Rewing = calc_reynolds(rho, V, cWMGC, T)
@@ -169,7 +187,9 @@ def get_drag(aircraft):
     CDi = calc_CDi(C_L, AR, e)
     CD = CDi+TotalCDmin
 
+    CD_TO = TotalCDmin + delta_CD_min_TO + calc_CDi(aircraft.C_L_TO, AR, e)
+
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)
     D = 0.5*rho*V**2*CD*Sref
-    return TotalCDmin, CDi, CD, D
+    return TotalCDmin, CDi, CD, D, CD_TO

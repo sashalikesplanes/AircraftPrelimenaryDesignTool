@@ -25,21 +25,21 @@ class Fuselage(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self.tail_length = 0
+        self.fuselage_length = 0
 
         self._freeze()
 
     @property
     def length(self):
-        # TODO add tail cone, nose cone etc
+        # TODO add nose cone etc
         length = self.Cabin.length
         self.logger.debug(f"Volume of Fuel: {self.ForwardFuelContainer.volume_tank + self.AftFuelContainer.volume_tank} m3")
         self.logger.debug(f"Cabin length: {self.Cabin.length}")
         self.logger.debug(f"Fuel Compartment Length: {self.ForwardFuelContainer.length + self.ForwardFuelContainer.radius_tank * 4 + self.AftFuelContainer.length}")
         self.logger.debug(f"Wing box length: {self.FuselageGroup.Aircraft.WingGroup.Wing.root_chord }")
-        self.tail_length = 1.6 * self.outer_height
-        return length + self.cockpit_length + self.AssFuelContainer.length + self.tail_length
 
-    print(length)
+        self.tail_length = 1.6 * self.outer_height   # from ADSEE typical for airliners
+        return length + self.cockpit_length + self.AssFuelContainer.length + self.tail_length
 
     @property
     def thickness(self):

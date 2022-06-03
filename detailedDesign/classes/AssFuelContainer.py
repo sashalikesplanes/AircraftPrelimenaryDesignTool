@@ -19,9 +19,14 @@ class AssFuelContainer(FuelContainer):
         self.logger.debug(f"{self.length = }")
         if self.length < 0:
             self.logger.warn("WARNING ASS FUEL TANK NEGATIVE")
-            self.length = 0
+            self.length = 0.1
             self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
+
+        
 
         self.pos = np.array([self.Fuselage.Cabin.length + self.Fuselage.cockpit_length, 0.,     self.z_offset])
         self.logger.debug(f"{self.pos = }")
         self.weight_self()
+
+        if self.own_mass < 5 or np.isnan(self.own_mass):
+            self.own_mass = 0.1

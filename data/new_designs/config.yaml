@@ -7,6 +7,7 @@ Aircraft:
   clean_stall_speed: 100 # m/s picked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
+  C_L_TO: 1.5
   count_pilot: 3
   x_lemac: 25 # TODO optimize for stability
   FuselageGroup:
