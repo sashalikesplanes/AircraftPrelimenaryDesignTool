@@ -26,6 +26,7 @@ class FuelCells(Component):
 
         self.own_mass = power_peak/self.mass_power_density # [kg]
         self.size = self.own_mass/self.W_Size  # [m3]
+        self.logger.debug(f" {self.size = }")
         # TODO Update
         fuselage = self.Power.FuselageGroup.Fuselage
         self.pos = np.array([fuselage.Cabin.length + fuselage.cockpit_length, 0, 0])
