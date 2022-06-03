@@ -11,7 +11,13 @@ logger = logging.getLogger("logger")
 def perform_analyses(aircraft):
     # sketch_aircraft(aircraft)
     print_summary(aircraft)
+<<<<<<< HEAD
     # find_stability(aircraft)
+=======
+    plt.figure(2)
+    find_stability(aircraft)
+    plt.figure(3)
+>>>>>>> 6b5e1428cc5b758022c7942ea18262bb0863a272
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary = market_estimations(aircraft)
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"Cost breakdown summary: {breakdown_summary}")
@@ -27,11 +33,11 @@ def print_summary(aircraft):
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
 
     engines = aircraft.WingGroup.Engines
-    logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
-    logger.debug(f"Amoung of motors: {engines.own_amount_motor} [-]")
-    logger.debug(f"Unit dimensions (L x W x H) ({engines.own_lenght_unit:.3f} x {engines.own_width_unit:.3f} x {engines.own_height_unit:.3f}) [m]")
-    logger.debug(f"Clean stall speed : {aircraft.clean_stall_speed} m/s")
-    logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
+    # logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
+    # logger.debug(f"Amoung of motors: {engines.own_amount_motor} [-]")
+    # logger.debug(f"Unit dimensions (L x W x H) ({engines.own_lenght_unit:.3f} x {engines.own_width_unit:.3f} x {engines.own_height_unit:.3f}) [m]")
+    # logger.debug(f"Clean stall speed : {aircraft.clean_stall_speed} m/s")
+    # logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
 
     logger.debug(f"Wing Span: {aircraft.WingGroup.Wing.span} m")
 

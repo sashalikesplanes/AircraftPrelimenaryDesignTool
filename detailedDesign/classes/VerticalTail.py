@@ -125,6 +125,11 @@ class VerticalTail(Component):
         print("span", self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span)
         #solve eq 22&23 in https://www.ripublication.com/ijaer18/ijaerv13n10_85.pdf to find the deflections
 
+
+
+
+
+
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0

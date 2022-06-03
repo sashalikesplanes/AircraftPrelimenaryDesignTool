@@ -15,15 +15,17 @@ def run_test():
 
     # call python file
     states['cruise'].velocity
-    aircraft.WingGroup.Wing.span = 100
-    aircraft.reference_thrust = 53500 * 4.44822 * 4
-    aircraft.FuselageGroup.Fuselage.diameter = 6
+    states['cruise'].altitude
+    aircraft.WingGroup.Wing.span = 120
+    aircraft.reference_thrust = 659256.83
+
 
     Engines.size_self()
 
-    print('total mass ', Engines.own_mass)
-    print('amount of propellors', Engines.own_amount_prop)
-
+    print('total mass ', Engines.own_mass,'kg')
+    print('amount of fans', Engines.own_amount_fans)
+    print('amount of fans wing', Engines.own_fans_on_wing)
+    print('amount of fans fuselage', Engines.own_fans_on_fuselage)
 
 if __name__ == "__main__":
     run_test()

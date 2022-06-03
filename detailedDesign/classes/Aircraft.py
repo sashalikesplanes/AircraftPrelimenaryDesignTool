@@ -84,3 +84,34 @@ class Aircraft(Component):
     @property
     def oew(self):
         return self.oem
+
+    def get_cg(self):
+        """Calculate the cg of this component and all its sub-components"""
+        self.get_cged()
+        total_mass_factor = self.own_mass
+        cg_pos = self.own_cg * self.own_mass
+
+        for component in self.components:
+            cg_pos += (component.get_cg() + component.pos) * component.get_mass()
+            total_mass_factor += component.get_mass()
+
+        if total_mass_factor != 0:
+            cg_pos = cg_pos / total_mass_factor
+        else:
+            cg_pos = self.own_cg
+
+        return cg_pos
+
+    def plot_cgs(self):
+        self.get_cged()
+        lst = []
+        for component in self.components:
+            new_lst = component.plot_cgs()
+            for i in range(len(new_lst)):
+                # print(new_lst[i][0], component.pos)
+                new_lst[i][0] = component.pos + new_lst[i][0]
+                # print(new_lst[i])
+            lst += new_lst
+
+        lst.append([self.own_cg, f"{str(self)}"])
+        return lst

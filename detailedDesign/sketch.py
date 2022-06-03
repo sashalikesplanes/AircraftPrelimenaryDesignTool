@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 
 def sketch_aircraft(aircraft):
-    plt.figure(2)
+    plt.figure(1)
     things = aircraft.plot_cgs()
     for thing in things:
         plt.scatter(thing[0][0], thing[0][2])
@@ -53,4 +54,5 @@ def sketch_aircraft(aircraft):
     plt.plot(x, y, "r")
 
     plt.gca().invert_yaxis()
-    plt.show()
+    location = Path('plots', 'sketch.png')
+    plt.savefig(location)

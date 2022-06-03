@@ -44,7 +44,6 @@ def make_carrot_plot(force_run=False):
         df = pd.DataFrame(np.array(lst), columns=header)
         df.to_csv(df_location)
 
-    plt.figure(4)
     plt.plot(df["fw cg"], df["pos"])
     plt.plot(df["aft cg"], df["pos"])
     plt.xlabel("Xcg/MAC [%]")
@@ -53,5 +52,6 @@ def make_carrot_plot(force_run=False):
     plt.grid()
     plt.xlim(-0.5, 1)
     plt.ylim(0, 1)
+    plt.savefig(Path("plots", "carrot.png"))
 
     return df

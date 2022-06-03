@@ -20,6 +20,7 @@ tau = 0.1 # trim angle [rad]
 
 wetted_beam_length_ratio = fsolve(lambda lambda_ : tau ** 1.1 * (0.012 * lambda_ ** 0.5 + 0.0055 * lambda_ ** 2.5 /  C_V ** 2) - C_L_0, 1)[0]
 
+print(wetter_beam_length_ratio)
 
 wetted_beam_length = wetted_beam_length_ratio * b
 print(wetted_beam_length)

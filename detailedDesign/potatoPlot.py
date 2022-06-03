@@ -173,11 +173,14 @@ def make_potato_plot(aircraft, debug=False):
     plt_2 += plt_1
 
     # Fuel stuff
-    fuel_storage = aircraft.FuselageGroup.Fuselage.FuelContainer
+    fuel_storage_1 = aircraft.FuselageGroup.Fuselage.ForwardFuelContainer
+    fuel_storage_2 = aircraft.FuselageGroup.Fuselage.AftFuelContainer
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    max_fuel_mass = fuel_storage.mass_H2
-    fuel_storage.current_fuel_mass = max_fuel_mass
+    max_fuel_mass_1 = fuel_storage_1.mass_H2
+    max_fuel_mass_2 = fuel_storage_2.mass_H2
+    fuel_storage_1.current_fuel_mass = max_fuel_mass_1
+    fuel_storage_2.current_fuel_mass = max_fuel_mass_2
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
     if debug:
         plot_potato_curve(aircraft, plt_1, axs, c="b")
