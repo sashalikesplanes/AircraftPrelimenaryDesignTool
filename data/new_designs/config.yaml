@@ -53,7 +53,7 @@ Aircraft:
     Fuselage:
       inner_width: 13  # [m]
       inner_height: 14.5  # [m]
-      cockpit_length: 4  # [m]
+      cockpit_length: 4  # [m]   from ADSEE (typical for airliners)
       CargoBay:
         test_prop: 1
       Cabin:
