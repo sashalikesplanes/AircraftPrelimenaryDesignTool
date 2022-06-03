@@ -128,10 +128,19 @@ class Wing(Component):
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
         self.pos = np.array([0., 0., 0.])
 
-    # def sizing_ailerons(self):
-    #     C_l_p = -((self.C_L_alpha+self.CDmin_wing)*(self.C_L_alpha*9)*self.span)/(24*self.wing_area) #9 degrees alpha
-    #     C_l_da = 0
+    def sizing_ailerons(self):
+        C_R = self.C_L_alpha*10 # big assumption
+        b2 = self.span/2-1 #[m]
+        b1 = self.span/8 #TODO: find actual location ailerons
+        C_l_p = -((self.C_L_alpha+self.WingGroup.Aircraft.C_D_min)*(C_R)*self.span)/(24*self.wing_area)*(1+3*self.taper_ratio) #9 degrees alpha
+        C_l_da = ((self.C_L_delta_a*(180/np.pi)*C_R)/(self.wing_area*self.span))*((b2**2-b1**2)+4*((self.taper_ratio-1)/(3*self.span))*(b2**3-b1**3))
 
+        tryout = (-C_l_da/C_l_p)*(self.defl_aileron*np.pi/180)
+        print("ratio",tryout)
+        print("CR",C_R)
+        print("Clp",C_l_p)
+        print("Clda",C_l_da)
+        print(self.C_L_alpha)
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0
