@@ -28,6 +28,8 @@ class Aircraft(Component):
         self.reference_thrust = None
         self.own_mass = 0
 
+        self.name = "BoatPlane"
+
         # Drag states
         self.C_D_min = 0.055  # Initial Value
         self.C_D_TO = 0

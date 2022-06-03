@@ -18,6 +18,7 @@ def sketch_aircraft(aircraft):
     length = aircraft.FuselageGroup.Fuselage.length
     diameter = aircraft.FuselageGroup.Fuselage.outer_height
     radius = diameter / 2
+    tail_length = aircraft.FuselageGroup.Fuselage.tail_length
 
     cabin_length = aircraft.FuselageGroup.Fuselage.Cabin.length
     cabin_offset = aircraft.FuselageGroup.Fuselage.cockpit_length
@@ -26,7 +27,7 @@ def sketch_aircraft(aircraft):
     plt.plot([cabin_offset + cabin_length, cabin_offset + cabin_length], [radius, -radius], 'b--')
 
     # print(f"Slenderness ratio: {length / diameter}")
-    x = [0, 0, length, length, 0]
+    x = [0, 0, length, length-tail_length, 0]
     y = [radius, -radius, -radius, radius, radius]
     plt.plot(x, y, "b")
     # plot mac

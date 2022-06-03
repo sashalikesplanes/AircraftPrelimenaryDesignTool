@@ -22,8 +22,6 @@ class AssFuelContainer(FuelContainer):
             self.length = 0.1
             self.radius_tank = (self.volume_tank * 3 / 4 / np.pi) ** (1 / 3)
 
-        
-
         self.pos = np.array([self.Fuselage.Cabin.length + self.Fuselage.cockpit_length, 0.,     self.z_offset])
         self.logger.debug(f"{self.pos = }")
         self.weight_self()
