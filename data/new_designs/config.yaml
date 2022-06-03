@@ -108,6 +108,7 @@ Aircraft:
       propulsive_eff : 0.80
       increase_BLI_eff : 0.1
       pylon_mass_contingency : 1.1
+      engine_failure_contingency : 1.3
 
 
 

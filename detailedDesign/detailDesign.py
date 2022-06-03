@@ -26,7 +26,7 @@ def detail_design(debug=False):
     # ##   MAKE ALL THE COOL PLOTS AND STUFF   ## #
     # ########################################### #
 
-    # perform_analyses(aircraft)
+    perform_analyses(aircraft)
     # make_flight_envelope(aircraft, "cruise")
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)

@@ -17,12 +17,12 @@ def run_test():
     states['cruise'].velocity
     states['cruise'].altitude
     aircraft.WingGroup.Wing.span = 120
-    aircraft.reference_thrust = 659256.83
+    aircraft.reference_thrust = 700000
 
 
     Engines.size_self()
 
-    print('total mass ', Engines.own_mass,'kg')
+    print('total mass ', Engines.own_mass*10**(-3),'Tons')
     print('amount of fans', Engines.own_amount_fans)
     print('amount of fans wing', Engines.own_fans_on_wing)
     print('amount of fans fuselage', Engines.own_fans_on_fuselage)

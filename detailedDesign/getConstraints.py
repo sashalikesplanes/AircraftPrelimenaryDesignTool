@@ -23,12 +23,16 @@ def get_constraints(aircraft):
     max_bank_angle = 40 / 180 * np.pi  # rad   #taken from regulation
     load_factor = 1 / np.cos(max_bank_angle)
 
+    rho_takeoff_air = 1.225
+    velocity_crit_takeoff = 27
+
     C_D_min = aircraft.C_D_min
     C_L_max = aircraft.C_L_max
     # from regulation I believe but I cannot find anything about it
     required_climb_rate = aircraft.required_climb_rate
     # therefore we take ot from the yamel and it is something we change in order to make it work
-
+    C_L_TO = 1.5 # aircraft.C_L_TO
+    C_D_TO = 0.1 # aircraft.C_D_TO
     # Start calculating the functions
     wing_loading_points = np.linspace(1000, 10000, 1000)
 
@@ -47,9 +51,14 @@ def get_constraints(aircraft):
         return dynamic_pressure * C_D_min / wing_loading + \
             lift_induced_drag_constant / dynamic_pressure * wing_loading
 
+
+    def thrust_loading_takeoff_f(wing_loading):
+        return 1 / 6.5 - 1 / 13 * rho_takeoff_air * velocity_crit_takeoff ** 2 * C_L_TO / wing_loading + 0.5 * rho_takeoff_air * velocity_crit_takeoff ** 2 * C_D_TO / wing_loading
+
     thrust_loading_constant_turn = thrust_loading_constant_turn_f(wing_loading_points) 
     thrust_loading_climb_rate = thrust_loading_climb_rate_f(wing_loading_points)
     thrust_loading_cruise = thrust_loading_cruise_f(wing_loading_points)
+    thrust_loading_takeoff = thrust_loading_takeoff_f(wing_loading_points)
     # q using climb airspeed and associated altitude
 
 
@@ -59,26 +68,28 @@ def get_constraints(aircraft):
 
     WS = weight_over_surface_stall
     logger.debug(f"{thrust_loading_constant_turn_f(WS) = }")
-    TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS))
+    TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS), thrust_loading_takeoff_f(WS))
 
     # Plot the fuctions
     # fig, ax = plt.subplots()
-
+    # 
     # ax.plot(wing_loading_points, thrust_loading_cruise,
     #         'r', label='Cruise speed')
     # ax.plot(wing_loading_points, thrust_loading_constant_turn,
     #         'b', label='Constant turn')
-
+    # 
     # ax.plot(wing_loading_points, thrust_loading_climb_rate,
     #         'g', label='Climb rate')
-
+    # 
+    # ax.plot(wing_loading_points, thrust_loading_takeoff,
+    #         'pink', label='Takeoff')
     # ax.vlines(weight_over_surface_stall, 0, 1)
-
+    # 
     # ax.set_xlabel('W/S')
     # ax.set_ylabel('T/W')
-
+    # 
     # plt.legend()
-
+    # 
     # plt.show()
 
     # Calculate optimum
