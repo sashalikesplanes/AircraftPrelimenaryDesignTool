@@ -4,7 +4,7 @@ from misc.openData import openData
 from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.State import State
 from detailedDesign.run_aircraft import run_aircraft
-# from detailedDesign.performAnalyses import perform_analyses
+from detailedDesign.performAnalyses import perform_analyses
 # from detailedDesign.classes.Wing import sizing_ailerons
 
 # def get_ultimate_load_factor():
@@ -26,7 +26,7 @@ def detail_design(debug=False):
     # ##   MAKE ALL THE COOL PLOTS AND STUFF   ## #
     # ########################################### #
 
-    # perform_analyses(aircraft)
+    perform_analyses(aircraft)
     # make_flight_envelope(aircraft, "cruise")
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)
