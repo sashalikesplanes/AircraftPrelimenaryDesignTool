@@ -68,7 +68,7 @@ def get_constraints(aircraft):
 
     WS = weight_over_surface_stall
     logger.debug(f"{thrust_loading_constant_turn_f(WS) = }")
-    TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS))
+    TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS), thrust_loading_takeoff_f(WS))
 
     # Plot the fuctions
     # fig, ax = plt.subplots()
