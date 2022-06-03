@@ -19,7 +19,7 @@ def perform_analyses(aircraft, make_stability):
         find_stability(aircraft)
         plt.figure(3)
 
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary = market_estimations(aircraft)
+    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft)
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"Cost breakdown summary: {breakdown_summary}")
     print(f"Aircraft Price [M$]: {price_ac / 1e6:.2f}")

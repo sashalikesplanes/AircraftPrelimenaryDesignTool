@@ -13,14 +13,13 @@ annualPilotSalary = 175e3  # [$]
 costBurden = 2  # [$]
 
 # Operational constants
-h2_price = 2.5  # [$/kg]
-ground_time = 10  # [h]  --> refuelling (depends on fuel) + boarding payload
+h2_price = 1.9  # [$/kg] as suggested by hydrogen experts
+ground_time = 2  # [h]  --> refuelling (depends on fuel) + boarding payload
 maintenance_time = 2749  # [h]
 block_time_supplement = 1.8  # [h]
 f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 
 # CAPEX constants
-
 # TODO: Revise CAPEX calculations to incorporate fuel tank costs properly
 P_OEW = 1200  # [$/kg] operating empty weight
 W_eng = 200  # Weight per engine [kg]
@@ -35,6 +34,9 @@ f_misc = 0.05  # Misc 5% contingency factor to account for new tech
 PMac = 0.0  # typically 20% profit margin for manufacturer
 DP = 14  # Depreciation period [yrs]
 
+# Return on investment constants
+price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
+subsidy = 0.2  # expected subsidy for green aviation
 
 def market_estimations(aircraft):
     # Initialise
@@ -117,4 +119,11 @@ def market_estimations(aircraft):
     # plt.savefig(costBreakdownPath, dpi = 600)
     plt.savefig(Path("plots", "market_pie.png"))
 
-    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary
+    # Calculating ROI
+    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy)
+    cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
+    roi = (revenue_per_flight-cost_per_flight)/cost_per_flight * 100  # [%]
+
+    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
+
+
