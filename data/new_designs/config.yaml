@@ -93,6 +93,7 @@ Aircraft:
       thickness_chord_ratio: 0.12 # [-] from airfoil
       xovercmax: 0.4 # [-] from airfoil
       C_L_min: -0.61 # Bs number
+      defl_aileron: 20 #[degrees], A380
 
       HLDs:
         test_prop: 1
