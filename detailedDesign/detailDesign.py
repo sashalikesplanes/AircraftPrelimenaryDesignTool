@@ -14,7 +14,7 @@ from detailedDesign.performAnalyses import perform_analyses
 #     return GUESS_AT_LOAD_FACTOR
 
 
-def detail_design(debug=False):
+def detail_design(debug=False, make_stability=False):
     # State in state
     states = {"cruise": State('cruise'), "take-off": State('take-off')}
     config_file = Path('data', 'new_designs', 'config.yaml')
@@ -26,7 +26,7 @@ def detail_design(debug=False):
     # ##   MAKE ALL THE COOL PLOTS AND STUFF   ## #
     # ########################################### #
 
-    perform_analyses(aircraft)
+    perform_analyses(aircraft, make_stability)
     # make_flight_envelope(aircraft, "cruise")
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)

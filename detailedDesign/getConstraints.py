@@ -53,7 +53,7 @@ def get_constraints(aircraft):
 
 
     def thrust_loading_takeoff_f(wing_loading):
-        return 1 / 6.5 - 1 / 13 * rho_takeoff_air * velocity_crit_takeoff ** 2 * C_L_TO / wing_loading + 0.5 * rho_takeoff_air * velocity_crit_takeoff ** 2 * C_D_TO / wing_loading
+        return 1 / aircraft.FuselageGroup.Fuselage.hull_shape_factor - 1 / 13 * rho_takeoff_air * velocity_crit_takeoff ** 2 * C_L_TO / wing_loading + 0.5 * rho_takeoff_air * velocity_crit_takeoff ** 2 * C_D_TO / wing_loading
 
     thrust_loading_constant_turn = thrust_loading_constant_turn_f(wing_loading_points) 
     thrust_loading_climb_rate = thrust_loading_climb_rate_f(wing_loading_points)
