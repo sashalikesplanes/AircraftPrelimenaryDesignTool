@@ -4,11 +4,13 @@ import matplotlib.pyplot as plt
 from detailedDesign.analysis.marketEstimations import market_estimations
 from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
+from detailedDesign.analysis.make_avl_file import make_avl_file
 
 logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft):
+    make_avl_file(aircraft)
     sketch_aircraft(aircraft)
     print_summary(aircraft)
     plt.figure(2)
