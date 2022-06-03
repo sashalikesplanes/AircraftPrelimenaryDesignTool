@@ -22,6 +22,7 @@ class VerticalTail(Component):
         self.span = None  # [m]
         self.root_chord = None  # [m]
         self.quarter_chord_sweep = None  # [rad]
+        self.first_iteration = True  # [-]
 
         self._freeze()
 
@@ -37,11 +38,16 @@ class VerticalTail(Component):
         # Fuselage semi minor and major dimensions (eclipse)
         fuselage_a = self.Tail.FuselageGroup.Fuselage.outer_height / 2
         fuselage_b = self.Tail.FuselageGroup.Fuselage.outer_width / 2
-
-        self.tail_length = self.Tail.FuselageGroup.Fuselage.length
         
-        #self.tail_length = np.sqrt(
-            #(2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * (fuselage_a + fuselage_b)))  # [m]
+        #if self.first_iteration:
+        #    self.tail_length = np.sqrt(
+        #        (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * (fuselage_a + fuselage_b)))  # [m]
+        #    self.first_iteration = False
+        #else:
+        #    self.tail_length = (self.Tail.FuselageGroup.Fuselage.length - (3/4)*self.mean_geometric_chord) - \
+        #    (self.Tail.FuselageGroup.Aircraft.x_lemac + 0.25 * self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord) # [m]
+
+        self.tail_length = self.Tail.HorizontalTail.tail_length
 
         self.surface_area = (self.volume_coefficient * \
                              wing_area * wing_span) / self.tail_length  # [m2]

@@ -10,9 +10,10 @@ class Tail(Component):
 
         self.FuselageGroup = FuselageGroup
 
-        self.VerticalTail = VerticalTail(self, self.design_config)
         self.HorizontalTail = HorizontalTail(self, self.design_config)
-        self.components = [self.VerticalTail, self.HorizontalTail]
+        self.VerticalTail = VerticalTail(self, self.design_config)
+        
+        self.components = [self.HorizontalTail, self.VerticalTail]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
