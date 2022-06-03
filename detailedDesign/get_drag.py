@@ -134,7 +134,7 @@ def get_drag(aircraft):
                'fuselage': 1.5,  # TODO know it is 50 % to take care of the hull, refine
                'tail': 1.04})  # conventional or T tail
 
-    flapped_area = calc_sflap(croot, taper, span, fuselage_width):
+    flapped_area = calc_sflap(croot, taper, span, fuselage_width)
     delta_CD_min_TO = calc_TO_CD_min(flapped_area, Sref)
 
 
@@ -187,7 +187,7 @@ def get_drag(aircraft):
     CDi = calc_CDi(C_L, AR, e)
     CD = CDi+TotalCDmin
 
-    CD_TO = TotalCDmin + delta_CD_min_TO + calc_CDi(aircraft.WingGroup.Wing.C_L_TO)
+    CD_TO = TotalCDmin + delta_CD_min_TO + calc_CDi(aircraft.C_L_TO, AR, e)
 
     #print('total CDi=', CDi)
     #print('total CD=', CDi + TotalCDmin)

@@ -31,8 +31,8 @@ def get_constraints(aircraft):
     # from regulation I believe but I cannot find anything about it
     required_climb_rate = aircraft.required_climb_rate
     # therefore we take ot from the yamel and it is something we change in order to make it work
-    C_L_TO = 1.5 # aircraft.C_L_TO
-    C_D_TO = 0.1 # aircraft.C_D_TO
+    C_L_TO = aircraft.C_L_TO
+    C_D_TO = aircraft.C_D_TO
     # Start calculating the functions
     wing_loading_points = np.linspace(1000, 10000, 1000)
 
