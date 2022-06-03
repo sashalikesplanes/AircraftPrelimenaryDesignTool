@@ -32,7 +32,7 @@ class Aircraft(Component):
         self.C_D_min = 0.055  # Initial Value
         self.C_D_TO = 0
 
-        self.cruise_drag = 1250000  # needed as drag comes from previous iteration
+        self.cruise_drag = 750000  # needed as drag comes from previous iteration
 
         self._freeze()
 

@@ -71,11 +71,11 @@ class FuelContainer(Component):
         self.inner_diameter = np.sqrt(
             4 * self.Fuselage.ForwardFuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2
         # self.inner_diameter = 10 #manual change for non-integral tank
-        self.inner_radius = self.inner_diameter / 2  # for integral tank
-        self.radius_tank = self.inner_radius  # change here if non-integral tank
+        self.radius_tank = self.inner_diameter / 2  # for integral tank
+        self.radius_tank = self.radius_tank  # change here if non-integral tank
 
-        thickness_fatigue = self.tank_pressure * self.inner_radius * self.SF / self.fatiguestrength
-        thickness_yield = self.tank_pressure * self.inner_radius * self.SF / self.yieldstrength
+        thickness_fatigue = self.tank_pressure * self.radius_tank * self.SF / self.fatiguestrength
+        thickness_yield = self.tank_pressure * self.radius_tank * self.SF / self.yieldstrength
 
         self.thickness = max(thickness_fatigue, thickness_yield)
 
@@ -101,7 +101,7 @@ class FuelContainer(Component):
 
     def cg_self(self):
 
-        x_cg = 0.5 * self.length + self.inner_radius + self.total_tank_thickness
+        x_cg = 0.5 * self.length + self.radius_tank + self.total_tank_thickness
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
@@ -109,7 +109,7 @@ class FuelContainer(Component):
 
     @property
     def total_length(self):
-        return self.length + 2 * self.inner_radius + self.total_tank_thickness * 2
+        return self.length + 2 * self.radius_tank + self.total_tank_thickness * 2
 
     def get_mass(self):
         total_mass = self.own_mass + self.current_fuel_mass

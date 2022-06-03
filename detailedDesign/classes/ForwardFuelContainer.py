@@ -12,10 +12,14 @@ class ForwardFuelContainer(FuelContainer):
 
         self.length = self.Fuselage.FuselageGroup.Aircraft.x_lemac - self.Fuselage.cockpit_length
 
-        self.volume_tank = 4 / 3 * np.pi * self.inner_radius ** 3 + np.pi * self.inner_radius ** 2 * self.length
+        self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * self.length
 
         self.mass_H2 = self.volume_tank * self.density_H2 / (1 + self.Vi)
 
         self.pos = np.array([self.Fuselage.cockpit_length, 0.,     self.z_offset])
 
         self.weight_self()
+        self.logger.debug(f"{self.length = }")
+        self.logger.debug(f"{self.volume_tank = }")
+        self.logger.debug(f"{self.mass_H2 = }")
+        self.logger.debug(f"{self.own_mass = }")
