@@ -22,6 +22,7 @@ class Fuselage(Component):
         self.components = [self.Cabin, self.CargoBay, self.ForwardFuelContainer, self.AftFuelContainer]
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
+        self.tail_length = 0
 
         self._freeze()
 
@@ -33,7 +34,10 @@ class Fuselage(Component):
         self.logger.debug(f"Cabin length: {self.Cabin.length}")
         self.logger.debug(f"Fuel Compartment Length: {self.ForwardFuelContainer.length + self.ForwardFuelContainer.radius_tank * 4 + self.AftFuelContainer.length}")
         self.logger.debug(f"Wing box length: {self.FuselageGroup.Aircraft.WingGroup.Wing.root_chord }")
+        self.tail_length = 1.6 * self.outer_height
         return length + self.cockpit_length + self.tail_length
+
+    print(length)
 
     @property
     def thickness(self):

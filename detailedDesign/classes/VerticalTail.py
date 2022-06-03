@@ -38,8 +38,10 @@ class VerticalTail(Component):
         fuselage_a = self.Tail.FuselageGroup.Fuselage.outer_height / 2
         fuselage_b = self.Tail.FuselageGroup.Fuselage.outer_width / 2
 
-        self.tail_length = np.sqrt(
-            (2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * (fuselage_a + fuselage_b)))  # [m]
+        self.tail_length = self.Tail.FuselageGroup.Fuselage.length
+        
+        #self.tail_length = np.sqrt(
+            #(2 * self.volume_coefficient * wing_area * wing_span) / (np.pi * (fuselage_a + fuselage_b)))  # [m]
 
         self.surface_area = (self.volume_coefficient * \
                              wing_area * wing_span) / self.tail_length  # [m2]
@@ -54,6 +56,7 @@ class VerticalTail(Component):
         print("rudder length",self.mean_geometric_chord*0.3)
         print("MAC",self.mean_geometric_chord)
         print("height VTP",self.span)
+        print("tail length:", self.tail_length)
 
     def size_self_mass(self):
         # Sizing mass

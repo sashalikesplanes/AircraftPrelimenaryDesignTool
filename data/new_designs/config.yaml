@@ -54,7 +54,6 @@ Aircraft:
       inner_width: 13  # [m]
       inner_height: 14.5  # [m]
       cockpit_length: 4  # [m]
-      tail_length: 10  # [m]
       CargoBay:
         test_prop: 1
       Cabin:
