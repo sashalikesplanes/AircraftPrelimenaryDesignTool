@@ -23,6 +23,7 @@ class Fuselage(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
         self.tail_length = 0
+        self.fuselage_length = 0
 
         self._freeze()
 

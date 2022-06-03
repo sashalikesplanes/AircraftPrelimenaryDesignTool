@@ -6,10 +6,11 @@ from detailedDesign.log import setup_custom_logger
 from detailedDesign.getConstraints import get_constraints
 
 
-logger = setup_custom_logger("logger", False)
 
 
 def run_aircraft(aircraft, debug=False):
+    logger = setup_custom_logger("logger", debug)
+
     aircraft.mtom = get_MTOM_from_historical_relations(aircraft)
     previous_mtom = 0
     lst = [aircraft.mtom]

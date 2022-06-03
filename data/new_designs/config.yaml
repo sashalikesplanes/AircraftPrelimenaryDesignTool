@@ -51,6 +51,7 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
+      hull_shape_factor: 6.5 # 4.6 - conventional, 6.5 - planar
       inner_width: 13  # [m]
       inner_height: 14.5  # [m]
       cockpit_length: 4  # [m]   from ADSEE (typical for airliners)

@@ -9,13 +9,16 @@ from detailedDesign.analysis.make_avl_file import make_avl_file
 logger = logging.getLogger("logger")
 
 
-def perform_analyses(aircraft):
+def perform_analyses(aircraft, make_stability):
     make_avl_file(aircraft)
     sketch_aircraft(aircraft)
     print_summary(aircraft)
     plt.figure(2)
-    # find_stability(aircraft)
-    plt.figure(3)
+
+    if make_stability:
+        find_stability(aircraft)
+        plt.figure(3)
+
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary = market_estimations(aircraft)
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"Cost breakdown summary: {breakdown_summary}")
@@ -47,3 +50,4 @@ def print_summary(aircraft):
     logger.debug(f"{ cabin.length = } {cabin.width = } {cabin.height = }")
 
     logger.debug(f"{aircraft.FuselageGroup.Power.FuelCells.size = }")
+

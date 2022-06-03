@@ -53,9 +53,10 @@ class VerticalTail(Component):
         self.mean_geometric_chord = 2 / 3 * self.root_chord * (
                 (1 + self.taper + self.taper ** 2) / (1 + self.taper))  # [m]
         print("initial S",self.surface_area)
-        print("rudder length",self.mean_geometric_chord*0.3)
-        print("MAC",self.mean_geometric_chord)
-        print("height VTP",self.span)
+        print(self.surface_area/wing_area)
+        # print("rudder length",self.mean_geometric_chord*0.3)
+        # print("MAC",self.mean_geometric_chord)
+        # print("height VTP",self.span)
         print("tail length:", self.tail_length)
 
     def size_self_mass(self):
