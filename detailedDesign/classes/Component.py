@@ -90,7 +90,7 @@ class Component:
 
     def unwrap_design_config(self, design_config):
         # Allow Aft and Forward Fuel Container to use just Fuel Container 
-        if type(self).__name__ == "ForwardFuelContainer" or type(self).__name__ == "AftFuelContainer":
+        if type(self).__name__ == "ForwardFuelContainer" or type(self).__name__ == "AftFuelContainer" or type(self).__name__ == "AssFuelContainer":
             return design_config["FuelContainer"]
 
         return design_config[type(self).__name__]

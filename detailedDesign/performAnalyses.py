@@ -33,6 +33,12 @@ def print_summary(aircraft):
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
 
+    fuselage = aircraft.FuselageGroup.Fuselage
+    logger.debug(f"Ass length: {fuselage.AssFuelContainer.length} m")
+    logger.debug(f"Fuselage Length: {fuselage.length} m")
+    logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
+    logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
+
     engines = aircraft.WingGroup.Engines
     # logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
     # logger.debug(f"Amoung of motors: {engines.own_amount_motor} [-]")

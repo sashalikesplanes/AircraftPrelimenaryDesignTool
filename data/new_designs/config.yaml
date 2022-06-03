@@ -7,6 +7,7 @@ Aircraft:
   clean_stall_speed: 100 # m/s picked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
+  C_L_TO: 1.5
   count_pilot: 3
   x_lemac: 25 # TODO optimize for stability
   FuselageGroup:
@@ -51,10 +52,11 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
-      hull_shape_factor: 6.5 # 4.6 - conventional, 6.5 - planar
-      inner_width: 13  # [m]
-      inner_height: 14.5  # [m]
-      cockpit_length: 4  # [m]   from ADSEE (typical for airliners)
+      hull_shape_factor: 9.5 # 4.6 - conventional, 6.5 - planar
+      inner_width: 10  # [m]
+      inner_height: 10  # [m]
+      inner_ass_diameter: 10 # [m] represents the smaller part at the back
+      cockpit_length: 4  # [m]
       CargoBay:
         test_prop: 1
       Cabin:
@@ -71,7 +73,7 @@ Aircraft:
         cabin_pressure_altitude: 3000 # [m]
       FuelContainer:
         shape_factor: 1.25 # Factor to account for extra tank mass due to irregular shape
-        outer_area: 30 # [m2] from catia
+        outer_area: 25 # [m2] from catia
         z_offset: -3. # [m] distance from center line of elipse fuselage
         tank_pressure: 120000 # [Pa]
         density_H2: 70.85 # [kg/m3]
