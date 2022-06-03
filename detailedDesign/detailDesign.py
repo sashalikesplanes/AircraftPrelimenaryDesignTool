@@ -31,4 +31,4 @@ def detail_design(debug=False, make_stability=False):
     # make_flight_envelope(aircraft, "take-off")
     # aircraft.WingGroup.Wing.size_AR(aircraft)
     # aircraft.WingGroup.Wing.sizing_ailerons()
-    aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry()
+    # aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry()

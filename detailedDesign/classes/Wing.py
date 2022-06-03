@@ -143,6 +143,11 @@ class Wing(Component):
         print(self.C_L_alpha)
         print("span",self.span)
         print("aileron length",b2-b1)
+        print('b2:', b2)
+        roll_rate = tryout * ((2*self.WingGroup.Aircraft.states["cruise"].velocity)/self.span)
+        print("roll rate:", roll_rate)
+
+
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
         y_cg = 0
