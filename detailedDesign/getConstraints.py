@@ -71,26 +71,26 @@ def get_constraints(aircraft):
     TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS))
 
     # Plot the fuctions
-    fig, ax = plt.subplots()
-
-    ax.plot(wing_loading_points, thrust_loading_cruise,
-            'r', label='Cruise speed')
-    ax.plot(wing_loading_points, thrust_loading_constant_turn,
-            'b', label='Constant turn')
-
-    ax.plot(wing_loading_points, thrust_loading_climb_rate,
-            'g', label='Climb rate')
-
-    ax.plot(wing_loading_points, thrust_loading_takeoff,
-            'pink', label='Takeoff')
-    ax.vlines(weight_over_surface_stall, 0, 1)
-
-    ax.set_xlabel('W/S')
-    ax.set_ylabel('T/W')
-
-    plt.legend()
-
-    plt.show()
+    # fig, ax = plt.subplots()
+    # 
+    # ax.plot(wing_loading_points, thrust_loading_cruise,
+    #         'r', label='Cruise speed')
+    # ax.plot(wing_loading_points, thrust_loading_constant_turn,
+    #         'b', label='Constant turn')
+    # 
+    # ax.plot(wing_loading_points, thrust_loading_climb_rate,
+    #         'g', label='Climb rate')
+    # 
+    # ax.plot(wing_loading_points, thrust_loading_takeoff,
+    #         'pink', label='Takeoff')
+    # ax.vlines(weight_over_surface_stall, 0, 1)
+    # 
+    # ax.set_xlabel('W/S')
+    # ax.set_ylabel('T/W')
+    # 
+    # plt.legend()
+    # 
+    # plt.show()
 
     # Calculate optimum
     # If they do not intersect

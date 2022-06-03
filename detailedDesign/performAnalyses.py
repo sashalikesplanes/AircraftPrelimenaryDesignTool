@@ -14,7 +14,7 @@ def perform_analyses(aircraft):
     sketch_aircraft(aircraft)
     print_summary(aircraft)
     plt.figure(2)
-    find_stability(aircraft)
+    # find_stability(aircraft)
     plt.figure(3)
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary = market_estimations(aircraft)
     print(f"Aircraft CG: {aircraft.get_cg()}")
