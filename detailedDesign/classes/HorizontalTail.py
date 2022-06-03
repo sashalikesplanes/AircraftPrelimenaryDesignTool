@@ -46,6 +46,7 @@ class HorizontalTail(Component):
         self.root_chord = (2 * average_chord)/(1 + self.taper)  # [m]
         self.mean_geometric_chord = 2/3 * self.root_chord * \
             ((1 + self.taper + self.taper**2)/(1 + self.taper))  # [m]
+        print("taillength HTP",self.tail_length)
 
     def size_self_mass(self):
         # Sizing mass

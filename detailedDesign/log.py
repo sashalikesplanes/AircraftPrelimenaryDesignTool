@@ -15,3 +15,11 @@ def setup_custom_logger(name, debug):
         logger.setLevel(logging.INFO)
     logger.addHandler(handler)
     return logger
+
+def set_logger_debug_level(debug=False):
+    logger = logging.getLogger('logger')
+    if debug:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.INFO)
+

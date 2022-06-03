@@ -51,10 +51,10 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
+      hull_shape_factor: 6.5 # 4.6 - conventional, 6.5 - planar
       inner_width: 13  # [m]
       inner_height: 14.5  # [m]
-      cockpit_length: 4  # [m]
-      tail_length: 10  # [m]
+      cockpit_length: 4  # [m]   from ADSEE (typical for airliners)
       CargoBay:
         test_prop: 1
       Cabin:
@@ -110,6 +110,7 @@ Aircraft:
       propulsive_eff : 0.80
       increase_BLI_eff : 0.1
       pylon_mass_contingency : 1.1
+      engine_failure_contingency : 1.3
 
 
 

@@ -42,6 +42,7 @@ class Engines(Component):
         propulsive_eff = self.propulsive_eff
         increase_BLI_eff = self.increase_BLI_eff
         pylon_mass_contingency = self.pylon_mass_contingency
+        engine_failure_contingency = self.engine_failure_contingency
         rho = ISA.getDensity(altitude)
         Ps = ISA.getPressure(altitude)
 
@@ -49,8 +50,9 @@ class Engines(Component):
         length_ailerons = 0.2 * Span  # the aileron are 20 % of the total span
 
         # Calculations
+        Tt = Tt * engine_failure_contingency
         P_aircraft = Tt * V0
-        n_fans = np.ceil(P_aircraft / (P_motor * eff_mot_inv * (propulsive_eff+increase_BLI_eff)))
+        n_fans = np.ceil(P_aircraft / (P_motor * eff_mot_inv * (propulsive_eff + increase_BLI_eff)))
         Tf = Tt / n_fans
         Pt0 = Ps + 0.5 * rho * V0 ** 2
         Pt1 = Pt0 * pr
@@ -80,15 +82,20 @@ class Engines(Component):
             n_fans_wing = n_fans -1
             n_fans_odd = 1
         spacing = (Span - D_fus - 2 * length_ailerons - 2 * min_spacing - D_fan * n_fans_wing) / (n_fans_wing - 2)
+
         if 0 <= spacing < min_spacing:
-            n_fans_fit_wing = (Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing)
+            n_fans_fit_wing = np.floor((Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing))
+            if (n_fans_fit_wing % 2) == 1:
+                n_fans_fit_wing = n_fans_fit_wing - 1
             n_fans_fuselage = n_fans - n_fans_fit_wing
             self.logger.warning(f"The engines are too close together. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing. "
                                 f"The number of fans on the fuselage is {n_fans_fuselage}")
         elif spacing < 0:
-            n_fans_fit_wing = (Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing)
+            n_fans_fit_wing = np.floor((Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing))
+            if (n_fans_fit_wing % 2) == 1:
+                n_fans_fit_wing = n_fans_fit_wing - 1
             n_fans_fuselage = n_fans - n_fans_fit_wing
-            self.logger.warning(f"The engines do not fit on the wing. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing"
+            self.logger.warning(f"The engines do not fit on the wing. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing. "
                                 f"The number of fans on the fuselage is {n_fans_fuselage}")
         else:
             n_fans_fit_wing = n_fans_wing
