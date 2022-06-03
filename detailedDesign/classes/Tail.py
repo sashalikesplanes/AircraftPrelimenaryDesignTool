@@ -27,3 +27,7 @@ class Tail(Component):
         for component in self.components:
             component.get_sized()
         self.size_self()
+
+    @property
+    def total_mass(self):
+        return self.VerticalTail.own_mass + self.HorizontalTail.own_mass
