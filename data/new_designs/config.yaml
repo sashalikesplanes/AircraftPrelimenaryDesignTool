@@ -94,6 +94,7 @@ Aircraft:
       xovercmax: 0.4 # [-] from airfoil
       C_L_min: -0.61 # Bs number
       defl_aileron: 20 #[degrees], A380
+      C_L_delta_a: 0.05524 #[1/deg], random
 
       HLDs:
         test_prop: 1
@@ -108,6 +109,7 @@ Aircraft:
       propulsive_eff : 0.80
       increase_BLI_eff : 0.1
       pylon_mass_contingency : 1.1
+      engine_failure_contingency : 1.3
 
 
 
