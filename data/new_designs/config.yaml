@@ -95,6 +95,7 @@ Aircraft:
       C_L_min: -0.61 # Bs number
       defl_aileron: 20 #[degrees], A380
       C_L_delta_a: 0.05524 #[1/deg], random
+      C_L_TO: 
 
       HLDs:
         test_prop: 1
