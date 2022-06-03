@@ -50,3 +50,4 @@ def print_summary(aircraft):
     logger.debug(f"{ cabin.length = } {cabin.width = } {cabin.height = }")
 
     logger.debug(f"{aircraft.FuselageGroup.Power.FuelCells.size = }")
+

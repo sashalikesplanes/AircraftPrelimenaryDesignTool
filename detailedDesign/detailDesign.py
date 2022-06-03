@@ -5,7 +5,6 @@ from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.State import State
 from detailedDesign.run_aircraft import run_aircraft
 from detailedDesign.performAnalyses import perform_analyses
-# from detailedDesign.classes.Wing import sizing_ailerons
 
 # def get_ultimate_load_factor():
 #     # N_max_des = None # from maneuver/gust diagram
