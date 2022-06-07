@@ -102,7 +102,7 @@ class Fuselage(Component):
 
         self.own_mass = lbs_to_kg(mass_lbs)
 
-        self.bending_shear()
+        # self.bending_shear()
 
     def cg_self(self):
         self.own_cg = np.array([0.5 * self.length, 0., 0.])
@@ -152,13 +152,15 @@ class Fuselage(Component):
         delta_P = np.abs(getPressure(self.FuselageGroup.Aircraft.states['cruise'].altitude) - getPressure(self.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude))
 
 
-        M_z = 0
-        M_y = 0
-        # loading in y-/z-axis
-        S_y = self.FuselageGroup.Tail.VerticalTail.F_w
+        # loading in y-/z-axis #TODO: check signs and values in these loadings
+        #TODO: add loading in longitudinal direction
+        S_y = -self.FuselageGroup.Tail.VerticalTail.F_w #NEGATIVE
         S_z = 0
-        T = 0
-        print(S_y)
+
+        T = S_y*(self.FuselageGroup.Tail.VerticalTail.span/2)
+        M_y = 0
+        M_z = (self.FuselageGroup.Fuselage.Cabin.length - self.FuselageGroup.Aircraft.get_cg()[0])*S_y
+
 
         # Stress calculations
         sigma_xA = []
@@ -192,5 +194,6 @@ class Fuselage(Component):
             sigma_1B.append((sigma_xB[i] + sigma_y[i]) / 2 + tau_maxB[i])
             sigma_2B.append((sigma_xB[i] + sigma_y[i]) / 2 - tau_maxB[i])
 
-        # plt.plot(t,sigma_xA)
+        # plt.plot(t,tau_maxA)
         # plt.show()
+
