@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from functools import reduce
 from misc.unitConversions import *
+from tabulate import tabulate
 
 # Personnel constants
 salaryPilot = 69  # [$/h]
@@ -173,10 +174,18 @@ def production_cost_estimation(aircraft):
     engine_mass_usd = lbs_to_kg(engine_cost_density) * engine_mass
     miscellaneous_mass_usd = lbs_to_kg(miscellaneous_cost_density) * miscellaneous_mass
 
-    lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost, support_cost]
+    lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost,
+            support_cost, 1]
     lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
-    nrc_per_kg = np.array([[item_1 * item_2 for item_1 in lst_1] for item_2 in lst_2])
-    print(nrc_per_kg)
+    lst_2.append(sum(lst_2))
+    lst_3 = ['wing', 'empennage', 'fuselage', 'engine', 'miscellaneous',
+    'aircraft total']
+    columns = ['Engineering', 'ME', 'Tool Design', 'Tool Fab', 'Support',
+    'Totals']
+    nrc_per_kg = np.array([[item_3] + [item_1 * item_2 for item_1 in lst_1] for
+        item_2, item_3 in zip(lst_2, lst_3)])
+
+    print(tabulate(nrc_per_kg, headers=columns, floatfmt=".2f"))
 
     # ----- Recurring Costs -----
 
@@ -198,10 +207,10 @@ def production_cost_estimation(aircraft):
 
     non_rec_costs_totals = nrc_per_kg[-1,1:]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
-    plt.pie(non_rec, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
-    plt.title("Cost Breakdown [%]")
-    plt.axis('equal')
-    plt.show()
+    #plt.pie(non_rec, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
+    #plt.title("Cost Breakdown [%]")
+    #plt.axis('equal')
+    #plt.show()
 
-    plt.savefig(Path("plots", "market_pie.png"))
+    #plt.savefig(Path("plots", "market_pie.png"))
     
