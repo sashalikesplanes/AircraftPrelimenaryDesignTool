@@ -157,11 +157,17 @@ def production_cost_estimation(aircraft):
     engine_mass = aircraft.WingGroup.Engines.own_mass
     miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass
 
-    wing_mass_usd = lbs_to_kg(17731) * wing_mass
-    empennage_mass_usd = lbs_to_kg(52156) * empennage_mass
-    fuselage_mass_usd = lbs_to_kg(32093) * fuselage_mass
-    engine_mass_usd = lbs_to_kg(8691) * engine_mass
-    miscellaneous_mass_usd = lbs_to_kg(34307) * miscellaneous_mass
+    wing_cost_density = 17731
+    empennage_cost_density = 52156
+    fuselage_cost_density = 32093
+    engine_cost_density = 8691
+    miscellaneous_cost_density = 34307
+
+    wing_mass_usd = lbs_to_kg(wing_cost_density) * wing_mass
+    empennage_mass_usd = lbs_to_kg(empennage_cost_density) * empennage_mass
+    fuselage_mass_usd = lbs_to_kg(fuselage_cost_density) * fuselage_mass
+    engine_mass_usd = lbs_to_kg(engine_cost_density) * engine_mass
+    miscellaneous_mass_usd = lbs_to_kg(miscellaneous_cost_density) * miscellaneous_mass
 
     lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost, support_cost]
     lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
