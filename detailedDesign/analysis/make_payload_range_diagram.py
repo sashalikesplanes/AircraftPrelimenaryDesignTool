@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from misc.constants import g, energyDensityHydrogen
+from detailedDesign.get_drag import get_drag
 
 
 def make_payload_range_diagram(aircraft):
@@ -44,8 +45,11 @@ def make_payload_range_diagram(aircraft):
 def calc_range(W0, W1, aircraft):
     prop_eff = aircraft.WingGroup.Engines.propulsive_eff
     c_p = 1 / energyDensityHydrogen
+
     # TODO: implement realistic L/D
-    L_over_D_cruise = 10
+    _, _, C_D, D, _ = get_drag(aircraft)
+    L = aircraft.mtom * 9.81
+    L_over_D_cruise = L / D
 
     # Range formula from ADSEE I
     return (prop_eff / g / c_p) * L_over_D_cruise * np.log(W0 / W1)
