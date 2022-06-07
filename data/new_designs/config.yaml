@@ -1,8 +1,8 @@
 Aircraft:
-  cargo_mass: 0 # [kg] extra cargo mass
+  cargo_mass: 100000 # [kg] extra cargo mass
   ultimate_load_factor: 3.75  # [-]
   reserve_duration: 2 # hrs, duration of reserve flight for reserve fuel
-  oem_contingency: 1.25  # multiplier of OEM
+  oem_contingency: 1.1  # multiplier of OEM
   cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/s picked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
@@ -52,10 +52,10 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
-      hull_shape_factor: 6.5 # 4.6 - conventional, 6.5 - planar
+      hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
       inner_width: 10  # [m]
       inner_height: 12  # [m]
-      inner_ass_diameter: 10 # [m] represents the smaller part at the back
+      inner_ass_diameter: 8 # [m] represents the smaller part at the back
       cockpit_length: 4  # [m]
       CargoBay:
         test_prop: 1
