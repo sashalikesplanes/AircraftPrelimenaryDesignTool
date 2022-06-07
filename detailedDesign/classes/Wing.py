@@ -23,6 +23,7 @@ class Wing(Component):
         self.C_L_0_wing = 0
         self.oswald = 0
         self.optimal_ARe = 0
+        self.length_ailerons = 0
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
@@ -147,6 +148,8 @@ class Wing(Component):
         roll_rate = tryout * ((2*self.WingGroup.Aircraft.states["cruise"].velocity)/self.span)
         print("roll rate:", roll_rate)
 
+        length_ailerons = b2-b1
+        self.own.length_ailerons = length_ailerons
 
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord
