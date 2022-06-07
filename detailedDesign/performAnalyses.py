@@ -22,13 +22,15 @@ def perform_analyses(aircraft, make_stability):
         plt.figure(3)
 
     competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft)
-    total_program_cost = production_cost_estimation(aircraft)
+    total_program_cost, program_roi = production_cost_estimation(aircraft, competitive_price_ac)
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"{breakdown_summary}")
     print(f"Aircraft Cost [M$]: {cost_ac / 1e6:.2f}")
     print(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
     print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
     print(f"Total Program Cost [M$]: {total_program_cost :.2f}")
+    print(f"Operational ROI [%]: {roi:.2f}")
+    print(f"Program ROI [%]: {program_roi:.2f}")
     plt.show()
 
 

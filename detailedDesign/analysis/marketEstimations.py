@@ -32,12 +32,14 @@ P_tank = 550  # [$/kg] LH2
 IR = 0.05  # 5% Interest rate
 f_rv = 0.1  # 10% Residual value factor
 f_ins = 0.005  # 0.5% insurance cost
-f_misc = 0.05  # Misc 5% contingency factor to account for new tech
+f_misc = 0.1  # Misc 5% contingency factor to account for new tech
 PMac = 0.2  # typically 20% profit margin for manufacturer
-DP = 27  # Depreciation period [yrs]
+DP = 14  # Depreciation period [yrs]
 
 # Return on investment constants
-price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
+price_per_ticket = 600  # Average price today
+# price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
+price_per_cargo = 3  # [$/kg]
 subsidy = 0.  # expected subsidy for green aviation
 n_ac_sold = 97  # TODO: Revise this w market analysis
 
@@ -130,11 +132,11 @@ def market_estimations(aircraft):
     plt.savefig(Path("plots", "operational_market_pie.png"))
 
     # Calculating ROI
-    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy)
+    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy) + price_per_cargo*aircraft.cargo_mass
     cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
 
-    # ----- Estimating price of the aircraft -----
+    # ----- Estimating competitive price of the aircraft -----
     # Wide body aircraft reference data
     k1 = 0.508
     k2 = 0.697
@@ -148,7 +150,7 @@ def market_estimations(aircraft):
     return competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
 
 
-def production_cost_estimation(aircraft):
+def production_cost_estimation(aircraft, competitive_price_ac):
     oew = aircraft.oew  # [kg]
 
     # ----- Non-Recurring Costs -----
@@ -157,14 +159,6 @@ def production_cost_estimation(aircraft):
     tool_design_cost = 0.15
     tool_fab_cost = 0.348
     support_cost = 0.047
-
-    # non_recurring_costs = [
-    #     {"cost": "Engineering", "fraction": engineering_cost},
-    #     {"cost": "ME", "fraction": me_cost},
-    #     {"cost": "Tool Design", "fraction": tool_design_cost},
-    #     {"cost": "Tool Fab", "fraction": tool_fab_cost},
-    #     {"cost": "Support", "fraction": support_cost}
-    # ]
 
     wing_mass = aircraft.WingGroup.Wing.own_mass
     empennage_mass = aircraft.FuselageGroup.Tail.total_mass
@@ -257,4 +251,8 @@ def production_cost_estimation(aircraft):
     plt.axis('equal')
     plt.savefig(Path("plots", "recurring_market_pie.png"))
 
-    return total_program_cost
+    # Return on investment
+    program_revenues = n_ac_sold * competitive_price_ac / 1e6
+    program_roi = (program_revenues - total_program_cost)/total_program_cost * 100
+
+    return total_program_cost, program_roi
