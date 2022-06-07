@@ -195,3 +195,13 @@ def production_cost_estimation(aircraft):
     miscellaneous_rec_mass_usd = lbs_to_kg(miscellaneous_rec_cost_density) * miscellaneous_mass
     final_assembly_rec_mass_usd = lbs_to_kg(final_assembly_rec_cost_density) * oew
 
+
+    non_rec_costs_totals = nrc_per_kg[-1,1:]
+    colors = [plt.cm.Pastel1(i) for i in range(20)]
+    plt.pie(non_rec, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Cost Breakdown [%]")
+    plt.axis('equal')
+    plt.show()
+
+    plt.savefig(Path("plots", "market_pie.png"))
+    
