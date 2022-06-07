@@ -212,10 +212,10 @@ def production_cost_estimation(aircraft):
 
     non_rec_costs_totals = nrc_per_kg[-1,1:]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
-    #plt.pie(non_rec, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
-    #plt.title("Cost Breakdown [%]")
-    #plt.axis('equal')
-    #plt.show()
+    plt.pie(non_rec_costs_totals, labels=lst_3 , autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Cost Breakdown [%]")
+    plt.axis('equal')
+    plt.show()
 
-    #plt.savefig(Path("plots", "market_pie.png"))
+    plt.savefig(Path("plots", "market_pie.png"))
     
