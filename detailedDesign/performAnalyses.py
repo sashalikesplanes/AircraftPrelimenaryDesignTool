@@ -1,7 +1,7 @@
 import logging
 import matplotlib.pyplot as plt
 
-from detailedDesign.analysis.marketEstimations import market_estimations
+from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation
 from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
@@ -19,11 +19,14 @@ def perform_analyses(aircraft, make_stability):
         find_stability(aircraft)
         plt.figure(3)
 
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft)
+    price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft)
+    total_program_cost = production_cost_estimation(aircraft)
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"{breakdown_summary}")
+    print(f"Aircraft Cost [M$]: {cost_ac / 1e6:.2f}")
     print(f"Aircraft Price [M$]: {price_ac / 1e6:.2f}")
     print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
+    print(f"Total Program Cost [M$]: {total_program_cost / 1e6:.2f}")
     plt.show()
 
 
