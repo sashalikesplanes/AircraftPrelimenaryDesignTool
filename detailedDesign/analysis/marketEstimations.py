@@ -35,11 +35,12 @@ f_rv = 0.1  # 10% Residual value factor
 f_ins = 0.005  # 0.5% insurance cost
 f_misc = 0.05  # Misc 5% contingency factor to account for new tech
 PMac = 0.0  # typically 20% profit margin for manufacturer
-DP = 14  # Depreciation period [yrs]
+DP = 27  # Depreciation period [yrs]
 
 # Return on investment constants
 price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
 subsidy = 0.2  # expected subsidy for green aviation
+n_ac_sold = 300  # TODO: Revise this w market analysis
 
 
 def market_estimations(aircraft):
@@ -84,14 +85,14 @@ def market_estimations(aircraft):
     # TODO: Revise price_ac calc. Should the other masses be subtracted from oew?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
 
-    price_ac = (P_OEW * (
+    cost_ac = (P_OEW * (
                 oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass - aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass
                 - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
                 + (
                             aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass) * P_tank
                 + aircraft.FuselageGroup.Power.FuelCells.own_mass * P_fc) * (1 + PMac + f_misc)
 
-    DOC_cap = price_ac * (a + f_ins)
+    DOC_cap = cost_ac * (a + f_ins)
 
     DOC = DOC_maintenance + DOC_crew + DOC_fees + DOC_fuel + DOC_cap  # [$]
     available_seat_km = flight_cycles * flight_range * n_pax / 1000
@@ -134,7 +135,18 @@ def market_estimations(aircraft):
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
     production_cost_estimation(aircraft)
 
-    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
+    # ----- Estimating price of the aircraft -----
+    # Wide body aircraft reference data
+    k1 = 0.508
+    k2 = 0.697
+    alpha = 2.760
+    seats_ref = 853  # [A380 reference]
+    range_ref = 15200  # [km - A380 reference]
+    price_ac_ref = 450e6  # [$ - A380 reference]
+
+    price_ac = [k1*(n_pax/seats_ref)**alpha+k2*(flight_range/range_ref)] * price_ac_ref
+
+    return price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
 
 
 def production_cost_estimation(aircraft):
@@ -187,7 +199,9 @@ def production_cost_estimation(aircraft):
 
     print(tabulate(nrc_per_kg, headers=columns, floatfmt=".2f"))
 
-    # ----- Recurring Costs -----
+    total_nrc = None
+
+    # ----- Recurring Costs ----- [per aircraft]
 
     # Cost density [$/lb]
     wing_rec_cost_density = 900
@@ -204,6 +218,10 @@ def production_cost_estimation(aircraft):
     miscellaneous_rec_mass_usd = lbs_to_kg(miscellaneous_rec_cost_density) * miscellaneous_mass
     final_assembly_rec_mass_usd = lbs_to_kg(final_assembly_rec_cost_density) * oew
 
+    total_rc_per_ac = wing_rec_mass_usd + empennage_rec_mass_usd+fuselage_rec_mass_usd+engine_rec_mass_usd+miscellaneous_rec_mass_usd+final_assembly_rec_mass_usd
+
+    total_program_cost = total_rc_per_ac * n_ac_sold + total_nrc
+
 
     non_rec_costs_totals = nrc_per_kg[-1,1:]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
@@ -214,3 +232,4 @@ def production_cost_estimation(aircraft):
 
     #plt.savefig(Path("plots", "market_pie.png"))
     
+    return total_program_cost
