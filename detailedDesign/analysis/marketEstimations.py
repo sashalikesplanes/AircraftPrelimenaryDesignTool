@@ -77,7 +77,7 @@ def market_estimations(aircraft):
     DOC_maint_material = oew / 1000 * (0.21 * block_time + 13.7) + 57.5
     DOC_maint_personnel = salaryMaintenance * (1 + costBurden) * (
                 (0.655 + 0.01 * oew / 1000) * block_time + 0.254 + 0.01 * oew / 1000)
-    ton_force = aircraft.reference_thrust * 0.0001124
+    ton_force = aircraft.reference_cruise_thrust * 0.0001124
     DOC_maint_engine = n_motor * (1.5 * ton_force + 30.5 * block_time + 10.6)
     DOC_maintenance = flight_cycles * (DOC_maint_engine + DOC_maint_material + DOC_maint_personnel)  # [$]
 

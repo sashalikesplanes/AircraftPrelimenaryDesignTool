@@ -68,7 +68,9 @@ def get_constraints(aircraft):
 
     WS = weight_over_surface_stall
     logger.debug(f"{thrust_loading_constant_turn_f(WS) = }")
-    TW = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS), thrust_loading_takeoff_f(WS))
+    TW_cruise = max(thrust_loading_constant_turn_f(WS), thrust_loading_climb_rate_f(WS), thrust_loading_cruise_f(WS))
+
+    TW_takeoff = thrust_loading_takeoff_f(WS)
 
     # Plot the fuctions
     # fig, ax = plt.subplots()
@@ -150,7 +152,7 @@ def get_constraints(aircraft):
     #     optimum_index = thrust_conditions.index(TW)
     #     WS = weight_conditions[optimum_index]
 
-    logger.debug(f"{ TW = } { WS = }")
+    logger.debug(f"{ TW_cruise = }, { TW_takeoff = },  { WS = }")
 
     # Vstall regulated by CS 25.103: not really specified
     # I actually have to calculate the stall speed from the CLmax
@@ -160,7 +162,8 @@ def get_constraints(aircraft):
     V_stall = np.sqrt(2 / density / C_L_max * WS)
 
     # save results into the aircraft
-    aircraft.thrust_over_weight = TW
+    aircraft.thrust_over_weight_cruise = TW_cruise
+    aircraft.thrust_over_weight_takeoff = TW_takeoff
     aircraft.weight_over_surface = WS
     # aircraft.clean_stall_speed = V_stall
 

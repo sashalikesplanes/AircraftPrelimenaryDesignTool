@@ -28,7 +28,7 @@ class Engines(Component):
         Span = self.WingGroup.Wing.span
         V0 = self.WingGroup.Aircraft.states['cruise'].velocity
         altitude = self.WingGroup.Aircraft.states['cruise'].altitude
-        Tt = self.WingGroup.Aircraft.reference_thrust
+        Tt = self.WingGroup.Aircraft.reference_cruise_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
 
         # Constants

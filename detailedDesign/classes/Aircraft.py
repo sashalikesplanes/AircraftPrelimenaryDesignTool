@@ -22,10 +22,12 @@ class Aircraft(Component):
         self.mtom = 2  # Initial Value
         self.oem = 1
         self.payload_mass = None
-        self.thrust_over_weight = 1  # Initial Value
+        self.thrust_over_weight_cruise = 0.1  # Initial Value
+        self.thrust_over_weight_takeoff = 0.1
         self.weight_over_surface = 1  # Initial Value
         self.reference_area = None
-        self.reference_thrust = None
+        self.reference_cruise_thrust = None
+        self.reference_takeoff_thrust = None
         self.own_mass = 0
 
         self.name = "BoatPlane"
@@ -48,12 +50,11 @@ class Aircraft(Component):
 
     def get_sized(self):
         self.reference_area = self.mtom * const.g / self.weight_over_surface
-        self.reference_thrust = self.mtom * const.g * self.thrust_over_weight
+        self.reference_cruise_thrust = self.mtom * const.g * self.thrust_over_weight_cruise
+        self.reference_takeoff_thrust = self.mtom * const.g * self.thrust_over_weight_takeoff
 
         self.logger.debug(
             f"{ self.reference_area = :.4E} m2")
-        self.logger.debug(
-            f"{ self.reference_thrust = :.4E} N")
         self.logger.debug(f"{ self.mtom = :.4E} kg")
         for component in self.components:
             component.get_sized()
