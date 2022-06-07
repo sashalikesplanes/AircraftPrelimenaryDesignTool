@@ -5,6 +5,7 @@ from detailedDesign.analysis.marketEstimations import market_estimations, produc
 from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
+from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
 
 logger = logging.getLogger("logger")
 
@@ -13,6 +14,7 @@ def perform_analyses(aircraft, make_stability):
     make_avl_file(aircraft)
     sketch_aircraft(aircraft)
     print_summary(aircraft)
+    make_payload_range_diagram(aircraft)
     plt.figure(2)
 
     if make_stability:
