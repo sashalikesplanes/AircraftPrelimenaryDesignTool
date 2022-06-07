@@ -24,7 +24,7 @@ def make_avl_file(aircraft):
     airfoil = "NACA651412"
 
     # The general file stuff
-    txt = f"BoatPlane\n"
+    txt = f"{aircraft.name}\n"
     txt += f"#Mach\n"
     txt += f" {mach_number}\n"
     txt += f"#IYsym   IZsym   Zsym\n"
@@ -76,5 +76,5 @@ def make_avl_file(aircraft):
     txt += f"{airfoil}.dat\n"
     txt += f"\n"
 
-    with open(Path("data", "avl", "design.avl"), "w") as file:
+    with open(Path("data", "avl", f"{aircraft.name}.avl"), "w") as file:
         file.write(txt)

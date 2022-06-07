@@ -10,9 +10,10 @@ class Tail(Component):
 
         self.FuselageGroup = FuselageGroup
 
-        self.VerticalTail = VerticalTail(self, self.design_config)
         self.HorizontalTail = HorizontalTail(self, self.design_config)
-        self.components = [self.VerticalTail, self.HorizontalTail]
+        self.VerticalTail = VerticalTail(self, self.design_config)
+        
+        self.components = [self.HorizontalTail, self.VerticalTail]
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
@@ -26,3 +27,7 @@ class Tail(Component):
         for component in self.components:
             component.get_sized()
         self.size_self()
+
+    @property
+    def total_mass(self):
+        return self.VerticalTail.own_mass + self.HorizontalTail.own_mass

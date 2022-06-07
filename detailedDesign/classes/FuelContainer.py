@@ -63,7 +63,6 @@ class FuelContainer(Component):
         self.total_tank_thickness = self.thickness_insulation + self.thickness
         self.empty_space_thickness = self.total_tank_thickness
 
-
     def size_self(self):
         state = self.Fuselage.FuselageGroup.Aircraft.states["cruise"]
 
@@ -78,7 +77,6 @@ class FuelContainer(Component):
         thickness_yield = self.tank_pressure * self.radius_tank * self.SF / self.yieldstrength
 
         self.thickness = max(thickness_fatigue, thickness_yield)
-
 
         # Debugging
         # self.logger.debug(f"{ self.inner_diameter = }")

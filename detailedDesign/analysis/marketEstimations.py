@@ -1,6 +1,8 @@
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
+from functools import reduce
+from misc.unitConversions import *
 
 # Personnel constants
 salaryPilot = 69  # [$/h]
@@ -13,14 +15,13 @@ annualPilotSalary = 175e3  # [$]
 costBurden = 2  # [$]
 
 # Operational constants
-h2_price = 2.5  # [$/kg]
-ground_time = 10  # [h]  --> refuelling (depends on fuel) + boarding payload
+h2_price = 1.9  # [$/kg] as suggested by hydrogen experts
+ground_time = 2  # [h]  --> refuelling (depends on fuel) + boarding payload
 maintenance_time = 2749  # [h]
 block_time_supplement = 1.8  # [h]
 f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 
 # CAPEX constants
-
 # TODO: Revise CAPEX calculations to incorporate fuel tank costs properly
 P_OEW = 1200  # [$/kg] operating empty weight
 W_eng = 200  # Weight per engine [kg]
@@ -34,6 +35,10 @@ f_ins = 0.005  # 0.5% insurance cost
 f_misc = 0.05  # Misc 5% contingency factor to account for new tech
 PMac = 0.0  # typically 20% profit margin for manufacturer
 DP = 14  # Depreciation period [yrs]
+
+# Return on investment constants
+price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
+subsidy = 0.2  # expected subsidy for green aviation
 
 
 def market_estimations(aircraft):
@@ -68,7 +73,8 @@ def market_estimations(aircraft):
 
     # DOC maintenance
     DOC_maint_material = oew / 1000 * (0.21 * block_time + 13.7) + 57.5
-    DOC_maint_personnel = salaryMaintenance * (1 + costBurden) * ((0.655 + 0.01 * oew / 1000) * block_time + 0.254 + 0.01 * oew / 1000)
+    DOC_maint_personnel = salaryMaintenance * (1 + costBurden) * (
+                (0.655 + 0.01 * oew / 1000) * block_time + 0.254 + 0.01 * oew / 1000)
     ton_force = aircraft.reference_thrust * 0.0001124
     DOC_maint_engine = n_motor * (1.5 * ton_force + 30.5 * block_time + 10.6)
     DOC_maintenance = flight_cycles * (DOC_maint_engine + DOC_maint_material + DOC_maint_personnel)  # [$]
@@ -77,9 +83,11 @@ def market_estimations(aircraft):
     # TODO: Revise price_ac calc. Should the other masses be subtracted from oew?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
 
-    price_ac = (P_OEW * (oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass - aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass
-                         - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
-                + (aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass) * P_tank
+    price_ac = (P_OEW * (
+                oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass - aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass
+                - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
+                + (
+                            aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass) * P_tank
                 + aircraft.FuselageGroup.Power.FuelCells.own_mass * P_fc) * (1 + PMac + f_misc)
 
     DOC_cap = price_ac * (a + f_ins)
@@ -106,7 +114,9 @@ def market_estimations(aircraft):
     cost_type = list(map(lambda x: x['cost type'], cost_breakdown))
     cost_fraction = list(map(lambda x: x['fraction'], cost_breakdown))
 
-    breakdown_summary = list(map(lambda x: f"{x['cost type']} costs: {x['fraction']:.2f}%", cost_breakdown))
+    breakdown_summary = reduce(
+        lambda out_str, cost_item: f"{out_str}\n  {cost_item['cost type']} : {cost_item['fraction']:.2f} %",
+        cost_breakdown, 'Cost breakdown summary:')
 
     # Plotting pie chart
     colors = [plt.cm.Pastel1(i) for i in range(20)]
@@ -117,4 +127,49 @@ def market_estimations(aircraft):
     # plt.savefig(costBreakdownPath, dpi = 600)
     plt.savefig(Path("plots", "market_pie.png"))
 
-    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary
+    # Calculating ROI
+    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy)
+    cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
+    roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
+    production_cost_estimation(aircraft)
+
+    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
+
+
+def production_cost_estimation(aircraft):
+    engineering_cost = 0.4
+    me_cost = 0.1
+    tool_design_cost = 0.15
+    tool_fab_cost = 0.348
+    support_cost = 0.047
+
+    # non_recurring_costs = [
+    #     {"cost": "Engineering", "fraction": engineering_cost},
+    #     {"cost": "ME", "fraction": me_cost},
+    #     {"cost": "Tool Design", "fraction": tool_design_cost},
+    #     {"cost": "Tool Fab", "fraction": tool_fab_cost},
+    #     {"cost": "Support", "fraction": support_cost}
+    # ]
+
+    wing_mass = aircraft.WingGroup.Wing.own_mass
+    empennage_mass = aircraft.FuselageGroup.Tail.total_mass
+    fuselage_mass = aircraft.FuselageGroup.Fuselage.own_mass - empennage_mass
+    engine_mass = aircraft.WingGroup.Engines.own_mass
+    miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass
+
+    wing_cost_density = 17731
+    empennage_cost_density = 52156
+    fuselage_cost_density = 32093
+    engine_cost_density = 8691
+    miscellaneous_cost_density = 34307
+
+    wing_mass_usd = lbs_to_kg(wing_cost_density) * wing_mass
+    empennage_mass_usd = lbs_to_kg(empennage_cost_density) * empennage_mass
+    fuselage_mass_usd = lbs_to_kg(fuselage_cost_density) * fuselage_mass
+    engine_mass_usd = lbs_to_kg(engine_cost_density) * engine_mass
+    miscellaneous_mass_usd = lbs_to_kg(miscellaneous_cost_density) * miscellaneous_mass
+
+    lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost, support_cost]
+    lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
+    nrc_per_kg = np.array([[item_1 * item_2 for item_1 in lst_1] for item_2 in lst_2])
+    print(nrc_per_kg)
