@@ -96,9 +96,9 @@ class Engines(Component):
         # total weight of prop subsys
         mass_total = n_fans * (mass_fan + mass_motor_inverter) * pylon_mass_contingency  # gearbox??
 
-        spacing = (Span - 2 * length_ailerons - 2 * min_spacing - D_fan * n_fans) / (n_fans - 2)
+        spacing = (Span - 2 * length_ailerons - D_fan * n_fans) / (n_fans - 1)
         if spacing < min_spacing:
-            n_fans_fit_wing = np.floor((Span - 2 * length_ailerons)+ min_spacing / (D_fan + min_spacing))
+            n_fans_fit_wing = np.floor((Span - 2 * length_ailerons + min_spacing) / (D_fan + min_spacing))
             n_fans_fuselage = n_fans - n_fans_fit_wing
             self.logger.warning(f" The fans do not fit over the wingspan, the number of fans is {n_fans}."
                                 f" The number of fans that fit over the wing span is {n_fans_fit_wing}. "
