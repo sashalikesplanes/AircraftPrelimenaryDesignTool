@@ -182,10 +182,15 @@ def production_cost_estimation(aircraft):
     'aircraft total']
     columns = ['Engineering', 'ME', 'Tool Design', 'Tool Fab', 'Support',
     'Totals']
-    nrc_per_kg = np.array([[item_3] + [item_1 * item_2 for item_1 in lst_1] for
+    nrc_per_kg = np.array([[item_3] + [(item_1 * item_2) / 1e6 for item_1 in lst_1] for
         item_2, item_3 in zip(lst_2, lst_3)])
 
+    print()
+    print("-----------NON RECURRING COSTS-----------")
+    print()
     print(tabulate(nrc_per_kg, headers=columns, floatfmt=".2f"))
+    print()
+    print()
 
     # ----- Recurring Costs -----
 
