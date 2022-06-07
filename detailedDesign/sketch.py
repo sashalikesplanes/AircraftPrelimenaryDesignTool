@@ -56,4 +56,5 @@ def sketch_aircraft(aircraft):
 
     plt.gca().invert_yaxis()
     location = Path('plots', 'sketch.png')
+    plt.axis('equal')
     plt.savefig(location)

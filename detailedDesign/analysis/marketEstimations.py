@@ -25,7 +25,6 @@ f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 # CAPEX constants
 # TODO: Revise CAPEX calculations to incorporate fuel tank costs properly
 P_OEW = 1200  # [$/kg] operating empty weight
-W_eng = 200  # Weight per engine [kg]
 P_eng = 2600  # [$/kg] engine
 P_fc = 608  # [$/kg] fuel cell
 P_tank = 550  # [$/kg] LH2
@@ -40,7 +39,7 @@ DP = 27  # Depreciation period [yrs]
 # Return on investment constants
 price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
 subsidy = 0.2  # expected subsidy for green aviation
-n_ac_sold = 300  # TODO: Revise this w market analysis
+n_ac_sold = 97  # TODO: Revise this w market analysis
 
 
 def market_estimations(aircraft):
@@ -48,6 +47,7 @@ def market_estimations(aircraft):
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
     n_motor = aircraft.WingGroup.Engines.own_amount_fans
+    W_eng = aircraft.WingGroup.Engines.own_mass / n_motor
 
     flight_range = state.range  # [m]
     block_time = state.duration / 3600 + block_time_supplement  # [h]
