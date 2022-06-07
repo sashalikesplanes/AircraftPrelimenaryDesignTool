@@ -4,12 +4,15 @@ from pathlib import Path
 from misc.openData import openData
 from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.State import State
+from detailedDesign.run_aircraft import run_aircraft
 
 
 def run_test():
     config_file = Path('data', 'new_designs', 'config.yaml')
     states = {"cruise": State('cruise')}
     aircraft = Aircraft(openData(config_file), states)
+    aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry_rudder()
+    run_aircraft(aircraft)
 
     # aircraft.reference_area = 10
 

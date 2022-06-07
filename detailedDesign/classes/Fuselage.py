@@ -8,6 +8,7 @@ from detailedDesign.classes.AssFuelContainer import AssFuelContainer
 from detailedDesign.classes.CargoBay import CargoBay
 from misc.ISA import getPressure
 from misc.unitConversions import *
+import matplotlib.pyplot as plt
 # from detailedDesign.classes.RemovableFuelContainer import FuelContainer
 
 class Fuselage(Component):
@@ -148,14 +149,16 @@ class Fuselage(Component):
         Q_z = Q_outer_z - Q_inner_z
         Q_y = Q_outer_y - Q_inner_y
 
-        delta_P = np.abs(getPressure(self.FuselageGroup.Aircraft.states['cruise'].altitude) - getPressure(0))
+        delta_P = np.abs(getPressure(self.FuselageGroup.Aircraft.states['cruise'].altitude) - getPressure(self.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude))
+
 
         M_z = 0
         M_y = 0
         # loading in y-/z-axis
-        S_y = 0
+        S_y = self.FuselageGroup.Tail.VerticalTail.F_w
         S_z = 0
         T = 0
+        print(S_y)
 
         # Stress calculations
         sigma_xA = []
@@ -170,6 +173,7 @@ class Fuselage(Component):
         sigma_2B = []
 
         for i in range(len(t)):
+            #actual stresses
             sigma_xA.append(M_z * 0 / I_zz + M_y * z_max / I_yy + 2 * delta_P * R / (2 * t[i]))
             sigma_xB.append(M_z * y_max / I_zz + M_y * 0 / I_yy + 2 * delta_P * R / (2 * t[i]))
             sigma_y.append(2 * delta_P * R / t[i])
@@ -179,6 +183,7 @@ class Fuselage(Component):
 
             tau.append(-(S_y * Q_z) / (I_zz * t[i]) - (S_z * Q_y) / (I_yy * t[i]) + T * R / J_0)
 
+            #design stresses
             tau_maxA.append(np.sqrt(((sigma_xA[i] - sigma_y[i]) / 2) ** 2 + tau[i] ** 2))
             sigma_1A.append((sigma_xA[i] + sigma_y[i]) / 2 + tau_maxA[i])
             sigma_2A.append((sigma_xA[i] + sigma_y[i]) / 2 - tau_maxA[i])
@@ -187,4 +192,5 @@ class Fuselage(Component):
             sigma_1B.append((sigma_xB[i] + sigma_y[i]) / 2 + tau_maxB[i])
             sigma_2B.append((sigma_xB[i] + sigma_y[i]) / 2 - tau_maxB[i])
 
-        print(sigma_y)
+        # plt.plot(t,sigma_xA)
+        # plt.show()
