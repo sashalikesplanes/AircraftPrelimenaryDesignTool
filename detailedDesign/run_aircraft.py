@@ -40,14 +40,8 @@ def run_aircraft(aircraft, debug=False):
     aircraft.get_cged()
 
     if True:
-        plt.figure(9)
-        plt.clf()
         df = pd.DataFrame(lst, columns=header)
-        print(df)
-
-        for mass, name in zip(lst, header):
-            y = mass
-            plt.plot(range(len(y)), y, "o-", label=name)
+        df.loc[:, ["Miscellaneous", "VerticalTail", "HorizontalTail", "AssFuelContainer", "AftFuelContainer", "ForwardFuelContainer", "Fuselage", "FuelCells", "Engines", "Wing", "Aircraft"]].plot()
 
         # y = [x[1] for x in lst]
         # plt.plot(range(len(lst)), y, "ro-", label=header[1])
@@ -56,7 +50,8 @@ def run_aircraft(aircraft, debug=False):
         plt.xlabel("Iterations [-]")
         plt.ylabel("Maximum take-off mass [kg]")
         plt.title("MTOM over iterations")
-        plt.yscale("log")
+ #        plt.yscale("log")
         plt.legend()
+        plt.show()
 
     return aircraft

@@ -10,21 +10,22 @@ class Miscellaneous(Component):
         self.FuselageGroup = FuselageGroup
 
         self.W_boat = None
-        self.W_avionics = None
         self.W_AC = None
-        self.W_electrical = None
-        self.W_furnishing = None
-        self.W_hydraulics = None
-        self.W_flight_control_system = None
+        # self.W_ele = None
+        self.W_furn = None
+        self.W_hyd_ele = None
         self.W_apu = None
         self.W_oxy = None
         self.W_paint = None
         self.W_crew = None
+        self.W_ins = None
 
         self._freeze()
 
     def size_self(self):
         mtom = self.FuselageGroup.Aircraft.mtom
+        cruise_state = self.FuselageGroup.Aircraft.states['cruise']
+
 
         # Imperial list
         W_O = kg_to_lbs(mtom)  # [lbs]
@@ -35,50 +36,52 @@ class Miscellaneous(Component):
         pilot_count = 3  # [-]
         passengers_per_flight_attendant = 50
         W_FS = kg_to_lbs(self.FuselageGroup.Fuselage.AftFuelContainer.get_mass() + self.FuselageGroup.Fuselage.ForwardFuelContainer.get_mass())  # [lbs]
-
-        # MDN
-        W_UAV = 2000  # [lbs]
+        l_cabin = self.FuselageGroup.Fuselage.Cabin.length
+        D_fus = self.FuselageGroup.Fuselage.outer_height
 
         # MDF TODO: find better one
         self.W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.2
 
-        self.W_flight_control_system = lbs_to_kg(
-            0.053 * l_FS ** 1.536 * b ** 0.371 * (n_z * W_O * 10 ** -4) ** 0.8)
+        self.W_apu = 2.2 * 0.001 * mtom
 
-        self.W_hydraulics = lbs_to_kg(0.001 * W_O)
+        self.W_ins = 0.347 * (mtom / 2) ** 0.555 * (cruise_state.range / 1000) ** 0.25
 
-        self.W_avionics = lbs_to_kg(2.117 * W_UAV ** 0.933)
+        # self.W_hyd = 0.015 * (mtom / 2) + 272
 
-        self.W_electrical = lbs_to_kg(
-            12.57 * (W_FS + kg_to_lbs(self.W_avionics)) ** 0.51)
+        something_area_fus = (np.pi * m_to_ft(l_cabin) * (0.9 * m_to_ft(D_fus)) ** 2) ** 0.7
+        self.logger.debug(f"{something_area_fus = }")
 
-        self.W_AC = lbs_to_kg(14 * m_to_ft(self.FuselageGroup.Fuselage.Cabin.length) ** 1.28)
+        # self.W_ele = 10.8 * something_area_fus * (1 - 0.18 * something_area_fus)
+        self.W_hyd_ele = 0.277 * self.FuselageGroup.Aircraft.oem ** 0.8
 
-        self.W_furnishing = lbs_to_kg(0.0582 * W_O - 65)
+        self.W_AC = 14 * l_cabin ** 1.28
 
-        self.W_apu = lbs_to_kg(2.2 * 0.001 * W_O)
-
-        self.W_oxy = lbs_to_kg(40 + 2.4 * n_pax)
+        self.W_oxy = 20 + 0.5 * n_pax
 
         self.W_paint = 0.006 * mtom
+
+        zero_fuel_mass = mtom - self.FuselageGroup.Aircraft.fuel_mass
+        self.W_furn = 0.196 * (zero_fuel_mass) ** 0.91
 
         self.W_crew = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger * (
                     n_pax // passengers_per_flight_attendant + 1 + pilot_count)
 
+        mass = self.W_boat + self.W_apu + self.W_ins + self.W_hyd_ele + self.W_AC + self.W_oxy + self.W_paint + self.W_crew
+
         self.logger.debug(f"Boat mass: {self.W_boat:.4E} [kg]")
-        self.logger.debug(f"Flight control system mass: {self.W_flight_control_system:.4E} [kg]")
-        self.logger.debug(f"Hydraulics mass: {self.W_hydraulics:.4E} [kg]")
-        self.logger.debug(f"Avionics mass: {self.W_avionics:.4E} [kg]")
-        self.logger.debug(f"Electrical mass: {self.W_electrical:.4E} [kg]")
+        self.logger.debug(f"Instrument mass: {self.W_ins:.4E} [kg]")
+        # self.logger.debug(f"Hydraulics mass: {self.W_hyd:.4E} [kg]")
+        self.logger.debug(f"Hyd + Electrical mass: {self.W_hyd_ele:.4E} [kg]")
         self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
-        self.logger.debug(f"Furnishing mass: {self.W_furnishing:.4E} [kg]")
+        self.logger.debug(f"Furnishing mass: {self.W_furn:.4E} [kg]")
         self.logger.debug(f"APU mass: {self.W_apu:.4E} [kg]")
         self.logger.debug(f"Oxygen system mass: {self.W_oxy:.4E} [kg]")
         self.logger.debug(f"Paint mass: {self.W_paint:.4E} [kg]")
         self.logger.debug(f"Crew mass: {self.W_crew:.4E} [kg]")
 
-        mass = self.W_furnishing + self.W_AC + self.W_electrical + self.W_avionics + \
-               self.W_hydraulics + self.W_flight_control_system + self.W_boat + self.W_apu + self.W_oxy + self.W_crew
+
+
+
         self.own_mass = mass
 
     def cg_self(self):
@@ -116,12 +119,11 @@ class Miscellaneous(Component):
         mass = self.own_mass
 
         cg_pos = pos_w_boat * self.W_boat
-        cg_pos += pos_w_flight_controls * self.W_flight_control_system
-        cg_pos += pos_w_hydraulics * self.W_hydraulics
-        cg_pos += pos_w_avionics * self.W_avionics
-        cg_pos += pos_w_electrical * self.W_electrical
+        cg_pos += pos_w_flight_controls * self.W_ins
+        cg_pos += pos_w_hydraulics * self.W_hyd_ele
+        # cg_pos += pos_w_electrical * self.W_ele
         cg_pos += pos_w_ac * self.W_AC
-        cg_pos += pos_w_furnishing * self.W_furnishing
+        cg_pos += pos_w_furnishing * self.W_furn
         cg_pos += pos_w_apu * self.W_apu
         cg_pos += pos_w_oxy * self.W_oxy
         cg_pos += pos_w_paint * self.W_paint
