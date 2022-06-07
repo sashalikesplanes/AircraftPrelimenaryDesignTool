@@ -1,7 +1,7 @@
-# To Check
 from detailedDesign.classes.Component import Component
 import numpy as np
 import misc.ISA as ISA
+
 
 class Engines(Component):
     def __init__(self, WingGroup, design_config):
@@ -31,7 +31,6 @@ class Engines(Component):
         Tt = self.WingGroup.Aircraft.reference_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
 
-
         # Constants
         P_motor = self.P_motor  # power of the electric motor [W]
         specific_mass_motor_inverter = self.specific_mass_motor_inverter  # [W/kg] for the 2MW motor
@@ -43,11 +42,11 @@ class Engines(Component):
         increase_BLI_eff = self.increase_BLI_eff
         pylon_mass_contingency = self.pylon_mass_contingency
         engine_failure_contingency = self.engine_failure_contingency
-        rho = ISA.getDensity(altitude)
-        Ps = ISA.getPressure(altitude)
+        rho = self.WingGroup.Aircraft.states['cruise'].density
+        Ps = self.WingGroup.Aircraft.states['cruise'].pressure
 
-        ##### TODO
-        length_ailerons = 0.2 * Span  # the aileron are 20 % of the total span
+        # TODO
+        length_ailerons = 0.2 * Span  # the ailerons are 20 % of the total span
 
         # Calculations
         Tt = Tt * engine_failure_contingency
@@ -72,15 +71,21 @@ class Engines(Component):
         mass_motor_inverter = P_motor / specific_mass_motor_inverter
 
         # total weight of prop subsys
-        mass_total = n_fans * (mass_fan + mass_motor_inverter) * pylon_mass_contingency # gearbox??
+        mass_total = n_fans * (mass_fan + mass_motor_inverter) * pylon_mass_contingency  # gearbox??
 
         # spacing
+        # print(f"Fan count: {n_fans}")
         if (n_fans % 2) == 0:
             n_fans_wing = n_fans
             n_fans_odd = 0
         elif (n_fans % 2) == 1:
-            n_fans_wing = n_fans -1
+            n_fans_wing = n_fans - 1
             n_fans_odd = 1
+        else:
+            self.logger.warning(f"Set amount of fans on wing to zero due to bad n_fans (n_fans: {n_fans})")
+            n_fans_wing = 0
+            n_fans_odd = 0
+
         spacing = (Span - D_fus - 2 * length_ailerons - 2 * min_spacing - D_fan * n_fans_wing) / (n_fans_wing - 2)
 
         if 0 <= spacing < min_spacing:
@@ -101,7 +106,6 @@ class Engines(Component):
             n_fans_fit_wing = n_fans_wing
             n_fans_fuselage = n_fans_odd
 
-
         self.own_mass = mass_total
         self.own_amount_fans = n_fans
         self.own_lenght_unit = length_fan
@@ -112,7 +116,7 @@ class Engines(Component):
         self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):
-        x_cg = 0.5 * self.WingGroup.Wing.mean_geometric_chord #TODO now they are put in the middle of the wing
+        x_cg = 0.5 * self.WingGroup.Wing.mean_geometric_chord  # TODO now they are put in the middle of the wing
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
