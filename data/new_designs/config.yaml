@@ -2,7 +2,7 @@ Aircraft:
   cargo_mass: 0 # [kg] extra cargo mass
   ultimate_load_factor: 3.75  # [-]
   reserve_duration: 2 # hrs, duration of reserve flight for reserve fuel
-  oem_contingency: 1.1  # multiplier of OEM
+  oem_contingency: 1.25  # multiplier of OEM
   cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/s picked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s

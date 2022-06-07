@@ -61,3 +61,9 @@ def print_summary(aircraft):
 
     logger.debug(f"{aircraft.FuselageGroup.Power.FuelCells.size = }")
 
+    engines = aircraft.WingGroup.Engines
+    logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span} m")
+    logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
+    logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
+    logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
+
