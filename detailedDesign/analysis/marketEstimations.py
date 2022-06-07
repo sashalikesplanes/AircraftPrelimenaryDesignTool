@@ -143,7 +143,7 @@ def market_estimations(aircraft):
     range_ref = 15200  # [km - A380 reference]
     price_ac_ref = int(450e6)  # [$ - A380 reference]
 
-    price_ac = (k1*(n_pax/seats_ref)**alpha+k2*(flight_range/range_ref)) * price_ac_ref
+    price_ac = (k1*(n_pax/seats_ref)**alpha+k2*(flight_range/(1e3 * range_ref))) * price_ac_ref
 
     return price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
 
@@ -228,8 +228,6 @@ def production_cost_estimation(aircraft):
 
 
     non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
-    print(non_rec_costs_totals)
-    print(lst_3[:-1])
     colors = [plt.cm.Pastel1(i) for i in range(20)]
     plt.clf()
     plt.pie(non_rec_costs_totals, labels=lst_3[:-1] , autopct='%1.1f%%', colors=colors, startangle=90)
@@ -239,12 +237,25 @@ def production_cost_estimation(aircraft):
     plt.savefig(Path("plots", "non_recurring_market_pie.png"))
 
 
-    rec_costs_totals = [wing_rec_mass_usd, empennage_rec_mass_usd, fuselage_rec_mass_usd, engine_rec_mass_usd, miscellaneous_rec_mass_usd, final_assembly_rec_mass_usd]
+    rec_costs_totals = [wing_rec_mass_usd, empennage_rec_mass_usd,
+        fuselage_rec_mass_usd, engine_rec_mass_usd, miscellaneous_rec_mass_usd,
+        final_assembly_rec_mass_usd]
+    rec_costs_totals.append(sum(rec_costs_totals))
+    rec_costs_totals = np.array(rec_costs_totals)
+    
     rec_cost_labels = ['wing', 'empennage', 'fuselage', 'engine',
-    'miscellaneous', 'final assembly']
+    'miscellaneous', 'final assembly', 'total']
+
+    print()
+    print("-----------RECURRING COSTS-----------")
+    print()
+    print(tabulate(rec_costs_totals.reshape(1,7)/1e6, headers=rec_cost_labels,
+        floatfmt=".2f"))
+    print()
+    print()
 
     plt.clf()
-    plt.pie(rec_costs_totals, labels=rec_cost_labels , autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.pie(rec_costs_totals[:-1], labels=rec_cost_labels[:-1] , autopct='%1.1f%%', colors=colors, startangle=90)
     plt.title("Recurring Cost Breakdown [%]")
     plt.axis('equal')
 
