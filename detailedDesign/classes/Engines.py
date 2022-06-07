@@ -26,9 +26,10 @@ class Engines(Component):
 
     def size_self(self):
         Span = self.WingGroup.Wing.span
-        V0 = self.WingGroup.Aircraft.states['cruise'].velocity
-        altitude = self.WingGroup.Aircraft.states['cruise'].altitude
-        Tt = self.WingGroup.Aircraft.reference_cruise_thrust
+        V0_cruise = self.WingGroup.Aircraft.states['cruise'].velocity
+        V0_takeoff = self.WingGroup.Aircraft.states['take-off'].velocity
+        Tt_cruise = self.WingGroup.Aircraft.reference_cruise_thrust
+        Tt_takeoff = self. WingGroup.Aircraft.reference_takeoff_thrust
         D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
 
         # Constants
@@ -42,15 +43,37 @@ class Engines(Component):
         increase_BLI_eff = self.increase_BLI_eff
         pylon_mass_contingency = self.pylon_mass_contingency
         engine_failure_contingency = self.engine_failure_contingency
-        rho = self.WingGroup.Aircraft.states['cruise'].density
-        Ps = self.WingGroup.Aircraft.states['cruise'].pressure
+        rho_cruise = self.WingGroup.Aircraft.states['cruise'].density
+        Ps_cruise = self.WingGroup.Aircraft.states['cruise'].pressure
+        rho_takeoff = self.WingGroup.Aircraft.states['take-off'].density
+        Ps_takeoff = self.WingGroup.Aircraft.states['take-off'].pressure
 
         # TODO
-        length_ailerons = 0.2 * Span  # the ailerons are 20 % of the total span
+        length_ailerons = self.WingGroup.Wing.length_ailerons  # the ailerons are 20 % of the total span
 
-        # Calculations
-        Tt = Tt * engine_failure_contingency
-        P_aircraft = Tt * V0
+        # Calculations for cruise
+        Tt_cruise = Tt_cruise * engine_failure_contingency
+        P_aircraft_cruise = Tt_cruise * V0_cruise
+
+        #Calculations for takeoff
+        Tt_takeoff = Tt_takeoff * engine_failure_contingency
+        P_aircraft_takeoff = Tt_takeoff * V0_takeoff
+
+        if P_aircraft_cruise > P_aircraft_takeoff:
+            P_aircraft = P_aircraft_cruise
+            Tt = Tt_cruise
+            V0 = V0_cruise
+            rho = rho_cruise
+            Ps = Ps_cruise
+            print("Cruise power")
+        else:
+            P_aircraft = P_aircraft_takeoff
+            Tt = Tt_takeoff
+            V0 = V0_takeoff
+            rho = rho_takeoff
+            Ps = Ps_takeoff
+            print("Take-off power")
+
         n_fans = np.ceil(P_aircraft / (P_motor * eff_mot_inv * (propulsive_eff + increase_BLI_eff)))
         Tf = Tt / n_fans
         Pt0 = Ps + 0.5 * rho * V0 ** 2
@@ -59,7 +82,7 @@ class Engines(Component):
         m_dot = Tf / (V1 - V0)
         r = (m_dot / (flow_coef * rho * np.pi * omega)) ** (1 / 3)
         D_fan = 2 * r
-        min_spacing = 0.07 * D_fan
+        min_spacing = 0.05 * D_fan
 
         # get the weight of ducted fan
         mass_fan = 389.54 * D_fan ** 2 + 55.431 * D_fan - 2.064  # from excel regression
@@ -73,38 +96,51 @@ class Engines(Component):
         # total weight of prop subsys
         mass_total = n_fans * (mass_fan + mass_motor_inverter) * pylon_mass_contingency  # gearbox??
 
+        spacing = (Span - 2 * length_ailerons - 2 * min_spacing - D_fan * n_fans) / (n_fans - 2)
+        if spacing < min_spacing:
+            n_fans_fit_wing = np.floor((Span - 2 * length_ailerons)+ min_spacing / (D_fan + min_spacing))
+            n_fans_fuselage = n_fans - n_fans_fit_wing
+            self.logger.warning(f" The fans do not fit over the wingspan, the number of fans is {n_fans}."
+                                f" The number of fans that fit over the wing span is {n_fans_fit_wing}. "
+                                f"The fans to be placed elsewhere is {n_fans_fuselage}. ")
+        else:
+            self.logger.warning(f" The fans fit over the wingspan, the number of fans is {n_fans}.")
+            n_fans_fit_wing = n_fans
+            n_fans_fuselage = 0
+
+
         # spacing
         # print(f"Fan count: {n_fans}")
-        if (n_fans % 2) == 0:
-            n_fans_wing = n_fans
-            n_fans_odd = 0
-        elif (n_fans % 2) == 1:
-            n_fans_wing = n_fans - 1
-            n_fans_odd = 1
-        else:
-            self.logger.warning(f"Set amount of fans on wing to zero due to bad n_fans (n_fans: {n_fans})")
-            n_fans_wing = 0
-            n_fans_odd = 0
-
-        spacing = (Span - D_fus - 2 * length_ailerons - 2 * min_spacing - D_fan * n_fans_wing) / (n_fans_wing - 2)
-
-        if 0 <= spacing < min_spacing:
-            n_fans_fit_wing = np.floor((Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing))
-            if (n_fans_fit_wing % 2) == 1:
-                n_fans_fit_wing = n_fans_fit_wing - 1
-            n_fans_fuselage = n_fans - n_fans_fit_wing
-            self.logger.warning(f"The engines are too close together. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing. "
-                                f"The number of fans on the fuselage is {n_fans_fuselage}")
-        elif spacing < 0:
-            n_fans_fit_wing = np.floor((Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing))
-            if (n_fans_fit_wing % 2) == 1:
-                n_fans_fit_wing = n_fans_fit_wing - 1
-            n_fans_fuselage = n_fans - n_fans_fit_wing
-            self.logger.warning(f"The engines do not fit on the wing. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing. "
-                                f"The number of fans on the fuselage is {n_fans_fuselage}")
-        else:
-            n_fans_fit_wing = n_fans_wing
-            n_fans_fuselage = n_fans_odd
+        # if (n_fans % 2) == 0:
+        #     n_fans_wing = n_fans
+        #     n_fans_odd = 0
+        # elif (n_fans % 2) == 1:
+        #     n_fans_wing = n_fans - 1
+        #     n_fans_odd = 1
+        # else:
+        #     self.logger.warning(f"Set amount of fans on wing to zero due to bad n_fans (n_fans: {n_fans})")
+        #     n_fans_wing = 0
+        #     n_fans_odd = 0
+        #
+        # spacing = (Span - 2 * length_ailerons - 2 * min_spacing - D_fan * n_fans_wing) / (n_fans_wing - 2)
+        #
+        # if 0 <= spacing < min_spacing:
+        #     n_fans_fit_wing = np.floor((Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing))
+        #     if (n_fans_fit_wing % 2) == 1:
+        #         n_fans_fit_wing = n_fans_fit_wing - 1
+        #     n_fans_fuselage = n_fans - n_fans_fit_wing
+        #     self.logger.warning(f"The engines are too close together. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing. "
+        #                         f"The number of fans on the fuselage is {n_fans_fuselage}")
+        # elif spacing < 0:
+        #     n_fans_fit_wing = np.floor((Span - D_fus - 2 * length_ailerons) / (D_fan + min_spacing))
+        #     if (n_fans_fit_wing % 2) == 1:
+        #         n_fans_fit_wing = n_fans_fit_wing - 1
+        #     n_fans_fuselage = n_fans - n_fans_fit_wing
+        #     self.logger.warning(f"The engines do not fit on the wing. There are {n_fans} fans but only {n_fans_fit_wing} fit in the wing. "
+        #                         f"The number of fans on the fuselage is {n_fans_fuselage}")
+        # else:
+        #     n_fans_fit_wing = n_fans_wing
+        #     n_fans_fuselage = n_fans_odd
 
         self.own_mass = mass_total
         self.own_amount_fans = n_fans
