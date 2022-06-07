@@ -123,17 +123,16 @@ def market_estimations(aircraft):
     # Plotting pie chart
     colors = [plt.cm.Pastel1(i) for i in range(20)]
     plt.pie(cost_fraction, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
-    plt.title("Cost Breakdown [%]")
+    plt.title("Operational Cost Breakdown [%]")
     plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
     # plt.savefig(costBreakdownPath, dpi = 600)
-    plt.savefig(Path("plots", "market_pie.png"))
+    plt.savefig(Path("plots", "operational_market_pie.png"))
 
     # Calculating ROI
     revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy)
     cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
-    production_cost_estimation(aircraft)
 
     # ----- Estimating price of the aircraft -----
     # Wide body aircraft reference data
@@ -142,9 +141,9 @@ def market_estimations(aircraft):
     alpha = 2.760
     seats_ref = 853  # [A380 reference]
     range_ref = 15200  # [km - A380 reference]
-    price_ac_ref = 450e6  # [$ - A380 reference]
+    price_ac_ref = int(450e6)  # [$ - A380 reference]
 
-    price_ac = [k1*(n_pax/seats_ref)**alpha+k2*(flight_range/range_ref)] * price_ac_ref
+    price_ac = (k1*(n_pax/seats_ref)**alpha+k2*(flight_range/range_ref)) * price_ac_ref
 
     return price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
 
@@ -204,7 +203,7 @@ def production_cost_estimation(aircraft):
     print()
     print()
 
-    total_nrc = None
+    total_nrc = float(nrc_per_kg[-1,-1])
 
     # ----- Recurring Costs ----- [per aircraft]
 
@@ -225,16 +224,30 @@ def production_cost_estimation(aircraft):
 
     total_rc_per_ac = wing_rec_mass_usd + empennage_rec_mass_usd+fuselage_rec_mass_usd+engine_rec_mass_usd+miscellaneous_rec_mass_usd+final_assembly_rec_mass_usd
 
-    total_program_cost = total_rc_per_ac * n_ac_sold + total_nrc
+    total_program_cost = (total_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
 
 
-    non_rec_costs_totals = nrc_per_kg[-1,1:]
+    non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
+    print(non_rec_costs_totals)
+    print(lst_3[:-1])
     colors = [plt.cm.Pastel1(i) for i in range(20)]
-    plt.pie(non_rec_costs_totals, labels=lst_3 , autopct='%1.1f%%', colors=colors, startangle=90)
-    plt.title("Cost Breakdown [%]")
+    plt.clf()
+    plt.pie(non_rec_costs_totals, labels=lst_3[:-1] , autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Non Recurring Cost Breakdown [%]")
     plt.axis('equal')
-    plt.show()
 
-    plt.savefig(Path("plots", "market_pie.png"))
+    plt.savefig(Path("plots", "non_recurring_market_pie.png"))
+
+
+    rec_costs_totals = [wing_rec_mass_usd, empennage_rec_mass_usd, fuselage_rec_mass_usd, engine_rec_mass_usd, miscellaneous_rec_mass_usd, final_assembly_rec_mass_usd]
+    rec_cost_labels = ['wing', 'empennage', 'fuselage', 'engine',
+    'miscellaneous', 'final assembly']
+
+    plt.clf()
+    plt.pie(rec_costs_totals, labels=rec_cost_labels , autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Recurring Cost Breakdown [%]")
+    plt.axis('equal')
+
+    plt.savefig(Path("plots", "recurring_market_pie.png"))
     
     return total_program_cost
