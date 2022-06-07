@@ -178,15 +178,6 @@ def production_cost_estimation(aircraft):
     fuselage_cost_density = 32093
     engine_cost_density = 8691
     miscellaneous_cost_density = 34307
-<<<<<<< HEAD
-
-    wing_mass_usd = lbs_to_kg(wing_cost_density) * wing_mass
-    empennage_mass_usd = lbs_to_kg(empennage_cost_density) * empennage_mass
-    fuselage_mass_usd = lbs_to_kg(fuselage_cost_density) * fuselage_mass
-    engine_mass_usd = lbs_to_kg(engine_cost_density) * engine_mass
-    miscellaneous_mass_usd = lbs_to_kg(miscellaneous_cost_density) * miscellaneous_mass
-=======
->>>>>>> market_2
 
     wing_mass_usd = lbs_to_kg(wing_cost_density) * wing_mass
     empennage_mass_usd = lbs_to_kg(empennage_cost_density) * empennage_mass
@@ -197,12 +188,6 @@ def production_cost_estimation(aircraft):
     lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost,
             support_cost, 1]
     lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
-<<<<<<< HEAD
-    nrc_per_kg = np.array([[item_1 * item_2 for item_1 in lst_1] for item_2 in lst_2])
-    print(nrc_per_kg)
-
-    total_nrc = None
-=======
     lst_2.append(sum(lst_2))
     lst_3 = ['wing', 'empennage', 'fuselage', 'engine', 'miscellaneous',
     'aircraft total']
@@ -219,7 +204,6 @@ def production_cost_estimation(aircraft):
     print()
 
     total_nrc = float(nrc_per_kg[-1,-1])
->>>>>>> market_2
 
     # ----- Recurring Costs ----- [per aircraft]
 
@@ -238,22 +222,6 @@ def production_cost_estimation(aircraft):
     miscellaneous_rec_mass_usd = lbs_to_kg(miscellaneous_rec_cost_density) * miscellaneous_mass
     final_assembly_rec_mass_usd = lbs_to_kg(final_assembly_rec_cost_density) * oew
 
-<<<<<<< HEAD
-
-    non_rec_costs_totals = nrc_per_kg[-1,1:]
-    colors = [plt.cm.Pastel1(i) for i in range(20)]
-    plt.pie(non_rec, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
-    plt.title("Cost Breakdown [%]")
-    plt.axis('equal')
-    plt.show()
-
-    plt.savefig(Path("plots", "market_pie.png"))
-    
-    total_rc_per_ac = wing_rec_mass_usd + empennage_rec_mass_usd+fuselage_rec_mass_usd+engine_rec_mass_usd+miscellaneous_rec_mass_usd+final_assembly_rec_mass_usd
-
-    total_program_cost = total_rc_per_ac * n_ac_sold + total_nrc
-
-=======
     total_rc_per_ac = wing_rec_mass_usd + empennage_rec_mass_usd+fuselage_rec_mass_usd+engine_rec_mass_usd+miscellaneous_rec_mass_usd+final_assembly_rec_mass_usd
 
     total_program_cost = (total_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
@@ -282,5 +250,4 @@ def production_cost_estimation(aircraft):
 
     plt.savefig(Path("plots", "recurring_market_pie.png"))
     
->>>>>>> market_2
     return total_program_cost
