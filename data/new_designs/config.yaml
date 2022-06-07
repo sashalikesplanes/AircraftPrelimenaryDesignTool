@@ -11,6 +11,7 @@ Aircraft:
   count_pilot: 3
   x_lemac: 25 # TODO optimize for stability
   FuselageGroup:
+    SAD: 0
     Miscellaneous:
       Fish: 5 # [Fish]
     test_prop_fuselage: 420

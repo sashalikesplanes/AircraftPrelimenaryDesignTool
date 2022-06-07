@@ -101,6 +101,8 @@ class Fuselage(Component):
 
         self.own_mass = lbs_to_kg(mass_lbs)
 
+        self.bending_shear()
+
     def cg_self(self):
         self.own_cg = np.array([0.5 * self.length, 0., 0.])
 
@@ -109,3 +111,6 @@ class Fuselage(Component):
             component.get_sized()
 
         self.size_self()
+
+    def bending_shear(self):
+        pass
