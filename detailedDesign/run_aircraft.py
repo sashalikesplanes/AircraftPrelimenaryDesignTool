@@ -47,8 +47,10 @@ def run_aircraft(aircraft, debug=False):
         # plt.plot(range(len(lst)), y, "ro-", label=header[1])
         # y = [x[2] for x in lst]
         # plt.plot(range(len(lst)), y, "go-", label=header[2])
+        # print(df)
+        df.plot(style="o-")
         plt.xlabel("Iterations [-]")
-        plt.ylabel("Maximum take-off mass [kg]")
+        plt.ylabel("System Mass [kg]")
         plt.title("MTOM over iterations")
  #        plt.yscale("log")
         plt.legend()

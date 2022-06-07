@@ -26,7 +26,7 @@ def perform_analyses(aircraft, make_stability):
     print(f"Aircraft Cost [M$]: {cost_ac / 1e6:.2f}")
     print(f"Aircraft Price [M$]: {price_ac / 1e6:.2f}")
     print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
-    print(f"Total Program Cost [M$]: {total_program_cost / 1e6:.2f}")
+    print(f"Total Program Cost [M$]: {total_program_cost :.2f}")
     plt.show()
 
 
