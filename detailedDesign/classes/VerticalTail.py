@@ -23,6 +23,7 @@ class VerticalTail(Component):
         self.root_chord = None  # [m]
         self.quarter_chord_sweep = None  # [rad]
         self.first_iteration = True  # [-]
+        self.F_w = 0
 
         self._freeze()
 
@@ -97,7 +98,7 @@ class VerticalTail(Component):
         S_s = 1.02*(self.Tail.FuselageGroup.Fuselage.Cabin.length* \
                     self.Tail.FuselageGroup.Fuselage.Cabin.height+self.surface_area)
         d_c = self.Tail.FuselageGroup.Fuselage.Cabin.length - self.Tail.FuselageGroup.Aircraft.get_cg()[0]
-        F_w = 0.5*state.density*V_crosswind**2*S_s*self.C_d_y
+        self.F_w = 0.5*state.density*V_crosswind**2*S_s*self.C_d_y
         beta_sideslip = np.arctan(V_crosswind/V_appr)
         C_n_beta = self.Kf2 * self.C_l_alpha_v*(1-self.deta_dbeta)*self.eta_v*self.volume_coefficient
         C_y_beta = -self.Kf1 * self.C_l_alpha_v*(1-self.deta_dbeta)*self.eta_v * \
@@ -138,7 +139,6 @@ class VerticalTail(Component):
         print("dc", d_c)
         print("span", self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span)
         #solve eq 22&23 in https://www.ripublication.com/ijaer18/ijaerv13n10_85.pdf to find the deflections
-
 
 
 
