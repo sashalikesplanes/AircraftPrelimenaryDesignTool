@@ -28,7 +28,7 @@ def make_payload_range_diagram(aircraft):
     m4 = MTOM - payload_mass
     m_f4 = total_fuel_capacity
 
-    p = [payload_mass + 0.2 * total_fuel_capacity, payload_mass + 0.2 * total_fuel_capacity, payload_mass, 0]
+    p = [payload_mass + fuel_dump_percentage * total_fuel_capacity, payload_mass + fuel_dump_percentage * total_fuel_capacity, payload_mass, 0]
     r = [calc_range(m1, m1 - m_f1, aircraft), calc_range(m2, m2 - m_f2, aircraft), calc_range(m3, m3 - m_f3, aircraft), calc_range(m4, m_f4, aircraft)]
     print(m_f1, m_f2, m_f3, m_f4)
     print(p)
@@ -44,6 +44,7 @@ def make_payload_range_diagram(aircraft):
 def calc_range(W0, W1, aircraft):
     prop_eff = aircraft.WingGroup.Engines.propulsive_eff
     c_p = 1 / energyDensityHydrogen
+    # TODO: implement realistic L/D
     L_over_D_cruise = 10
 
     # Range formula from ADSEE I
