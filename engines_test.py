@@ -8,16 +8,17 @@ from detailedDesign.classes.State import State
 
 def run_test():
     config_file = Path('data', 'new_designs', 'config.yaml')
-    states = {'cruise': State('test_state_engines')}
+    states = {'cruise': State('test_state_engines'), 'take-off': State('take-off')}
     aircraft = Aircraft(openData(config_file), states)
 
     Engines = aircraft.WingGroup.Engines
 
     # call python file
     states['cruise'].velocity
-    states['cruise'].altitude
-    aircraft.WingGroup.Wing.span = 120
-    aircraft.reference_thrust = 700000
+    states['take-off'].velocity
+    aircraft.WingGroup.Wing.span = 139
+    aircraft.reference_takeoff_thrust = 1800000 #1400000
+    aircraft.reference_cruise_thrust = 1000000 # 1Mw
 
 
     Engines.size_self()
@@ -26,6 +27,7 @@ def run_test():
     print('amount of fans', Engines.own_amount_fans)
     print('amount of fans wing', Engines.own_fans_on_wing)
     print('amount of fans fuselage', Engines.own_fans_on_fuselage)
+    print("diameter fan", Engines.own_diameter_fan)
 
 if __name__ == "__main__":
     run_test()
