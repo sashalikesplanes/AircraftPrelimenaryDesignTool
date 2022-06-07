@@ -21,13 +21,14 @@ class Component:
                 setattr(self, prop, self.design_config[prop])
 
     def get_mass(self):
+        """Get the mass of this component and all its subcomponents"""
         total_mass = self.own_mass
         for component in self.components:
             total_mass += component.get_mass()
         return total_mass
 
     def get_cg(self):
-        """Calculate the cg of this component and all its sub-components"""
+        """Calculate the cg of this component and all its subcomponents"""
         total_mass_factor = self.own_mass
         cg_pos = self.own_cg * self.own_mass
 
@@ -43,6 +44,7 @@ class Component:
         return cg_pos
 
     def plot_cgs(self):
+        """Return the weighted cg of this component and its subcomponents"""
         lst = []
         for component in self.components:
             new_lst = component.plot_cgs()
@@ -56,6 +58,7 @@ class Component:
         return lst
 
     def size_self(self):
+        """Size this component"""
         self.logger.warning(f"{self} is not being sized")
 
     def cg_self(self):
@@ -106,3 +109,11 @@ class Component:
 
     def __str__(self):
         return type(self).__name__
+
+    def make_mass_lst(self):
+        lst = [self.get_mass()]
+        header = [str(self)]
+        for component in self.components:
+            lst += component.make_mass_lst()[0]
+            header += component.make_mass_lst()[1]
+        return lst, header
