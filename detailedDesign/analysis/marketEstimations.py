@@ -137,6 +137,9 @@ def market_estimations(aircraft):
 
 
 def production_cost_estimation(aircraft):
+    oew = aircraft.oew  # [kg]
+
+    # ----- Non-Recurring Costs -----
     engineering_cost = 0.4
     me_cost = 0.1
     tool_design_cost = 0.15
@@ -157,6 +160,7 @@ def production_cost_estimation(aircraft):
     engine_mass = aircraft.WingGroup.Engines.own_mass
     miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass
 
+    # Cost density [$/lb]
     wing_cost_density = 17731
     empennage_cost_density = 52156
     fuselage_cost_density = 32093
@@ -173,3 +177,21 @@ def production_cost_estimation(aircraft):
     lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
     nrc_per_kg = np.array([[item_1 * item_2 for item_1 in lst_1] for item_2 in lst_2])
     print(nrc_per_kg)
+
+    # ----- Recurring Costs -----
+
+    # Cost density [$/lb]
+    wing_rec_cost_density = 900
+    empennage_rec_cost_density = 2331
+    fuselage_rec_cost_density = 967
+    engine_rec_cost_density = 374
+    miscellaneous_rec_cost_density = 1237
+    final_assembly_rec_cost_density = 65
+
+    wing_rec_mass_usd = lbs_to_kg(wing_rec_cost_density) * wing_mass
+    empennage_rec_mass_usd = lbs_to_kg(empennage_rec_cost_density) * empennage_mass
+    fuselage_rec_mass_usd = lbs_to_kg(fuselage_rec_cost_density) * fuselage_mass
+    engine_rec_mass_usd = lbs_to_kg(engine_rec_cost_density) * engine_mass
+    miscellaneous_rec_mass_usd = lbs_to_kg(miscellaneous_rec_cost_density) * miscellaneous_mass
+    final_assembly_rec_mass_usd = lbs_to_kg(final_assembly_rec_cost_density) * oew
+
