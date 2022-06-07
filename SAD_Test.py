@@ -11,8 +11,9 @@ def run_test():
     config_file = Path('data', 'new_designs', 'config.yaml')
     states = {"cruise": State('cruise')}
     aircraft = Aircraft(openData(config_file), states)
-    aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry_rudder()
     run_aircraft(aircraft)
+    aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry_rudder()
+    aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry()
 
     # aircraft.reference_area = 10
 

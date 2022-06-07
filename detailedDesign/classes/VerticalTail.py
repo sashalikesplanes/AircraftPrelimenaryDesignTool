@@ -59,12 +59,12 @@ class VerticalTail(Component):
         self.root_chord = (2 * average_chord) / (1 + self.taper)  # [m]
         self.mean_geometric_chord = 2 / 3 * self.root_chord * (
                 (1 + self.taper + self.taper ** 2) / (1 + self.taper))  # [m]
-        print("initial S",self.surface_area)
-        print(self.surface_area/wing_area)
-        # print("rudder length",self.mean_geometric_chord*0.3)
-        # print("MAC",self.mean_geometric_chord)
-        # print("height VTP",self.span)
-        print("tail length:", self.tail_length)
+        # print("initial S",self.surface_area)
+        # print(self.surface_area/wing_area)
+        # # print("rudder length",self.mean_geometric_chord*0.3)
+        # # print("MAC",self.mean_geometric_chord)
+        # # print("height VTP",self.span)
+        # print("tail length:", self.tail_length)
 
     def size_self_mass(self):
         # Sizing mass
@@ -125,19 +125,19 @@ class VerticalTail(Component):
 
 
 
-        print("Tail area", self.surface_area, "wing area",self.Tail.FuselageGroup.Aircraft.reference_area)
-        print("V_w",V_crosswind, "V_t", V_tot, "Vappr", V_appr)
-        print("Ss",S_s)
-        # print("V_t", V_tot)
-        print("Fw",F_w)
-        # print("S",self.Tail.FuselageGroup.Aircraft.reference_area)
-        print("Cnbeta", C_n_beta)
-        print("Cybeta",C_y_beta)
-        print("Cndeltar", C_n_deltar)
-        print("Cydeltar",C_y_deltar)
-        print("beta",beta_sideslip)
-        print("dc", d_c)
-        print("span", self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span)
+        # print("Tail area", self.surface_area, "wing area",self.Tail.FuselageGroup.Aircraft.reference_area)
+        # print("V_w",V_crosswind, "V_t", V_tot, "Vappr", V_appr)
+        # print("Ss",S_s)
+        # # print("V_t", V_tot)
+        # print("Fw",self.F_w)
+        # # print("S",self.Tail.FuselageGroup.Aircraft.reference_area)
+        # print("Cnbeta", C_n_beta)
+        # print("Cybeta",C_y_beta)
+        # print("Cndeltar", C_n_deltar)
+        # print("Cydeltar",C_y_deltar)
+        # print("beta",beta_sideslip)
+        # print("dc", d_c)
+        # print("span", self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.span)
         #solve eq 22&23 in https://www.ripublication.com/ijaer18/ijaerv13n10_85.pdf to find the deflections
 
 
