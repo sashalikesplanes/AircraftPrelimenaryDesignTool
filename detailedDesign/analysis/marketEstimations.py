@@ -3,6 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from functools import reduce
 from misc.unitConversions import *
+from tabulate import tabulate
 
 # Personnel constants
 salaryPilot = 69  # [$/h]
@@ -122,17 +123,16 @@ def market_estimations(aircraft):
     # Plotting pie chart
     colors = [plt.cm.Pastel1(i) for i in range(20)]
     plt.pie(cost_fraction, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
-    plt.title("Cost Breakdown [%]")
+    plt.title("Operational Cost Breakdown [%]")
     plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
     # plt.savefig(costBreakdownPath, dpi = 600)
-    plt.savefig(Path("plots", "market_pie.png"))
+    plt.savefig(Path("plots", "operational_market_pie.png"))
 
     # Calculating ROI
     revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy)
     cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
-    production_cost_estimation(aircraft)
 
     # ----- Estimating price of the aircraft -----
     # Wide body aircraft reference data
@@ -141,9 +141,9 @@ def market_estimations(aircraft):
     alpha = 2.760
     seats_ref = 853  # [A380 reference]
     range_ref = 15200  # [km - A380 reference]
-    price_ac_ref = 450e6  # [$ - A380 reference]
+    price_ac_ref = int(450e6)  # [$ - A380 reference]
 
-    price_ac = [k1*(n_pax/seats_ref)**alpha+k2*(flight_range/range_ref)] * price_ac_ref
+    price_ac = (k1*(n_pax/seats_ref)**alpha+k2*(flight_range/range_ref)) * price_ac_ref
 
     return price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
 
@@ -151,7 +151,7 @@ def market_estimations(aircraft):
 def production_cost_estimation(aircraft):
     oew = aircraft.oew  # [kg]
 
-    # ----- Non-Recurring Costs ----- [single cost]
+    # ----- Non-Recurring Costs -----
     engineering_cost = 0.4
     me_cost = 0.1
     tool_design_cost = 0.15
@@ -178,6 +178,15 @@ def production_cost_estimation(aircraft):
     fuselage_cost_density = 32093
     engine_cost_density = 8691
     miscellaneous_cost_density = 34307
+<<<<<<< HEAD
+
+    wing_mass_usd = lbs_to_kg(wing_cost_density) * wing_mass
+    empennage_mass_usd = lbs_to_kg(empennage_cost_density) * empennage_mass
+    fuselage_mass_usd = lbs_to_kg(fuselage_cost_density) * fuselage_mass
+    engine_mass_usd = lbs_to_kg(engine_cost_density) * engine_mass
+    miscellaneous_mass_usd = lbs_to_kg(miscellaneous_cost_density) * miscellaneous_mass
+=======
+>>>>>>> market_2
 
     wing_mass_usd = lbs_to_kg(wing_cost_density) * wing_mass
     empennage_mass_usd = lbs_to_kg(empennage_cost_density) * empennage_mass
@@ -185,12 +194,32 @@ def production_cost_estimation(aircraft):
     engine_mass_usd = lbs_to_kg(engine_cost_density) * engine_mass
     miscellaneous_mass_usd = lbs_to_kg(miscellaneous_cost_density) * miscellaneous_mass
 
-    lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost, support_cost]
+    lst_1 = [engineering_cost, me_cost, tool_design_cost, tool_fab_cost,
+            support_cost, 1]
     lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
+<<<<<<< HEAD
     nrc_per_kg = np.array([[item_1 * item_2 for item_1 in lst_1] for item_2 in lst_2])
     print(nrc_per_kg)
 
     total_nrc = None
+=======
+    lst_2.append(sum(lst_2))
+    lst_3 = ['wing', 'empennage', 'fuselage', 'engine', 'miscellaneous',
+    'aircraft total']
+    columns = ['Engineering', 'ME', 'Tool Design', 'Tool Fab', 'Support',
+    'Totals']
+    nrc_per_kg = np.array([[item_3] + [(item_1 * item_2) / 1e6 for item_1 in lst_1] for
+        item_2, item_3 in zip(lst_2, lst_3)])
+
+    print()
+    print("-----------NON RECURRING COSTS-----------")
+    print()
+    print(tabulate(nrc_per_kg, headers=columns, floatfmt=".2f"))
+    print()
+    print()
+
+    total_nrc = float(nrc_per_kg[-1,-1])
+>>>>>>> market_2
 
     # ----- Recurring Costs ----- [per aircraft]
 
@@ -209,6 +238,7 @@ def production_cost_estimation(aircraft):
     miscellaneous_rec_mass_usd = lbs_to_kg(miscellaneous_rec_cost_density) * miscellaneous_mass
     final_assembly_rec_mass_usd = lbs_to_kg(final_assembly_rec_cost_density) * oew
 
+<<<<<<< HEAD
 
     non_rec_costs_totals = nrc_per_kg[-1,1:]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
@@ -223,4 +253,34 @@ def production_cost_estimation(aircraft):
 
     total_program_cost = total_rc_per_ac * n_ac_sold + total_nrc
 
+=======
+    total_rc_per_ac = wing_rec_mass_usd + empennage_rec_mass_usd+fuselage_rec_mass_usd+engine_rec_mass_usd+miscellaneous_rec_mass_usd+final_assembly_rec_mass_usd
+
+    total_program_cost = (total_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
+
+
+    non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
+    print(non_rec_costs_totals)
+    print(lst_3[:-1])
+    colors = [plt.cm.Pastel1(i) for i in range(20)]
+    plt.clf()
+    plt.pie(non_rec_costs_totals, labels=lst_3[:-1] , autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Non Recurring Cost Breakdown [%]")
+    plt.axis('equal')
+
+    plt.savefig(Path("plots", "non_recurring_market_pie.png"))
+
+
+    rec_costs_totals = [wing_rec_mass_usd, empennage_rec_mass_usd, fuselage_rec_mass_usd, engine_rec_mass_usd, miscellaneous_rec_mass_usd, final_assembly_rec_mass_usd]
+    rec_cost_labels = ['wing', 'empennage', 'fuselage', 'engine',
+    'miscellaneous', 'final assembly']
+
+    plt.clf()
+    plt.pie(rec_costs_totals, labels=rec_cost_labels , autopct='%1.1f%%', colors=colors, startangle=90)
+    plt.title("Recurring Cost Breakdown [%]")
+    plt.axis('equal')
+
+    plt.savefig(Path("plots", "recurring_market_pie.png"))
+    
+>>>>>>> market_2
     return total_program_cost
