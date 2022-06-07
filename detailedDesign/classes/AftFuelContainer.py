@@ -12,7 +12,7 @@ class AftFuelContainer(FuelContainer):
 
         self.length = self.Fuselage.cockpit_length + self.Fuselage.Cabin.length - (self.Fuselage.FuselageGroup.Aircraft.x_lemac + self.Fuselage.FuselageGroup.Aircraft.WingGroup.Wing.root_chord)
 
-        self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * self.length
+        self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * (self.length - 2 * self.radius_tank)
 
         self.mass_H2 = self.volume_tank * self.density_H2 / (1 + self.Vi)
 
