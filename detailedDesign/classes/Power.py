@@ -34,13 +34,13 @@ class Power(Component):
         V = cruise_state.velocity 
 
         # necessary power output from fuel cells + taking into account cable losses
-        P_avg_prop = T_avg * V
+        P_avg_prop = T_avg * V 
         P_rest_aircraft = (P_avg_prop / percent_prop) * (1-percent_prop)
-        P_required_avg = P_avg_prop / (percent_prop * eff_converter) * cable_contingency
+        #P_required_avg = P_avg_prop / (percent_prop * eff_converter) * cable_contingency
 
         P_required_peak = ((n_motor * P_motor) + P_rest_aircraft) / (eff_converter) * cable_contingency
 
-        self.own_power_average = P_required_avg
+        #self.own_power_average = P_required_avg
         self.own_power_peak = P_required_peak
 
         self.pos = np.array([0, 0., 0.])
