@@ -14,8 +14,6 @@ annualAttendantSalary = 85e3  # [$]
 annualPilotSalary = 175e3  # [$]
 # TODO: check this number and unit for cost burden
 costBurden = 2  # [$]
-refuelling_rate = 35000 # [kg/h]
-n_pumps = 3
 
 # Operational constants
 h2_price = 1.9  # [$/kg] as suggested by hydrogen experts
@@ -45,7 +43,25 @@ subsidy = 0.  # expected subsidy for green aviation
 n_ac_sold = 97  # TODO: Revise this w market analysis
 
 
-def market_estimations(aircraft):
+def operations_and_logistics(aircraft):
+    # ----- Calculating ground time ----- [h]  --> refuelling (depends on fuel) + boarding payload
+
+    # Initialise
+    refuelling_rate = 35500  # [kg/h]
+    n_pumps = 3  # [-]
+    loading_bags = 140 * 60  # [kg/h]
+    unloading_bags = 180 * 60  # [kg/h]
+    boarding = 15 * 60  # [pax/h/door]
+    deboarding = 25 * 60  # [pax/h/door]
+    n_doors = 8  # [-]
+    n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
+
+
+
+    refuelling_time = aircraft.fuel_mass / (refuelling_rate * n_pumps)
+
+
+def market_estimations(aircraft, ground_time = 2):
     # Initialise
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
@@ -63,7 +79,6 @@ def market_estimations(aircraft):
     year_time = 365 * 24  # [h]
     operational_time = year_time - maintenance_time  # [h]
 
-    ground_time = aircraft.fuel_mass / (refuelling_rate * n_pumps)  # [h]  --> refuelling (depends on fuel) + boarding payload
     flight_cycles = operational_time / (block_time + ground_time)  # [-]
 
     # DOC fuel for a year
@@ -94,7 +109,7 @@ def market_estimations(aircraft):
             oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass - aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass
             - aircraft.FuselageGroup.Fuselage.AssFuelContainer.own_mass - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
                + (
-                           aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AssFuelContainer.own_mass) * P_tank
+                       aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AssFuelContainer.own_mass) * P_tank
                + aircraft.FuselageGroup.Power.FuelCells.own_mass * P_fc) * (1 + PMac + f_misc)
 
     DOC_cap = cost_ac * (a + f_ins)
@@ -110,7 +125,6 @@ def market_estimations(aircraft):
     frac_fuel = DOC_fuel / DOC * 100
     frac_cap = DOC_cap / DOC * 100
 
-    
     cost_breakdown = [
         {"cost type": "Maintenance", "fraction": frac_maintenance},
         {"cost type": "Crew", "fraction": frac_crew},
@@ -136,7 +150,7 @@ def market_estimations(aircraft):
     plt.savefig(Path("plots", "operational_market_pie.png"))
 
     # Calculating ROI
-    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy) + price_per_cargo*aircraft.cargo_mass
+    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy) + price_per_cargo * aircraft.cargo_mass
     cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
 
@@ -257,6 +271,6 @@ def production_cost_estimation(aircraft, competitive_price_ac):
 
     # Return on investment
     program_revenues = n_ac_sold * competitive_price_ac / 1e6
-    program_roi = (program_revenues - total_program_cost)/total_program_cost * 100
+    program_roi = (program_revenues - total_program_cost) / total_program_cost * 100
 
     return total_program_cost, program_roi
