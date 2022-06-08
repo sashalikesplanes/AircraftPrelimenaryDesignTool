@@ -17,6 +17,7 @@ class HorizontalTail(Component):
         self.span = None  # [m]
         self.root_chord = None  # [m]
         self.quarter_chord_sweep = None  # [rad]
+        self.length = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -49,6 +50,8 @@ class HorizontalTail(Component):
         self.root_chord = (2 * average_chord)/(1 + self.taper)  # [m]
         self.mean_geometric_chord = 2/3 * self.root_chord * \
             ((1 + self.taper + self.taper**2)/(1 + self.taper))  # [m]
+
+        self.length = self.mean_geometric_chord
 
     def size_self_mass(self):
         # Sizing mass

@@ -6,8 +6,6 @@ from misc.unitConversions import *
 from tabulate import tabulate
 
 # Personnel constants
-salaryPilot = 69  # [$/h]
-salaryAttendant = 38  # [$/h]
 salaryMaintenance = 50  # [$/h]
 crewCount = 5  # [-]
 annualAttendantSalary = 85e3  # [$]
@@ -38,8 +36,8 @@ DP = 14  # Depreciation period [yrs], could do 27 as well
 price_per_ticket = 600  # Average price today
 # price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
 price_per_cargo = 6  # [$/kg]
-subsidy = 0.2  # expected subsidy for green aviation
-n_ac_sold = 97  # TODO: Revise this w market analysis
+subsidy = 0.  # expected subsidy for green aviation
+n_ac_sold = 119  # TODO: Revise this w market analysis
 
 
 def operations_and_logistics(aircraft):
@@ -108,7 +106,7 @@ def production_cost_estimation(aircraft):
 
     wing_mass = aircraft.WingGroup.Wing.own_mass
     empennage_mass = aircraft.FuselageGroup.Tail.total_mass
-    fuselage_mass = aircraft.FuselageGroup.Fuselage.own_mass - empennage_mass
+    fuselage_mass = aircraft.FuselageGroup.Fuselage.own_mass
     engine_mass = aircraft.WingGroup.Engines.own_mass
     miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass
 
@@ -151,15 +149,16 @@ def production_cost_estimation(aircraft):
     wing_rec_cost_density = 900
     empennage_rec_cost_density = 2331
     fuselage_rec_cost_density = 967
-    # engine_rec_cost_density = 374
+    # TODO: Revise engine cost from Saluqi
+    engine_rec_cost_density = 374
     miscellaneous_rec_cost_density = 452
     final_assembly_rec_cost_density = 65
 
     wing_rec_mass_usd = wing_rec_cost_density * kg_to_lbs(wing_mass)
     empennage_rec_mass_usd = empennage_rec_cost_density * kg_to_lbs(empennage_mass)
     fuselage_rec_mass_usd = fuselage_rec_cost_density * kg_to_lbs(fuselage_mass)
-    # engine_rec_mass_usd = engine_rec_cost_density * kg_to_lbs(engine_mass)
-    engine_rec_mass_usd = P_eng * engine_mass
+    engine_rec_mass_usd = engine_rec_cost_density * kg_to_lbs(engine_mass)
+    # engine_rec_mass_usd = P_eng * engine_mass
     fuel_cell_rec_mass_usd = P_fc * aircraft.FuselageGroup.Power.FuelCells.own_mass
     fuel_tank_rec_mass_usd = P_tank * aircraft.FuselageGroup.Fuselage.fuel_tank_mass
     miscellaneous_rec_mass_usd = miscellaneous_rec_cost_density * kg_to_lbs(miscellaneous_mass)
@@ -179,8 +178,8 @@ def production_cost_estimation(aircraft):
     plt.savefig(Path("plots", "non_recurring_market_pie.png"))
 
     rec_costs_totals = [wing_rec_mass_usd, empennage_rec_mass_usd,
-                        fuselage_rec_mass_usd, engine_rec_mass_usd, fuel_cell_rec_mass_usd,
-                        fuel_tank_rec_mass_usd,
+                        fuselage_rec_mass_usd, engine_rec_mass_usd,
+                        fuel_cell_rec_mass_usd, fuel_tank_rec_mass_usd,
                         miscellaneous_rec_mass_usd, final_assembly_rec_mass_usd]
     rec_costs_totals.append(sum(rec_costs_totals))
     rec_costs_totals = np.array(rec_costs_totals)
@@ -202,12 +201,11 @@ def production_cost_estimation(aircraft):
     plt.savefig(Path("plots", "recurring_market_pie.png"))
 
     # Return on investment
-    program_revenues = n_ac_sold * competitive_price_ac / 1e6
+    price_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc)
+    program_revenues = n_ac_sold * price_ac / 1e6
     program_roi = (program_revenues - total_program_cost) / total_program_cost * 100
-    #
-    # AC_cost = (total_rc_per_ac/1e6 + total_nrc/n_ac_sold) * (1 + 0.2 + 0.05)
-    # print(AC_cost)
-    return total_program_cost, program_roi, total_rc_per_ac / 1e6, total_nrc
+
+    return competitive_price_ac, total_program_cost, program_roi, total_rc_per_ac / 1e6, total_nrc
 
 
 def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
@@ -215,7 +213,6 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
     n_motor = aircraft.WingGroup.Engines.own_amount_fans
-    W_eng = aircraft.WingGroup.Engines.own_mass / n_motor
     flight_range = state.range  # [m]
     block_time = state.duration / 3600 + block_time_supplement  # [h]
     mtow = aircraft.mtom  # [kg]
@@ -227,7 +224,6 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
     year_time = 365.242199 * 24  # [h]
     operational_time = year_time - maintenance_time  # [h]
 
-    # TODO: incorporate ground time properly
     flight_cycles = operational_time / (block_time + ground_time)  # [-]
 
     # DOC fuel for a year
@@ -253,8 +249,8 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
     # DOC capex (engines, fuel cell, fuel tak, cont. factor incl)
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
 
-    cost_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * 1e6
-    DOC_cap = cost_ac * (a + f_ins)
+    price_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * 1e6
+    DOC_cap = price_ac * (a + f_ins)
 
     DOC = DOC_maintenance + DOC_crew + DOC_fees + DOC_fuel + DOC_cap  # [$]
     available_seat_km = flight_cycles * flight_range * n_pax / 1000
@@ -293,7 +289,7 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
 
     # Calculating ROI
     revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy) + price_per_cargo * aircraft.cargo_mass
-    cost_per_flight = cost_per_passenger_km * n_pax * flight_range / 1000
+    cost_per_flight = DOC / flight_cycles
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
 
-    return cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
+    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
