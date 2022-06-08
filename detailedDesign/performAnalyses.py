@@ -14,29 +14,31 @@ logger = logging.getLogger("logger")
 
 def perform_analyses(aircraft, make_stability):
     make_avl_file(aircraft)
+    plt.figure()
     sketch_aircraft(aircraft)
     print_summary(aircraft)
     make_payload_range_diagram(aircraft)
 
-    plt.figure(2)
+    plt.figure()
     if make_stability:
         find_stability(aircraft)
-        plt.figure(3)
+        plt.figure()
 
-    competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, ground_time = market_estimations(aircraft)
-    total_program_cost, program_roi = production_cost_estimation(aircraft, competitive_price_ac)
-    plt.figure(6)
+    total_program_cost, program_roi, total_rc_per_ac, total_nrc = production_cost_estimation(aircraft)
+    cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, total_rc_per_ac, total_nrc)
+
+    plt.figure()
     make_loading_diagrams(aircraft)
 
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"{breakdown_summary}")
     print(f"Aircraft Cost [M$]: {cost_ac / 1e6:.2f}")
-    print(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
+    # print(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
     print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
     print(f"Total Program Cost [M$]: {total_program_cost :.2f}")
     print(f"Operational ROI [%]: {roi:.2f}")
     print(f"Program ROI [%]: {program_roi:.2f}")
-    print(f"Aircraft turnaround time [h]: {ground_time:.2f}")
+    # print(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     plt.show()
 
 

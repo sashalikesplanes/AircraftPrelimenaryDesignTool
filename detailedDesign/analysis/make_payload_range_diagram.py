@@ -18,7 +18,7 @@ def make_payload_range_diagram(aircraft):
     total_fuel_capacity = max_fuel_mass
 
     MTOM = aircraft.mtom
-    payload_mass = aircraft.get_payload_mass()
+    payload_mass = aircraft.get_payload_mass
 
     m1 = MTOM  # mtom and no fuel
     m_f1 = 0
@@ -37,7 +37,7 @@ def make_payload_range_diagram(aircraft):
     r = r * 10 ** -3
     p = p
 
-    plt.figure(5)
+    plt.figure()
     plt.plot(r, p, "o-")
     plt.title("Payload Range Diagram")
     plt.xlabel("Range [km]")
@@ -46,7 +46,7 @@ def make_payload_range_diagram(aircraft):
 
 def calc_range(W0, W1, aircraft):
     print("Fraction W5/W4:", W1/W0)
-    prop_eff = aircraft.WingGroup.Engines.propulsive_eff
+    prop_eff = aircraft.FuselageGroup.Power.propulsive_efficiency
     c_p = 1 / energyDensityHydrogen
 
     # TODO: implement realistic L/D
