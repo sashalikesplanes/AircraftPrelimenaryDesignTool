@@ -21,6 +21,8 @@ class Miscellaneous(Component):
         self.W_crew = None
         self.W_ins = None
 
+        self.forces_lst = None
+
         self._freeze()
 
     def size_self(self):
@@ -129,6 +131,22 @@ class Miscellaneous(Component):
         cg_pos += pos_w_oxy * self.W_oxy
         cg_pos += pos_w_paint * self.W_paint
         cg_pos += pos_w_crew * self.W_crew
+
+        # tuple format: (name, mass, length, position)
+        l_cabin = self.FuselageGroup.Fuselage.Cabin.length
+        l_aircraft = self.FuselageGroup.Fuselage.length
+
+        lst = list()
+        lst.append(("BoatHull", self.W_boat, l_cabin, pos_w_boat))
+        lst.append(("FlightControls", self.W_ins, l_aircraft, pos_w_flight_controls))
+        lst.append(("Hydraulics", self.W_hyd_ele, l_aircraft, pos_w_hydraulics))
+        lst.append(("Airconditioning", self.W_AC, l_cabin, pos_w_ac))
+        lst.append(("Furnishing", self.W_furn, l_cabin, pos_w_furnishing))
+        lst.append(("APU", self.W_apu, l_aircraft, pos_w_apu))
+        lst.append(("Oxygen", self.W_oxy, l_cabin, pos_w_oxy))
+        lst.append(("Paint", self.W_paint, l_aircraft, pos_w_paint))
+        lst.append(("Crew", self.W_crew, l_cabin, pos_w_crew))
+        self.forces_lst = lst
 
         self.own_cg = cg_pos / mass
         return self.own_cg
