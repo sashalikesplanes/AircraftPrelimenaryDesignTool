@@ -10,9 +10,10 @@ class ForwardFuelContainer(FuelContainer):
     def size_self(self):
         super().size_self()
 
-        self.length = self.Fuselage.FuselageGroup.Aircraft.x_lemac - self.Fuselage.cockpit_length
+        self.length = self.Fuselage.FuselageGroup.Aircraft.x_lemac - self.Fuselage.cockpit_length - 2 * self.radius_tank
 
-        self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * (self.length - self.radius_tank * 2)
+        # self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * (self.length - self.radius_tank * 2)
+        self.volume_tank = 4 / 3 * np.pi * self.radius_tank ** 3 + np.pi * self.radius_tank ** 2 * (self.length)
 
         self.mass_H2 = self.volume_tank * self.density_H2 / (1 + self.Vi)
 
