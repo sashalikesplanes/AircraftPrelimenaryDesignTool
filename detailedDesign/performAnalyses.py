@@ -40,7 +40,7 @@ def perform_analyses(aircraft, make_stability):
     print(f"Operational ROI [%]: {roi:.2f}")
     print(f"Program ROI [%]: {program_roi:.2f}")
     # print(f"Aircraft turnaround time [h]: {ground_time:.2f}")
-    plt.show()
+    # plt.show()
 
 
 def print_summary(aircraft):
