@@ -50,8 +50,8 @@ def calc_range(W0, W1, aircraft):
     c_p = 1 / energyDensityHydrogen
 
     # TODO: implement realistic L/D
-    _, _, C_D, D, _ = get_drag(aircraft)
     L = (aircraft.mtom - 0.5 * (W0 - W1)) * 9.81
+    D = aircraft.cruise_drag
     L_over_D_cruise = L / D
 
     # Range formula from ADSEE I
