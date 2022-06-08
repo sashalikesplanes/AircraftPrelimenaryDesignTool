@@ -54,7 +54,7 @@ def operations_and_logistics(aircraft):
     boarding = 18 * 60 * n_doors  # [pax/h]
     deboarding = 28 * 60 * n_doors  # [pax/h]
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
-    bag_containers = n_pax / 30
+    bag_containers = np.ceil(n_pax / 30)
 
     # Refuelling
     refuelling_time = aircraft.fuel_mass / (refuelling_rate * n_pumps)
