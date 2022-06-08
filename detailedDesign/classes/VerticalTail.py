@@ -25,6 +25,7 @@ class VerticalTail(Component):
         self.quarter_chord_sweep = None  # [rad]
         self.first_iteration = True  # [-]
         self.F_w = 0
+        self.length = None
 
         self._freeze()
 
@@ -60,6 +61,8 @@ class VerticalTail(Component):
         self.root_chord = (2 * average_chord) / (1 + self.taper)  # [m]
         self.mean_geometric_chord = 2 / 3 * self.root_chord * (
                 (1 + self.taper + self.taper ** 2) / (1 + self.taper))  # [m]
+
+        self.length = self.mean_geometric_chord
         # print("initial S",self.surface_area)
         # print(self.surface_area/wing_area)
         # # print("rudder length",self.mean_geometric_chord*0.3)
