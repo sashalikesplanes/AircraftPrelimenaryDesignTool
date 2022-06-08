@@ -35,12 +35,13 @@ def make_payload_range_diagram(aircraft):
 
     p, r = np.array(p), np.array(r)
     r = r / 110
+    p = p / 0.317515
 
     plt.figure(8)
     plt.plot(r, p, "o-")
     plt.title("Payload Range Diagram")
     plt.xlabel("Range [Football Fields]")
-    plt.ylabel("Payload mass [kg]")
+    plt.ylabel("Payload mass [sq. inch of gold]")
 
 
 def calc_range(W0, W1, aircraft):
