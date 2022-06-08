@@ -42,6 +42,7 @@ class Fuselage(Component):
         self.logger.debug(f"Wing box length: {self.FuselageGroup.Aircraft.WingGroup.Wing.root_chord }")
 
         self.tail_length = 1.6 * self.outer_height   # from ADSEE typical for airliners
+
         return length + self.cockpit_length + self.AssFuelContainer.length + self.tail_length
 
     @property

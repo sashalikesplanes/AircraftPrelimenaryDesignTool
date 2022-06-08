@@ -33,7 +33,7 @@ def make_loading_diagrams(aircraft):
 
     plt.title("Fuselage Shear Loading Diagram")
     plt.xlabel("Longitudinal Position [m]")
-    plt.ylabel("Shear Froce [kN]")
+    plt.ylabel("Shear Force [kN]")
     plt.plot(X, shear * 10 ** -3, color="tab:red")
     plt.figure()
     plt.title("Fuselage Bending Diagram")
