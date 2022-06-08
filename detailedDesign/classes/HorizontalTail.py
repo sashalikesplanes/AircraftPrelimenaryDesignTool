@@ -14,8 +14,8 @@ class HorizontalTail(Component):
         self.tail_length = None  # [m]
         self.surface_area = None  # [m2]
         self.mean_geometric_chord = None  # [m]
-        self.span = None  # [m]
-        self.root_chord = None  # [m]
+        self.span = 1  # [m]
+        self.root_chord = 1  # [m]
         self.quarter_chord_sweep = None  # [rad]
         self.length = None
 
@@ -34,10 +34,11 @@ class HorizontalTail(Component):
         # [m]
         wing_mean_geometric_chord = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord
 
-        fuselage_a = self.Tail.FuselageGroup.Fuselage.outer_height / 2
-        fuselage_b = self.Tail.FuselageGroup.Fuselage.outer_width / 2
-
-        self.tail_length = np.sqrt((2 * self.volume_coefficient * wing_area * wing_mean_geometric_chord)/(np.pi * (fuselage_a + fuselage_b)))  # [m]
+        y_mean_geometric_chord = self.span / 6 * (1 + self.taper * 2) / (1 + self.taper)
+        quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4 / self.aspect_ratio * (0.25 - 0.75) * (1 - self.taper) / (1 + self.taper))
+        # distance from leading edge of root chord
+        x_aerodynamic_center = self.root_chord * 0.25 + y_mean_geometric_chord * np.sin(quarter_chord_sweep) 
+        self.tail_length = self.Tail.FuselageGroup.Fuselage.length - (self.Tail.FuselageGroup.Aircraft.x_lemac + self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord * 0.25) - self.root_chord + x_aerodynamic_center
 
         self.logger.debug(f"{self.tail_length = }")
 
@@ -51,7 +52,7 @@ class HorizontalTail(Component):
         self.mean_geometric_chord = 2/3 * self.root_chord * \
             ((1 + self.taper + self.taper**2)/(1 + self.taper))  # [m]
 
-        self.length = self.mean_geometric_chord
+        self.length = self.root_chord
 
     def size_self_mass(self):
         # Sizing mass

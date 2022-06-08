@@ -22,7 +22,7 @@ f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 # CAPEX constants
 P_OEW = 1200 * 1.5  # [$/kg] operating empty weight
 P_eng = 2600  # [$/kg] engine
-P_fc = 608  # [$/kg] fuel cell --> 320 [$/kg] for 2025 estimate
+P_fc = 320  # [$/kg] fuel cell --> 320 [$/kg] for 2025 estimate, 608 current
 P_tank = 550  # [$/kg] LH2
 
 IR = 0.05  # 5% Interest rate
@@ -35,7 +35,7 @@ DP = 14  # Depreciation period [yrs], could do 27 as well
 # Return on investment constants
 price_per_ticket = 600  # Average price today
 # price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
-price_per_cargo = 6  # [$/kg]
+price_per_cargo = 3  # [$/kg]
 subsidy_manufacturing = 0.2  # expected subsidy for green aviation
 subsidy_operational = 0
 n_ac_sold = 119  # TODO: Revise this w market analysis
