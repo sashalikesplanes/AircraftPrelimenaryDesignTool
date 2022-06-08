@@ -22,13 +22,18 @@ def make_loading_diagrams(aircraft):
     forces.append(lift)
 
     X = np.arange(0, total_length, 0.1)
-    shear = [sum([i.calc_shear(y) for i in forces]) for y in X]
-    moment = [sum([i.calc_moment(y) for i in forces]) for y in X]
-    print("Making loading diagram...")
-    print(X)
+    shear = np.array([sum([i.calc_shear(y) for i in forces]) for y in X])
+    moment = np.array([sum([i.calc_moment(y) for i in forces]) for y in X])
 
-    plt.title("Fuselage Loading Diagram")
-    plt.plot(X, shear)
+    plt.title("Fuselage Shear Loading Diagram")
+    plt.xlabel("Longitudinal Position [m]")
+    plt.ylabel("Shear Froce [kN]")
+    plt.plot(X, shear * 10 ** -3, color="tab:red")
+    plt.figure()
+    plt.title("Fuselage Bending Diagram")
+    plt.xlabel("Longitudinal Position [m]")
+    plt.ylabel("Bending Moment [kNm]")
+    plt.plot(X, moment * 10 ** -3, color="tab:green")
 
 
 def get_sizes_and_loads(head_component):

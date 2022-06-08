@@ -14,18 +14,19 @@ logger = logging.getLogger("logger")
 
 def perform_analyses(aircraft, make_stability):
     make_avl_file(aircraft)
+    plt.figure()
     sketch_aircraft(aircraft)
     print_summary(aircraft)
     make_payload_range_diagram(aircraft)
 
-    plt.figure(2)
+    plt.figure()
     if make_stability:
         find_stability(aircraft)
-        plt.figure(3)
+        plt.figure()
 
     competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, ground_time = market_estimations(aircraft)
     total_program_cost, program_roi = production_cost_estimation(aircraft, competitive_price_ac)
-    plt.figure(6)
+    plt.figure()
     make_loading_diagrams(aircraft)
 
     print(f"Aircraft CG: {aircraft.get_cg()}")

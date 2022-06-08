@@ -37,7 +37,7 @@ def make_payload_range_diagram(aircraft):
     r = r * 10 ** -3
     p = p
 
-    plt.figure(5)
+    plt.figure()
     plt.plot(r, p, "o-")
     plt.title("Payload Range Diagram")
     plt.xlabel("Range [km]")
