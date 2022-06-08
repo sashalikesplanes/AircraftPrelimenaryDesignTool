@@ -2,6 +2,7 @@ import numpy as np
 
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuelCells import FuelCells
+g = 9.81
 
 
 class Power(Component):
@@ -17,7 +18,8 @@ class Power(Component):
         self.own_power_average = None
         self.own_power_peak = None
         self.reserve_mass_H2 = None
-        self.mass_H2 = None
+        self.mass_H2 = 1
+        self.propulsive_efficiency = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -44,6 +46,27 @@ class Power(Component):
         self.own_power_peak = P_required_peak
 
         self.pos = np.array([0, 0., 0.])
+
+        #########################################################
+        # Using fuel mass fractions method of finding fuel mass #
+        #########################################################
+        # Add takeoff, landing and climb fractions for jet fuel
+        fuel_mass_fraction_misc_jet = self.fuel_fraction_takeoff * self.fuel_fraction_climb * self.fuel_fraction_landing 
+        fuel_mass_fraction_misc_H2 = 1 - ((1 - fuel_mass_fraction_misc_jet) * self.jet_fuel_energy_density / self.hydrogen_energy_density)
+
+        average_cruise_lift = self.FuselageGroup.Aircraft.mtom - self.mass_H2 / 2 
+        lift_over_drag = average_cruise_lift / self.FuselageGroup.Aircraft.cruise_drag
+
+        specific_fuel_consumption = 1 / self.hydrogen_energy_density
+
+        engines = self.FuselageGroup.Aircraft.WingGroup.Engines
+        self.propuslive_efficiency = self.FuelCells.conversion_efficiency * self.eff_converter / self.cable_contingency * engines.eff_mot_inv * (engines.propulsive_eff + engines.increase_BLI_eff
+
+        fuel_mass_fraction_cruise = np.exp(- cruise_state.range / lift_over_drag * g * specific_fuel_consumption / propulsive_efficiency)
+
+
+
+
 
         # Fuel mass sizing
         peakpower = self.own_power_peak
