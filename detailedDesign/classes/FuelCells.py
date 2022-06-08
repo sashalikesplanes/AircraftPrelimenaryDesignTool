@@ -8,6 +8,7 @@ class FuelCells(Component):
         super().__init__(design_config)
 
         self.Power = Power
+        self.parent = self.Power
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -22,9 +23,9 @@ class FuelCells(Component):
 
     def size_self(self):
         # use peak power for this, since the fuel stack has to be able to provide this
-        power_peak = self.Power.own_power_peak
+        power_peak = self.Power.own_power_peak / self.conversion_efficiency
 
-        self.own_mass = power_peak/self.mass_power_density # [kg]
+        self.own_mass = power_peak/self.mass_power_density  # [kg]
         self.size = self.own_mass/self.W_Size  # [m3]
         self.logger.debug(f" {self.size = }")
         # TODO Update

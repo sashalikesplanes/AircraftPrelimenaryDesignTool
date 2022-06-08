@@ -12,6 +12,7 @@ class Component:
         self.own_cg = np.array([0., 0., 0.])
         self.pos = np.array([0., 0., 0.])
         self.components = []
+        self.parent = None
 
         self.logger = logging.getLogger("logger")
         self.design_config = self.unwrap_design_config(design_config)
@@ -117,3 +118,11 @@ class Component:
             lst += component.make_mass_lst()[0]
             header += component.make_mass_lst()[1]
         return lst, header
+
+    @property
+    def transformed_cg(self):
+        return self.transformed_pos + self.own_cg
+
+    @property
+    def transformed_pos(self):
+        return self.parent.transformed_pos + self.pos

@@ -6,6 +6,7 @@ from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
+from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
 import numpy as np
 
 logger = logging.getLogger("logger")
@@ -16,14 +17,17 @@ def perform_analyses(aircraft, make_stability):
     sketch_aircraft(aircraft)
     print_summary(aircraft)
     make_payload_range_diagram(aircraft)
-    plt.figure(2)
 
+    plt.figure(2)
     if make_stability:
         find_stability(aircraft)
         plt.figure(3)
 
     competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, ground_time = market_estimations(aircraft)
     total_program_cost, program_roi = production_cost_estimation(aircraft, competitive_price_ac)
+    plt.figure(6)
+    make_loading_diagrams(aircraft)
+
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"{breakdown_summary}")
     print(f"Aircraft Cost [M$]: {cost_ac / 1e6:.2f}")

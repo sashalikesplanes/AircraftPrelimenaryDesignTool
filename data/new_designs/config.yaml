@@ -44,7 +44,7 @@ Aircraft:
       eff_converter: 0.95
       cable_contingency: 1.05 # cable losses
       FuelCells:
-        conversion_efficiency: 0.5 # [-] - multiple literature source
+        conversion_efficiency: 0.5 # [-] - multiple literature source, 60% also works
         current_density: 8 # [Amps/m2] - same paper as above
         mass_power_density: 8000 # [W/kg]
         W_Size: 1200 # [kg/m3]

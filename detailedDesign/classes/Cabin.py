@@ -6,6 +6,7 @@ class Cabin(Component):
     def __init__(self, Fuselage, design_config):
         super().__init__(design_config)
         self.Fuselage = Fuselage
+        self.parent = self.Fuselage
         # self.config = my_config
         # self.max_seats_abreast = my_config["max_seats_abreast"]
         # self.max_rows_per_floor = my_config["max_rows_per_floor"]

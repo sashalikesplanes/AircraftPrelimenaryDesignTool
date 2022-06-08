@@ -8,6 +8,7 @@ class Engines(Component):
         super().__init__(design_config)
 
         self.WingGroup = WingGroup
+        self.parent = self.WingGroup
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -19,6 +20,7 @@ class Engines(Component):
         self.own_fans_on_wing = 0
         self.own_fans_on_fuselage = 0
         self.own_amount_motor = 0
+        self.own_mass_flow = 0
         self._freeze()
 
     @property
@@ -31,7 +33,7 @@ class Engines(Component):
         V0_takeoff = self.WingGroup.Aircraft.states['take-off'].velocity
         Tt_cruise = self.WingGroup.Aircraft.reference_cruise_thrust
         Tt_takeoff = self. WingGroup.Aircraft.reference_takeoff_thrust
-        D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
+        #D_fus = self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_width
 
         # Constants
         P_motor = self.P_motor  # power of the electric motor [W]
@@ -67,6 +69,13 @@ class Engines(Component):
             rho = rho_cruise
             Ps = Ps_cruise
             print("Cruise power")
+        elif P_aircraft_takeoff == P_aircraft_cruise:
+            P_aircraft = P_aircraft_cruise
+            Tt = Tt_cruise
+            V0 = V0_cruise
+            rho = rho_cruise
+            Ps = Ps_cruise
+            print("Cruise and Take-off power the same")
         else:
             P_aircraft = P_aircraft_takeoff
             Tt = Tt_takeoff
@@ -151,6 +160,7 @@ class Engines(Component):
         self.own_fans_on_wing = n_fans_fit_wing
         self.own_fans_on_fuselage = n_fans_fuselage
         self.own_amount_motor = n_fans
+        self.own_mass_flow = m_dot
         self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):

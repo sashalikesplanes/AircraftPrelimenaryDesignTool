@@ -9,6 +9,7 @@ class WingGroup(Component):
         super().__init__(design_config)
 
         self.Aircraft = Aircraft
+        self.parent = self.Aircraft
 
         self.Wing = Wing(self, self.design_config)
         self.Engines = Engines(self, self.design_config)

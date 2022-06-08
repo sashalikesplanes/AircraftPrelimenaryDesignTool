@@ -9,6 +9,7 @@ class HorizontalTail(Component):
         super().__init__(design_config)
 
         self.Tail = Tail
+        self.parent = self.Tail
 
         self.tail_length = None  # [m]
         self.surface_area = None  # [m2]
