@@ -55,29 +55,38 @@ class Power(Component):
         fuel_mass_fraction_misc_jet = self.fuel_fraction_takeoff * self.fuel_fraction_climb * self.fuel_fraction_landing 
         fuel_mass_fraction_misc_H2 = 1 - ((1 - fuel_mass_fraction_misc_jet) * self.jet_fuel_energy_density / self.hydrogen_energy_density)
 
-        average_cruise_lift = self.FuselageGroup.Aircraft.mtom - self.mass_H2 / 2 
+        average_cruise_lift = (self.FuselageGroup.Aircraft.mtom - self.mass_H2 / 2) * g 
         lift_over_drag = average_cruise_lift / self.FuselageGroup.Aircraft.cruise_drag
 
         specific_fuel_consumption = 1 / self.hydrogen_energy_density
 
         engines = self.FuselageGroup.Aircraft.WingGroup.Engines
-        self.propuslive_efficiency = self.FuelCells.conversion_efficiency * self.eff_converter / self.cable_contingency * engines.eff_mot_inv * (engines.propulsive_eff + engines.increase_BLI_eff
+        self.propulsive_efficiency = self.FuelCells.conversion_efficiency * self.eff_converter / self.cable_contingency * engines.eff_mot_inv * (engines.propulsive_eff + engines.increase_BLI_eff)
 
-        fuel_mass_fraction_cruise = np.exp(- cruise_state.range / lift_over_drag * g * specific_fuel_consumption / propulsive_efficiency)
+        fuel_mass_fraction_cruise = np.exp(- cruise_state.range / lift_over_drag * g * specific_fuel_consumption / self.propulsive_efficiency)
 
+        loiter_duration = self.FuselageGroup.Aircraft.loiter_duration
+        fuel_mass_fraction_loiter = np.exp(- cruise_state.velocity * loiter_duration / lift_over_drag * g * specific_fuel_consumption / self.propulsive_efficiency)
 
-
+        fuel_mass_fraction_total = fuel_mass_fraction_misc_H2 * fuel_mass_fraction_cruise * fuel_mass_fraction_loiter
+        self.logger.debug(f"{fuel_mass_fraction_cruise = }")
+        self.logger.debug(f"{fuel_mass_fraction_loiter = }")
+        self.logger.debug(f"{fuel_mass_fraction_total = }")
+        self.logger.debug(f"{self.propulsive_efficiency = }")
+        self.mass_H2 = self.FuselageGroup.Aircraft.zero_fuel_mass / fuel_mass_fraction_total - self.FuselageGroup.Aircraft.zero_fuel_mass
+        self.logger.debug(f"{self.mass_H2 = }")
+        
 
 
         # Fuel mass sizing
-        peakpower = self.own_power_peak
-        averagepower = self.own_power_average
-        duration_peak = 0.5  # [h] TODO: find the right value (Take off, etc...)
-        mass_H2_peak = peakpower * duration_peak / (
-                32167 * self.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        mass_H2_average = averagepower * (cruise_state.duration / 3600 - duration_peak) / (
-                32167 * self.FuselageGroup.Power.FuelCells.conversion_efficiency)
-        self.reserve_mass_H2 = averagepower * self.FuselageGroup.Aircraft.reserve_duration \
-                               / (32167 * self.FuselageGroup.Power.FuelCells.conversion_efficiency)
-
-        self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2
+        # peakpower = self.own_power_peak
+        # averagepower = self.own_power_average
+        # duration_peak = 0.5  # [h] TODO: find the right value (Take off, etc...)
+        # mass_H2_peak = peakpower * duration_peak / (
+        #         32167 * self.FuselageGroup.Power.FuelCells.conversion_efficiency)
+        # mass_H2_average = averagepower * (cruise_state.duration / 3600 - duration_peak) / (
+        #         32167 * self.FuselageGroup.Power.FuelCells.conversion_efficiency)
+        # self.reserve_mass_H2 = averagepower * self.FuselageGroup.Aircraft.reserve_duration \
+        #                        / (32167 * self.FuselageGroup.Power.FuelCells.conversion_efficiency)
+        # 
+        # self.mass_H2 = mass_H2_peak + mass_H2_average + self.reserve_mass_H2

@@ -1,7 +1,7 @@
 Aircraft:
   cargo_mass: 100000 # [kg] extra cargo mass
   ultimate_load_factor: 3.75  # [-]
-  loiter_duration: 1800 # seconds 
+  loiter_duration: 0 # seconds 
   oem_contingency: 1.1  # multiplier of OEM
   cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/s picked arbitrarily as no info in regulations
@@ -59,7 +59,7 @@ Aircraft:
       hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
       inner_width: 10  # [m]
       inner_height: 12  # [m]
-      inner_ass_diameter: 8 # [m] represents the smaller part at the back
+      inner_ass_diameter: 10 # [m] represents the smaller part at the back
       cockpit_length: 4  # [m]
       CargoBay:
         test_prop: 1

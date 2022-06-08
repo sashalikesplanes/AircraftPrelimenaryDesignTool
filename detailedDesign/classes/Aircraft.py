@@ -45,8 +45,8 @@ class Aircraft(Component):
         return self.FuselageGroup.Power.mass_H2
 
     @property
-    def zero_fuel_mass(self)
-        return self.oem + self.
+    def zero_fuel_mass(self):
+        return self.oem + self.get_payload_mass + self.cargo_mass
 
     @property
     def reserve_fuel_mass(self):
