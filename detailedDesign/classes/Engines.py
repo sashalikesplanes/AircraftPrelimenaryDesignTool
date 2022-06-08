@@ -18,6 +18,7 @@ class Engines(Component):
         self.own_spacing = 0
         self.own_fans_on_wing = 0
         self.own_fans_on_fuselage = 0
+        self.own_amount_motor = 0
         self._freeze()
 
     @property
