@@ -51,6 +51,7 @@ def run_aircraft(aircraft, debug=False):
         plt.xlabel("Iterations [-]")
         plt.ylabel("System Mass [kg]")
         plt.title("MTOM over iterations")
+        # plt.ylim([0, 10e9])
  #        plt.yscale("log")
         plt.legend()
         plt.show()
