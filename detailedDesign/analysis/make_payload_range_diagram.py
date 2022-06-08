@@ -46,7 +46,7 @@ def make_payload_range_diagram(aircraft):
 
 def calc_range(W0, W1, aircraft):
     print("Fraction W5/W4:", W1/W0)
-    prop_eff = aircraft.WingGroup.Engines.propulsive_eff
+    prop_eff = aircraft.FuselageGroup.Power.propulsive_efficiency
     c_p = 1 / energyDensityHydrogen
 
     # TODO: implement realistic L/D
