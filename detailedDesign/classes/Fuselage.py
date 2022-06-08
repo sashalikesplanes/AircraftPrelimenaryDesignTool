@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.Cabin import Cabin
@@ -8,8 +9,8 @@ from detailedDesign.classes.AssFuelContainer import AssFuelContainer
 from detailedDesign.classes.CargoBay import CargoBay
 from misc.ISA import getPressure
 from misc.unitConversions import *
-import matplotlib.pyplot as plt
 # from detailedDesign.classes.RemovableFuelContainer import FuelContainer
+
 
 class Fuselage(Component):
     def __init__(self, FuselageGroup, design_config):
