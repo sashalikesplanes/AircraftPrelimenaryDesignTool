@@ -7,7 +7,13 @@ from misc.constants import g
 def make_loading_diagrams(aircraft):
     fuselage_group = aircraft.FuselageGroup
     components = get_sizes_and_loads(fuselage_group)
-    forces = []
+    C_m = 0.199
+    state = aircraft.states["cruise"]
+    wing_area = aircraft.WingGroup.Wing.wing_area
+    normalized_chord = aircraft.WingGroup.Wing.mean_geometric_chord
+
+    moment = 0.5 * state.density * state.velocity ** 2 * wing_area * C_m * normalized_chord
+    forces = [PointMoment(aircraft.WingGroup.Wing.transformed_cg, moment)]
 
     for component in components:
         if component[2] is None:
@@ -46,6 +52,21 @@ def get_sizes_and_loads(head_component):
     for component in head_component.components:
         lst += get_sizes_and_loads(component)
     return lst
+
+
+class PointMoment:
+    def __init__(self, pos, moment):
+        self.x = pos[0]
+        self.moment = moment
+
+    def calc_shear(self, x):
+        return 0
+
+    def calc_moment(self, x):
+        if x >= self.x:
+            return self.moment
+        else:
+            return 0
 
 
 class PointLoad:
