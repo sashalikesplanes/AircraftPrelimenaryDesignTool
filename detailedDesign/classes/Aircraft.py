@@ -119,3 +119,7 @@ class Aircraft(Component):
 
         lst.append([self.own_cg, f"{str(self)}"])
         return lst
+
+    @property
+    def transformed_pos(self):
+        return self.pos

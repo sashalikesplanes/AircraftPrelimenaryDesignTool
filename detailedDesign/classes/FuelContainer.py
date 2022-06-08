@@ -8,6 +8,7 @@ class FuelContainer(Component):
         super().__init__(design_config)
 
         self.Fuselage = Fuselage
+        self.parent = self.Fuselage
 
         # self.RemovableContainers = []
         # self.NonRemovableContainers = []

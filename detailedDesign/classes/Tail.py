@@ -9,6 +9,7 @@ class Tail(Component):
         super().__init__(design_config)
 
         self.FuselageGroup = FuselageGroup
+        self.parent = self.FuselageGroup
 
         self.HorizontalTail = HorizontalTail(self, self.design_config)
         self.VerticalTail = VerticalTail(self, self.design_config)
