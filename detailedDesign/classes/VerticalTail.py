@@ -12,6 +12,7 @@ class VerticalTail(Component):
         super().__init__(design_config)
 
         self.Tail = Tail
+        self.parent = self.Tail
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value

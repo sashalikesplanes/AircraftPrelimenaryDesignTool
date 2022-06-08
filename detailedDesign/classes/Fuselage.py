@@ -16,6 +16,7 @@ class Fuselage(Component):
     def __init__(self, FuselageGroup, design_config):
         super().__init__(design_config)
         self.FuselageGroup = FuselageGroup
+        self.parent = self.FuselageGroup
 
         self.Cabin = Cabin(self, self.design_config)
         self.Cabin.get_sized()

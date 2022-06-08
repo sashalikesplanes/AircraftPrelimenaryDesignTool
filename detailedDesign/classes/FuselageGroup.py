@@ -11,6 +11,7 @@ class FuselageGroup(Component):
         super().__init__(design_config)
 
         self.Aircraft = Aircraft
+        self.parent = self.Aircraft
 
         self.Tail = Tail(self, self.design_config)
         self.Power = Power(self, self.design_config)

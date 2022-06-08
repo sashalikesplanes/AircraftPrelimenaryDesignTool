@@ -9,6 +9,7 @@ class Power(Component):
         super().__init__(design_config)
 
         self.FuselageGroup = FuselageGroup
+        self.parent = self.FuselageGroup
 
         self.FuelCells = FuelCells(self, self.design_config)
         # self.Batteries = Batteries(self, self.design_config)

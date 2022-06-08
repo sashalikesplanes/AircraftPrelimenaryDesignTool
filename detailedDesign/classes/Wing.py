@@ -9,6 +9,7 @@ class Wing(Component):
         super().__init__(design_config)
 
         self.WingGroup = WingGroup
+        self.parent = self.WingGroup
         # self.HLDs = HLDs(self, self.design_config)
         # self.components = [self.HLDs]
 

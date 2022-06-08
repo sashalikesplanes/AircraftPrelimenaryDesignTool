@@ -8,6 +8,7 @@ class CargoBay(Component):
         super().__init__(design_config)
 
         self.Fuselage = Fuselage
+        self.parent = self.Fuselage
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
