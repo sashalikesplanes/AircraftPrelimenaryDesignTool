@@ -42,7 +42,7 @@ class Aircraft(Component):
 
     @property
     def fuel_mass(self):
-        return self.FuselageGroup.Fuselage.FuelContainer.mass_H2
+        return self.FuselageGroup.Power.mass_H2
 
     @property
     def reserve_fuel_mass(self):
