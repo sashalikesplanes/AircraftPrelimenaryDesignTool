@@ -37,8 +37,8 @@ DP = 14  # Depreciation period [yrs], could do 27 as well
 # Return on investment constants
 price_per_ticket = 600  # Average price today
 # price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
-price_per_cargo = 3  # [$/kg]
-subsidy = 0.  # expected subsidy for green aviation
+price_per_cargo = 6  # [$/kg]
+subsidy = 0.2  # expected subsidy for green aviation
 n_ac_sold = 97  # TODO: Revise this w market analysis
 
 
@@ -210,7 +210,7 @@ def production_cost_estimation(aircraft):
     return total_program_cost, program_roi, total_rc_per_ac / 1e6, total_nrc
 
 
-def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time=2):
+def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
     # Initialise
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
@@ -251,16 +251,7 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time=2):
     DOC_maintenance = flight_cycles * (DOC_maint_engine + DOC_maint_material + DOC_maint_personnel)  # [$]
 
     # DOC capex (engines, fuel cell, fuel tak, cont. factor incl)
-    # TODO: Revise price_ac calc. Should the other masses be subtracted from oew?
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
-
-    # TODO: Incorporate fuel tank mass properly
-    # cost_ac = (P_OEW * (
-    #         oew - W_eng * n_motor - aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass - aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass
-    #         - aircraft.FuselageGroup.Fuselage.AssFuelContainer.own_mass - aircraft.FuselageGroup.Power.FuelCells.own_mass) + W_eng * n_motor * P_eng
-    #            + (
-    #                    aircraft.FuselageGroup.Fuselage.ForwardFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AftFuelContainer.own_mass + aircraft.FuselageGroup.Fuselage.AssFuelContainer.own_mass) * P_tank
-    #            + aircraft.FuselageGroup.Power.FuelCells.own_mass * P_fc) * (1 + PMac + f_misc)
 
     cost_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * 1e6
     DOC_cap = cost_ac * (a + f_ins)
@@ -298,7 +289,6 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time=2):
     plt.title("Operational Cost Breakdown [%]")
     plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
-    # plt.savefig(costBreakdownPath, dpi = 600)
     plt.savefig(Path("plots", "operational_market_pie.png"))
 
     # Calculating ROI

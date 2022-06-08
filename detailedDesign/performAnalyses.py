@@ -1,7 +1,7 @@
 import logging
 import matplotlib.pyplot as plt
 
-from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation
+from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation, operations_and_logistics
 from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
@@ -17,15 +17,16 @@ def perform_analyses(aircraft, make_stability):
     plt.figure()
     sketch_aircraft(aircraft)
     print_summary(aircraft)
-    make_payload_range_diagram(aircraft)
+    # make_payload_range_diagram(aircraft)
 
     plt.figure()
     if make_stability:
         find_stability(aircraft)
         plt.figure()
 
+    ground_time = operations_and_logistics(aircraft)
     total_program_cost, program_roi, total_rc_per_ac, total_nrc = production_cost_estimation(aircraft)
-    cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, total_rc_per_ac, total_nrc)
+    cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time)
 
     plt.figure()
     make_loading_diagrams(aircraft)
