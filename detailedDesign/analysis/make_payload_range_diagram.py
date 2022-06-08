@@ -18,7 +18,7 @@ def make_payload_range_diagram(aircraft):
     total_fuel_capacity = max_fuel_mass
 
     MTOM = aircraft.mtom
-    payload_mass = aircraft.get_payload_mass()
+    payload_mass = aircraft.get_payload_mass
 
     m1 = MTOM  # mtom and no fuel
     m_f1 = 0

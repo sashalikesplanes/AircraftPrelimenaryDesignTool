@@ -49,6 +49,10 @@ class Fuselage(Component):
         return (self.inner_height * 1.045 + 0.084 - self.inner_height) / 2
 
     @property
+    def fuel_tank_mass(self):
+        return self.ForwardFuelContainer.get_mass() + self.AssFuelContainer.get_mass() + self.AftFuelContainer.get_mass()
+
+    @property
     def outer_height(self):
         return self.inner_height + self.thickness * 2
 
