@@ -34,24 +34,24 @@ def make_payload_range_diagram(aircraft):
     print("total fuel capacity:", total_fuel_capacity)
 
     p, r = np.array(p), np.array(r)
-    r = r / 110
-    p = p / 0.317515
+    r = r * 10 ** -3
+    p = p
 
-    plt.figure(8)
+    plt.figure(5)
     plt.plot(r, p, "o-")
     plt.title("Payload Range Diagram")
-    plt.xlabel("Range [Football Fields]")
-    plt.ylabel("Payload mass [sq. inch of gold]")
+    plt.xlabel("Range [km]")
+    plt.ylabel("Payload mass [kg]")
 
 
 def calc_range(W0, W1, aircraft):
-    print("Initial and Final Weights:", W0, W1)
+    print("Fraction W5/W4:", W1/W0)
     prop_eff = aircraft.WingGroup.Engines.propulsive_eff
     c_p = 1 / energyDensityHydrogen
 
     # TODO: implement realistic L/D
     _, _, C_D, D, _ = get_drag(aircraft)
-    L = aircraft.mtom * 9.81
+    L = (aircraft.mtom - 0.5 * (W0 - W1)) * 9.81
     L_over_D_cruise = L / D
 
     # Range formula from ADSEE I
