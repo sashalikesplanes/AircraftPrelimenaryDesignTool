@@ -36,7 +36,8 @@ DP = 14  # Depreciation period [yrs], could do 27 as well
 price_per_ticket = 600  # Average price today
 # price_per_ticket = 935.80  # Adjusted for inflation expectation in 2040
 price_per_cargo = 6  # [$/kg]
-subsidy = 0.  # expected subsidy for green aviation
+subsidy_manufacturing = 0.2  # expected subsidy for green aviation
+subsidy_operational = 0
 n_ac_sold = 119  # TODO: Revise this w market analysis
 
 
@@ -202,7 +203,7 @@ def production_cost_estimation(aircraft):
 
     # Return on investment
     price_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc)
-    program_revenues = n_ac_sold * price_ac / 1e6
+    program_revenues = n_ac_sold * price_ac / 1e6 * (1 + subsidy_manufacturing)
     program_roi = (program_revenues - total_program_cost) / total_program_cost * 100
 
     return competitive_price_ac, total_program_cost, program_roi, total_rc_per_ac / 1e6, total_nrc
@@ -288,7 +289,7 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
     plt.savefig(Path("plots", "operational_market_pie.png"))
 
     # Calculating ROI
-    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy) + price_per_cargo * aircraft.cargo_mass
+    revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy_operational) + price_per_cargo * aircraft.cargo_mass
     cost_per_flight = DOC / flight_cycles
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
 
