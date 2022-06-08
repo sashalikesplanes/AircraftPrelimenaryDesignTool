@@ -293,6 +293,7 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time=2):
 
     # Plotting pie chart
     colors = [plt.cm.Pastel1(i) for i in range(20)]
+    plt.clf()
     plt.pie(cost_fraction, labels=cost_type, autopct='%1.1f%%', colors=colors, startangle=90)
     plt.title("Operational Cost Breakdown [%]")
     plt.axis('equal')
