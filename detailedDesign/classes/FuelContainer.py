@@ -45,9 +45,9 @@ class FuelContainer(Component):
 
         # normally the radius is found through this eq
         self.mass_tank = self.tank_density * (4 / 3 * np.pi * (self.radius_tank + self.thickness) ** 3 + np.pi * (
-                self.radius_tank + self.thickness) ** 2 * self.length - self.volume_tank) * self.shape_factor
+                self.radius_tank + self.thickness) ** 2 * self.length_cyl - self.volume_tank) * self.shape_factor
 
-        self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length
+        self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length_cyl
 
         # Insulation mass/thickness sizing
         thickness_insulation = np.arange(0.001, 0.09, 0.000001)
@@ -100,7 +100,7 @@ class FuelContainer(Component):
 
     def cg_self(self):
 
-        x_cg = 0.5 * self.length + self.radius_tank + self.total_tank_thickness
+        x_cg = 0.5 * self.length_cyl + self.radius_tank + self.total_tank_thickness
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
@@ -108,7 +108,7 @@ class FuelContainer(Component):
 
     @property
     def total_length(self):
-        return self.length + 2 * self.radius_tank + self.total_tank_thickness * 2
+        return self.length_cyl + 2 * self.radius_tank + self.total_tank_thickness * 2
 
     def get_mass(self):
         total_mass = self.own_mass + self.current_fuel_mass
@@ -116,4 +116,4 @@ class FuelContainer(Component):
 
     @property
     def length(self):
-        return self.length_cyl + 2 * self.radius_tank
+        return self.length_cyl + 2 * self.radius_tank + 2 * self.total_tank_thickness
