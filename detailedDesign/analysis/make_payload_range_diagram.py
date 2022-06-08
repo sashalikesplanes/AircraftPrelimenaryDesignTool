@@ -55,4 +55,6 @@ def calc_range(W0, W1, aircraft):
     L_over_D_cruise = L / D
 
     # Range formula from ADSEE I
-    return (prop_eff / g / c_p) * L_over_D_cruise * np.log(W0 / W1)
+    power = aircraft.FuselageGroup.Power
+    return (prop_eff / g / c_p) * L_over_D_cruise * np.log(W0 / W1 * power.fuel_fraction_misc * power.fuel_fraction_loiter)
+

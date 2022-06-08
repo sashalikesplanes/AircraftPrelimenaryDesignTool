@@ -17,7 +17,7 @@ def perform_analyses(aircraft, make_stability):
     plt.figure()
     sketch_aircraft(aircraft)
     print_summary(aircraft)
-    # make_payload_range_diagram(aircraft)
+    make_payload_range_diagram(aircraft)
 
     plt.figure()
     if make_stability:
