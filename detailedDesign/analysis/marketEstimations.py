@@ -100,7 +100,7 @@ def market_estimations(aircraft):
     mtow = aircraft.mtom  # [kg]
     fuel_mass = aircraft.fuel_mass  # [kg]
     oew = aircraft.oew  # [kg]
-    payload = aircraft.get_payload_mass()  # [kg]
+    payload = aircraft.get_payload_mass  # [kg]
 
     # Calculate yearly flight cycles
     year_time = 365 * 24  # [h]
