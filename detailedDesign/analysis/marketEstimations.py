@@ -103,7 +103,7 @@ def market_estimations(aircraft):
     payload = aircraft.get_payload_mass()  # [kg]
 
     # Calculate yearly flight cycles
-    year_time = 365 * 24  # [h]
+    year_time = 365.242199 * 24  # [h]
     operational_time = year_time - maintenance_time  # [h]
 
     flight_cycles = operational_time / (block_time + ground_time)  # [-]
