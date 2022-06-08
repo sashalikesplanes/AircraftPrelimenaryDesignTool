@@ -20,8 +20,8 @@ class VerticalTail(Component):
         self.tail_length = None  # [m]
         self.surface_area = None  # [m2]
         self.mean_geometric_chord = None  # [m]
-        self.span = None  # [m]
-        self.root_chord = None  # [m]
+        self.span = 1  # [m]
+        self.root_chord = 1  # [m]
         self.quarter_chord_sweep = None  # [rad]
         self.first_iteration = True  # [-]
         self.F_w = 0
@@ -50,7 +50,11 @@ class VerticalTail(Component):
         #    self.tail_length = (self.Tail.FuselageGroup.Fuselage.length - (3/4)*self.mean_geometric_chord) - \
         #    (self.Tail.FuselageGroup.Aircraft.x_lemac + 0.25 * self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord) # [m]
 
-        self.tail_length = self.Tail.HorizontalTail.tail_length
+        y_mean_geometric_chord = self.span / 6 * (1 + self.taper * 2) / (1 + self.taper)
+        quarter_chord_sweep = np.arctan(np.tan(self.leading_edge_sweep) - 4 / self.aspect_ratio * (0.25) * (1 - self.taper) / (1 + self.taper))
+        # distance from leading edge of root chord
+        x_aerodynamic_center = self.root_chord * 0.25 + y_mean_geometric_chord * np.sin(quarter_chord_sweep) 
+        self.tail_length = self.Tail.FuselageGroup.Fuselage.length - (self.Tail.FuselageGroup.Aircraft.x_lemac + self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord * 0.25) - self.root_chord + x_aerodynamic_center
 
         self.surface_area = (self.volume_coefficient * \
                              wing_area * wing_span) / self.tail_length  # [m2]
@@ -62,7 +66,7 @@ class VerticalTail(Component):
         self.mean_geometric_chord = 2 / 3 * self.root_chord * (
                 (1 + self.taper + self.taper ** 2) / (1 + self.taper))  # [m]
 
-        self.length = self.mean_geometric_chord
+        self.length = self.root_chord
         # print("initial S",self.surface_area)
         # print(self.surface_area/wing_area)
         # # print("rudder length",self.mean_geometric_chord*0.3)
