@@ -20,29 +20,31 @@ def make_payload_range_diagram(aircraft):
     MTOM = aircraft.mtom
     payload_mass = aircraft.get_payload_mass()
 
-    m1 = MTOM
+    m1 = MTOM  # mtom and no fuel
     m_f1 = 0
-    m2 = MTOM
+    m2 = MTOM  # mtom with max payload and 80% fuel
     m_f2 = total_fuel_capacity * (1 - fuel_dump_percentage)
-    m3 = MTOM
+    m3 = MTOM  # mtom with max fuel and rest payload
     m_f3 = total_fuel_capacity
-    m4 = MTOM - payload_mass
+    m4 = MTOM - payload_mass  # mtom without any payload
     m_f4 = total_fuel_capacity
 
     p = [payload_mass + fuel_dump_percentage * total_fuel_capacity, payload_mass + fuel_dump_percentage * total_fuel_capacity, payload_mass, 0]
-    r = [calc_range(m1, m1 - m_f1, aircraft), calc_range(m2, m2 - m_f2, aircraft), calc_range(m3, m3 - m_f3, aircraft), calc_range(m4, m_f4, aircraft)]
-    print(m_f1, m_f2, m_f3, m_f4)
-    print(p)
-    print(r)
+    r = [calc_range(m1, m1 - m_f1, aircraft), calc_range(m2, m2 - m_f2, aircraft), calc_range(m3, m3 - m_f3, aircraft), calc_range(m4, m4 - m_f4, aircraft)]
+    print("total fuel capacity:", total_fuel_capacity)
+
+    p, r = np.array(p), np.array(r)
+    r = r / 110
 
     plt.figure(8)
     plt.plot(r, p, "o-")
     plt.title("Payload Range Diagram")
-    plt.xlabel("Range [m]")
+    plt.xlabel("Range [Football Fields]")
     plt.ylabel("Payload mass [kg]")
 
 
 def calc_range(W0, W1, aircraft):
+    print("Initial and Final Weights:", W0, W1)
     prop_eff = aircraft.WingGroup.Engines.propulsive_eff
     c_p = 1 / energyDensityHydrogen
 
