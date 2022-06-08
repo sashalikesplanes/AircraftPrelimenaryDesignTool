@@ -5,11 +5,18 @@ from misc.constants import g
 from detailedDesign.board_passengers import board_passengers
 
 
+dx = 0.1
+
+
 def make_loading_diagrams(aircraft):
+    """Make the loading diagram"""
+    # Board the payload and fuel into the aircraft
+    aircraft = board_passengers(aircraft)
+
+    # Make the different components to find forces from
     fuselage_group = aircraft.FuselageGroup
     components = get_sizes_and_loads(fuselage_group)
 
-    board_passengers(aircraft)
     # Initialize the bending moment due to the wing
     C_m = 0.199
     state = aircraft.states["cruise"]
@@ -20,17 +27,10 @@ def make_loading_diagrams(aircraft):
 
     # Transform the components into the correct loads
     for component in components:
-        if not component[0] == "Cabin":
-            if component[2] is None:
-                forces.append(PointLoad(component[3], -component[1] * g))
-            else:
-                forces.append(DistributedLoad(component[3], -component[1] * g, component[2]))
+        if component[2] is None:
+            forces.append(PointLoad(component[3], -component[1] * g))
         else:
-            m_pax = sum([x.mass for x in aircraft.FuselageGroup.Fuselage.Cabin.passengers])
-            if component[2] is None:
-                forces.append(PointLoad(component[3], -(component[1] + m_pax) * g))
-            else:
-                forces.append(DistributedLoad(component[3], -(component[1] + m_pax) * g, component[2]))
+            forces.append(DistributedLoad(component[3], -component[1] * g, component[2]))
 
     # Get the maximum length to plot to
     total_length = aircraft.FuselageGroup.Tail.transformed_pos[0]
@@ -49,7 +49,7 @@ def make_loading_diagrams(aircraft):
     fig, (ax1, ax2) = plt.subplots(2)
 
     # Calculate shear and bending over the longitudinal plane length
-    X = np.arange(0, total_length, 0.1)
+    X = np.arange(0, total_length, dx)
     shear = np.array([sum([i.calc_shear(y) for i in forces]) for y in X])
     moment = -np.array([sum([i.calc_moment(y) for i in forces]) for y in X])
 
@@ -58,9 +58,17 @@ def make_loading_diagrams(aircraft):
     ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
     ax1.plot(X, shear * 10 ** -3, color="tab:red")
     ax1.grid()
+
+    # Bending moment plot
+    dy = np.diff(shear) / dx
+    dy = list(dy)
+    dy.append(0)
+    dy = np.array(dy)
+    Y = np.trapz(shear, dx=dx, axis=2)
     ax2.set_title("Fuselage Bending Diagram")
     ax2.set(xlabel="Longitudinal Position [m]", ylabel="Bending Moment [kNm]")
     ax2.plot(X, moment * 10 ** -3, color="tab:green")
+    ax2.plot(X, Y, "--", color="tab:green")
     ax2.grid()
 
 
@@ -73,10 +81,10 @@ def get_sizes_and_loads(head_component):
     if str(head_component) == "Miscellaneous":
         lst = head_component.forces_lst
         total_accounted_mass = sum([x[1] for x in lst])
-        lst.append(("RemainingMisc", head_component.own_mass - total_accounted_mass, l, head_component.FuselageGroup.Fuselage.transformed_cg))
+        lst.append(("RemainingMisc", head_component.cow_mass - total_accounted_mass, l, head_component.FuselageGroup.Fuselage.transformed_cg))
         return lst
 
-    lst = [(str(head_component), head_component.own_mass, l, head_component.transformed_cg)]
+    lst = [(str(head_component), head_component.cow_mass, l, head_component.transformed_cg)]
     for component in head_component.components:
         lst += get_sizes_and_loads(component)
     return lst

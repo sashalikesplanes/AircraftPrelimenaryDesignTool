@@ -117,3 +117,7 @@ class FuelContainer(Component):
     @property
     def length(self):
         return self.length_cyl + 2 * self.radius_tank + 2 * self.total_tank_thickness
+
+    @property
+    def cow_mass(self):
+        return self.own_mass + self.current_fuel_mass

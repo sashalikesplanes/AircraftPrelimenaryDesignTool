@@ -105,3 +105,12 @@ class Cabin(Component):
             mass += passenger.mass
 
         return mass
+
+    @property
+    def cow_mass(self):
+        mass = self.own_mass
+
+        for passenger in self.passengers:
+            mass += passenger.mass
+
+        return mass

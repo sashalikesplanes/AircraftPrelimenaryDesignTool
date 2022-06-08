@@ -126,3 +126,7 @@ class Component:
     @property
     def transformed_pos(self):
         return self.parent.transformed_pos + self.pos
+
+    @property
+    def cow_mass(self):
+        return self.own_mass

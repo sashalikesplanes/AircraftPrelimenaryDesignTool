@@ -72,4 +72,11 @@ def board_passengers(aircraft):
                         vec3 = vec_initial + x * vec_x + y * vec_y_seat + vec_z * z + n_cuts * vec_y_aisle
                         new_person = Passenger(vec3)
                         cabin.passengers.append(new_person)
+
+    fuselage = aircraft.FuselageGroup.Fuselage
+    # Board the fuel
+    fuselage.AftFuelContainer.current_fuel_mass = fuselage.AftFuelContainer.mass_H2
+    fuselage.AssFuelContainer.current_fuel_mass = fuselage.AssFuelContainer.mass_H2
+    fuselage.ForwardFuelContainer.current_fuel_mass = fuselage.ForwardFuelContainer.mass_H2
+
     return aircraft
