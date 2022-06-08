@@ -14,17 +14,18 @@ annualAttendantSalary = 85e3  # [$]
 annualPilotSalary = 175e3  # [$]
 # TODO: check this number and unit for cost burden
 costBurden = 2  # [$]
+refuelling_rate = 35000 # [kg/h]
+n_pumps = 3
 
 # Operational constants
 h2_price = 1.9  # [$/kg] as suggested by hydrogen experts
-ground_time = 2  # [h]  --> refuelling (depends on fuel) + boarding payload
 maintenance_time = 2749  # [h]
 block_time_supplement = 1.8  # [h]
 f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 
 # CAPEX constants
 # TODO: Revise CAPEX calculations to incorporate fuel tank costs properly
-P_OEW = 1200  # [$/kg] operating empty weight
+P_OEW = 1200 * 1.5  # [$/kg] operating empty weight
 P_eng = 2600  # [$/kg] engine
 P_fc = 608  # [$/kg] fuel cell
 P_tank = 550  # [$/kg] LH2
@@ -61,6 +62,8 @@ def market_estimations(aircraft):
     # Calculate yearly flight cycles
     year_time = 365 * 24  # [h]
     operational_time = year_time - maintenance_time  # [h]
+
+    ground_time = aircraft.fuel_mass / (refuelling_rate * n_pumps)  # [h]  --> refuelling (depends on fuel) + boarding payload
     flight_cycles = operational_time / (block_time + ground_time)  # [-]
 
     # DOC fuel for a year
@@ -107,6 +110,7 @@ def market_estimations(aircraft):
     frac_fuel = DOC_fuel / DOC * 100
     frac_cap = DOC_cap / DOC * 100
 
+    
     cost_breakdown = [
         {"cost type": "Maintenance", "fraction": frac_maintenance},
         {"cost type": "Crew", "fraction": frac_crew},
@@ -147,7 +151,7 @@ def market_estimations(aircraft):
 
     competitive_price_ac = (k1 * (n_pax / seats_ref) ** alpha + k2 * (flight_range / (1e3 * range_ref))) * price_ac_ref
 
-    return competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
+    return competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, ground_time
 
 
 def production_cost_estimation(aircraft, competitive_price_ac):

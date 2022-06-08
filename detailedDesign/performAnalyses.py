@@ -22,7 +22,7 @@ def perform_analyses(aircraft, make_stability):
         find_stability(aircraft)
         plt.figure(3)
 
-    competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft)
+    competitive_price_ac, cost_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, ground_time = market_estimations(aircraft)
     total_program_cost, program_roi = production_cost_estimation(aircraft, competitive_price_ac)
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"{breakdown_summary}")
@@ -32,6 +32,7 @@ def perform_analyses(aircraft, make_stability):
     print(f"Total Program Cost [M$]: {total_program_cost :.2f}")
     print(f"Operational ROI [%]: {roi:.2f}")
     print(f"Program ROI [%]: {program_roi:.2f}")
+    print(f"Aircraft refuelling time [h]: {ground_time:.2f}")
     plt.show()
 
 
