@@ -149,6 +149,7 @@ class Engines(Component):
         self.own_spacing = spacing
         self.own_fans_on_wing = n_fans_fit_wing
         self.own_fans_on_fuselage = n_fans_fuselage
+        self.own_amount_motor = n_fans
         self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):
