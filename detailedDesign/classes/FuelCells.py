@@ -27,6 +27,7 @@ class FuelCells(Component):
 
         self.own_mass = power_peak/self.mass_power_density  # [kg]
         self.size = self.own_mass/self.W_Size  # [m3]
+        print("fuel cell size",self.size)
         self.logger.debug(f" {self.size = }")
         # TODO Update
         fuselage = self.Power.FuselageGroup.Fuselage
@@ -47,4 +48,9 @@ class FuelCells(Component):
         # print("power produced per plate", self.power_produced)
 
     def cg_self(self):
-        self.own_cg = np.array([0, 0., 0.])
+        self.own_cg = np.array([self.length/2, 0., 0.])
+
+
+    @property
+    def length(self):
+        return 4.4 #TODO: Change once we have the cabin layout

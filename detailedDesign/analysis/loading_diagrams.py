@@ -7,7 +7,7 @@ from misc.constants import g
 def make_loading_diagrams(aircraft):
     fuselage_group = aircraft.FuselageGroup
     components = get_sizes_and_loads(fuselage_group)
-    C_m = 0.199
+    C_m = 0.263 #0.199
     state = aircraft.states["cruise"]
     wing_area = aircraft.WingGroup.Wing.wing_area
     normalized_chord = aircraft.WingGroup.Wing.mean_geometric_chord

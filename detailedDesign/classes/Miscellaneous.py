@@ -133,3 +133,6 @@ class Miscellaneous(Component):
         self.own_cg = cg_pos / mass
         return self.own_cg
 
+    @property
+    def length(self):
+        return self.FuselageGroup.Fuselage.length
