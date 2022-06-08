@@ -8,6 +8,7 @@ class FuelCells(Component):
         super().__init__(design_config)
 
         self.Power = Power
+        self.parent = self.Power
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value

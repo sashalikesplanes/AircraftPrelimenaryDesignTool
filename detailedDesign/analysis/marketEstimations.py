@@ -47,22 +47,49 @@ def operations_and_logistics(aircraft):
     # ----- Calculating ground time ----- [h]  --> refuelling (depends on fuel) + boarding payload
 
     # Initialise
+    n_doors = 8  # [-]
     refuelling_rate = 35500  # [kg/h]
     n_pumps = 3  # [-]
-    loading_bags = 140 * 60  # [kg/h]
-    unloading_bags = 180 * 60  # [kg/h]
-    boarding = 15 * 60  # [pax/h/door]
-    deboarding = 25 * 60  # [pax/h/door]
-    n_doors = 8  # [-]
+    loading_bags = 1.2 / 60  # [h/container]
+    unloading_bags = 1.2 / 60  # [h/container]
+    boarding = 18 * 60 * n_doors  # [pax/h]
+    deboarding = 28 * 60 * n_doors  # [pax/h]
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
+    bag_containers = n_pax / 30
 
 
 
+    # Refuelling
     refuelling_time = aircraft.fuel_mass / (refuelling_rate * n_pumps)
 
+    # Cargo
+    loading_bag_time = bag_containers * loading_bags
+    unloading_bag_time = bag_containers * unloading_bags
+    cargo_time = loading_bag_time + unloading_bag_time
+    
+    # Cabin
+    cleaning_time = 25 / 60 # [h]
+    catering_time = 20 / 60 # [h]
+    boarding_time = n_pax / boarding 
+    deboarding_time = n_pax / deboarding 
+    last_pax_delay = 4 / 60 # [h]
+    cabin_time = cleaning_time + catering_time + boarding_time \
+    + deboarding_time + last_pax_delay
 
-def market_estimations(aircraft, ground_time = 2):
+
+    print(f"{boarding_time = }")
+    print(f"{deboarding_time = }")
+    print(f"{refuelling_time = }")
+    print(f"{cargo_time = }")
+    print(f"{cabin_time = }")
+
+    return max(refuelling_time, cargo_time, cabin_time)
+    
+
+
+def market_estimations(aircraft):
     # Initialise
+    ground_time = operations_and_logistics(aircraft)
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
     n_motor = aircraft.WingGroup.Engines.own_amount_fans
@@ -73,7 +100,7 @@ def market_estimations(aircraft, ground_time = 2):
     mtow = aircraft.mtom  # [kg]
     fuel_mass = aircraft.fuel_mass  # [kg]
     oew = aircraft.oew  # [kg]
-    payload = aircraft.get_payload_mass()  # [kg]
+    payload = aircraft.get_payload_mass  # [kg]
 
     # Calculate yearly flight cycles
     year_time = 365 * 24  # [h]

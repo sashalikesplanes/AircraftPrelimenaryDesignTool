@@ -10,6 +10,7 @@ class Power(Component):
         super().__init__(design_config)
 
         self.FuselageGroup = FuselageGroup
+        self.parent = self.FuselageGroup
 
         self.FuelCells = FuelCells(self, self.design_config)
         # self.Batteries = Batteries(self, self.design_config)
@@ -36,7 +37,7 @@ class Power(Component):
         V = cruise_state.velocity 
 
         # necessary power output from fuel cells + taking into account cable losses
-        P_avg_prop = T_avg * V
+        P_avg_prop = T_avg * V 
         P_rest_aircraft = (P_avg_prop / percent_prop) * (1-percent_prop)
         P_required_avg = P_avg_prop / (percent_prop * eff_converter) * cable_contingency
 

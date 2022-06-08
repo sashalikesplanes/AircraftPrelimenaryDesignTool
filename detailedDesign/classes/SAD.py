@@ -7,6 +7,7 @@ class SAD(Component):
     def __init__(self, FuselageGroup, design_config):
         super().__init__(design_config)
         self.FuselageGroup = FuselageGroup
+        self.parent = self.FuselageGroup
 
 
     def bending_shear(self):

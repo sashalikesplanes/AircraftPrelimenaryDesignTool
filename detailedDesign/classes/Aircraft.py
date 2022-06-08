@@ -63,7 +63,7 @@ class Aircraft(Component):
         for component in self.components:
             component.get_sized()
 
-        self.payload_mass = self.get_payload_mass()
+        self.payload_mass = self.get_payload_mass
 
         self.oem = self.get_mass() * self.oem_contingency
 
@@ -78,6 +78,7 @@ class Aircraft(Component):
         self.mtom = new_mtom
         self.print_component_masses()
 
+    @property
     def get_payload_mass(self):
         # Right now only count passengers. Their mass includes their luggage
         num_of_pax = self.FuselageGroup.Fuselage.Cabin.passenger_count
@@ -123,3 +124,7 @@ class Aircraft(Component):
 
         lst.append([self.own_cg, f"{str(self)}"])
         return lst
+
+    @property
+    def transformed_pos(self):
+        return self.pos

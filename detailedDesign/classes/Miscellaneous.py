@@ -8,6 +8,7 @@ class Miscellaneous(Component):
     def __init__(self, FuselageGroup, design_config):
         super().__init__(design_config)
         self.FuselageGroup = FuselageGroup
+        self.parent = self.FuselageGroup
 
         self.W_boat = None
         self.W_AC = None
