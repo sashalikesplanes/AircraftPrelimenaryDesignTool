@@ -41,7 +41,6 @@ Aircraft:
         volume_coefficient: 1.0 # [-] General Aviation Design
     Power:
       percentage_propulsion_power: 0.95 #percentage of total power that goes to propulsion system
-      eff_inverter: 0.995
       eff_converter: 0.95
       cable_contingency: 1.05 # cable losses
       FuelCells:
@@ -110,7 +109,7 @@ Aircraft:
       eff_mot_inv : 0.95
       propulsive_eff : 0.80
       increase_BLI_eff : 0.1
-      pylon_mass_contingency : 1.1
+      pylon_mass_contingency : 1.15    #integration and cable contingency
       engine_failure_contingency : 1.3
 
 

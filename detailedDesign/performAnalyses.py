@@ -6,6 +6,7 @@ from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
+import numpy as np
 
 logger = logging.getLogger("logger")
 
@@ -70,4 +71,8 @@ def print_summary(aircraft):
     logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
+
+    takeoff_speed = np.sqrt(aircraft.mtom * 9.81 / (0.5 * 1.225 * aircraft.reference_area * aircraft.C_L_TO))
+
+    logger.debug(f"{takeoff_speed = }")
 

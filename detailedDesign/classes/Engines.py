@@ -18,6 +18,7 @@ class Engines(Component):
         self.own_spacing = 0
         self.own_fans_on_wing = 0
         self.own_fans_on_fuselage = 0
+        self.own_amount_motor = 0
         self._freeze()
 
     @property
@@ -49,7 +50,7 @@ class Engines(Component):
         Ps_takeoff = self.WingGroup.Aircraft.states['take-off'].pressure
 
         # TODO
-        length_ailerons = self.WingGroup.Wing.length_ailerons  # the ailerons are 20 % of the total span
+        length_ailerons = self.WingGroup.Wing.length_ailerons  # the ailerons are a part of the total span
 
         # Calculations for cruise
         Tt_cruise = Tt_cruise * engine_failure_contingency
@@ -100,11 +101,11 @@ class Engines(Component):
         if spacing < min_spacing:
             n_fans_fit_wing = np.floor((Span - 2 * length_ailerons + min_spacing) / (D_fan + min_spacing))
             n_fans_fuselage = n_fans - n_fans_fit_wing
-            self.logger.warning(f" The fans do not fit over the wingspan, the number of fans is {n_fans}."
-                                f" The number of fans that fit over the wing span is {n_fans_fit_wing}. "
+            self.logger.warning(f" The fans do not fit on the wingspan, the number of fans is {n_fans}."
+                                f" The number of fans that fit on the wing span is {n_fans_fit_wing}. "
                                 f"The fans to be placed elsewhere is {n_fans_fuselage}. ")
         else:
-            self.logger.warning(f" The fans fit over the wingspan, the number of fans is {n_fans}.")
+            self.logger.warning(f" The fans fit on the wingspan, the number of fans is {n_fans}.")
             n_fans_fit_wing = n_fans
             n_fans_fuselage = 0
 
@@ -149,6 +150,7 @@ class Engines(Component):
         self.own_spacing = spacing
         self.own_fans_on_wing = n_fans_fit_wing
         self.own_fans_on_fuselage = n_fans_fuselage
+        self.own_amount_motor = n_fans
         self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):
