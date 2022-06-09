@@ -1,0 +1,44 @@
+    # loading in y-/z-axis #TODO: check signs and values in these loadings
+    # TODO: add loading in longitudinal direction
+    # S_y = -fuselage.FuselageGroup.Tail.VerticalTail.F_w  # NEGATIVE
+    # S_z = 0
+
+    # # T = S_y * (fuselage.FuselageGroup.Tail.VerticalTail.span / 2)
+    # M_y = 0
+    # M_z = (fuselage.FuselageGroup.Fuselage.Cabin.length - fuselage.FuselageGroup.Aircraft.get_cg()[0]) * S_y
+
+    # # Stress calculations
+    # sigma_xA = []
+    # sigma_xB = []
+    # sigma_y = []
+    # tau = []
+    # tau_maxA = []
+    # sigma_1A = []
+    # sigma_2A = []
+    # tau_maxB = []
+    # sigma_1B = []
+    # sigma_2B = []
+
+    # for i in range(len(t)):
+    #     # actual stresses
+    #     sigma_xA.append(M_z * 0 / I_zz + M_y * z_max / I_yy + 2 * delta_P * R / (2 * t[i]))
+    #     sigma_xB.append(M_z * y_max / I_zz + M_y * 0 / I_yy + 2 * delta_P * R / (2 * t[i]))
+    #     sigma_y.append(2 * delta_P * R / t[i])
+    #
+    #     # sigma_x = M_z*y/I_zz + M_y*z/I_yy + 2*delta_P*R/(2*t)
+    #     # sigma_y = 2*delta_P*R/t
+    #
+    #     tau.append(-(S_y * Q_z) / (I_zz * t[i]) - (S_z * Q_y) / (I_yy * t[i]) + T * R / J_0)
+    #
+    #     # design stresses
+    #     tau_maxA.append(np.sqrt(((sigma_xA[i] - sigma_y[i]) / 2) ** 2 + tau[i] ** 2))
+    #     sigma_1A.append((sigma_xA[i] + sigma_y[i]) / 2 + tau_maxA[i])
+    #     sigma_2A.append((sigma_xA[i] + sigma_y[i]) / 2 - tau_maxA[i])
+    #
+    #     tau_maxB.append(np.sqrt(((sigma_xB[i] - sigma_y[i]) / 2) ** 2 + tau[i] ** 2))
+    #     sigma_1B.append((sigma_xB[i] + sigma_y[i]) / 2 + tau_maxB[i])
+    #     sigma_2B.append((sigma_xB[i] + sigma_y[i]) / 2 - tau_maxB[i])
+    #
+    # plt.figure()
+    # plt.plot(t, tau_maxA)
+    # plt.show()
