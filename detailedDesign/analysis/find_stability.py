@@ -4,9 +4,10 @@ from pathlib import Path
 
 from detailedDesign.carrotPlot import make_carrot_plot
 from detailedDesign.stability import get_xplot
-
+from detailedDesign.log import setup_custom_logger
 
 def find_stability(aircraft):
+    logger = setup_custom_logger('logger', True)
     df = make_carrot_plot(force_run=False)
     f_stab, f_cont = get_xplot(aircraft)
 
@@ -14,6 +15,8 @@ def find_stability(aircraft):
     z_min = None
     # For every row in the dataframe we try to find the Sh/S value, we then find the minimum Sh/S
     for row in np.array(df):
+        logger.debug(row)
+        
         # Get x_lemac/l_fus
         z = row[1]
         # Get the position as %mac

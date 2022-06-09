@@ -29,6 +29,8 @@ class Fuselage(Component):
         # Using self.property_name = value
         self.tail_length = 0
         self.fuselage_length = 0
+        self.longitudinal_shear = None
+        self.longitudinal_moment = None
 
         self._freeze()
 
@@ -38,7 +40,7 @@ class Fuselage(Component):
         length = self.Cabin.length
         self.logger.debug(f"Volume of Fuel: {self.ForwardFuelContainer.volume_tank + self.AftFuelContainer.volume_tank + self.AssFuelContainer.volume_tank} m3")
         self.logger.debug(f"Cabin length: {self.Cabin.length}")
-        self.logger.debug(f"Fuel Compartment Length: {self.ForwardFuelContainer.length + self.ForwardFuelContainer.radius_tank * 4 + self.AftFuelContainer.length}")
+        self.logger.debug(f"Fuel Compartment Length: {self.ForwardFuelContainer.length + self.AftFuelContainer.length}")
         self.logger.debug(f"Wing box length: {self.FuselageGroup.Aircraft.WingGroup.Wing.root_chord }")
 
         self.tail_length = 1.6 * self.outer_height   # from ADSEE typical for airliners

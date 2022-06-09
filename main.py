@@ -2,7 +2,7 @@ from detailedDesign.detailDesign import detail_design
 
 
 if __name__ == "__main__":
-    detail_design(debug=False, make_stability=True)
+    detail_design(debug=False, make_stability=False)
 
 
 #       /\_/\
