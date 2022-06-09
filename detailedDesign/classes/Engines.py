@@ -21,6 +21,7 @@ class Engines(Component):
         self.own_fans_on_fuselage = 0
         self.own_amount_motor = 0
         self.own_mass_flow = 0
+        self.mass_motor_inverter = 0
         self._freeze()
 
     @property
@@ -101,10 +102,10 @@ class Engines(Component):
 
         # TODO get weight motor + inverter
         # mass_motor_inverter =       # from email saluqi
-        mass_motor_inverter = P_motor / specific_mass_motor_inverter
+        self.mass_motor_inverter = P_motor / specific_mass_motor_inverter
 
         # total weight of prop subsys
-        mass_total = n_fans * (mass_fan + mass_motor_inverter) * pylon_mass_contingency  # gearbox??
+        mass_total = n_fans * (mass_fan + self.mass_motor_inverter) * pylon_mass_contingency  # gearbox??
 
         spacing = (Span - 2 * length_ailerons - D_fan * n_fans) / (n_fans - 1)
         if spacing < min_spacing:
@@ -117,7 +118,6 @@ class Engines(Component):
             self.logger.warning(f" The fans fit on the wingspan, the number of fans is {n_fans}.")
             n_fans_fit_wing = n_fans
             n_fans_fuselage = 0
-
 
         # spacing
         # print(f"Fan count: {n_fans}")
