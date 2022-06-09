@@ -14,7 +14,7 @@ annualPilotSalary = 175e3  # [$]
 costBurden = 2  # [$]
 
 # Operational constants
-h2_price = 1.9  # [$/kg] as suggested by hydrogen experts
+h2_price = 2.14  # [$/kg] 1$ as suggested by hydrogen experts + distribution, storage, refuelling
 maintenance_time = 2749  # [h]
 block_time_supplement = 1.8  # [h]
 f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
