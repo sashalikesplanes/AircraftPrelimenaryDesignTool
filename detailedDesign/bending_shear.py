@@ -31,31 +31,35 @@ def find_bending_shear(aircraft, force_run=False):
     # Start 3D fuselage stress plot
     df_location = Path('data', 'dataframes', 'fuselage_stresses.dat')
 
-    force_run = True
+    # force_run = True
     try:
         if force_run:
             raise FileNotFoundError
         df = pd.read_csv(df_location)
     except FileNotFoundError:
-        t = 0.005
-        header = ["x", "y", "z", "stress_1", "stress_2"]
-        data_x = []
-        data_y = []
-        data_z = []
-        data_stress = []
+        for t in np.arange(0.001, 0.010, 0.001):
+            # t = 0.005
+            header = ["x", "y", "z", "stress_1", "stress_2"]
+            data_x = []
+            data_y = []
+            data_z = []
+            data_stress = []
 
-        for x in tqdm(range(len(aircraft.FuselageGroup.Fuselage.longitudinal_moment))):
-            for theta in np.arange(0, 2 * np.pi, 0.025):
-                y = a / 2 * cos(theta)
-                z = b / 2 * sin(theta)
-                data_stress.append(calculate_stress(x, y, z, t, aircraft))
-                data_x.append(x * 0.1)
-                data_y.append(y)
-                data_z.append(z)
+            for x in tqdm(range(len(aircraft.FuselageGroup.Fuselage.longitudinal_moment))):
+                for theta in np.arange(0, 2 * np.pi, 0.025):
+                    y = a / 2 * cos(theta)
+                    z = b / 2 * sin(theta)
+                    data_stress.append(calculate_stress(x, y, z, t, aircraft))
+                    data_x.append(x * 0.1)
+                    data_y.append(y)
+                    data_z.append(z)
 
-        data = np.transpose(np.array([data_x, data_y, data_z, [x[0] for x in data_stress], [x[1] for x in data_stress]]))
-        df = pd.DataFrame(data, columns=header)
-        df.to_csv(df_location)
+            data = np.transpose(np.array([data_x, data_y, data_z, [x[0] for x in data_stress], [x[1] for x in data_stress]]))
+            df = pd.DataFrame(data, columns=header)
+            df.to_csv(df_location)
+            t_mm = int(round(t * 1000))
+            df_location2 = Path('data', 'dataframes', f'fuselage_stresses_t_{t_mm}.dat')
+            df.to_csv(df_location2)
 
     print(df)
 
@@ -75,9 +79,13 @@ def find_bending_shear(aircraft, force_run=False):
 
     fig = plt.figure()
     ax = fig.gca(projection='3d')
+
+    ax.set_xlim3d(0, 120)
+    ax.set_ylim3d(-60, 60)
+    ax.set_zlim3d(-60, 60)
+
     ax.scatter(df["x"], df["y"], df["z"], c=df["stress_1"], lw=0, s=20)
     plt.show()
-
 
 
 def calculate_stress(x, y, z, t, aircraft):
