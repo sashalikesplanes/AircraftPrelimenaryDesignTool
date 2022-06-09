@@ -19,14 +19,13 @@ def get_climb_rate(aircraft, optimal_velocity):
     weight = aircraft.mtom * g
     k = 1 / (np.pi * A * e)
     lst = []
+    lst2 = []
     for rhoq in rholist:
-        if optimal_velocity:
-            V_best_ROC = np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin)))
-        else:
-            V_best_ROC = aircraft.states['cruise'].velocity
+        V_best_ROC = np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin)))
         ROC_max = efficiency * power / weight - np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin))) * np.sqrt(4 * k * CDmin) * (1 / np.sqrt(3) + np.sqrt(3)) / 2
         lst.append(ROC_max)
-    ## uncomment if a plot for climb ceiling is wanted. ceiling~~18km which is to high
+        lst2.append(V_best_ROC)
+    ## uncomment if a plot for climb ceiling is wanted. ceiling~~18km which is to high, by taking the speed into account it goes better~~16km
     # plt.plot(lst, rholist)
     # plt.ylabel("density")
     # plt.xlabel("ROC")
