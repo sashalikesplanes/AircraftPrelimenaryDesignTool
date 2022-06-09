@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from tqdm import tqdm
 from pathlib import Path
+from mpl_toolkits.mplot3d import Axes3D
 
 from misc.ISA import getPressure
 
@@ -30,48 +31,52 @@ def find_bending_shear(aircraft, force_run=False):
     # Start 3D fuselage stress plot
     df_location = Path('data', 'dataframes', 'fuselage_stresses.dat')
 
+    force_run = True
     try:
         if force_run:
             raise FileNotFoundError
         df = pd.read_csv(df_location)
     except FileNotFoundError:
         t = 0.005
-        header = ["x", "y", "z", "stress"]
+        header = ["x", "y", "z", "stress_1", "stress_2"]
         data_x = []
         data_y = []
         data_z = []
         data_stress = []
 
         for x in tqdm(range(len(aircraft.FuselageGroup.Fuselage.longitudinal_moment))):
-            for theta in np.arange(0, 2 * np.pi, 0.1):
-                y = a * cos(theta)
-                z = b * sin(theta)
+            for theta in np.arange(0, 2 * np.pi, 0.025):
+                y = a / 2 * cos(theta)
+                z = b / 2 * sin(theta)
                 data_stress.append(calculate_stress(x, y, z, t, aircraft))
-                data_x.append(x)
+                data_x.append(x * 0.1)
                 data_y.append(y)
                 data_z.append(z)
 
-        data = np.transpose(np.array([data_x, data_y, data_z, data_stress]))
+        data = np.transpose(np.array([data_x, data_y, data_z, [x[0] for x in data_stress], [x[1] for x in data_stress]]))
         df = pd.DataFrame(data, columns=header)
         df.to_csv(df_location)
 
     print(df)
 
-    sigma_1 = np.array([x[0] for x in data_stress]) * 10 ** -6  # [MPa]
-    sigma_2 = np.array([x[1] for x in data_stress]) * 10 ** -6  # [MPa]
+    # sigma_1 = np.array([x[0] for x in data_stress]) * 10 ** -6  # [MPa]
+    # sigma_2 = np.array([x[1] for x in data_stress]) * 10 ** -6  # [MPa]
+    #
+    # plt.figure()
+    # fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+    # x_values = list(np.arange(0, 2 * np.pi, 0.1))
+    # ax.plot(x_values + x_values[:1], list(sigma_1) + list(sigma_1)[:1])
+    # ax.plot(x_values + x_values[:1], list(sigma_2) + list(sigma_2)[:1])
+    # ax.set_title("Stress over rotation")
+    # # plt.xlabel("Rotation around axis [rad]")
+    # # plt.ylabel("Stress [MPa]")
+    # # ax.set(xlabel="Rotation around axis [rad]", ylabel="Stress [MPa]")
+    # ax.grid(True)
 
-    plt.figure()
-    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    x_values = list(np.arange(0, 2 * np.pi, 0.1))
-    ax.plot(x_values + x_values[:1], list(sigma_1) + list(sigma_1)[:1])
-    ax.plot(x_values + x_values[:1], list(sigma_2) + list(sigma_2)[:1])
-    ax.set_title("Stress over rotation")
-    # plt.xlabel("Rotation around axis [rad]")
-    # plt.ylabel("Stress [MPa]")
-    # ax.set(xlabel="Rotation around axis [rad]", ylabel="Stress [MPa]")
-    ax.grid(True)
-
-    plt.figure()
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.scatter(df["x"], df["y"], df["z"], c=df["stress_1"], lw=0, s=20)
+    plt.show()
 
 
 

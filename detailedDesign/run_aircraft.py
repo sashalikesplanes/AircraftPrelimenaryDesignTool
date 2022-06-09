@@ -1,11 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import os
 
 from detailedDesign.historicalRelations import get_MTOM_from_historical_relations
 from detailedDesign.log import setup_custom_logger
 from detailedDesign.getConstraints import get_constraints
-logger = setup_custom_logger("logger", True)
+
+name = os.getlogin()
+if name == "Devoteam":
+    logger = setup_custom_logger("logger", False)
+else:
+    logger = setup_custom_logger("logger", True)
 
 
 def run_aircraft(aircraft, debug=False):
