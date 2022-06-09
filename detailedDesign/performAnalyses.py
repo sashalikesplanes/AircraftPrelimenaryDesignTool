@@ -7,7 +7,7 @@ from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
 from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
-from detailedDesign.climbPerformance import get_climb_rate, get_climb_angle_speed, get_power_plot
+from detailedDesign.climbPerformance import get_climb_rate, get_climb_angle, get_power_plot
 from detailedDesign.potatoPlot import make_potato_plot
 import numpy as np
 from misc.constants import g
@@ -25,7 +25,7 @@ def perform_analyses(aircraft, make_stability):
     # make_potato_plot(aircraft, True)
     print(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft,optimal_velocity=True)[1]} m/s\n"
           f"Max climb rate : {get_climb_rate(aircraft,optimal_velocity=True)[0]}m/s")
-    print('climb angle the plane can fly at cruise:', get_climb_angle_speed(aircraft), 'degrees')
+    print('climb angle the plane can fly at cruise:', get_climb_angle(aircraft), 'degrees')
 
     plt.figure()
     if make_stability:
@@ -33,8 +33,8 @@ def perform_analyses(aircraft, make_stability):
         plt.figure()
 
     ground_time = operations_and_logistics(aircraft)
-    competitive_price_ac, total_program_cost, program_roi, total_rc_per_ac, total_nrc = production_cost_estimation(aircraft)
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time)
+    competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc = production_cost_estimation(aircraft)
+    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     plt.figure()
     make_loading_diagrams(aircraft)

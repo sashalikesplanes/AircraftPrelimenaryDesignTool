@@ -59,10 +59,18 @@ def make_loading_diagrams(aircraft):
     shear = np.array([sum([i.calc_shear(y) for i in forces]) for y in X])
     moment = -np.array([sum([i.calc_moment(y) for i in forces]) for y in X])
 
+    absolute_shear = abs(shear * 10 ** -3)
+    max_abs_shear = max(absolute_shear)
+    shear_cut1 = max_abs_shear/3
+    shear_cut2 = max_abs_shear*2/3
+
+
     # Plot the bending and shear diagram
     ax1.set_title("Fuselage Shear Loading Diagram")
     ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
     ax1.plot(X, shear * 10 ** -3, color="tab:red")
+    ax1.plot(X, absolute_shear, "--", color="tab:red")
+    ax1.hlines([shear_cut1, shear_cut2],0,108,colors="tab:red", linestyles='dashed')
     ax1.grid()
 
     moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
