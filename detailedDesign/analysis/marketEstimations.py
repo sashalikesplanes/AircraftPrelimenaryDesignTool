@@ -21,7 +21,7 @@ f_atc = 0.7  # [-] 0.7 as ATC fees for transatlantic
 
 # CAPEX constants
 P_OEW = 1200 * 1.5  # [$/kg] operating empty weight
-P_eng = 2600  # [$/kg] engine
+P_eng = 2674  # [$/kg] engine (from Saluqi, assuming 250 eur/kg with 10 kw/kg)
 P_fc = 320  # [$/kg] fuel cell --> 320 [$/kg] for 2025 estimate, 608 current
 P_tank = 550  # [$/kg] LH2
 
@@ -86,6 +86,9 @@ def production_cost_estimation(aircraft):
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
     flight_range = state.range  # [m]
+    n_eng = aircraft.WingGroup.Engines.own_amount_fans
+    mass_motor = aircraft.WingGroup.Engines.mass_motor_inverter * aircraft.WingGroup.Engines.pylon_mass_contingency*n_eng
+    mass_engine_other = aircraft.WingGroup.Engines.own_mass - mass_motor
 
     # ----- Estimating competitive price of the aircraft -----
     # Wide body aircraft reference data
@@ -93,8 +96,8 @@ def production_cost_estimation(aircraft):
     k2 = 0.697
     alpha = 2.760
     seats_ref = 853  # [A380 reference]
-    range_ref = 15200  # [km - A380 reference]
-    price_ac_ref = int(450e6)  # [$ - A380 reference]
+    range_ref = 15000  # [km - A380 reference]
+    price_ac_ref = int(445.6e6)  # [$ - A380 reference]
 
     competitive_price_ac = (k1 * (n_pax / seats_ref) ** alpha + k2 * (flight_range / (1e3 * range_ref))) * price_ac_ref
 
@@ -150,7 +153,6 @@ def production_cost_estimation(aircraft):
     wing_rec_cost_density = 900
     empennage_rec_cost_density = 2331
     fuselage_rec_cost_density = 967
-    # TODO: Revise engine cost from Saluqi
     engine_rec_cost_density = 374
     miscellaneous_rec_cost_density = 452
     final_assembly_rec_cost_density = 65
@@ -158,8 +160,7 @@ def production_cost_estimation(aircraft):
     wing_rec_mass_usd = wing_rec_cost_density * kg_to_lbs(wing_mass)
     empennage_rec_mass_usd = empennage_rec_cost_density * kg_to_lbs(empennage_mass)
     fuselage_rec_mass_usd = fuselage_rec_cost_density * kg_to_lbs(fuselage_mass)
-    engine_rec_mass_usd = engine_rec_cost_density * kg_to_lbs(engine_mass)
-    # engine_rec_mass_usd = P_eng * engine_mass
+    engine_rec_mass_usd = engine_rec_cost_density * kg_to_lbs(mass_engine_other) + P_eng * mass_motor
     fuel_cell_rec_mass_usd = P_fc * aircraft.FuselageGroup.Power.FuelCells.own_mass
     fuel_tank_rec_mass_usd = P_tank * aircraft.FuselageGroup.Fuselage.fuel_tank_mass
     miscellaneous_rec_mass_usd = miscellaneous_rec_cost_density * kg_to_lbs(miscellaneous_mass)
