@@ -37,7 +37,7 @@ def perform_analyses(aircraft, make_stability):
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     plt.figure()
-    # make_loading_diagrams(aircraft)
+    make_loading_diagrams(aircraft)
 
     #####
     state = aircraft.states["cruise"]
