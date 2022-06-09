@@ -1,6 +1,7 @@
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
+from detailedDesign.board_passengers import board_passengers
 import misc.constants as const
 from detailedDesign.get_drag import get_drag
 
@@ -112,6 +113,18 @@ class Aircraft(Component):
             cg_pos = self.own_cg
 
         return cg_pos
+
+    def get_cg_empty(self):
+        """Get cg of empty aircraft with all the components"""
+        self.get_cged()
+        return self.get_cg()
+
+    def get_cg_loaded(self):
+        """Get cg of the whole aircraft with passengers and fuel loaded and all the pre calcs"""
+        board_passengers(self)
+        self.get_cged()
+        return self.get_cg()
+
 
     def plot_cgs(self):
         self.get_cged()

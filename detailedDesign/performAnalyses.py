@@ -16,7 +16,9 @@ logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft, make_stability):
+    self.logger.debug(f"{len(aircraft.FuselageGroup.Fuselage.Cabin.passengers) = }")
     make_avl_file(aircraft)
+
     plt.figure()
     sketch_aircraft(aircraft)
     print_summary(aircraft)
@@ -55,7 +57,8 @@ def perform_analyses(aircraft, make_stability):
     print(f"dCm: {dCm} [-]")
     #####
 
-    print(f"Aircraft CG: {aircraft.get_cg()}")
+    print(f"Aircraft CG empty: {aircraft.get_cg_empty()}")
+    print(f"Aircraft CG loaded: {aircraft.get_cg_loaded()}")
     print(f"{breakdown_summary}")
     print(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
     print(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
