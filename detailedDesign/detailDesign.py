@@ -5,6 +5,7 @@ from detailedDesign.classes.Aircraft import Aircraft
 from detailedDesign.classes.State import State
 from detailedDesign.run_aircraft import run_aircraft
 from detailedDesign.performAnalyses import perform_analyses
+from detailedDesign.design_structure import design_structure
 
 # def get_ultimate_load_factor():
 #     # N_max_des = None # from maneuver/gust diagram
@@ -27,4 +28,5 @@ def detail_design(debug=False, make_stability=False):
     perform_analyses(aircraft, make_stability)
 
     # Stage 3: Sort of detailed design
+    design_structure(aircraft)
 

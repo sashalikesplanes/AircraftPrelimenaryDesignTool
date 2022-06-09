@@ -65,13 +65,6 @@ def make_loading_diagrams(aircraft):
     ax1.plot(X, shear * 10 ** -3, color="tab:red")
     ax1.grid()
 
-    # Bending moment plot
-    dy = np.diff(shear) / dx
-    dy = list(dy)
-    dy.append(0)
-    dy = np.array(dy)
-    # Y = np.trapz(shear, dx=dx, axis=2)
-
     moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
 
     ax2.set_title("Fuselage Bending Diagram")
@@ -79,6 +72,9 @@ def make_loading_diagrams(aircraft):
     ax2.plot(X, moment * 10 ** -3, color="tab:green")
     ax2.plot(X, np.array(moment_integral) * 10 ** -3, "--", color="tab:green")
     ax2.grid()
+
+    aircraft.FuselageGroup.Fuselage.longitudinal_shear = shear
+    aircraft.FuselageGroup.Fuselage.longitudinal_moment = moment
 
 
 def get_sizes_and_loads(head_component):
