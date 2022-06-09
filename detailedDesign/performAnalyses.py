@@ -23,8 +23,9 @@ def perform_analyses(aircraft, make_stability):
     make_payload_range_diagram(aircraft)
     get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
-    print(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft)[1]} m/s\n"
-          f"Max climb rate : {get_climb_rate(aircraft)[0]}m/s")
+    print(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft,optimal_velocity=True)[1]} m/s\n"
+          f"Max climb rate : {get_climb_rate(aircraft,optimal_velocity=True)[0]}m/s")
+    print('climb angle the plane can fly at cruise:', get_climb_angle_speed(aircraft), 'degrees')
 
     plt.figure()
     if make_stability:
