@@ -29,6 +29,8 @@ class Fuselage(Component):
         # Using self.property_name = value
         self.tail_length = 0
         self.fuselage_length = 0
+        self.longitudinal_shear = None
+        self.longitudinal_moment = None
 
         self._freeze()
 

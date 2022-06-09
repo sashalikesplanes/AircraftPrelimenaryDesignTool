@@ -1,10 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+from tqdm import tqdm
+from pathlib import Path
 
 from misc.ISA import getPressure
 
 
-def find_bending_shear(aircraft):
+cos = np.cos
+sin = np.sin
+
+
+def find_bending_shear(aircraft, force_run=False):
     fuselage = aircraft.FuselageGroup.Fuselage
     # if (self.FuselageGroup.Fuselage.outer_height == self.FuselageGroup.Fuselage.outer_width):
     #     I_zz = np.pi/64*(self.FuselageGroup.Fuselage.outer_width**4-self.FuselageGroup.Fuselage.inner_width**4)
@@ -15,102 +22,78 @@ def find_bending_shear(aircraft):
     # z = np.linspace(0, z_max, 100)
     # y = np.linspace(0, y_max, 100)
     t = np.linspace(0, 0.5, 100)
-    # t = max(self.FuselageGroup.Fuselage.outer_height/2 - self.FuselageGroup.Fuselage.inner_height/2, self.FuselageGroup.Fuselage.outer_width/2 - self.FuselageGroup.Fuselage.inner_width/2)
 
-    z_max = fuselage.FuselageGroup.Fuselage.outer_height / 2
-    z_inner = fuselage.FuselageGroup.Fuselage.inner_height / 2
-    y_max = fuselage.FuselageGroup.Fuselage.outer_width / 2
-    y_inner = fuselage.FuselageGroup.Fuselage.inner_width / 2
-    R = max(z_max, y_max)  # not really sure since it's a cylinder, maybe just take it as a contingency
-    # R_inner = max(self.FuselageGroup.Fuselage.inner_width / 2, self.FuselageGroup.Fuselage.inner_height / 2)
+    # retrieve the principal lengths for the ellipse
+    b = aircraft.FuselageGroup.Fuselage.outer_height
+    a = aircraft.FuselageGroup.Fuselage.outer_width
 
-    # inertia thin walled oval
-    area = 0.25 * np.pi * (
-            fuselage.FuselageGroup.Fuselage.outer_height * fuselage.FuselageGroup.Fuselage.outer_width - fuselage.FuselageGroup.Fuselage.inner_height * fuselage.FuselageGroup.Fuselage.inner_width)
-    I_zz = (np.pi * (
-            fuselage.FuselageGroup.Fuselage.outer_height * fuselage.FuselageGroup.Fuselage.outer_width ** 3 - fuselage.FuselageGroup.Fuselage.inner_height * fuselage.FuselageGroup.Fuselage.inner_width ** 3)) / 64
-    I_yy = (np.pi * (
-            fuselage.FuselageGroup.Fuselage.outer_height ** 3 * fuselage.FuselageGroup.Fuselage.outer_width - fuselage.FuselageGroup.Fuselage.inner_height ** 3 * fuselage.FuselageGroup.Fuselage.inner_width)) / 64
-    J_0 = I_zz + I_yy
+    # Start 3D fuselage stress plot
+    df_location = Path('data', 'dataframes', 'fuselage_stresses.dat')
 
-    # first moment of area <-hopefully correct
-    Q_outer_z = 0.25 * np.pi * z_max * y_max ** 3
-    Q_outer_y = 0.25 * np.pi * z_max ** 3 * y_max
-    Q_inner_z = 0.25 * np.pi * z_inner * y_inner ** 3
-    Q_inner_y = 0.25 * np.pi * z_inner ** 3 * y_inner
-    Q_z = Q_outer_z - Q_inner_z
-    Q_y = Q_outer_y - Q_inner_y
+    try:
+        if force_run:
+            raise FileNotFoundError
+        df = pd.read_csv(df_location)
+    except FileNotFoundError:
+        t = 0.005
+        header = ["x", "y", "z", "stress"]
+        data_x = []
+        data_y = []
+        data_z = []
+        data_stress = []
 
-    delta_P = np.abs(getPressure(fuselage.FuselageGroup.Aircraft.states['cruise'].altitude) - getPressure(
-        fuselage.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude))
+        for x in tqdm(range(len(aircraft.FuselageGroup.Fuselage.longitudinal_moment))):
+            for theta in np.arange(0, 2 * np.pi, 0.1):
+                y = a * cos(theta)
+                z = b * sin(theta)
+                data_stress.append(calculate_stress(x, y, z, t, aircraft))
+                data_x.append(x)
+                data_y.append(y)
+                data_z.append(z)
 
-    # loading in y-/z-axis #TODO: check signs and values in these loadings
-    # TODO: add loading in longitudinal direction
-    # S_y = -fuselage.FuselageGroup.Tail.VerticalTail.F_w  # NEGATIVE
-    # S_z = 0
+        data = np.transpose(np.array([data_x, data_y, data_z, data_stress]))
+        df = pd.DataFrame(data, columns=header)
+        df.to_csv(df_location)
 
-    # # T = S_y * (fuselage.FuselageGroup.Tail.VerticalTail.span / 2)
-    # M_y = 0
-    # M_z = (fuselage.FuselageGroup.Fuselage.Cabin.length - fuselage.FuselageGroup.Aircraft.get_cg()[0]) * S_y
+    print(df)
 
-    # # Stress calculations
-    # sigma_xA = []
-    # sigma_xB = []
-    # sigma_y = []
-    # tau = []
-    # tau_maxA = []
-    # sigma_1A = []
-    # sigma_2A = []
-    # tau_maxB = []
-    # sigma_1B = []
-    # sigma_2B = []
+    sigma_1 = np.array([x[0] for x in data_stress]) * 10 ** -6  # [MPa]
+    sigma_2 = np.array([x[1] for x in data_stress]) * 10 ** -6  # [MPa]
 
-    # for i in range(len(t)):
-    #     # actual stresses
-    #     sigma_xA.append(M_z * 0 / I_zz + M_y * z_max / I_yy + 2 * delta_P * R / (2 * t[i]))
-    #     sigma_xB.append(M_z * y_max / I_zz + M_y * 0 / I_yy + 2 * delta_P * R / (2 * t[i]))
-    #     sigma_y.append(2 * delta_P * R / t[i])
-    #
-    #     # sigma_x = M_z*y/I_zz + M_y*z/I_yy + 2*delta_P*R/(2*t)
-    #     # sigma_y = 2*delta_P*R/t
-    #
-    #     tau.append(-(S_y * Q_z) / (I_zz * t[i]) - (S_z * Q_y) / (I_yy * t[i]) + T * R / J_0)
-    #
-    #     # design stresses
-    #     tau_maxA.append(np.sqrt(((sigma_xA[i] - sigma_y[i]) / 2) ** 2 + tau[i] ** 2))
-    #     sigma_1A.append((sigma_xA[i] + sigma_y[i]) / 2 + tau_maxA[i])
-    #     sigma_2A.append((sigma_xA[i] + sigma_y[i]) / 2 - tau_maxA[i])
-    #
-    #     tau_maxB.append(np.sqrt(((sigma_xB[i] - sigma_y[i]) / 2) ** 2 + tau[i] ** 2))
-    #     sigma_1B.append((sigma_xB[i] + sigma_y[i]) / 2 + tau_maxB[i])
-    #     sigma_2B.append((sigma_xB[i] + sigma_y[i]) / 2 - tau_maxB[i])
-    #
-    # plt.figure()
-    # plt.plot(t, tau_maxA)
-    # plt.show()
+    plt.figure()
+    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+    x_values = list(np.arange(0, 2 * np.pi, 0.1))
+    ax.plot(x_values + x_values[:1], list(sigma_1) + list(sigma_1)[:1])
+    ax.plot(x_values + x_values[:1], list(sigma_2) + list(sigma_2)[:1])
+    ax.set_title("Stress over rotation")
+    # plt.xlabel("Rotation around axis [rad]")
+    # plt.ylabel("Stress [MPa]")
+    # ax.set(xlabel="Rotation around axis [rad]", ylabel="Stress [MPa]")
+    ax.grid(True)
+
+    plt.figure()
 
 
-def calculate_stress(y, z, t, aircraft):
+
+def calculate_stress(x, y, z, t, aircraft):
     # Base the radius on the y and z coordinates of the point
     r = (y ** 2 + z ** 2) ** 0.5
 
     S_y = -aircraft.FuselageGroup.Tail.VerticalTail.F_w
-    S_z = 0
+    S_z = aircraft.FuselageGroup.Fuselage.longitudinal_shear[x]
     M_z = (aircraft.FuselageGroup.Fuselage.Cabin.length - aircraft.FuselageGroup.Aircraft.get_cg()[0]) * S_y
-    M_y = 0
+    M_y = aircraft.FuselageGroup.Fuselage.longitudinal_moment[x]
     T = S_y * (aircraft.FuselageGroup.Tail.VerticalTail.span / 2)
 
     # first moment of area
     a = aircraft.FuselageGroup.Fuselage.outer_height
     b = aircraft.FuselageGroup.Fuselage.outer_width
 
-    Q_z = 4 * b ** 2 * a / 3 - (4 * (b - t) ** 2 * (a - t) / 3)
-    Q_y = 4 * a ** 2 * b / 3 - (4 * (a - t) ** 2 * (b - t) / 3)
+    Q_z = 4 * b ** 2 * a / 3 - (4 * (b - 2 * t) ** 2 * (a - 2 * t) / 3)
+    Q_y = 4 * a ** 2 * b / 3 - (4 * (a - 2 * t) ** 2 * (b - 2 * t) / 3)
 
-    I_yy = (np.pi * (
-            aircraft.FuselageGroup.Fuselage.outer_height ** 3 * aircraft.FuselageGroup.Fuselage.outer_width - aircraft.FuselageGroup.Fuselage.inner_height ** 3 * aircraft.FuselageGroup.Fuselage.inner_width)) / 64
-    I_zz = (np.pi * (
-            aircraft.FuselageGroup.Fuselage.outer_height * aircraft.FuselageGroup.Fuselage.outer_width ** 3 - aircraft.FuselageGroup.Fuselage.inner_height * aircraft.FuselageGroup.Fuselage.inner_width ** 3)) / 64
+    I_yy = np.pi / 64 * (a ** 3 * b - (a - 2 * t) ** 3 * (b - 2 * t))
+    I_zz = np.pi / 64 * (b ** 3 * a - (b - 2 * t) ** 3 * (a - 2 * t))
     delta_P = np.abs(getPressure(aircraft.FuselageGroup.Aircraft.states['cruise'].altitude) - getPressure(
         aircraft.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude))
     J_0 = I_yy + I_zz
@@ -125,4 +108,6 @@ def calculate_stress(y, z, t, aircraft):
 
     sigma_1 = (sigma_x + sigma_y) / 2 + tau_max
     sigma_2 = (sigma_x + sigma_y) / 2 - tau_max
-
+    result = (sigma_x, sigma_y)
+    # print(result, shear)
+    return result
