@@ -23,7 +23,7 @@ def make_carrot_plot(force_run=False):
     except FileNotFoundError:
         print("Didn't find file requested, generating new one.")
         max_length = 100
-        x_lemacs = np.arange(0, max_length)
+        x_lemacs = np.linspace(40, 60, 5)
 
         lst = []
         for x_lemac in x_lemacs:

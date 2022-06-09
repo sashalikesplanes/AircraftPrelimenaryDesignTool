@@ -108,6 +108,7 @@ class Cabin(Component):
 
     @property
     def cow_mass(self):
+        # Mass of cabin including the passengers, wtf max
         mass = self.own_mass
 
         for passenger in self.passengers:

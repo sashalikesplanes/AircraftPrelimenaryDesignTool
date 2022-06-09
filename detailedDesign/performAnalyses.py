@@ -8,6 +8,7 @@ from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
 from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
 from detailedDesign.climbPerformance import get_climb_rate, get_climb_angle_speed, get_power_plot
+from detailedDesign.potatoPlot import make_potato_plot
 import numpy as np
 from misc.constants import g
 
@@ -21,8 +22,10 @@ def perform_analyses(aircraft, make_stability):
     print_summary(aircraft)
     make_payload_range_diagram(aircraft)
     get_power_plot(aircraft)
-    print(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft)[1]} m/s\n"
-          f"Max climb rate : {get_climb_rate(aircraft)[0]}m/s")
+    # make_potato_plot(aircraft, True)
+    print(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft,optimal_velocity=True)[1]} m/s\n"
+          f"Max climb rate : {get_climb_rate(aircraft,optimal_velocity=True)[0]}m/s")
+    print('climb angle the plane can fly at cruise:', get_climb_angle_speed(aircraft), 'degrees')
 
     plt.figure()
     if make_stability:
