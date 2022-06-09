@@ -19,15 +19,12 @@ def detail_design(debug=False, make_stability=False):
     config_file = Path('data', 'new_designs', 'config.yaml')
     aircraft = Aircraft(openData(config_file), states, debug=debug)
 
+    # Stage 1: High level design
     run_aircraft(aircraft, debug=debug)
 
-    # ########################################### #
-    # ##   MAKE ALL THE COOL PLOTS AND STUFF   ## #
-    # ########################################### #
-
+    # Stage 2: Analyse the things
+    # make_stability = True
     perform_analyses(aircraft, make_stability)
-    # make_flight_envelope(aircraft, "cruise")
-    # make_flight_envelope(aircraft, "take-off")
-    # aircraft.WingGroup.Wing.size_AR(aircraft)
-    # aircraft.WingGroup.Wing.sizing_ailerons()
-    # aircraft.FuselageGroup.Tail.VerticalTail.size_self_geometry()
+
+    # Stage 3: Sort of detailed design
+

@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import integrate
 
 from misc.constants import g
 from detailedDesign.board_passengers import board_passengers
@@ -24,6 +25,11 @@ def make_loading_diagrams(aircraft):
     normalized_chord = aircraft.WingGroup.Wing.mean_geometric_chord
     moment = 0.5 * state.density * state.velocity ** 2 * wing_area * C_m * normalized_chord
     forces = [PointMoment(aircraft.WingGroup.Wing.transformed_cg, moment)]
+    C_mh = -0.4079129718445125
+    S_h = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
+    C_h = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
+    moment = 0.5 * state.density * state.velocity ** 2 * S_h * C_mh * C_h
+    forces.append(PointMoment(aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg, -moment))
 
     # Transform the components into the correct loads
     for component in components:
@@ -64,11 +70,14 @@ def make_loading_diagrams(aircraft):
     dy = list(dy)
     dy.append(0)
     dy = np.array(dy)
-    Y = np.trapz(shear, dx=dx, axis=2)
+    # Y = np.trapz(shear, dx=dx, axis=2)
+
+    moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
+
     ax2.set_title("Fuselage Bending Diagram")
     ax2.set(xlabel="Longitudinal Position [m]", ylabel="Bending Moment [kNm]")
     ax2.plot(X, moment * 10 ** -3, color="tab:green")
-    ax2.plot(X, Y, "--", color="tab:green")
+    ax2.plot(X, np.array(moment_integral) * 10 ** -3, "--", color="tab:green")
     ax2.grid()
 
 

@@ -33,6 +33,7 @@ Aircraft:
         tau_r: 0.517 # follows from figure Cr/Cv ratio
         br_bv: 1 #typically 0.7-1, again randomly taken from above source, rudder height ratio
       HorizontalTail:
+        C_l_alpha: 6.8755 #[1/rad], NACA0010
         toverc: 0.1 # [-] - NACA0010
         xovercmax: 0.3 # [-] - picked from ADSEE
         taper: 0.3 # [-] - picked from ADSEE

@@ -39,21 +39,21 @@ def run_aircraft(aircraft, debug=False):
 
     aircraft.get_cged()
 
-    if True:
-        df = pd.DataFrame(lst, columns=header)
-        df.loc[:, ["Miscellaneous", "VerticalTail", "HorizontalTail", "AssFuelContainer", "AftFuelContainer", "ForwardFuelContainer", "Fuselage", "FuelCells", "Engines", "Wing", "Aircraft"]].plot(style="o-")
-
-        # y = [x[1] for x in lst]
-        # plt.plot(range(len(lst)), y, "ro-", label=header[1])
-        # y = [x[2] for x in lst]
-        # plt.plot(range(len(lst)), y, "go-", label=header[2])
-        # print(df)
-        plt.xlabel("Iterations [-]")
-        plt.ylabel("System Mass [kg]")
-        plt.title("MTOM over iterations")
-        # plt.ylim([0, 10e9])
- #        plt.yscale("log")
-        plt.legend()
-        plt.show()
+    # if True:
+    #     df = pd.DataFrame(lst, columns=header)
+    #     df.loc[:, ["Miscellaneous", "VerticalTail", "HorizontalTail", "AssFuelContainer", "AftFuelContainer", "ForwardFuelContainer", "Fuselage", "FuelCells", "Engines", "Wing", "Aircraft"]].plot(style="o-")
+    #
+    #     # y = [x[1] for x in lst]
+    #     # plt.plot(range(len(lst)), y, "ro-", label=header[1])
+    #     # y = [x[2] for x in lst]
+    #     # plt.plot(range(len(lst)), y, "go-", label=header[2])
+    #     # print(df)
+    #     plt.xlabel("Iterations [-]")
+    #     plt.ylabel("System Mass [kg]")
+    #     plt.title("MTOM over iterations")
+    #     # plt.ylim([0, 10e9])
+    #     # plt.yscale("log")
+    #     plt.legend()
+    #     plt.show()
 
     return aircraft

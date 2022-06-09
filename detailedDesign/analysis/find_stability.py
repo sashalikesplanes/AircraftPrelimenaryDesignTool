@@ -7,7 +7,7 @@ from detailedDesign.stability import get_xplot
 
 
 def find_stability(aircraft):
-    df = make_carrot_plot()
+    df = make_carrot_plot(force_run=False)
     f_stab, f_cont = get_xplot(aircraft)
 
     y_min = 1e6

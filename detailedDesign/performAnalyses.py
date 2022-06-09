@@ -8,6 +8,7 @@ from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
 from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
 import numpy as np
+from misc.constants import g
 
 logger = logging.getLogger("logger")
 
@@ -30,6 +31,23 @@ def perform_analyses(aircraft, make_stability):
 
     plt.figure()
     make_loading_diagrams(aircraft)
+
+    #####
+    state = aircraft.states["cruise"]
+    Cl = aircraft.mtom * g / (0.5 * state.density * state.velocity ** 2 * aircraft.WingGroup.Wing.wing_area)
+    AR = aircraft.WingGroup.Wing.aspect_ratio
+    alpha_horizontal_tail = np.arctan((2 * Cl)/(np.pi * AR))
+    print(f"Alpha Horizontal Tail: {180 / np.pi * alpha_horizontal_tail} [deg]")
+    Clh = alpha_horizontal_tail * aircraft.FuselageGroup.Tail.HorizontalTail.C_l_alpha
+
+    AR = aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio
+    d = (aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg - aircraft.WingGroup.Wing.transformed_cg)[0]
+    # print(d)
+    c_avg = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
+
+    dCm = (1 - 4 / (AR + 2) * Clh * d) / c_avg
+    print(f"dCm: {dCm} [-]")
+    #####
 
     print(f"Aircraft CG: {aircraft.get_cg()}")
     print(f"{breakdown_summary}")
