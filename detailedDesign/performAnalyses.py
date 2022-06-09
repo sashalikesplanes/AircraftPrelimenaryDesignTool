@@ -33,11 +33,11 @@ def perform_analyses(aircraft, make_stability):
         plt.figure()
 
     ground_time = operations_and_logistics(aircraft)
-    competitive_price_ac, total_program_cost, program_roi, total_rc_per_ac, total_nrc = production_cost_estimation(aircraft)
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time)
+    competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc = production_cost_estimation(aircraft)
+    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     plt.figure()
-    make_loading_diagrams(aircraft)
+    # make_loading_diagrams(aircraft)
 
     #####
     state = aircraft.states["cruise"]

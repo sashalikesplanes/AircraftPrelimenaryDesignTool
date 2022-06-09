@@ -112,7 +112,7 @@ def production_cost_estimation(aircraft):
     empennage_mass = aircraft.FuselageGroup.Tail.total_mass
     fuselage_mass = aircraft.FuselageGroup.Fuselage.own_mass
     engine_mass = aircraft.WingGroup.Engines.own_mass
-    miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass
+    miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass + aircraft.FuselageGroup.Fuselage.fuel_tank_mass
 
     # Cost density [$/lb]
     wing_cost_density = 17731
@@ -132,7 +132,7 @@ def production_cost_estimation(aircraft):
     lst_2 = [wing_mass_usd, empennage_mass_usd, fuselage_mass_usd, engine_mass_usd, miscellaneous_mass_usd]
     lst_2.append(sum(lst_2))
     lst_3 = ['Wing', 'Empennage', 'Fuselage', 'Engines', 'Miscellaneous',
-             'aircraft total']
+             'Aircraft Total']
     columns = ['Engineering', 'ME', 'Tool Design', 'Tool Fab', 'Support',
                'Totals']
     nrc_per_kg = np.array([[item_3] + [(item_1 * item_2) / 1e6 for item_1 in lst_1] for
@@ -168,7 +168,12 @@ def production_cost_estimation(aircraft):
 
     total_rc_per_ac = wing_rec_mass_usd + empennage_rec_mass_usd + fuselage_rec_mass_usd + engine_rec_mass_usd + fuel_cell_rec_mass_usd + fuel_tank_rec_mass_usd + miscellaneous_rec_mass_usd + final_assembly_rec_mass_usd
 
-    total_program_cost = (total_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
+    # Learning curve
+    s = 0.909
+    marginal_cost = total_rc_per_ac * np.array(range(1, n_ac_sold+1)) ** (np.log(s) / np.log(2))
+    average_rc_per_ac = np.mean(marginal_cost)
+
+    total_program_cost = (average_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
 
     non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
@@ -203,14 +208,14 @@ def production_cost_estimation(aircraft):
     plt.savefig(Path("plots", "recurring_market_pie.png"))
 
     # Return on investment
-    price_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc)
+    price_ac = (average_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc)
     program_revenues = n_ac_sold * price_ac / 1e6 * (1 + subsidy_manufacturing)
     program_roi = (program_revenues - total_program_cost) / total_program_cost * 100
 
-    return competitive_price_ac, total_program_cost, program_roi, total_rc_per_ac / 1e6, total_nrc
+    return competitive_price_ac, total_program_cost, program_roi, average_rc_per_ac / 1e6, total_nrc
 
 
-def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
+def market_estimations(aircraft, average_price, total_nrc, ground_time):
     # Initialise
     state = aircraft.states['cruise']
     n_pax = aircraft.FuselageGroup.Fuselage.Cabin.passenger_count
@@ -251,7 +256,7 @@ def market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time):
     # DOC capex (engines, fuel cell, fuel tak, cont. factor incl)
     a = IR * (1 - f_rv * (1 / (1 + IR)) ** DP) / (1 - (1 / (1 + IR)) ** DP)
 
-    price_ac = (total_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * 1e6
+    price_ac = (average_price + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * 1e6
     DOC_cap = price_ac * (a + f_ins)
 
     DOC = DOC_maintenance + DOC_crew + DOC_fees + DOC_fuel + DOC_cap  # [$]
