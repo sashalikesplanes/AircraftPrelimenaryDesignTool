@@ -33,7 +33,7 @@ def perform_analyses(aircraft, make_stability):
         plt.figure()
 
     ground_time = operations_and_logistics(aircraft)
-    competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc = production_cost_estimation(aircraft)
+    competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     # plt.figure()
@@ -73,9 +73,10 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
     logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
     logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
+    logger.debug(f"Break-even aircraft number [-]: {breakeven_point}")
     logger.debug(f"Operational ROI [%]: {roi:.2f}")
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
-    # print(f"Aircraft turnaround time [h]: {ground_time:.2f}")
+    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     plt.show()
 
 
@@ -103,7 +104,7 @@ def print_summary(aircraft):
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
     logger.debug(f"V Tail Length: {aircraft.FuselageGroup.Tail.VerticalTail.tail_length} m")
     logger.debug(f"H Tail Length: {aircraft.FuselageGroup.Tail.HorizontalTail.tail_length} m")
-    logger.debug(f"V Tail area: {aircraft.FuselageGroup.Tail.VerticalTail.surface_area} m2") 
+    logger.debug(f"V Tail area: {aircraft.FuselageGroup.Tail.VerticalTail.surface_area} m2")
 
     cabin = aircraft.FuselageGroup.Fuselage.Cabin
     logger.debug(f"{ cabin.length = } {cabin.width = } {cabin.height = }")
@@ -117,5 +118,5 @@ def print_summary(aircraft):
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
 
 
-    logger.debug(f"{takeoff_speed = }")
+    # logger.debug(f"{takeoff_speed = }")
 

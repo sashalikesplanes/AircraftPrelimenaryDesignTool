@@ -10,7 +10,7 @@ class Miscellaneous(Component):
         self.FuselageGroup = FuselageGroup
         self.parent = self.FuselageGroup
 
-        self.W_boat = 1 
+        self.W_boat = 1
         self.W_AC = 1
         # self.W_ele = 1
         self.W_furn = 1
