@@ -179,7 +179,7 @@ def production_cost_estimation(aircraft):
 
     non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
-    plt.clf()
+    plt.figure()
     plt.pie(non_rec_costs_totals, labels=lst_3[:-1], autopct='%1.1f%%', colors=colors, startangle=90)
     plt.title("Non Recurring Cost Breakdown [%]")
     plt.axis('equal')

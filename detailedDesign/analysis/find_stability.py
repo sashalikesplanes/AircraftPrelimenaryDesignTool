@@ -6,7 +6,9 @@ from detailedDesign.carrotPlot import make_carrot_plot
 from detailedDesign.stability import get_xplot
 from detailedDesign.log import setup_custom_logger
 
+
 def find_stability(aircraft):
+    plt.figure()
     logger = setup_custom_logger('logger', True)
     df = make_carrot_plot(force_run=False)
     f_stab, f_cont = get_xplot(aircraft)
