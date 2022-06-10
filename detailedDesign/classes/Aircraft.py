@@ -63,7 +63,6 @@ class Aircraft(Component):
         C_L_H_alpha = self.FuselageGroup.Tail.HorizontalTail.C_L_alpha
         C_m_alpha_fus = self.FuselageGroup.Fuselage.C_m
         d_alphah_d_alpha = self.FuselageGroup.Tail.HorizontalTail.d_alphah_d_alpha
-        print(f'dada = {d_alphah_d_alpha}')
         mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
         C_L_term = self.WingGroup.Wing.C_L_alpha * (x_cg - x_acw) / mean_geometric_chord_wing
         C_L_H_term = 0.9 * horizontal_tail_ratio * C_L_H_alpha * d_alphah_d_alpha * (x_ach - x_cg) / mean_geometric_chord_wing
