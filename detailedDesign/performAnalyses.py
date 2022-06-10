@@ -16,16 +16,15 @@ logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft, make_stability):
-    self.logger.debug(f"{len(aircraft.FuselageGroup.Fuselage.Cabin.passengers) = }")
-    make_avl_file(aircraft)
-
-    plt.figure()
-    sketch_aircraft(aircraft)
-    print_summary(aircraft)
-    make_payload_range_diagram(aircraft)
-    get_power_plot(aircraft)
+    # make_avl_file(aircraft)
+    # 
+    # plt.figure()
+    # sketch_aircraft(aircraft)
+    # print_summary(aircraft)
+    # make_payload_range_diagram(aircraft)
+    # get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
-    print(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft)[1]} m/s\n"
+    logger.debug(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft)[1]} m/s\n"
           f"Max climb rate : {get_climb_rate(aircraft)[0]}m/s")
 
     plt.figure()
@@ -37,15 +36,15 @@ def perform_analyses(aircraft, make_stability):
     competitive_price_ac, total_program_cost, program_roi, total_rc_per_ac, total_nrc = production_cost_estimation(aircraft)
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, total_rc_per_ac, total_nrc, ground_time)
 
-    plt.figure()
-    make_loading_diagrams(aircraft)
+    # plt.figure()
+    # make_loading_diagrams(aircraft)
 
     #####
     state = aircraft.states["cruise"]
     Cl = aircraft.mtom * g / (0.5 * state.density * state.velocity ** 2 * aircraft.WingGroup.Wing.wing_area)
     AR = aircraft.WingGroup.Wing.aspect_ratio
     alpha_horizontal_tail = np.arctan((2 * Cl)/(np.pi * AR))
-    print(f"Alpha Horizontal Tail: {180 / np.pi * alpha_horizontal_tail} [deg]")
+    logger.debug(f"Alpha Horizontal Tail: {180 / np.pi * alpha_horizontal_tail} [deg]")
     Clh = alpha_horizontal_tail * aircraft.FuselageGroup.Tail.HorizontalTail.C_l_alpha
 
     AR = aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio
@@ -57,15 +56,25 @@ def perform_analyses(aircraft, make_stability):
     print(f"dCm: {dCm} [-]")
     #####
 
-    print(f"Aircraft CG empty: {aircraft.get_cg_empty()}")
-    print(f"Aircraft CG loaded: {aircraft.get_cg_loaded()}")
-    print(f"{breakdown_summary}")
-    print(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
-    print(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
-    print(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
-    print(f"Total Program Cost [M$]: {total_program_cost :.2f}")
-    print(f"Operational ROI [%]: {roi:.2f}")
-    print(f"Program ROI [%]: {program_roi:.2f}")
+    v_tail = aircraft.FuselageGroup.Tail.VerticalTail
+    h_tail = aircraft.FuselageGroup.Tail.HorizontalTail
+
+    logger.debug(f"###################################")
+    logger.debug(f"MTOM: {aircraft.mtom:.3E} OEM: {aircraft.oem:.3E} kg, kg")
+    logger.debug(f"Wing Area: {aircraft.WingGroup.Wing.wing_area:.2E} m2")
+    logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span:.3E} m")
+    logger.debug(f"V Tail Area: {v_tail.surface_area}")
+    logger.debug(f"H Tail Area: {h_tail.surface_area}")
+    logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
+    logger.debug(f"Aircraft CG empty: {aircraft.get_cg_empty()}")
+    logger.debug(f"Aircraft CG loaded: {aircraft.get_cg_loaded()}")
+    logger.debug(f"{breakdown_summary}")
+    logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
+    logger.debug(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
+    logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
+    logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
+    logger.debug(f"Operational ROI [%]: {roi:.2f}")
+    logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     # print(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     plt.show()
 
