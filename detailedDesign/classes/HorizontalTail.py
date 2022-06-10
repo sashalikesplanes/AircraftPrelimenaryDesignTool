@@ -59,17 +59,19 @@ class HorizontalTail(Component):
         self.length = self.root_chord
 
         self.d_alphah_d_alpha = 1 - self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.d_epsilon_d_alpha
+        
 
     @property
     def C_L_alpha(self):
         aspect_ratio = self.aspect_ratio
-        V_C = self.WingGroup.Aircraft.states['cruise'].velocity
-        speed_of_sound = self.WingGroup.Aircraft.states['cruise'].speed_of_sound
+        V_C = self.Tail.FuselageGroup.Aircraft.states['cruise'].velocity
+        speed_of_sound = self.Tail.FuselageGroup.Aircraft.states['cruise'].speed_of_sound
         beta = np.sqrt((1 - (V_C / speed_of_sound) ** 2))
+        semi_chord_sweep = np.arctan(np.tan(self.quarter_chord_sweep - (4 / aspect_ratio) * ((0.5-0.25)* ((1 - self.taper)/(1 + self.taper)))))  # [rad]
         k = 1
         C_L_alpha = (2 * np.pi * aspect_ratio) / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
-                                                            * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
-        return np.deg2rad(self.C_L_alpha)
+                    * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
+        return np.deg2rad(C_L_alpha)
 
     def get_C_L(self):
         x_cg = self.Tail.FuselageGroup.Aircraft.cg_loaded_half_fuel[0]
@@ -85,7 +87,7 @@ class HorizontalTail(Component):
         C_L_term = C_L * (x_cg - x_ac_w) / mean_geometric_chord_wing
         installation_angle_wing = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.installation_angle
         C_m_w = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.get_C_m(installation_angle_wing)
-        C_m_fus = self.Tail.FuselageGroup.Fuselage.C_m
+        C_m_fus = 0
         dynamic_pressure = self.Tail.FuselageGroup.Aircraft.states["cruise"].dynamic_pressure
         thrust_term = thrust * z / (dynamic_pressure * wing_area * mean_geometric_chord_wing)
         return  C_L_H_term * (C_L_term + C_m_w + C_m_fus + thrust_term)
@@ -115,7 +117,6 @@ class HorizontalTail(Component):
 
         cruise_C_L = self.get_C_L()
         self.installation_angle = self.get_installation_angle(cruise_C_L)
-        print(self.installation_angle)
 
         # TODO: check MDN
         self.quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
