@@ -6,6 +6,8 @@ from pathlib import Path
 from mpl_toolkits.mplot3d import Axes3D
 
 from misc.ISA import getPressure
+from detailedDesign.calculate_stress import calculate_stress
+from detailedDesign.section_design import plate_crippling
 
 
 cos = np.cos
@@ -29,7 +31,7 @@ def find_bending_shear(aircraft, force_run=False):
     a = aircraft.FuselageGroup.Fuselage.outer_width
 
     # Start 3D fuselage stress plot
-    df_location = Path('data', 'dataframes', 'fuselage_stresses.dat')
+    df_location = Path('data', 'dataframes', 'fuselage_stresses_t_5.dat')
 
     # force_run = True
     try:
@@ -37,7 +39,8 @@ def find_bending_shear(aircraft, force_run=False):
             raise FileNotFoundError
         df = pd.read_csv(df_location)
     except FileNotFoundError:
-        for t in np.arange(0.001, 0.010, 0.001):
+        # for t in np.arange(0.001, 0.010, 0.001):
+        for t in [0.0045]:
             # t = 0.005
             header = ["x", "y", "z", "stress_1", "stress_2"]
             data_x = []
@@ -61,8 +64,22 @@ def find_bending_shear(aircraft, force_run=False):
             df_location2 = Path('data', 'dataframes', f'fuselage_stresses_t_{t_mm}.dat')
             df.to_csv(df_location2)
 
-    print(df)
+    df["stress_max"] = df[["stress_1", "stress_2"]].abs().max(axis=1)
 
+    max_abs_shear = max(df["stress_max"])
+    shear_cut1 = max_abs_shear / 3
+    shear_cut2 = max_abs_shear * 2 / 3
+
+    conditions = [
+        (df["stress_max"] <= shear_cut1),
+        (df["stress_max"] > shear_cut1) & (df["stress_max"] <= shear_cut2),
+        (df["stress_max"] > shear_cut2)
+    ]
+    values = ["heavy", "medium", "light"]
+    df['section_type'] = np.select(conditions, values)
+    df.to_csv(df_location)
+
+    print(df)
     # sigma_1 = np.array([x[0] for x in data_stress]) * 10 ** -6  # [MPa]
     # sigma_2 = np.array([x[1] for x in data_stress]) * 10 ** -6  # [MPa]
     #
@@ -81,46 +98,12 @@ def find_bending_shear(aircraft, force_run=False):
     ax = fig.gca(projection='3d')
 
     ax.set_xlim3d(0, 120)
-    ax.set_ylim3d(-60, 60)
-    ax.set_zlim3d(-60, 60)
-
-    ax.scatter(df["x"], df["y"], df["z"], c=df["stress_1"], lw=0, s=20)
+    ax.set_ylim3d(-10, 10)
+    ax.set_zlim3d(-10, 10)
+    print(f"Maximum stress: {10 ** -6 * max(df['stress_1'])} [MPa], Minimum stress: {10 ** -6 * min(df['stress_2'])} [MPa]")
+    ax.scatter(df["x"], df["y"], df["z"], c=df["stress_max"], lw=0, s=20)
     plt.show()
 
+    plate_crippling(0.0045, aircraft)
 
-def calculate_stress(x, y, z, t, aircraft):
-    # Base the radius on the y and z coordinates of the point
-    r = (y ** 2 + z ** 2) ** 0.5
 
-    S_y = -aircraft.FuselageGroup.Tail.VerticalTail.F_w
-    S_z = aircraft.FuselageGroup.Fuselage.longitudinal_shear[x]
-    M_z = (aircraft.FuselageGroup.Fuselage.Cabin.length - aircraft.FuselageGroup.Aircraft.get_cg()[0]) * S_y
-    M_y = aircraft.FuselageGroup.Fuselage.longitudinal_moment[x]
-    T = S_y * (aircraft.FuselageGroup.Tail.VerticalTail.span / 2)
-
-    # first moment of area
-    a = aircraft.FuselageGroup.Fuselage.outer_height
-    b = aircraft.FuselageGroup.Fuselage.outer_width
-
-    Q_z = 4 * b ** 2 * a / 3 - (4 * (b - 2 * t) ** 2 * (a - 2 * t) / 3)
-    Q_y = 4 * a ** 2 * b / 3 - (4 * (a - 2 * t) ** 2 * (b - 2 * t) / 3)
-
-    I_yy = np.pi / 64 * (a ** 3 * b - (a - 2 * t) ** 3 * (b - 2 * t))
-    I_zz = np.pi / 64 * (b ** 3 * a - (b - 2 * t) ** 3 * (a - 2 * t))
-    delta_P = np.abs(getPressure(aircraft.FuselageGroup.Aircraft.states['cruise'].altitude) - getPressure(
-        aircraft.FuselageGroup.Fuselage.Cabin.cabin_pressure_altitude))
-    J_0 = I_yy + I_zz
-
-    # Calculate stresses
-    sigma_x = M_z * y / I_zz + M_y * z / I_yy + delta_P * r / t
-    sigma_y = 2 * r * delta_P / t
-
-    shear = -(S_y * Q_z) / (I_zz * t) - (S_z * Q_y) / (I_yy * t) + T * r / J_0
-
-    tau_max = (((sigma_x - sigma_y) / 2)**2 + shear ** 2) ** 0.5
-
-    sigma_1 = (sigma_x + sigma_y) / 2 + tau_max
-    sigma_2 = (sigma_x + sigma_y) / 2 - tau_max
-    result = (sigma_x, sigma_y)
-    # print(result, shear)
-    return result
