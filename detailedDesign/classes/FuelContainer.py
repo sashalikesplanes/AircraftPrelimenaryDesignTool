@@ -69,7 +69,7 @@ class FuelContainer(Component):
 
         # Tank thickness sizing
         self.inner_diameter = np.sqrt(
-            4 * self.Fuselage.ForwardFuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2
+            4 * self.Fuselage.ForwardFuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2 - 2 * self.total_tank_thickness
         # self.inner_diameter = 10 #manual change for non-integral tank
         self.radius_tank = self.inner_diameter / 2  # for integral tank
         self.radius_tank = self.radius_tank  # change here if non-integral tank
