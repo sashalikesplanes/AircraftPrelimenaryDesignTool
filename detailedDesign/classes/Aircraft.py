@@ -4,6 +4,7 @@ from detailedDesign.classes.WingGroup import WingGroup
 from detailedDesign.board_passengers import board_passengers, unboard_passengers_fuel, board_passengers_half_fuel
 import misc.constants as const
 from detailedDesign.get_drag import get_drag
+import numpy as np
 
 
 class Aircraft(Component):
