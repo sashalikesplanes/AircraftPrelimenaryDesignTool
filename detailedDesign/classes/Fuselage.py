@@ -102,8 +102,7 @@ class Fuselage(Component):
         b_inner = self.inner_width / 2
         V_p = m3_to_ft3(np.pi * a_inner * b_inner * self.Cabin.length)   # [ft3]
 
-        Delta_P = pa_to_psi(getPressure(
-            self.Cabin.cabin_pressure_altitude) - state.pressure)   # [psi]
+        Delta_P = 0 # psi
         if Delta_P < 0:
             Delta_P = 0
 

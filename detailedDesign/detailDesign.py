@@ -28,5 +28,5 @@ def detail_design(debug=False, make_stability=False):
     perform_analyses(aircraft, make_stability)
 
     # Stage 3: Sort of detailed design
-    design_structure(aircraft)
+    # design_structure(aircraft)
 
