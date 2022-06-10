@@ -23,6 +23,8 @@ class Engines(Component):
         self.own_mass_flow = 0
         self.mass_motor_inverter = 0
         self.thrust_per_fan = None
+        self.own_tip_speed = 0
+        self.own_length_fan = 0
         self._freeze()
 
     @property
@@ -54,7 +56,7 @@ class Engines(Component):
         # Constants
         P_motor = self.P_motor  # power of the electric motor [W]
         specific_mass_motor_inverter = self.specific_mass_motor_inverter  # [W/kg] for the 2MW motor
-        omega = self.rotational_speed_emotor
+        omega = self.rotational_speed_emotor * (2 * np.pi)/60
         pr = self.pressure_ratio
         flow_coef = self.flow_coef
         eff_mot_inv = self.eff_mot_inv
@@ -110,6 +112,7 @@ class Engines(Component):
         r = (m_dot / (flow_coef * rho * np.pi * omega)) ** (1 / 3)
         D_fan = 2 * r
         min_spacing = 0.05 * D_fan
+        tip_speed = omega * r
 
         # get the weight of ducted fan
         mass_fan = 389.54 * D_fan ** 2 + 55.431 * D_fan - 2.064  # from excel regression
@@ -177,6 +180,8 @@ class Engines(Component):
         self.own_fans_on_fuselage = n_fans_fuselage
         self.own_amount_motor = n_fans
         self.own_mass_flow = m_dot
+        self.own_tip_speed = tip_speed
+        self.own_length_fan = length_fan
         self.pos = np.array([0., 0., 0.])
 
     def cg_self(self):

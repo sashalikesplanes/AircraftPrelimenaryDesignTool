@@ -28,6 +28,8 @@ def run_test():
     print('amount of fans wing', Engines.own_fans_on_wing)
     print('amount of fans fuselage', Engines.own_fans_on_fuselage)
     print("diameter fan", Engines.own_diameter_fan)
+    print("tip speed", Engines.own_tip_speed)
+    print("length fan", Engines.own_length_fan)
 
 if __name__ == "__main__":
     run_test()
