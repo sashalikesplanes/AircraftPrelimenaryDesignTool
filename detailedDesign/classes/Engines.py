@@ -22,6 +22,7 @@ class Engines(Component):
         self.own_amount_motor = 0
         self.own_mass_flow = 0
         self.mass_motor_inverter = 0
+        self.thrust_per_fan = None
         self._freeze()
 
     @property
@@ -32,6 +33,15 @@ class Engines(Component):
     @property
     def amount_motor(self):
         return self.own_amount_fans
+
+    @property
+    def engines_inoperative_moment(self):
+        num_engines_inop = np.ceil(self.own_amount_fans - self.own_amount_fans / self.engine_failure_contingency)
+        inop_engines_thrust = num_engines_inop * self.thrust_per_fan
+        # TODO FINISH!
+        moment_arm = (self.own_amount_fans / 2 - num_engines_inop / 2) * (self.own_spacing + self.own_diameter_fan)
+        return inop_engines_thrust * moment_arm
+
 
     def size_self(self):
         Span = self.WingGroup.Wing.span
@@ -92,6 +102,7 @@ class Engines(Component):
 
         n_fans = np.ceil(P_aircraft / (P_motor * eff_mot_inv * (propulsive_eff + increase_BLI_eff)))
         Tf = Tt / n_fans
+        self.thrust_per_fan = Tf
         Pt0 = Ps + 0.5 * rho * V0 ** 2
         Pt1 = Pt0 * pr
         V1 = np.sqrt(2 * (Pt1 - Ps) / rho)

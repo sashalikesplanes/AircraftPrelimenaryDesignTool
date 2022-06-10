@@ -20,10 +20,10 @@ def perform_analyses(aircraft, make_stability):
     # 
     # plt.figure()
     # sketch_aircraft(aircraft)
-    # print_summary(aircraft)
+    print_summary(aircraft)
     # make_payload_range_diagram(aircraft)
     get_power_plot(aircraft)
-    # make_potato_plot(aircraft, True)
+    make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
     logger.debug(f'climb angle the plane can fly at cruise: {get_climb_angle(aircraft)} degrees')
@@ -38,6 +38,15 @@ def perform_analyses(aircraft, make_stability):
     competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
+    logger.debug(f"{breakdown_summary}")
+    logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
+    logger.debug(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
+    logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
+    logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
+    logger.debug(f"Break-even aircraft number [-]: {breakeven_point}")
+    logger.debug(f"Operational ROI [%]: {roi:.2f}")
+    logger.debug(f"Program ROI [%]: {program_roi:.2f}")
+    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
     # make_loading_diagrams(aircraft)
 
@@ -58,33 +67,26 @@ def perform_analyses(aircraft, make_stability):
     print(f"dCm: {dCm} [-]")
     #####
 
+
+    plt.show()
+
+
+def print_summary(aircraft):
+
     v_tail = aircraft.FuselageGroup.Tail.VerticalTail
     h_tail = aircraft.FuselageGroup.Tail.HorizontalTail
 
     logger.debug(f"###################################")
-    logger.debug(f"MTOM: {aircraft.mtom:.3E} OEM: {aircraft.oem:.3E} kg, kg")
+    logger.debug(
+        f"MTOM = {aircraft.mtom:.4E} kg, OEM = {aircraft.oem:.4E} kg, Fuel Mass = {aircraft.fuel_mass:.4E}")
     logger.debug(f"Wing Area: {aircraft.WingGroup.Wing.wing_area:.2E} m2")
     logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span:.3E} m")
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
-    logger.debug(f"{breakdown_summary}")
-    logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
-    logger.debug(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
-    logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
-    logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
-    logger.debug(f"Break-even aircraft number [-]: {breakeven_point}")
-    logger.debug(f"Operational ROI [%]: {roi:.2f}")
-    logger.debug(f"Program ROI [%]: {program_roi:.2f}")
-    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
-    plt.show()
-
-
-def print_summary(aircraft):
-    logger.debug(
-        f"MTOM = {aircraft.mtom:.4E} kg, OEM = {aircraft.oem:.4E} kg, Fuel Mass = {aircraft.fuel_mass:.4E}")
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
+    logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
 
     fuselage = aircraft.FuselageGroup.Fuselage
     logger.debug(f"Ass length: {fuselage.AssFuelContainer.length} m")
