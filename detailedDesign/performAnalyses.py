@@ -17,7 +17,7 @@ logger = logging.getLogger("logger")
 
 def perform_analyses(aircraft, make_stability):
     # make_avl_file(aircraft)
-    # 
+    #
     # plt.figure()
     # sketch_aircraft(aircraft)
     print_summary(aircraft)
@@ -26,10 +26,9 @@ def perform_analyses(aircraft, make_stability):
     # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
-    logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= 200)} degrees')
+    logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
-    #get_theta_plot(aircraft)
-    #get_heigt_velocity_plot(aircraft)
+    #get_ROC_V_plot(aircraft)
     # plt.figure()
     if make_stability:
         find_stability(aircraft)
