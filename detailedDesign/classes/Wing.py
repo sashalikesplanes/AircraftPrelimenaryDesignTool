@@ -2,6 +2,7 @@ import numpy as np
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
 from scipy.optimize import fsolve
+import misc.constants as const
 
 
 class Wing(Component):
@@ -25,6 +26,7 @@ class Wing(Component):
         self.oswald = 0
         self.optimal_ARe = 0
         self.length_ailerons = 0
+        self.installation_angle =0
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
@@ -108,6 +110,17 @@ class Wing(Component):
     def get_oswald(self):
         return 1.78 * (1 - 0.045 * self.aspect_ratio ** 0.68) - 0.64
 
+    def get_installation_angle(self):
+        W_average_cruise = self.WingGroup.Aircraft.mtom * const.g
+        - self.WingGroup.Aircraft.fuel_mass * 0.5 * const.g # [N]
+        V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
+        dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
+            * V_C * V_C   # [Pa]
+        C_L_average_cruise = W_average_cruise / (dynamic_pressure * self.wing_area)
+        installation_angle = self.get_alpha(C_L_average_cruise)
+        return installation_angle
+
+
     def size_self(self): # parameters unit tested manually: equations are correct
         self.wing_area = self.WingGroup.Aircraft.reference_area
 
@@ -124,6 +137,8 @@ class Wing(Component):
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
         self.oswald = self.get_oswald()
+
+        self.installation_angle = self.get_installation_angle()
 
         self.logger.debug(f"Root Chord: {self.root_chord}")
         self.logger.debug(f"Tip Chord: {self.tip_chord}")
