@@ -117,6 +117,7 @@ def print_summary(aircraft):
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
     logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
+    logger.debug(f"Neutral point: {aircraft.neutral_point}")
 
     takeoff_speed = np.sqrt(aircraft.mtom * 9.81 / (0.5 * 1.225 * aircraft.reference_area * aircraft.C_L_TO))
 

@@ -9,7 +9,7 @@ Aircraft:
   C_L_max: 1.276 # from DATCOM method2
   C_L_TO: 1.5
   count_pilot: 3
-  x_lemac: 60 # TODO optimize for stability
+  x_lemac: 40 # TODO optimize for stability
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
@@ -58,7 +58,7 @@ Aircraft:
         test_prop: 69
     Fuselage:
       hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
-      tail_length_factor: 5 # number to make the tail longer , relating to height
+      tail_length_factor: 3.0 # number to make the tail longer , relating to height
       inner_width: 10  # [m]
       inner_height: 12  # [m]
       inner_ass_diameter: 10 # [m] represents the smaller part at the back
@@ -103,6 +103,7 @@ Aircraft:
       C_L_min: -0.61 # Bs number
       defl_aileron: 20 #[degrees], A380
       C_L_delta_a: 0.05524 #[1/deg], random
+      d_epsilon_d_alpha: 0 # rad
 
       HLDs:
         test_prop: 1

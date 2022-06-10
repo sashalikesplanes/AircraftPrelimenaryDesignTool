@@ -63,13 +63,14 @@ class HorizontalTail(Component):
     @property
     def C_L_alpha(self):
         aspect_ratio = self.aspect_ratio
-        V_C = self.WingGroup.Aircraft.states['cruise'].velocity
-        speed_of_sound = self.WingGroup.Aircraft.states['cruise'].speed_of_sound
+        V_C = self.Tail.FuselageGroup.Aircraft.states['cruise'].velocity
+        speed_of_sound = self.Tail.FuselageGroup.Aircraft.states['cruise'].speed_of_sound
         beta = np.sqrt((1 - (V_C / speed_of_sound) ** 2))
+        semi_chord_sweep = np.arctan(np.tan(self.quarter_chord_sweep - (4 / aspect_ratio) * ((0.5-0.25)* ((1 - self.taper)/(1 + self.taper)))))  # [rad]
         k = 1
         C_L_alpha = (2 * np.pi * aspect_ratio) / (2 + np.sqrt(((aspect_ratio * beta) / k) ** 2
-                                                            * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
-        return np.deg2rad(self.C_L_alpha)
+                    * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
+        return np.deg2rad(C_L_alpha)
 
     def get_C_L(self):
         x_cg = self.Tail.FuselageGroup.Aircraft.cg_loaded_half_fuel[0]
