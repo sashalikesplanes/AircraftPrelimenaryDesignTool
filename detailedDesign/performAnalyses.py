@@ -23,7 +23,7 @@ def perform_analyses(aircraft, make_stability):
     print_summary(aircraft)
     # make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
-    # make_potato_plot(aircraft, True)
+    make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
@@ -120,6 +120,9 @@ def print_summary(aircraft):
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
     logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
     logger.debug(f"Neutral point: {aircraft.neutral_point}")
+    logger.debug(f"C_g position: {aircraft.cg_loaded_half_fuel}")
+    logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
+
 
     takeoff_speed = np.sqrt(aircraft.mtom * 9.81 / (0.5 * 1.225 * aircraft.reference_area * aircraft.C_L_TO))
 
