@@ -110,11 +110,11 @@ Aircraft:
 
     Engines:
       P_motor: 4000000 # power of the electric motor [W]
-      specific_mass_motor_inverter: 10000 # [W/kg] for the 2MW motor
+      specific_mass_motor_inverter: 9500 # [W/kg] for the 2MW motor
       pressure_ratio : 1.31           # pressure ratio Evert paper
       flow_coef : 0.5     # whittle fan
-      rotational_speed_emotor :  261.7994  # rpm of the emotor from 2500
-      eff_mot_inv : 0.95
+      rotational_speed_emotor :  4500  # rpm of the emotor from 2500
+      eff_mot_inv : 0.96
       propulsive_eff : 0.80
       increase_BLI_eff : 0.1
       pylon_mass_contingency : 1.15    #integration and cable contingency
