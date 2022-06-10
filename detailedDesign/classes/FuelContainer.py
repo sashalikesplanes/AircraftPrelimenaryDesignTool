@@ -104,7 +104,6 @@ class FuelContainer(Component):
         y_cg = 0
         z_cg = 0
         self.own_cg = np.array([x_cg, y_cg, z_cg])
-        self.logger.debug(f"{self.own_cg = }")
 
     @property
     def total_length(self):

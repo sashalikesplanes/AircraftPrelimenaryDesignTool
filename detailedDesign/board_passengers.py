@@ -2,6 +2,21 @@ import numpy as np
 
 from detailedDesign.classes.Passenger import Passenger
 
+def unboard_passengers_fuel(aircraft):
+    aircraft.FuselageGroup.Fuselage.Cabin.passengers = []
+    fuselage.AftFuelContainer.current_fuel_mass = 0
+    fuselage.AssFuelContainer.current_fuel_mass = 0
+    fuselage.ForwardFuelContainer.current_fuel_mass = 0
+
+    return aircraft
+
+def board_passengers_half_fuel(aircraft):
+    board_passengers(aircraft)
+    fuselage.AftFuelContainer.current_fuel_mass = fuselage.AftFuelContainer.mass_H2 / 2
+    fuselage.AssFuelContainer.current_fuel_mass = fuselage.AssFuelContainer.mass_H2 / 2
+    fuselage.ForwardFuelContainer.current_fuel_mass = fuselage.ForwardFuelContainer.mass_H2 / 2
+
+
 
 def board_passengers(aircraft):
     aircraft.get_cged()

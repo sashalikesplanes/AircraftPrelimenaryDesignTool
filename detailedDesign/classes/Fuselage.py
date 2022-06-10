@@ -35,15 +35,16 @@ class Fuselage(Component):
         self._freeze()
 
     @property
+    def C_m(self):
+        wing = self.FuselageGroup.Aircraft.WingGroup.Wing
+        return self.outer_width ** 2 * self.length / (wing.mean_geometric_chord * wing.surface_area)
+
+    @property
     def length(self):
         # TODO add nose cone etc
         length = self.Cabin.length
-        self.logger.debug(f"Volume of Fuel: {self.ForwardFuelContainer.volume_tank + self.AftFuelContainer.volume_tank + self.AssFuelContainer.volume_tank} m3")
-        self.logger.debug(f"Cabin length: {self.Cabin.length}")
-        self.logger.debug(f"Fuel Compartment Length: {self.ForwardFuelContainer.length + self.AftFuelContainer.length}")
-        self.logger.debug(f"Wing box length: {self.FuselageGroup.Aircraft.WingGroup.Wing.root_chord }")
 
-        self.tail_length = 1.6 * self.outer_height   # from ADSEE typical for airliners
+        self.tail_length = self.tail_length_factor * self.outer_height   # from ADSEE typical for airliners
 
         return length + self.cockpit_length + self.AssFuelContainer.length + self.tail_length
 

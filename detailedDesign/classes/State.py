@@ -10,6 +10,9 @@ class State:
         self.source = openData(Path('data', 'states', f'{name}.yaml'))
 
     @property
+    def dynamic_pressure(self):
+        return 0.5 * self.density * self.velocity ** 2
+    @property
     def velocity(self):
         return self.source["velocity"]
 

@@ -13,10 +13,10 @@ class AssFuelContainer(FuelContainer):
         self.mass_H2 = self.Fuselage.FuselageGroup.Power.mass_H2 - self.Fuselage.ForwardFuelContainer.mass_H2 - self.Fuselage.AftFuelContainer.mass_H2
         if self.mass_H2 < 0: 
             self.mass_H2 = 0
-        self.logger.debug(f"{self.Fuselage.FuselageGroup.Power.mass_H2 =}")
-        self.logger.debug(f"{self.Fuselage.ForwardFuelContainer.mass_H2 = }")
-        self.logger.debug(f"{self.Fuselage.AftFuelContainer.mass_H2 = }")
-        self.logger.debug(f"{self.mass_H2 = }")
+        # self.logger.debug(f"{self.Fuselage.FuselageGroup.Power.mass_H2 =}")
+        # self.logger.debug(f"{self.Fuselage.ForwardFuelContainer.mass_H2 = }")
+        # self.logger.debug(f"{self.Fuselage.AftFuelContainer.mass_H2 = }")
+        # self.logger.debug(f"{self.mass_H2 = }")
         self.volume_tank = self.mass_H2 / self.density_H2 * (1 + self.Vi)
 
         self.radius_tank = self.Fuselage.inner_ass_diameter / 2
