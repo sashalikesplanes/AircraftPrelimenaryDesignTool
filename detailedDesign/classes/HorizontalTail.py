@@ -59,6 +59,7 @@ class HorizontalTail(Component):
         self.length = self.root_chord
 
         self.d_alphah_d_alpha = 1 - self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.d_epsilon_d_alpha
+        
 
     @property
     def C_L_alpha(self):
@@ -116,7 +117,6 @@ class HorizontalTail(Component):
 
         cruise_C_L = self.get_C_L()
         self.installation_angle = self.get_installation_angle(cruise_C_L)
-        print(self.installation_angle)
 
         # TODO: check MDN
         self.quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)
