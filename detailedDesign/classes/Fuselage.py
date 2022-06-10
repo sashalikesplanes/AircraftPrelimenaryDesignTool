@@ -36,8 +36,9 @@ class Fuselage(Component):
 
     @property
     def C_m(self):
+        K_f = 0.03
         wing = self.FuselageGroup.Aircraft.WingGroup.Wing
-        return self.outer_width ** 2 * self.length / (wing.mean_geometric_chord * wing.wing_area)
+        return K_f * self.outer_width ** 2 * self.length / (wing.mean_geometric_chord * wing.wing_area)
 
     @property
     def length(self):
