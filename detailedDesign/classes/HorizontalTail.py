@@ -65,6 +65,10 @@ class HorizontalTail(Component):
                                                             * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
         return np.deg2rad(self.C_L_alpha)
 
+    def get_C_L(self):
+        pass
+
+
 
     def size_self_mass(self):
         # Sizing mass

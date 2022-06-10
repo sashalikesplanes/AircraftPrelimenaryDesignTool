@@ -105,6 +105,8 @@ class Wing(Component):
         C_m_alpha = np.hstack((C_m_alpha_const, C_m_alpha_lin))
         return C_m_alpha
 
+    def get_C_m(self, alpha):
+        return np.interp(alpha, np.linspace(-10, 15, 250), self.get_C_m_alpha())
 
 
     def get_oswald(self):
