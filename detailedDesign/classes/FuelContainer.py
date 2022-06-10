@@ -35,7 +35,7 @@ class FuelContainer(Component):
         self.SF = 1.5
 
         self.thickness_insulation = None
-        self.total_tank_thickness = None
+        self.total_tank_thickness = 0.1 
         self.empty_space_thickness = 0.1  # [m] - the space between the fuselage and the tank, must be more than insulation
 
         self._freeze()
@@ -69,7 +69,7 @@ class FuelContainer(Component):
 
         # Tank thickness sizing
         self.inner_diameter = np.sqrt(
-            4 * self.Fuselage.ForwardFuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2
+            4 * self.Fuselage.ForwardFuelContainer.outer_area / np.pi) - self.empty_space_thickness * 2 - 2 * self.total_tank_thickness
         # self.inner_diameter = 10 #manual change for non-integral tank
         self.radius_tank = self.inner_diameter / 2  # for integral tank
         self.radius_tank = self.radius_tank  # change here if non-integral tank

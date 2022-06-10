@@ -71,7 +71,7 @@ class Aircraft(Component):
     @property
     def neutral_point(self):
         C_m_alpha = self.C_m_alpha
-        C_L_alpha = self.WingGroup.Wing.C_L_alpha
+        C_L_alpha = np.rad2deg(self.WingGroup.Wing.C_L_alpha)
         mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
         x_cg = self.cg_loaded_half_fuel[0] / mean_geometric_chord_wing
         return  (- C_m_alpha / C_L_alpha + x_cg) * mean_geometric_chord_wing
@@ -120,7 +120,7 @@ class Aircraft(Component):
 
     def get_cg(self):
         """Calculate the cg of this component and all its sub-components"""
-        self.get_cged()
+        # self.get_cged()
         total_mass_factor = self.own_mass
         cg_pos = self.own_cg * self.own_mass
 
