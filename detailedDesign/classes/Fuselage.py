@@ -35,6 +35,11 @@ class Fuselage(Component):
         self._freeze()
 
     @property
+    def C_m(self):
+        wing = self.FuselageGroup.Aircraft.WingGroup.Wing
+        return self.outer_width ** 2 * self.length / (wing.mean_geometric_chord * wing.surface_area)
+
+    @property
     def length(self):
         # TODO add nose cone etc
         length = self.Cabin.length

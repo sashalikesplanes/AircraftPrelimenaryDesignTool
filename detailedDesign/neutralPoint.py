@@ -9,7 +9,6 @@ def get_neutral_point(aircraft):
 
     # Pitching moment coefficient due to fuselage
     fus = aircraft.FuselageGroup.Fuselage
-    C_m_fuselage = fus.outer_width ** 2 * fus.length / (wing.mean_geometric_chord * wing.surface_area)
 
 
 

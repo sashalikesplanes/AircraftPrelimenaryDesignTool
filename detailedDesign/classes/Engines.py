@@ -25,6 +25,11 @@ class Engines(Component):
         self._freeze()
 
     @property
+    def z_offset_from_cg(self):
+        #TODO
+        return "FUCK YOU MAX"
+
+    @property
     def amount_motor(self):
         return self.own_amount_fans
 
