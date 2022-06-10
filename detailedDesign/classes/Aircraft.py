@@ -60,18 +60,23 @@ class Aircraft(Component):
         x_acw = self.FuselageGroup.Tail.HorizontalTail.x_aerodynamic_center
         x_ach = self.WingGroup.Wing.x_aerodynamic_center
         horizontal_tail_ratio = self.FuselageGroup.Tail.HorizontalTail.surface_area / self.WingGroup.Wing.wing_area
-        C_L_H_alpha = self.FuselageGroup.Tail.HorizontalTail.C_L_alpha
+        C_L_H_alpha = np.rad2deg(self.FuselageGroup.Tail.HorizontalTail.C_L_alpha)
+        print('',end="\n\n\n\n\n\n")
+        print(C_L_H_alpha)
         C_m_alpha_fus = self.FuselageGroup.Fuselage.C_m
+        print(C_m_alpha_fus)
         d_alphah_d_alpha = self.FuselageGroup.Tail.HorizontalTail.d_alphah_d_alpha
         mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
-        C_L_term = self.WingGroup.Wing.C_L_alpha * (x_cg - x_acw) / mean_geometric_chord_wing
+        C_L_term = np.rad2deg(self.WingGroup.Wing.C_L_alpha) * (x_cg - x_acw) / mean_geometric_chord_wing
+        print(np.rad2deg(self.WingGroup.Wing.C_L_alpha))
+        print('',end="\n\n\n\n\n\n")
         C_L_H_term = 0.9 * horizontal_tail_ratio * C_L_H_alpha * d_alphah_d_alpha * (x_ach - x_cg) / mean_geometric_chord_wing
         return C_L_term + C_m_alpha_fus - C_L_H_term
 
     @property
     def neutral_point(self):
         C_m_alpha = self.C_m_alpha
-        C_L_alpha = self.WingGroup.Wing.C_L_alpha
+        C_L_alpha = np.rad2deg(self.WingGroup.Wing.C_L_alpha)
         mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
         x_cg = self.cg_loaded_half_fuel[0] / mean_geometric_chord_wing
         return  (- C_m_alpha / C_L_alpha + x_cg) * mean_geometric_chord_wing
