@@ -19,6 +19,7 @@ class HorizontalTail(Component):
         self.quarter_chord_sweep = None  # [rad]
         self.length = None
         self.x_aerodynamic_center = None
+        self.installation_angle = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -67,6 +68,33 @@ class HorizontalTail(Component):
                                                             * (1 + (np.tan(semi_chord_sweep) ** 2) / (beta ** 2)) + 4))
         return np.deg2rad(self.C_L_alpha)
 
+    def get_C_L(self):
+        x_cg = self.Tail.FuselageGroup.Aircraft.cg_loaded_half_fuel[0]
+        x_ac_h = self.x_aerodynamic_center 
+        x_ac_w = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.x_aerodynamic_center
+        z = self.Tail.FuselageGroup.Aircraft.WingGroup.Engines.z_offset_from_cg
+        thrust = self.Tail.FuselageGroup.Aircraft.cruise_drag
+        wing_area = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.wing_area 
+        mean_geometric_chord_wing = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord
+        C_L_H_term = - 1 / (0.9 * self.surface_area /\
+                    wing_area * (x_ac_h - x_cg))
+        C_L = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.get_C_L(self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.installation_angle)
+        C_L_term = C_L * (x_cg - x_ac_w) / mean_geometric_chord_wing
+        installation_angle_wing = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.installation_angle
+        C_m_w = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.get_C_m(installation_angle_wing)
+        C_m_fus = self.Tail.FuselageGroup.Fuselage.C_m
+        dynamic_pressure = self.Tail.FuselageGroup.Aircraft.states["cruise"].dynamic_pressure
+        thrust_term = thrust * z / (dynamic_pressure * wing_area * mean_geometric_chord_wing)
+        return  C_L_H_term * (C_L_term + C_m_w + C_m_fus + thrust_term)
+
+    def get_installation_angle(self, C_L):
+        angle = C_L / (2 * np.pi)
+        return np.rad2deg(angle)
+
+        
+
+
+
 
     def size_self_mass(self):
         # Sizing mass
@@ -81,6 +109,10 @@ class HorizontalTail(Component):
 
         S_HT = m2_to_ft2(self.surface_area)  # [ft2]
         thickness_to_chord = WingGroup.Wing.thickness_chord_ratio   # [-]
+
+        cruise_C_L = self.get_C_L()
+        self.installation_angle = self.get_installation_angle(cruise_C_L)
+        print(self.installation_angle)
 
         # TODO: check MDN
         self.quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4/self.aspect_ratio * ((0.25 - 0.75)*((1 - self.taper)

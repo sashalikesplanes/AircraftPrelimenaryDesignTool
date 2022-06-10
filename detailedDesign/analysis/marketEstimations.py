@@ -38,7 +38,7 @@ price_per_ticket = 600  # Average price today
 price_per_cargo = 3  # [$/kg]
 subsidy_manufacturing = 0.2  # expected subsidy for green aviation
 subsidy_operational = 0
-n_ac_sold = 119  # TODO: Revise this w market analysis
+n_ac_sold = 119
 
 
 def operations_and_logistics(aircraft):
@@ -170,10 +170,12 @@ def production_cost_estimation(aircraft):
 
     # Learning curve
     s = 0.909
-    marginal_cost = total_rc_per_ac * np.array(range(1, n_ac_sold+1)) ** (np.log(s) / np.log(2))
+    marginal_cost = total_rc_per_ac * np.arange(1, n_ac_sold+1) ** (np.log(s) / np.log(2))
     average_rc_per_ac = np.mean(marginal_cost)
 
     total_program_cost = (average_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
+
+    # breakeven_point = np.where(np.cumsum(marginal_cost)/1e6 >= total_program_cost)[0][0]+1
 
     non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
@@ -208,11 +210,13 @@ def production_cost_estimation(aircraft):
     plt.savefig(Path("plots", "recurring_market_pie.png"))
 
     # Return on investment
-    price_ac = (average_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc)
-    program_revenues = n_ac_sold * price_ac / 1e6 * (1 + subsidy_manufacturing)
+    price_ac = (average_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * (1 + subsidy_manufacturing) / 1e6
+    program_revenues = n_ac_sold * price_ac
+    breakeven_point = np.ceil(total_program_cost / price_ac)
+
     program_roi = (program_revenues - total_program_cost) / total_program_cost * 100
 
-    return competitive_price_ac, total_program_cost, program_roi, average_rc_per_ac / 1e6, total_nrc
+    return competitive_price_ac, total_program_cost, program_roi, average_rc_per_ac / 1e6, total_nrc, breakeven_point
 
 
 def market_estimations(aircraft, average_price, total_nrc, ground_time):
