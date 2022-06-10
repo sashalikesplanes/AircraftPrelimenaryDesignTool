@@ -2,6 +2,7 @@ import numpy as np
 from detailedDesign.classes.Component import Component
 from misc.unitConversions import *
 from scipy.optimize import fsolve
+import misc.constants as const
 
 
 class Wing(Component):
@@ -75,8 +76,8 @@ class Wing(Component):
     def determine_C_L_alpha(self):
         V_C = self.WingGroup.Aircraft.states['cruise'].velocity
         speed_of_sound = self.WingGroup.Aircraft.states['cruise'].speed_of_sound
-        aspect_ratio = self.aspect_ratio
         beta = np.sqrt((1 - (V_C / speed_of_sound) ** 2))
+        aspect_ratio = self.aspect_ratio
         k = 0.95  # from Sam
         # this takes into account no sweep for the wing
         semi_chord_sweep = np.arctan(np.tan(self.sweep - (4 / aspect_ratio) * ((0.5-0.25)* ((1 - self.taper_ratio)/(1 + self.taper_ratio)))))  # [rad]
@@ -86,12 +87,39 @@ class Wing(Component):
         # print(f'{np.deg2rad(C_L_alpha) = }')
         return np.deg2rad(self.C_L_alpha)
 
+    def get_alpha(self, C_L):
+        # ALPHA IS IN DEGREES
+        return (C_L - self.C_L_0_wing) / self.C_L_alpha
+
+
     def get_C_L(self, alpha):
         # ALPHA IS IN DEGREES
         return self.C_L_0_wing + alpha * self.C_L_alpha
 
+    def get_C_m_alpha(self):
+        alphas = np.linspace(-10, 15, 250)
+        C_m_alpha_const = np.ones(140, dtype=np.float64) * -0.081
+        C_m_alpha_lin = np.linspace(-0.081, -0.025, 110)
+        print(C_m_alpha_lin)
+        print(C_m_alpha_const)
+        C_m_alpha = np.hstack((C_m_alpha_const, C_m_alpha_lin))
+        return C_m_alpha
+
+
+
     def get_oswald(self):
         return 1.78 * (1 - 0.045 * self.aspect_ratio ** 0.68) - 0.64
+
+    def get_installation_angle(self):
+        W_average_cruise = self.WingGroup.Aircraft.mtom * const.g
+        - self.WingGroup.Aircraft.fuel_mass * 0.5 * const.g # [N]
+        V_C = self.WingGroup.Aircraft.states['cruise'].velocity   # [m/s]
+        dynamic_pressure = 0.5 * self.WingGroup.Aircraft.states['cruise'].density \
+            * V_C * V_C   # [Pa]
+        C_L_average_cruise = W_average_cruise / (dynamic_pressure * self.wing_area)
+        installation_angle = self.get_alpha(C_L_average_cruise)
+        return installation_angle
+
 
     def size_self(self): # parameters unit tested manually: equations are correct
         self.wing_area = self.WingGroup.Aircraft.reference_area
@@ -109,6 +137,8 @@ class Wing(Component):
         self.C_L_alpha = self.determine_C_L_alpha()
         self.C_L_0_wing = -self.alpha_zero_lift * self.C_L_alpha
         self.oswald = self.get_oswald()
+
+        self.installation_angle = self.get_installation_angle()
 
         self.logger.debug(f"Root Chord: {self.root_chord}")
         self.logger.debug(f"Tip Chord: {self.tip_chord}")
