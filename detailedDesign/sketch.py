@@ -4,6 +4,8 @@ from pathlib import Path
 
 
 def sketch_aircraft(aircraft):
+    plt.figure()
+    plt.grid()
     things = aircraft.plot_cgs()
     for thing in things:
         plt.scatter(thing[0][0], thing[0][2])

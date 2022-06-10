@@ -8,7 +8,6 @@ def positive_real(lst):
 
 
 def get_max_climb_rate(aircraft):
-    rholist = np.arange(0.05, 1.225, 0.005)
     wingloading = aircraft.mtom * g / aircraft.WingGroup.Wing.wing_area
     CDmin = aircraft.C_D_min
     A = aircraft.WingGroup.Wing.aspect_ratio
@@ -17,18 +16,7 @@ def get_max_climb_rate(aircraft):
     power = aircraft.WingGroup.Engines.P_motor * aircraft.WingGroup.Engines.own_amount_fans
     weight = aircraft.mtom * g
     k = 1 / (np.pi * A * e)
-    lst = []
-    lst2 = []
-    for rhoq in rholist:
-        V_best_ROC = np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin)))
-        ROC_max = efficiency * power / weight - np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin))) * np.sqrt(4 * k * CDmin) * (1 / np.sqrt(3) + np.sqrt(3)) / 2
-        lst.append(ROC_max)
-        lst2.append(V_best_ROC)
-    ## uncomment if a plot for climb ceiling is wanted. ceiling~~18km which is too high, by taking the speed into account it goes better~~16km
-    # plt.plot(lst, rholist)
-    # plt.ylabel("density")
-    # plt.xlabel("ROC")
-    # plt.show()
+
     rho = aircraft.states['cruise'].density
     V_best_ROC = np.sqrt(2 / rho * wingloading * np.sqrt(k / (3 * CDmin)))
     ROC_max = efficiency * power / weight - V_best_ROC * np.sqrt(4 * k * CDmin) * (1 / np.sqrt(3) + np.sqrt(3)) / 2
@@ -60,23 +48,20 @@ def calc_ROC(aircraft, state, V):
 
 # V_best_climbangle^4+efficiency*power/(rho*S*CDmin)*V_best_climbangle-wingloading**2*4*k/(rho**2*CDmin)
 
-def get_climb_angle(aircraft):
+def get_climb_angle(aircraft,V):
     rho = aircraft.states['cruise'].density
-    wingloading = aircraft.mtom*g/aircraft.WingGroup.Wing.wing_area
+    wingloading = aircraft.mtom*g/1.5/aircraft.WingGroup.Wing.wing_area
     CDmin = aircraft.C_D_min
     A = aircraft.WingGroup.Wing.aspect_ratio
     e = aircraft.WingGroup.Wing.oswald
-    efficiency = aircraft.WingGroup.Engines.propulsive_eff * aircraft.WingGroup.Engines.eff_mot_inv
-    power = aircraft.WingGroup.Engines.P_motor * aircraft.WingGroup.Engines.own_amount_fans
-    S = aircraft.WingGroup.Wing.wing_area
     thrust_over_weight = aircraft.thrust_over_weight_takeoff
-    V = aircraft.states['cruise'].velocity
     k = 1 / (np.pi * A * e)
-    V_best_climbangle = V * 1
+    # efficiency = aircraft.WingGroup.Engines.propulsive_eff * aircraft.WingGroup.Engines.eff_mot_inv
+    # power = aircraft.WingGroup.Engines.P_motor * aircraft.WingGroup.Engines.own_amount_fans
+    # S = aircraft.WingGroup.Wing.wing_area
     #coeff = [1, 0, 0, efficiency*power/(rho*S*CDmin), -wingloading**2*4*k/(rho**2*CDmin)]
     #V_best_climbangle = float(positive_real(np.roots(coeff))[0])
-    #print(float(positive_real(np.roots(coeff))[0]))
-
+    V_best_climbangle = V*1
     x1 = Symbol('x1', real=True)
     constant_1 = k * wingloading / (0.5 * rho * V_best_climbangle ** 2)
     constant_2 = thrust_over_weight - 0.5*rho*V_best_climbangle**2*CDmin/wingloading
@@ -107,7 +92,7 @@ def get_power_plot(aircraft):
     CL = W/(0.5*rho*V**2*S)
     CDi = CL**2/(np.pi*A*e)
     CD = aircraft.C_D_min + CDi
-    print(aircraft.C_D_min,aircraft.C_D_TO,CD)
+    #print(aircraft.C_D_min,aircraft.C_D_TO,CD)
     efficiency = aircraft.WingGroup.Engines.propulsive_eff*aircraft.WingGroup.Engines.eff_mot_inv
     power_available = aircraft.WingGroup.Engines.P_motor*aircraft.WingGroup.Engines.own_amount_fans * efficiency
 
@@ -118,7 +103,7 @@ def get_power_plot(aircraft):
     plt.plot(V, power_required_array)
     plt.plot(V, power_available_array)
 
-def get_ROC_Vplot(aircraft):
+def get_ROC_V_plot(aircraft):
     V = np.arange(20, 220, 1)
     lstcruise =[]
     lsttakeoff =[]
@@ -129,4 +114,43 @@ def get_ROC_Vplot(aircraft):
         lsttakeoff.append(rocto)
     plt.plot(V, lsttakeoff)
     plt.plot(V, lstcruise)
+    plt.show()
+
+def get_theta_plot(aircraft):
+    V = np.arange(20, 220, 1)
+    lstq = []
+    for i in V:
+        theta = get_climb_angle(aircraft,i)
+        lstq.append(theta)
+    plt.plot(V, lstq)
+    plt.show()
+
+def get_heigt_velocity_plot(aircraft):
+    Vlist = np.arange(1,200,10)
+    rholist = np.arange(0.05, 1.225, 0.005)
+    wingloading = aircraft.mtom * g / aircraft.WingGroup.Wing.wing_area
+    CDmin = aircraft.C_D_min
+    A = aircraft.WingGroup.Wing.aspect_ratio
+    e = aircraft.WingGroup.Wing.oswald
+    efficiency = aircraft.WingGroup.Engines.propulsive_eff * aircraft.WingGroup.Engines.eff_mot_inv
+    power = aircraft.WingGroup.Engines.P_motor * aircraft.WingGroup.Engines.own_amount_fans
+    weight = aircraft.mtom * g
+    k = 1 / (np.pi * A * e)
+    S = aircraft.WingGroup.Wing.wing_area
+    # CDi = (weight / (0.5 * rho * V ** 2 * S)) ** 2 * k
+    # Drag = (CDmin + CDi) * 0.5 * rho * V ** 2 * S
+    lst = []
+    lst2 = []
+    for rhoq in rholist:
+        V_best_ROC = np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin)))
+        ROC_max = efficiency * power / weight - np.sqrt(2 / rhoq * wingloading * np.sqrt(k / (3 * CDmin))) * np.sqrt(
+            4 * k * CDmin) * (1 / np.sqrt(3) + np.sqrt(3)) / 2
+        lst.append(ROC_max)
+        lst2.append(V_best_ROC)
+    # uncomment if a plot for climb ceiling is wanted. ceiling~~18km which is too high, by taking the speed into account it goes better~~16km
+    plt.plot(lst, rholist)
+    plt.ylabel("density")
+    plt.xlabel("ROC")
+    plt.show()
+    plt.plot(lst2, rholist)
     plt.show()
