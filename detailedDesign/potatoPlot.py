@@ -169,10 +169,12 @@ def make_potato_plot(aircraft, debug=False):
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
     if debug:
+        print(len(cabin.passengers))
         plot_potato_curve(aircraft, plt_1, axs, c="g")
     plt_2 += plt_1
 
     # Fuel stuff
+    print(len(cabin.passengers))
     fuel_storage_1 = aircraft.FuselageGroup.Fuselage.ForwardFuelContainer
     fuel_storage_2 = aircraft.FuselageGroup.Fuselage.AftFuelContainer
     plt_1 = list()
@@ -194,6 +196,7 @@ def make_potato_plot(aircraft, debug=False):
 
 def plot_potato_curve(aircraft, data, axs, c="b"):
     """Function to easily plot potato data"""
+    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers))
     lst_x = []
     lst_y = []
     lst_z = []
@@ -205,11 +208,13 @@ def plot_potato_curve(aircraft, data, axs, c="b"):
         lst_y.append(i[0][1])
         lst_z.append(i[0][2])
 
+    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers))
     lst_x_lemac = [None] * len(lst_x)
     for i in range(len(lst_x)):
         lst_x_lemac[i] = (lst_x[i] - aircraft.x_lemac) / aircraft.WingGroup.Wing.mean_geometric_chord
     dots = ""
 
+    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers))
     axs[0, 0].plot(lst_x_lemac, lst_mass, f'{c}{dots}-')
     axs[0, 0].set_title("X cg loading diagram")
     axs[0, 0].set(xlabel='X [% mac]', ylabel='Total Mass [kg]')

@@ -120,7 +120,7 @@ class Aircraft(Component):
 
     def get_cg(self):
         """Calculate the cg of this component and all its sub-components"""
-        self.get_cged()
+        # self.get_cged()
         total_mass_factor = self.own_mass
         cg_pos = self.own_cg * self.own_mass
 
