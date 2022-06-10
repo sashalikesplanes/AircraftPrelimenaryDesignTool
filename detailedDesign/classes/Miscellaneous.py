@@ -69,18 +69,18 @@ class Miscellaneous(Component):
         self.W_crew = self.FuselageGroup.Fuselage.Cabin.mass_per_passenger * (
                     n_pax // passengers_per_flight_attendant + 1 + pilot_count)
 
-        mass = self.W_boat + self.W_apu + self.W_ins + self.W_hyd_ele + self.W_AC + self.W_oxy + self.W_paint + self.W_crew
+        mass = self.W_boat + self.W_apu + self.W_ins + self.W_hyd_ele + self.W_AC + self.W_oxy + self.W_paint + self.W_crew + self.W_furn
 
-        self.logger.debug(f"Boat mass: {self.W_boat:.4E} [kg]")
-        self.logger.debug(f"Instrument mass: {self.W_ins:.4E} [kg]")
-        # self.logger.debug(f"Hydraulics mass: {self.W_hyd:.4E} [kg]")
-        self.logger.debug(f"Hyd + Electrical mass: {self.W_hyd_ele:.4E} [kg]")
-        self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
-        self.logger.debug(f"Furnishing mass: {self.W_furn:.4E} [kg]")
-        self.logger.debug(f"APU mass: {self.W_apu:.4E} [kg]")
-        self.logger.debug(f"Oxygen system mass: {self.W_oxy:.4E} [kg]")
-        self.logger.debug(f"Paint mass: {self.W_paint:.4E} [kg]")
-        self.logger.debug(f"Crew mass: {self.W_crew:.4E} [kg]")
+        # self.logger.debug(f"Boat mass: {self.W_boat:.4E} [kg]")
+        # self.logger.debug(f"Instrument mass: {self.W_ins:.4E} [kg]")
+        # # self.logger.debug(f"Hydraulics mass: {self.W_hyd:.4E} [kg]")
+        # self.logger.debug(f"Hyd + Electrical mass: {self.W_hyd_ele:.4E} [kg]")
+        # self.logger.debug(f"Air conditioning mass: {self.W_AC:.4E} [kg]")
+        # self.logger.debug(f"Furnishing mass: {self.W_furn:.4E} [kg]")
+        # self.logger.debug(f"APU mass: {self.W_apu:.4E} [kg]")
+        # self.logger.debug(f"Oxygen system mass: {self.W_oxy:.4E} [kg]")
+        # self.logger.debug(f"Paint mass: {self.W_paint:.4E} [kg]")
+        # self.logger.debug(f"Crew mass: {self.W_crew:.4E} [kg]")
 
 
 

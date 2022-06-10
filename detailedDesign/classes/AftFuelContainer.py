@@ -27,7 +27,7 @@ class AftFuelContainer(FuelContainer):
             self.mass_H2 = 0
             self.own_mass = 0
 
-        self.logger.debug(f"{self.length_cyl = }")
-        self.logger.debug(f"{self.volume_tank = }")
-        self.logger.debug(f"{self.mass_H2 = }")
-        self.logger.debug(f"{self.own_mass = }")
+        # self.logger.debug(f"{self.length_cyl = }")
+        # self.logger.debug(f"{self.volume_tank = }")
+        # self.logger.debug(f"{self.mass_H2 = }")
+        # self.logger.debug(f"{self.own_mass = }")

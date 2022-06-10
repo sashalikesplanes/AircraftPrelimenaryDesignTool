@@ -26,7 +26,7 @@ class Wing(Component):
         self.oswald = 0
         self.optimal_ARe = 0
         self.length_ailerons = 0
-        self.installation_angle =0
+        self.installation_angle = 0 # rad - angle wrt to the fuselage
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
