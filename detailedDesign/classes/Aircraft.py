@@ -4,6 +4,7 @@ from detailedDesign.classes.WingGroup import WingGroup
 from detailedDesign.board_passengers import board_passengers, unboard_passengers_fuel, board_passengers_half_fuel
 import misc.constants as const
 from detailedDesign.get_drag import get_drag
+import numpy as np
 
 
 class Aircraft(Component):
@@ -52,6 +53,20 @@ class Aircraft(Component):
     @property
     def reserve_fuel_mass(self):
         return self.FuselageGroup.Fuselage.FuelContainer.reserve_mass_H2
+
+    @property
+    def C_m_alpha(self):
+        x_cg = self.cg_loaded_half_fuel[0]
+        x_acw = self.FuselageGroup.Tail.HorizontalTail.x_aerodynamic_center
+        x_ach = self.WingGroup.Wing.x_aerodynamic_center
+        horizontal_tail_ratio = self.FuselageGroup.Tail.HorizontalTail.surface_area / self.WingGroup.Wing.wing_area
+        C_L_H_alpha = 2 * np.pi 
+        C_m_alpfa_fus = self.FuselageGroup.Fuselage.C_m
+        d_alphah_d_alpha = self.FuselageGroup.Tail.HorizontalTail.d_alphah_d_alpha
+        mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
+        C_L_term = self.WingGroup.Wing.C_L_alpha * (x_cg - x_acw) / mean_geometric_chord
+        C_L_H_term = 0.9 * horizontal_tail_ratio * C_L_H_alpha * d_alphah_d_alpha * (x_ach - x_cg) / mean_geometric_chord_wing
+        return C_L_term + C_m_alpha_fus - C_L_H_term
 
     def get_sized(self):
         self.reference_area = self.mtom * const.g / self.weight_over_surface

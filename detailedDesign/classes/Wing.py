@@ -101,8 +101,6 @@ class Wing(Component):
         alphas = np.linspace(-10, 15, 250)
         C_m_alpha_const = np.ones(140, dtype=np.float64) * -0.081
         C_m_alpha_lin = np.linspace(-0.081, -0.025, 110)
-        print(C_m_alpha_lin)
-        print(C_m_alpha_const)
         C_m_alpha = np.hstack((C_m_alpha_const, C_m_alpha_lin))
         return C_m_alpha
 

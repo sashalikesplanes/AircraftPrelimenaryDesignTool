@@ -82,7 +82,7 @@ class HorizontalTail(Component):
         C_L_term = C_L * (x_cg - x_ac_w) / mean_geometric_chord_wing
         installation_angle_wing = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.installation_angle
         C_m_w = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.get_C_m(installation_angle_wing)
-        C_m_fus = self.Tail.FuselageGroup.Fuselage.C_m
+        C_m_fus = 0
         dynamic_pressure = self.Tail.FuselageGroup.Aircraft.states["cruise"].dynamic_pressure
         thrust_term = thrust * z / (dynamic_pressure * wing_area * mean_geometric_chord_wing)
         return  C_L_H_term * (C_L_term + C_m_w + C_m_fus + thrust_term)

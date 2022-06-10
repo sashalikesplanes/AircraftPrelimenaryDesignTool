@@ -20,7 +20,7 @@ def perform_analyses(aircraft, make_stability):
     # 
     # plt.figure()
     # sketch_aircraft(aircraft)
-    # print_summary(aircraft)
+    print_summary(aircraft)
     # make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
@@ -116,6 +116,7 @@ def print_summary(aircraft):
     logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
+    logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
 
 
     # logger.debug(f"{takeoff_speed = }")
