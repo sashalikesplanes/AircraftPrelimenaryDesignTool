@@ -35,7 +35,7 @@ class FuelContainer(Component):
         self.SF = 1.5
 
         self.thickness_insulation = None
-        self.total_tank_thickness = None
+        self.total_tank_thickness = 0.1 
         self.empty_space_thickness = 0.1  # [m] - the space between the fuselage and the tank, must be more than insulation
 
         self._freeze()
