@@ -18,6 +18,7 @@ class HorizontalTail(Component):
         self.root_chord = 1  # [m]
         self.quarter_chord_sweep = None  # [rad]
         self.length = None
+        self.x_aerodynamic_center = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -37,8 +38,9 @@ class HorizontalTail(Component):
         y_mean_geometric_chord = self.span / 6 * (1 + self.taper * 2) / (1 + self.taper)
         quarter_chord_sweep = np.arctan(np.tan(self.three_quarter_chord_sweep) - 4 / self.aspect_ratio * (0.25 - 0.75) * (1 - self.taper) / (1 + self.taper))
         # distance from leading edge of root chord
-        x_aerodynamic_center = self.root_chord * 0.25 + y_mean_geometric_chord * np.sin(quarter_chord_sweep) 
-        self.tail_length = self.Tail.FuselageGroup.Fuselage.length - (self.Tail.FuselageGroup.Aircraft.x_lemac + self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord * 0.25) - self.root_chord + x_aerodynamic_center
+        x_aerodynamic_center = self.root_chord * 0.26 + y_mean_geometric_chord * np.sin(quarter_chord_sweep) 
+        self.x_aerodynamic_center = self.Tail.FuselageGroup.Fuselage.length - self.root_chord + x_aerodynamic_center
+        self.tail_length = self.x_aerodynamic_center - self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.x_aerodynamic_center
 
         self.logger.debug(f"{self.tail_length = }")
 
