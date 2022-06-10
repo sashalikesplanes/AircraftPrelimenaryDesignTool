@@ -66,6 +66,20 @@ class HorizontalTail(Component):
         return np.deg2rad(self.C_L_alpha)
 
     def get_C_L(self):
+        print(self.Tail.FuselageGroup.Aircraft.WingGroup.Engines.z_offset_from_cg)
+        x_cg = 1 
+        x_ac_h = 1 
+        x_ac_w = 1
+        mean_geometric_chord_wing = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.mean_aerodynamic_chord
+        C_L_H_term = - 1 / (0.9 * self.surface_area /\
+                    self.Tail.FuselageGroup.Aircaft.WingGroup.Wing.wing_area \
+                    * (x_ac_h - x_cg)
+        C_L = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.get_C_L(self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.installation_angle)
+        C_L_term = C_L * (x_cg - x_ac_w) / mean_geometric_chord 
+        C_m_w = self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.get_C_m()
+        C_m_fus = self.Tail.FuselageGroup.Fuselage.C_m
+        dynamic_pressure = self.Tail.FuselageGroup.Aircraft.states["cruise"].dynamic_pressure
+
         pass
 
 
