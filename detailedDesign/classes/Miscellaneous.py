@@ -10,16 +10,16 @@ class Miscellaneous(Component):
         self.FuselageGroup = FuselageGroup
         self.parent = self.FuselageGroup
 
-        self.W_boat = None
-        self.W_AC = None
-        # self.W_ele = None
-        self.W_furn = None
-        self.W_hyd_ele = None
-        self.W_apu = None
-        self.W_oxy = None
-        self.W_paint = None
-        self.W_crew = None
-        self.W_ins = None
+        self.W_boat = 1
+        self.W_AC = 1
+        # self.W_ele = 1
+        self.W_furn = 1
+        self.W_hyd_ele = 1
+        self.W_apu = 1
+        self.W_oxy = 1
+        self.W_paint = 1
+        self.W_crew = 1
+        self.W_ins = 1
 
         self.forces_lst = None
 
