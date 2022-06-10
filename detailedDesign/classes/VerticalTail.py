@@ -19,7 +19,7 @@ class VerticalTail(Component):
 
         self.tail_length = None  # [m]
         self.surface_area = None  # [m2]
-        self.mean_geometric_chord = None  # [m]
+        self.mean_geometric_chord = 1  # [m]
         self.span = 1  # [m]
         self.root_chord = 1  # [m]
         self.quarter_chord_sweep = None  # [rad]
