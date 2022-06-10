@@ -26,7 +26,8 @@ class Wing(Component):
         self.oswald = 0
         self.optimal_ARe = 0
         self.length_ailerons = 0
-        self.installation_angle = 0 # rad - angle wrt to the fuselage
+        self.installation_angle = 0 # rad - angle wrt to the fuselagwinge
+        self.d_epsilon_d_alpha = 0 # rad
 
         self.x_aerodynamic_center = None
         # Create all the parameters that this component must have here:
@@ -160,6 +161,7 @@ class Wing(Component):
                                           / np.cos(sweep)) ** (-0.3) * (n_z * W_O) ** 0.49
 
         self.x_aerodynamic_center = self.WingGroup.Aircraft.x_lemac + self.mean_geometric_chord * 0.26
+        self.d_epsilon_d_alpha = 1.62 * self.C_L_alpha / (np.pi * self.aspect_ratio)
 
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
         self.pos = np.array([0., 0., 0.])
