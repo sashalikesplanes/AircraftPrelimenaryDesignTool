@@ -175,14 +175,12 @@ def make_potato_plot(aircraft, debug=False):
 
     # Fuel stuff
     print(len(cabin.passengers), "after debug if")
-    fuel_storage_1 = aircraft.FuselageGroup.Fuselage.ForwardFuelContainer
-    fuel_storage_2 = aircraft.FuselageGroup.Fuselage.AftFuelContainer
+    fuel_storages = [aircraft.FuselageGroup.Fuselage.ForwardFuelContainer, aircraft.FuselageGroup.Fuselage.AftFuelContainer, aircraft.FuselageGroup.Fuselage.AssFuelContainer]
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    max_fuel_mass_1 = fuel_storage_1.mass_H2
-    max_fuel_mass_2 = fuel_storage_2.mass_H2
-    fuel_storage_1.current_fuel_mass = max_fuel_mass_1
-    fuel_storage_2.current_fuel_mass = max_fuel_mass_2
+    max_fuel_masses = [fuel_storage.mass_H2 for fuel_storage in fuel_storages]
+    for i, fuel_storage in enumerate(fuel_storages):
+        fuel_storage.current_fuel_mass = max_fuel_masses[i]
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
     if debug:
         plot_potato_curve(aircraft, plt_1, axs, c="b")
@@ -220,7 +218,6 @@ def plot_potato_curve(aircraft, data, axs, c="b"):
     axs[0, 0].set(xlabel='X [% mac]', ylabel='Total Mass [kg]')
 
     axs[0, 1].plot(lst_x, lst_mass, f'{c}{dots}-')
-    axs[0, 1].vlines(aircraft.neutral_point, 0, aircraft.mtom)
     axs[0, 1].set_title("X cg loading diagram")
     axs[0, 1].set(xlabel='X [m]', ylabel='Total Mass [kg]')
 

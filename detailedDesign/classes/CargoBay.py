@@ -38,7 +38,7 @@ class CargoBay(Component):
         #     self.height = h
         #     self.width = w
 
-        self.pos = np.array([self.Fuselage.cockpit_length, 0., 0.])
+        self.pos = np.array([self.Fuselage.cockpit_length + self.Fuselage.Cabin.length / 2, 0., 0.])
 
     def get_mass(self):
         mass = self.own_mass + self.current_cargo_mass
