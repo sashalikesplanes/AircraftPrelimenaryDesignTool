@@ -1,5 +1,5 @@
 Aircraft:
-  cargo_mass: 0 # [kg] extra cargo mass
+  cargo_mass: 100000 # [kg] extra cargo mass
   ultimate_load_factor: 3.75  # [-]
   loiter_duration: 3600 # seconds 
   oem_contingency: 1.1  # multiplier of OEM
@@ -39,7 +39,7 @@ Aircraft:
         taper: 0.3 # [-] - picked from ADSEE
         aspect_ratio: 4 # [-] - picked from ADSEE
         three_quarter_chord_sweep: 0 # [rad] - picked from ADSEE
-        volume_coefficient: 1.0 # [-] General Aviation Design
+        volume_coefficient: 1.5 # [-] General Aviation Design
     Power:
       percentage_propulsion_power: 0.95 #percentage of total power that goes to propulsion system
       fuel_fraction_takeoff: 0.97 # jet fuel
@@ -58,11 +58,11 @@ Aircraft:
         test_prop: 69
     Fuselage:
       hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
-      tail_length_factor: 3.0 # number to make the tail longer , relating to height
-      inner_width: 10  # [m]
-      inner_height: 12  # [m]
-      inner_ass_diameter: 10 # [m] represents the smaller part at the back
-      cockpit_length: 4  # [m]
+      tail_length_factor: 1.5 # number to make the tail longer , relating to height
+      inner_width: 9  # [m]
+      inner_height: 13.7 #  [m]
+      inner_ass_diameter: 5.5 # [m] represents the smaller part at the back
+      cockpit_length: 14.4  # [m]
       CargoBay:
         test_prop: 1
       Cabin:
@@ -79,8 +79,8 @@ Aircraft:
         cabin_pressure_altitude: 3000 # [m]
       FuelContainer:
         shape_factor: 1.25 # Factor to account for extra tank mass due to irregular shape
-        outer_area: 30 # [m2] from catia
-        z_offset: -3. # [m] distance from center line of elipse fuselage
+        outer_area: 35 # [m2] from catia
+        z_offset: -4. # [m] distance from center line of elipse fuselage
         tank_pressure: 120000 # [Pa]
         density_H2: 70.85 # [kg/m3]
         Vi: 0.072 # cte, extra volume needed for boil-off
