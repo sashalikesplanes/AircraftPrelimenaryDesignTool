@@ -24,7 +24,7 @@ def perform_analyses(aircraft, make_stability):
     # make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
-    logger.debug(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft)[1]} m/s\nMax climb rate : {get_climb_rate(aircraft)[0]}m/s\nMax climb rate : {get_climb_rate(aircraft,optimal_velocity=True)[0]}m/s")
+    logger.debug(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft, optimal_velocity=True)[1]} m/s\nMax climb rate : {get_climb_rate(aircraft, optimal_velocity=True)[0]}m/s\nMax climb rate : {get_climb_rate(aircraft,optimal_velocity=True)[0]}m/s")
     logger.debug('climb angle the plane can fly at cruise:', get_climb_angle(aircraft), 'degrees')
 
     plt.figure()
@@ -66,8 +66,8 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
-    logger.debug(f"Aircraft CG empty: {aircraft.get_cg_empty()}")
-    logger.debug(f"Aircraft CG loaded: {aircraft.get_cg_loaded()}")
+    logger.debug(f"Aircraft CG empty: {aircraft.cg_empty}")
+    logger.debug(f"Aircraft CG loaded: {aircraft.cg_loaded}")
     logger.debug(f"{breakdown_summary}")
     logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
     logger.debug(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
@@ -116,7 +116,6 @@ def print_summary(aircraft):
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
 
-    takeoff_speed = np.sqrt(aircraft.mtom * 9.81 / (0.5 * 1.225 * aircraft.reference_area * aircraft.C_L_TO))
 
     logger.debug(f"{takeoff_speed = }")
 

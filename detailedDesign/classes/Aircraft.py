@@ -124,7 +124,7 @@ class Aircraft(Component):
         board_passengers(self)
         self.get_cged()
         cg = self.get_cg()
-        unboard_passengers(self)
+        unboard_passengers_fuel(self)
         return cg
 
     @property
@@ -133,7 +133,7 @@ class Aircraft(Component):
         board_passengers_half_fuel(self)
         self.get_cged()
         cg = self.get_cg()
-        unboard_passengers(self)
+        unboard_passengers_fuel(self)
         return cg
 
     @property
