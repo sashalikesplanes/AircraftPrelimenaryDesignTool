@@ -1,7 +1,7 @@
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
-from detailedDesign.board_passengers import board_passengers
+from detailedDesign.board_passengers import board_passengers, unboard_passengers, board_passengers_half_fuel
 import misc.constants as const
 from detailedDesign.get_drag import get_drag
 
@@ -121,8 +121,21 @@ class Aircraft(Component):
         """Get cg of the whole aircraft with passengers and fuel loaded and all the pre calcs"""
         board_passengers(self)
         self.get_cged()
-        return self.get_cg()
+        cg = self.get_cg()
+        unboard_passengers(self)
+        return cg
 
+    def get_cg_loaded_half_fuel(self):
+        """GEt cg of AC with pax and half the fuel in each tank"""
+        board_passengers_half_fuel(self)
+        self.get_cged()
+        cg = self.get_cg()
+        unboard_passengers(self)
+        return cg
+
+    @property
+    def takeoff_speed(self): 
+        return np.sqrt(self.mtom * 9.81 / (0.5 * 1.225 * self.reference_area * self.C_L_TO))
 
     def plot_cgs(self):
         self.get_cged()
