@@ -169,12 +169,12 @@ def make_potato_plot(aircraft, debug=False):
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
     if debug:
-        print(len(cabin.passengers))
+        print(len(cabin.passengers), "in debug if")
         plot_potato_curve(aircraft, plt_1, axs, c="g")
     plt_2 += plt_1
 
     # Fuel stuff
-    print(len(cabin.passengers))
+    print(len(cabin.passengers), "after debug if")
     fuel_storage_1 = aircraft.FuselageGroup.Fuselage.ForwardFuelContainer
     fuel_storage_2 = aircraft.FuselageGroup.Fuselage.AftFuelContainer
     plt_1 = list()
@@ -196,7 +196,7 @@ def make_potato_plot(aircraft, debug=False):
 
 def plot_potato_curve(aircraft, data, axs, c="b"):
     """Function to easily plot potato data"""
-    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers))
+    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers), "in plot_potato_curve")
     lst_x = []
     lst_y = []
     lst_z = []
