@@ -7,7 +7,7 @@ from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
 from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
-from detailedDesign.climbPerformance import get_climb_rate, get_climb_angle, get_power_plot
+from detailedDesign.climbPerformance import get_max_climb_rate, get_climb_angle, get_power_plot, calc_ROC
 from detailedDesign.potatoPlot import make_potato_plot
 import numpy as np
 from misc.constants import g
@@ -22,10 +22,12 @@ def perform_analyses(aircraft, make_stability):
     # sketch_aircraft(aircraft)
     print_summary(aircraft)
     # make_payload_range_diagram(aircraft)
-    # get_power_plot(aircraft)
+    get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
-    logger.debug(f"Max climb rate obtained at a velocity of {get_climb_rate(aircraft, optimal_velocity=True)[1]} m/s\nMax climb rate : {get_climb_rate(aircraft, optimal_velocity=True)[0]}m/s\nMax climb rate : {get_climb_rate(aircraft,optimal_velocity=True)[0]}m/s")
-    logger.debug('climb angle the plane can fly at cruise:', get_climb_angle(aircraft), 'degrees')
+    logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
+                 f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
+    logger.debug(f'climb angle the plane can fly at cruise: {get_climb_angle(aircraft)} degrees')
+    logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
 
     plt.figure()
     if make_stability:
@@ -66,8 +68,6 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
-    logger.debug(f"Aircraft CG empty: {aircraft.cg_empty}")
-    logger.debug(f"Aircraft CG loaded: {aircraft.cg_loaded}")
     logger.debug(f"{breakdown_summary}")
     logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
     logger.debug(f"Competitive Aircraft Price [M$]: {competitive_price_ac / 1e6:.2f}")
@@ -118,6 +118,7 @@ def print_summary(aircraft):
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
     logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
 
+    takeoff_speed = np.sqrt(aircraft.mtom * 9.81 / (0.5 * 1.225 * aircraft.reference_area * aircraft.C_L_TO))
 
     # logger.debug(f"{takeoff_speed = }")
 

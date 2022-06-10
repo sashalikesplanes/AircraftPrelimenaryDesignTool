@@ -20,6 +20,7 @@ class HorizontalTail(Component):
         self.length = None
         self.x_aerodynamic_center = None
         self.installation_angle = None
+        self.d_alphah_d_alpha = None
 
         # Create all the parameters that this component must have here:
         # Using self.property_name = value
@@ -56,6 +57,8 @@ class HorizontalTail(Component):
             ((1 + self.taper + self.taper**2)/(1 + self.taper))  # [m]
 
         self.length = self.root_chord
+
+        self.d_alphah_d_alpha = 1 - self.Tail.FuselageGroup.Aircraft.WingGroup.Wing.d_epsilon_d_alpha
 
     @property
     def C_L_alpha(self):
