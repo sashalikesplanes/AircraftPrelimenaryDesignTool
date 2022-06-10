@@ -51,7 +51,6 @@ def make_loading_diagrams(aircraft):
     plt.title("Forces Drawing")
 
     # Initialize a new figure
-    plt.figure()
     fig, (ax1, ax2) = plt.subplots(2)
 
     # Calculate shear and bending over the longitudinal plane length

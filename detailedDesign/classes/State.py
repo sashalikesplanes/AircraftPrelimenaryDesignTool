@@ -8,10 +8,12 @@ class State:
         self.name = name
 
         self.source = openData(Path('data', 'states', f'{name}.yaml'))
+        # self.viscosity =
 
     @property
     def dynamic_pressure(self):
         return 0.5 * self.density * self.velocity ** 2
+
     @property
     def velocity(self):
         return self.source["velocity"]
@@ -43,3 +45,7 @@ class State:
     @property
     def speed_of_sound(self):
         return getSpeedOfSound(self.altitude)
+
+    @property
+    def reynolds_number(self):
+        return self.density * self.velocity * length / self.viscosity

@@ -16,12 +16,10 @@ logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft, make_stability):
-    # make_avl_file(aircraft)
-    # 
-    # plt.figure()
-    # sketch_aircraft(aircraft)
+    make_avl_file(aircraft)
+    sketch_aircraft(aircraft)
     # print_summary(aircraft)
-    # make_payload_range_diagram(aircraft)
+    make_payload_range_diagram(aircraft)
     get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
@@ -29,17 +27,15 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f'climb angle the plane can fly at cruise: {get_climb_angle(aircraft)} degrees')
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
 
-    plt.figure()
+    # plt.figure()
     if make_stability:
         find_stability(aircraft)
-        plt.figure()
 
     ground_time = operations_and_logistics(aircraft)
     competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
     price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
-    # plt.figure()
-    # make_loading_diagrams(aircraft)
+    make_loading_diagrams(aircraft)
 
     #####
     state = aircraft.states["cruise"]
