@@ -2,6 +2,7 @@ import numpy as np
 from misc.constants import g
 from sympy import Eq, Symbol, solve, sin, cos, tan
 import matplotlib.pyplot as plt
+from misc.ISA import getDensity, getSpeedOfSound
 
 def positive_real(lst):
     return [x for x in lst if x > 0 and np.imag(x) == 0] or None
@@ -157,3 +158,43 @@ def get_heigt_velocity_plot(aircraft):
     plt.xlabel("ROC")
     plt.show()
     plt.plot(lst2, rholist)
+
+
+def get_performance_altitude_plot(aircraft):
+    wingloading = aircraft.weight_over_surface
+    CLmax = aircraft.C_L_max
+
+    A = aircraft.WingGroup.Wing.aspect_ratio
+    e = aircraft.WingGroup.Wing.oswald
+    k = 1/(np.pi*A*e)
+    CDmin = aircraft.C_D_min
+
+
+    hlist=np.arange(0,11000,10)
+    Vslist = []
+    Vroclist = []
+    Vplimlist = []
+    for h in hlist:
+
+        Vs = np.sqrt(2/getDensity(h)*wingloading/CLmax)
+        Vslist.append(Vs)
+
+        V_best_ROC = np.sqrt(2 / getDensity(h) * wingloading * np.sqrt(k / (3 * CDmin)))
+        Vroclist.append(V_best_ROC)
+
+        #coeff = [CDmin*0.5*getDensity(h)*S, 0, 0, -efficiency*power, k*weight**2/(0.5*getDensity(h)*S)]
+        #Vplimit = float(positive_real(np.roots(coeff))[0])
+        #Vplimlist.append(Vplimit)
+
+        Mallowed = 0.65
+        Vmach = Mallowed*getSpeedOfSound(h)
+        Vplimlist.append(Vmach)
+
+    plt.figure()
+    plt.plot(Vslist,hlist, label ="Stall limit")
+    plt.plot(Vroclist,hlist, label = 'Maximum rate of climb')
+    plt.plot(Vplimlist,hlist, label = 'Mach limit')
+    plt.plot([158,191.7],[11000,11000], label = "Altitude limit") # due to pressurization??????????
+    plt.xlabel("Velocity [m/s]")
+    plt.ylabel('Altitude [m]')
+    plt.legend()
