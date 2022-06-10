@@ -112,12 +112,14 @@ class Aircraft(Component):
 
         return cg_pos
 
-    def get_cg_empty(self):
+    @property
+    def cg_empty(self):
         """Get cg of empty aircraft with all the components"""
         self.get_cged()
         return self.get_cg()
 
-    def get_cg_loaded(self):
+    @property
+    def cg_loaded(self):
         """Get cg of the whole aircraft with passengers and fuel loaded and all the pre calcs"""
         board_passengers(self)
         self.get_cged()
@@ -125,7 +127,8 @@ class Aircraft(Component):
         unboard_passengers(self)
         return cg
 
-    def get_cg_loaded_half_fuel(self):
+    @property
+    def cg_loaded_half_fuel(self):
         """GEt cg of AC with pax and half the fuel in each tank"""
         board_passengers_half_fuel(self)
         self.get_cged()

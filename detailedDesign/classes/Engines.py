@@ -27,7 +27,7 @@ class Engines(Component):
     @property
     def z_offset_from_cg(self):
         #TODO
-        return "FUCK YOU MAX"
+        return -self.WingGroup.Aircraft.FuselageGroup.Fuselage.outer_height / 2 - self.WingGroup.Aircraft.cg_loaded_half_fuel[2]
 
     @property
     def amount_motor(self):
