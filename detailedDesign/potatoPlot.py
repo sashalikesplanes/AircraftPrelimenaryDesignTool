@@ -215,6 +215,7 @@ def plot_potato_curve(aircraft, data, axs, c="b"):
     axs[0, 0].set(xlabel='X [% mac]', ylabel='Total Mass [kg]')
 
     axs[0, 1].plot(lst_x, lst_mass, f'{c}{dots}-')
+    axs[0, 1].vlines(aircraft.neutral_point, 0, aircraft.mtom)
     axs[0, 1].set_title("X cg loading diagram")
     axs[0, 1].set(xlabel='X [m]', ylabel='Total Mass [kg]')
 
