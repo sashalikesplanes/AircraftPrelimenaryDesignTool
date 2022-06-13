@@ -130,6 +130,7 @@ class Engines(Component):
         if spacing < min_spacing:
             n_fans_fit_wing = np.floor((Span - 2 * length_ailerons + min_spacing) / (D_fan + min_spacing))
             n_fans_fuselage = n_fans - n_fans_fit_wing
+            spacing = min_spacing + D_fan
             self.logger.warning(f" The fans do not fit on the wingspan, the number of fans is {n_fans}."
                                 f" The number of fans that fit on the wing span is {n_fans_fit_wing}. "
                                 f"The fans to be placed elsewhere is {n_fans_fuselage}. ")
@@ -137,6 +138,7 @@ class Engines(Component):
             self.logger.warning(f" The fans fit on the wingspan, the number of fans is {n_fans}.")
             n_fans_fit_wing = n_fans
             n_fans_fuselage = 0
+            spacing = spacing + D_fan
 
         # spacing
         # print(f"Fan count: {n_fans}")
