@@ -57,6 +57,9 @@ Aircraft:
       Batteries:
         test_prop: 69
     Fuselage:
+      fatiguestrength: 103000000 # [Pa], fatigue strength Al 2219-T81 after 500e6 cycles
+      yieldstrength: 352000000 # [Pa], yield strength Al 2219-T81
+
       hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
       tail_length_factor: 1.5 # number to make the tail longer , relating to height
       inner_width: 9  # [m]
