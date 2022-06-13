@@ -151,17 +151,15 @@ def get_xplot(aircraft):
     f_stab = calc_ShoverS_STABILITY(CLalphatail, CLalphatailless, AR, taillength, cMAC, VhoverV, Xacwf, SM)
     f_cont = calc_ShoverScontrollability(CLh, CLaminush, taillength, cMAC, VhoverV, Cmaeroc, Xacwf)
 
-    plt.figure(5)
-    plt.plot(Xcg, f_stab(Xcg))
-    plt.plot(Xcg, f_cont(Xcg))
-    plt.xlabel("xcg/c")
-    plt.ylabel("Sh/S")
-    plt.grid()
-    plt.xlim(-0.5, 1)
-    plt.ylim(0, 1)
-    plt.title("X-plot")
+    # plt.figure(5)
+    # plt.plot(Xcg, f_stab(Xcg))
+    # plt.plot(Xcg, f_cont(Xcg))
+    # plt.xlabel("xcg/c")
+    # plt.ylabel("Sh/S")
+    # plt.grid()
+    # plt.title("X-plot")
 
-    return f_stab, f_cont
+    return f_stab, f_cont, Xcg
 
 
 # '''In the code the contribution of the nacelles to Xacwf is neglected as it is -0.0003 per engine'''

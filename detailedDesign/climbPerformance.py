@@ -128,6 +128,9 @@ def get_ROC_V_plot(aircraft):
     plt.ylabel("ROC [m/s]")
     plt.ylim(0)
     plt.legend()
+    save_path = Path("plots", "ROC_V_plot")
+    plt.savefig(save_path, dpi=600)
+    plt.close()
 
 def get_theta_plot(aircraft):
     V = np.arange(20, 220, 1)

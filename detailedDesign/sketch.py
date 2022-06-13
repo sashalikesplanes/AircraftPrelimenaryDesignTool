@@ -59,3 +59,4 @@ def sketch_aircraft(aircraft):
     location = Path('plots', 'sketch.png')
     plt.axis('equal')
     plt.savefig(location)
+    plt.close()

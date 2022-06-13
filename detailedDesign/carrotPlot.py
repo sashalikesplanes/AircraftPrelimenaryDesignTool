@@ -23,8 +23,9 @@ def make_carrot_plot(force_run=False):
     except FileNotFoundError:
         print("Didn't find file requested, generating new one.")
         max_length = 100
-        x_lemacs = np.linspace(40, 60, 5)
-
+        # x_lemacs = np.linspace(40, 80, 8)
+      #
+        x_lemacs = [55]
         lst = []
         for x_lemac in x_lemacs:
             # print(f"Starting {x_lemac}")
@@ -37,10 +38,10 @@ def make_carrot_plot(force_run=False):
             cg_range = make_potato_plot(aircraft, debug=debug)
             x_lemac_over_l_fus = x_lemac / aircraft.FuselageGroup.Fuselage.length
 
-            lst.append([x_lemac_over_l_fus, cg_range[0], cg_range[1]])
+            lst.append([x_lemac_over_l_fus, cg_range[0], cg_range[1], x_lemac])
             # print(f"Finished {x_lemac}")
 
-        header = ["pos", "fw cg", "aft cg"]
+        header = ["pos", "fw cg", "aft cg", "xlemac"]
         df = pd.DataFrame(np.array(lst), columns=header)
         df.to_csv(df_location)
 
@@ -50,8 +51,9 @@ def make_carrot_plot(force_run=False):
     plt.ylabel("Xlemac/Lfus [%]")
     plt.title("Centra of Gravity Range")
     plt.grid()
-    plt.xlim(-0.5, 1)
-    plt.ylim(0, 1)
     plt.savefig(Path("plots", "carrot.png"))
+    plt.show()
+    plt.close()
+    print(df)
 
     return df
