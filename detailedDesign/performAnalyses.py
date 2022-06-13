@@ -92,7 +92,10 @@ def print_summary(aircraft):
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
 
     fuselage = aircraft.FuselageGroup.Fuselage
+    logger.debug(f"Cockpit length: {fuselage.cockpit_length} m")
+    logger.debug(f"Cabin length: {fuselage.Cabin.length} m")
     logger.debug(f"Ass length: {fuselage.AssFuelContainer.length} m")
+    logger.debug(f"Tail cone length: {fuselage.tail_length} m")
     logger.debug(f"Fuselage Length: {fuselage.length} m")
     logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
     logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
