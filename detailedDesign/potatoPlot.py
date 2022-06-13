@@ -8,8 +8,7 @@ from misc.constants import mass_per_passenger, cargo_cabin_fraction, safety_marg
 
 
 def make_potato_plot(aircraft, debug=False):
-    if debug:
-        fig, axs = plt.subplots(2, 2)
+    fig, axs = plt.subplots(2, 2)
 
     aircraft.get_cged()
     cabin = aircraft.FuselageGroup.Fuselage.Cabin
@@ -66,8 +65,7 @@ def make_potato_plot(aircraft, debug=False):
     cargo_mass = n_pax * mass_per_passenger * (1 - cargo_cabin_fraction)
     cargo_place.current_cargo_mass = cargo_mass
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    if debug:
-        plot_potato_curve(aircraft, plt_1, axs, c="b")
+    plot_potato_curve(aircraft, plt_1, axs, c="b")
     plt_2 += plt_1
 
     # Y-Spud 1
@@ -95,8 +93,7 @@ def make_potato_plot(aircraft, debug=False):
                         cabin.passengers.append(new_person)
                         cg = aircraft.get_cg()
                         plt_1.append((cg, aircraft.get_mass()))
-    if debug:
-        plot_potato_curve(aircraft, plt_1, axs, c="r")
+    plot_potato_curve(aircraft, plt_1, axs, c="r")
     plt_2 += plt_1
 
     # Y-Spud 2
@@ -124,8 +121,7 @@ def make_potato_plot(aircraft, debug=False):
                         cabin.passengers.append(new_person)
                         cg = aircraft.get_cg()
                         plt_1.append((cg, aircraft.get_mass()))
-    if debug:
-        plot_potato_curve(aircraft, plt_1, axs, c="r")
+    plot_potato_curve(aircraft, plt_1, axs, c="r")
     plt_2 += plt_1
 
     # Z-Spud 1
@@ -146,8 +142,7 @@ def make_potato_plot(aircraft, debug=False):
                 cabin.passengers.append(new_person)
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
-    if debug:
-        plot_potato_curve(aircraft, plt_1, axs, c="g")
+    plot_potato_curve(aircraft, plt_1, axs, c="g")
     plt_2 += plt_1
 
     # Z-Spud 2
@@ -168,13 +163,10 @@ def make_potato_plot(aircraft, debug=False):
                 cabin.passengers.append(new_person)
                 cg = aircraft.get_cg()
                 plt_1.append((cg, aircraft.get_mass()))
-    if debug:
-        print(len(cabin.passengers), "in debug if")
-        plot_potato_curve(aircraft, plt_1, axs, c="g")
+    plot_potato_curve(aircraft, plt_1, axs, c="g")
     plt_2 += plt_1
 
     # Fuel stuff
-    print(len(cabin.passengers), "after debug if")
     fuel_storages = [aircraft.FuselageGroup.Fuselage.ForwardFuelContainer, aircraft.FuselageGroup.Fuselage.AftFuelContainer, aircraft.FuselageGroup.Fuselage.AssFuelContainer]
     plt_1 = list()
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
@@ -182,19 +174,24 @@ def make_potato_plot(aircraft, debug=False):
     for i, fuel_storage in enumerate(fuel_storages):
         fuel_storage.current_fuel_mass = max_fuel_masses[i]
     plt_1.append((aircraft.get_cg(), aircraft.get_mass()))
-    if debug:
-        plot_potato_curve(aircraft, plt_1, axs, c="b")
+    plot_potato_curve(aircraft, plt_1, axs, c="b")
     plt_2 += plt_1
 
     cg_range = find_cg_range(plt_2, aircraft)
     if debug:
         plt.show()
+        plt.close()
+    else:
+        save_path = Path("plots", "potato_plot")
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=9000)
+        plt.show()
+        plt.close()
     return cg_range
 
 
 def plot_potato_curve(aircraft, data, axs, c="b"):
     """Function to easily plot potato data"""
-    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers), "in plot_potato_curve")
     lst_x = []
     lst_y = []
     lst_z = []
@@ -206,13 +203,11 @@ def plot_potato_curve(aircraft, data, axs, c="b"):
         lst_y.append(i[0][1])
         lst_z.append(i[0][2])
 
-    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers))
     lst_x_lemac = [None] * len(lst_x)
     for i in range(len(lst_x)):
         lst_x_lemac[i] = (lst_x[i] - aircraft.x_lemac) / aircraft.WingGroup.Wing.mean_geometric_chord
     dots = ""
 
-    print(len(aircraft.FuselageGroup.Fuselage.Cabin.passengers))
     axs[0, 0].plot(lst_x_lemac, lst_mass, f'{c}{dots}-')
     axs[0, 0].set_title("X cg loading diagram")
     axs[0, 0].set(xlabel='X [% mac]', ylabel='Total Mass [kg]')

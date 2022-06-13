@@ -2,6 +2,7 @@ import numpy as np
 from misc.constants import g
 from sympy import Eq, Symbol, solve, sin, cos, tan
 import matplotlib.pyplot as plt
+from pathlib import Path
 from misc.ISA import getDensity, getSpeedOfSound
 
 def positive_real(lst):
@@ -106,6 +107,10 @@ def get_power_plot(aircraft):
     plt.xlabel("Velocity [m/s]")
     plt.ylabel("Power [MW]")
     plt.legend()
+    save_path = Path("plots", "power_curve")
+    plt.savefig(save_path, dpi=600)
+    plt.close()
+    
 
 def get_ROC_V_plot(aircraft):
     V = np.arange(20, 240, 1)

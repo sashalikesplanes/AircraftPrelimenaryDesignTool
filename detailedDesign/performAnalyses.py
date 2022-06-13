@@ -20,11 +20,11 @@ def perform_analyses(aircraft, make_stability):
     # make_avl_file(aircraft)
     #
     # plt.figure()
-    # sketch_aircraft(aircraft)
+    sketch_aircraft(aircraft)
     print_summary(aircraft)
-    # make_payload_range_diagram(aircraft)
-    # get_power_plot(aircraft)
-    # make_potato_plot(aircraft, True)
+    make_payload_range_diagram(aircraft)
+    get_power_plot(aircraft)
+    make_potato_plot(aircraft, False)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from misc.constants import g, energyDensityHydrogen
 from detailedDesign.get_drag import get_drag
+from pathlib import Path
 
 
 def make_payload_range_diagram(aircraft):
@@ -35,14 +36,17 @@ def make_payload_range_diagram(aircraft):
 
     p, r = np.array(p), np.array(r)
     r = r * 10 ** -3
-    p = p
+    p = p / 1e3
 
     plt.figure()
     plt.grid()
     plt.plot(r, p, "o-")
     plt.title("Payload Range Diagram")
     plt.xlabel("Range [km]")
-    plt.ylabel("Payload mass [kg]")
+    plt.ylabel("Payload mass [tons]")
+    save_path = Path("plots", "payload_range")
+    plt.savefig(save_path, dpi=600)
+    plt.close()
 
 
 def calc_range(W0, W1, aircraft):
