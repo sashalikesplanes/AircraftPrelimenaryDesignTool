@@ -11,6 +11,7 @@ from detailedDesign.climbPerformance import get_max_climb_rate, get_climb_angle,
 from detailedDesign.potatoPlot import make_potato_plot
 import numpy as np
 from misc.constants import g
+from detailedDesign.analysis.dragPolar import make_drag_polar
 
 logger = logging.getLogger("logger")
 
@@ -19,11 +20,11 @@ def perform_analyses(aircraft, make_stability):
     # make_avl_file(aircraft)
     #
     # plt.figure()
-    sketch_aircraft(aircraft)
+    # sketch_aircraft(aircraft)
     print_summary(aircraft)
     # make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
-    make_potato_plot(aircraft, True)
+    # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
@@ -66,6 +67,8 @@ def perform_analyses(aircraft, make_stability):
     dCm = (1 - 4 / (AR + 2) * Clh * d) / c_avg
     print(f"dCm: {dCm} [-]")
     #####
+
+    make_drag_polar(aircraft)
 
 
     plt.show()

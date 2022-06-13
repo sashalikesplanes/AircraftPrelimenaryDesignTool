@@ -208,6 +208,7 @@ def production_cost_estimation(aircraft):
     plt.title("Recurring Cost Breakdown [%]")
     plt.axis('equal')
     plt.savefig(Path("plots", "recurring_market_pie.png"))
+    plt.close()
 
     # Return on investment
     price_ac = (average_rc_per_ac + total_nrc / n_ac_sold) * (1 + PMac + f_misc) * (1 + subsidy_manufacturing) / 1e6
@@ -297,6 +298,7 @@ def market_estimations(aircraft, average_price, total_nrc, ground_time):
     plt.axis('equal')
     # costBreakdownPath = Path("plots","costBreakdown")
     plt.savefig(Path("plots", "operational_market_pie.png"))
+    plt.close()
 
     # Calculating ROI
     revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy_operational) + price_per_cargo * aircraft.cargo_mass
