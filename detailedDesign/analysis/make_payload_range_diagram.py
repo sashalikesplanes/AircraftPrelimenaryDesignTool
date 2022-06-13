@@ -57,5 +57,8 @@ def calc_range(W0, W1, aircraft):
 
     # Range formula from ADSEE I
     power = aircraft.FuselageGroup.Power
-    return (prop_eff / g / c_p) * L_over_D_cruise * np.log(W0 / W1 * power.fuel_fraction_misc * power.fuel_fraction_loiter)
+
+    result = (prop_eff / g / c_p) * L_over_D_cruise * np.log(W0 / W1 * power.fuel_fraction_misc * power.fuel_fraction_loiter)
+
+    return max(result, 0)
 
