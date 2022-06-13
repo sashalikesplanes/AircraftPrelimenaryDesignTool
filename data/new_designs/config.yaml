@@ -36,7 +36,7 @@ Aircraft:
         C_l_alpha: 6.8755 #[1/rad], NACA0010
         toverc: 0.1 # [-] - NACA0010
         xovercmax: 0.3 # [-] - picked from ADSEE
-        taper: 0.3 # [-] - picked from ADSEE
+        taper: 0.9 # [-] - picked from ADSEE, was 0.3
         aspect_ratio: 4 # [-] - picked from ADSEE
         three_quarter_chord_sweep: 0 # [rad] - picked from ADSEE
         volume_coefficient: 1.5 # [-] General Aviation Design
