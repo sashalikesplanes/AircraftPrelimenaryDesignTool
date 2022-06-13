@@ -17,8 +17,8 @@ def run_test():
     states['cruise'].velocity
     states['take-off'].velocity
     aircraft.WingGroup.Wing.span = 139
-    aircraft.reference_takeoff_thrust = 1800000 #1400000
-    aircraft.reference_cruise_thrust = 1000000 # 1Mw
+    aircraft.reference_takeoff_thrust = 2605262.5715386453 #1800000 #1400000
+    aircraft.reference_cruise_thrust = 1154470.618263168 #1000000 # 1Mw
 
 
     Engines.size_self()
