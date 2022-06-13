@@ -52,7 +52,10 @@ def wing_bending_shear(aircraft, force_run):
     print(df)
     plt.figure()
     plt.plot(df["y-span"], df["Cl"])
-    plt.title("Figure Title")
+    plt.title("Span-wise lift distribution")
+    plt.ylabel("$C_l$ [-]")
+    plt.grid()
+    plt.xlabel("Span [m]")
 
 
 def fuselage_bending_shear(aircraft, force_run):
