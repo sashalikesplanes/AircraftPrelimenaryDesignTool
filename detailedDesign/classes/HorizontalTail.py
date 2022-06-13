@@ -31,6 +31,14 @@ class HorizontalTail(Component):
         self.size_self_mass()
         self.pos = np.array([- self.mean_geometric_chord, 0., 0.])
 
+    @property
+    def leading_edge_sweep(self):
+        return np.arctan(np.tan(self.three_quarter_chord_sweep) - 4 / self.aspect_ratio * -0.75 * (1 - self.taper) / (1 + self.taper))
+
+    @property
+    def tip_chord(self):
+        self.root_chord * self.taper
+
     def size_self_geometry(self):
         # Sizing dimensions
         wing_area = self.Tail.FuselageGroup.Aircraft.reference_area  # [m2]
