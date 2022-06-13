@@ -125,6 +125,27 @@ class Wing(Component):
         installation_angle = self.get_alpha(C_L_average_cruise)
         return installation_angle
 
+    def sizing_ailerons(self):
+        C_R = self.C_L_alpha*10 # big assumption
+        b2 =  self.span/2-1 #[m]
+        b1 = self.span/2 - 9.5 
+        C_l_p = -(((self.C_L_alpha+self.WingGroup.Aircraft.C_D_min)*(C_R*self.span))/(24*self.wing_area))*(1+3*self.taper_ratio) #9 degrees alpha
+        C_l_da = ((self.C_L_delta_a*(180/np.pi)*C_R)/(self.wing_area*self.span))*((b2**2-b1**2)+4*((self.taper_ratio-1)/(3*self.span))*(b2**3-b1**3))
+
+        tryout = (-C_l_da/C_l_p)*(self.defl_aileron*np.pi/180)
+        print("ratio",tryout)
+        print("CR",C_R)
+        print("Clp",C_l_p)
+        print("Clda",C_l_da)
+        print(self.C_L_alpha)
+        print("span",self.span)
+        print("aileron length",b2-b1)
+        print('b2:', b2)
+        roll_rate = tryout * ((2*self.WingGroup.Aircraft.states["cruise"].velocity)/self.span)
+        print("roll rate:", roll_rate)
+
+        length_ailerons = b2-b1
+        self.length_ailerons = length_ailerons
 
     def size_self(self): # parameters unit tested manually: equations are correct
         self.wing_area = self.WingGroup.Aircraft.reference_area
@@ -148,6 +169,8 @@ class Wing(Component):
         self.logger.debug(f"Root Chord: {self.root_chord}")
         self.logger.debug(f"Tip Chord: {self.tip_chord}")
 
+        self.sizing_ailerons()
+
         # Mass Sizing
         state = self.WingGroup.Aircraft.states["cruise"]
 
@@ -168,27 +191,6 @@ class Wing(Component):
         self.own_mass = lbs_to_kg(mass_lbs)  # [kg]
         self.pos = np.array([0., 0., 0.])
 
-    def sizing_ailerons(self):
-        C_R = self.C_L_alpha*10 # big assumption
-        b2 =  self.span/2-1.5 #[m]
-        b1 = 47 # self.span/3#TODO: find actual location ailerons
-        C_l_p = -(((self.C_L_alpha+self.WingGroup.Aircraft.C_D_min)*(C_R*self.span))/(24*self.wing_area))*(1+3*self.taper_ratio) #9 degrees alpha
-        C_l_da = ((self.C_L_delta_a*(180/np.pi)*C_R)/(self.wing_area*self.span))*((b2**2-b1**2)+4*((self.taper_ratio-1)/(3*self.span))*(b2**3-b1**3))
-
-        tryout = (-C_l_da/C_l_p)*(self.defl_aileron*np.pi/180)
-        print("ratio",tryout)
-        print("CR",C_R)
-        print("Clp",C_l_p)
-        print("Clda",C_l_da)
-        print(self.C_L_alpha)
-        print("span",self.span)
-        print("aileron length",b2-b1)
-        print('b2:', b2)
-        roll_rate = tryout * ((2*self.WingGroup.Aircraft.states["cruise"].velocity)/self.span)
-        print("roll rate:", roll_rate)
-
-        length_ailerons = b2-b1
-        self.own.length_ailerons = length_ailerons
 
     def cg_self(self):
         x_cg = 0.4 * self.mean_geometric_chord

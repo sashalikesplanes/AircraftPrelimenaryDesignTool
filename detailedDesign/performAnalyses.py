@@ -1,7 +1,7 @@
 import logging
 import matplotlib.pyplot as plt
 
-from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation, operations_and_logistics
+#from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation, operations_and_logistics
 from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
@@ -36,7 +36,7 @@ def perform_analyses(aircraft, make_stability):
 
     ground_time = operations_and_logistics(aircraft)
     competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight = market_estimations(aircraft, average_price, total_nrc, ground_time)
+    #price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     logger.debug(f"{breakdown_summary}")
     logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
@@ -95,7 +95,10 @@ def print_summary(aircraft):
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
 
     fuselage = aircraft.FuselageGroup.Fuselage
+    logger.debug(f"Cockpit length: {fuselage.cockpit_length} m")
+    logger.debug(f"Cabin length: {fuselage.Cabin.length} m")
     logger.debug(f"Ass length: {fuselage.AssFuelContainer.length} m")
+    logger.debug(f"Tail cone length: {fuselage.tail_length} m")
     logger.debug(f"Fuselage Length: {fuselage.length} m")
     logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
     logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
