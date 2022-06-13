@@ -52,8 +52,8 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
-    make_loading_diagrams(aircraft)
-    find_bending_shear(aircraft)
+    # make_loading_diagrams(aircraft)
+    # find_bending_shear(aircraft)
 
     #####
     state = aircraft.states["cruise"]
@@ -131,9 +131,14 @@ def print_summary(aircraft):
     logger.debug(f"C_g position: {aircraft.cg_loaded_half_fuel}")
     logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
 
-    logger.debug(f"##########################################################")
-    logger.debug(f"##### FOR PALOMA AND JULIE!!!! ###########################")
-    logger.debug(f"##########################################################")
+    logger.debug(f"###################################################################")
+    logger.debug(f"##### FOR PALOMA AND JULIE AND KATO!!!! ###########################")
+    logger.debug(f"###################################################################")
+    power = aircraft.FuselageGroup.Power
+    logger.debug(f"POWER:")
+    logger.debug(f"Peak power: {power.own_power_peak:.2E} W")
+    logger.debug(f"Avg power: {power.own_power_average:.2E} W")
+    logger.debug('')
     logger.debug(f"ENGINES:")
     logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
@@ -141,8 +146,7 @@ def print_summary(aircraft):
     logger.debug(f"Length unit {engines.own_lenght_unit} m, i think")
     logger.debug(f"Length fan {engines.own_length_fan} m, i think")
     logger.debug(f"Spacing: {engines.own_spacing} m")
-
-
+    logger.debug('')
     logger.debug(f"WING:")
     logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span} m")
     logger.debug(f"Ailerons length: {aircraft.WingGroup.Wing.length_ailerons} m")
@@ -150,12 +154,14 @@ def print_summary(aircraft):
     logger.debug(f"Tip chord: {aircraft.WingGroup.Wing.tip_chord} m")
     logger.debug(f"LE Sweep: {aircraft.WingGroup.Wing.leading_edge_sweep} rad")
     h_tail = aircraft.FuselageGroup.Tail.HorizontalTail
+    logger.debug('')
     logger.debug(f"H TAIL:")
     logger.debug(f"Root chord: {h_tail.root_chord} m")
     logger.debug(f"Tip chord: {h_tail.tip_chord} m")
     logger.debug(f"Span: {h_tail.span} m")
     logger.debug(f"LE Sweep: {h_tail.leading_edge_sweep} rad")
     v_tail = aircraft.FuselageGroup.Tail.VerticalTail
+    logger.debug('')
     logger.debug(f"V TAIL:")
     logger.debug(f"Root chord: {v_tail.root_chord} m")
     logger.debug(f"Tip chord: {v_tail.tip_chord} m")
