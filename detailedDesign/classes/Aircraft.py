@@ -66,7 +66,7 @@ class Aircraft(Component):
         mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
         C_L_term = self.WingGroup.Wing.C_L_alpha * (x_cg - x_acw) / mean_geometric_chord_wing
         C_L_H_term = 0.9 * horizontal_tail_ratio * C_L_H_alpha * d_alphah_d_alpha * (x_ach - x_cg) / mean_geometric_chord_wing
-        return C_L_term + C_m_alpha_fus - C_L_H_term
+        return C_L_term + C_m_alpha_fus + C_L_H_term
 
     @property
     def neutral_point(self):
