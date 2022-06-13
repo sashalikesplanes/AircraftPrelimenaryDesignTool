@@ -86,6 +86,7 @@ def print_summary(aircraft):
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
+    # logger.debug(f" 
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
@@ -137,6 +138,7 @@ def print_summary(aircraft):
 
     logger.debug(f"WING:")
     logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span} m")
+    logger.debug(f"Ailerons length: {aircraft.WingGroup.Wing.length_ailerons} m")
     logger.debug(f"Root chord: {aircraft.WingGroup.Wing.root_chord} m")
     logger.debug(f"Tip chord: {aircraft.WingGroup.Wing.tip_chord} m")
     logger.debug(f"LE Sweep: {aircraft.WingGroup.Wing.leading_edge_sweep} rad")
