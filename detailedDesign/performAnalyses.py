@@ -1,7 +1,7 @@
 import logging
 import matplotlib.pyplot as plt
 
-from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation, operations_and_logistics
+#from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation, operations_and_logistics
 from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
@@ -11,6 +11,7 @@ from detailedDesign.climbPerformance import get_max_climb_rate, get_climb_angle,
 from detailedDesign.potatoPlot import make_potato_plot
 import numpy as np
 from misc.constants import g
+from detailedDesign.analysis.dragPolar import make_drag_polar
 
 logger = logging.getLogger("logger")
 
@@ -19,11 +20,11 @@ def perform_analyses(aircraft, make_stability):
     # make_avl_file(aircraft)
     #
     # plt.figure()
-    sketch_aircraft(aircraft)
+    # sketch_aircraft(aircraft)
     print_summary(aircraft)
     # make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
-    make_potato_plot(aircraft, True)
+    # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
@@ -35,7 +36,7 @@ def perform_analyses(aircraft, make_stability):
 
     ground_time = operations_and_logistics(aircraft)
     competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight = market_estimations(aircraft, average_price, total_nrc, ground_time)
+    #price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     logger.debug(f"{breakdown_summary}")
     logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
@@ -68,6 +69,8 @@ def perform_analyses(aircraft, make_stability):
     dCm = (1 - 4 / (AR + 2) * Clh * d) / c_avg
     print(f"dCm: {dCm} [-]")
     #####
+
+    make_drag_polar(aircraft)
 
 
     plt.show()
