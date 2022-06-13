@@ -34,6 +34,10 @@ class VerticalTail(Component):
         self.size_self_mass()
         self.pos = np.array([- self.mean_geometric_chord, 0., 0.])
 
+    @property
+    def tip_chord(self):
+        self.root_chord * self.taper
+
     def size_self_geometry(self):
         # Sizing dimensions
         wing_area = self.Tail.FuselageGroup.Aircraft.reference_area  # [m2]

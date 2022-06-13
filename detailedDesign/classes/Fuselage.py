@@ -58,6 +58,10 @@ class Fuselage(Component):
         return self.ForwardFuelContainer.get_mass() + self.AssFuelContainer.get_mass() + self.AftFuelContainer.get_mass()
 
     @property
+    def empty_fuel_tank_mass(self):
+        return self.ForwardFuelContainer.own_mass + self.AssFuelContainer.own_mass + self.AftFuelContainer.own_mass
+
+    @property
     def outer_height(self):
         return self.inner_height + self.thickness * 2
 

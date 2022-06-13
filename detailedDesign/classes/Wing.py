@@ -32,6 +32,10 @@ class Wing(Component):
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
         self._freeze()
+
+    @property
+    def leading_edge_sweep(self):
+        return np.arctan(np.tan(self.sweep) - 4 / self.aspect_ratio * -0.25 * (1 - self.taper_ratio) / (1 + self.taper_ratio))
          
     def solve_AR(self, x):
         return 0.0801 * x**1.68 - 1.14 * x + self.optimal_ARe

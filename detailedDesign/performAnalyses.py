@@ -35,7 +35,7 @@ def perform_analyses(aircraft, make_stability):
 
     ground_time = operations_and_logistics(aircraft)
     competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
+    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     logger.debug(f"{breakdown_summary}")
     logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
@@ -43,9 +43,11 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
     logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
     logger.debug(f"Break-even aircraft number [-]: {breakeven_point}")
+    logger.debug(f"Revenue per flight [M$]: {revenue_per_flight /1e6 :.2f}")
+    logger.debug(f"Cost per flight [M$]: {cost_per_flight / 1e6:.2f}")
     logger.debug(f"Operational ROI [%]: {roi:.2f}")
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
-    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
+    # logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
     # make_loading_diagrams(aircraft)
     # make_loading_diagrams(aircraft)
@@ -93,6 +95,7 @@ def print_summary(aircraft):
     logger.debug(f"Fuselage Length: {fuselage.length} m")
     logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
     logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
+    logger.debug(f"TOtal volume :{fuselage.ForwardFuelContainer.volume_tank + fuselage.AftFuelContainer.volume_tank + fuselage.AssFuelContainer.volume_tank}")
 
     engines = aircraft.WingGroup.Engines
     # logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
@@ -101,7 +104,6 @@ def print_summary(aircraft):
     # logger.debug(f"Clean stall speed : {aircraft.clean_stall_speed} m/s")
     # logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
 
-    logger.debug(f"Wing Span: {aircraft.WingGroup.Wing.span} m")
 
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
     logger.debug(f"V Tail Length: {aircraft.FuselageGroup.Tail.VerticalTail.tail_length} m")
@@ -111,17 +113,46 @@ def print_summary(aircraft):
     cabin = aircraft.FuselageGroup.Fuselage.Cabin
     logger.debug(f"{ cabin.length = } {cabin.width = } {cabin.height = }")
 
-    logger.debug(f"{aircraft.FuselageGroup.Power.FuelCells.size = }")
+    logger.debug(f"Volume of fuel cells {aircraft.FuselageGroup.Power.FuelCells.size} m^3")
 
     engines = aircraft.WingGroup.Engines
-    logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span} m")
-    logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
-    logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
-    logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
+    logger.debug(f"Reference Thrust Cruise {aircraft.reference_cruise_thrust}")
+    logger.debug(f"Reference Thrust Takeoff {aircraft.reference_takeoff_thrust}")
     logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
     logger.debug(f"Neutral point: {aircraft.neutral_point}")
     logger.debug(f"C_g position: {aircraft.cg_loaded_half_fuel}")
     logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
+
+    logger.debug(f"##########################################################")
+    logger.debug(f"##### FOR PALOMA AND JULIE!!!! ###########################")
+    logger.debug(f"##########################################################")
+    logger.debug(f"ENGINES:")
+    logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
+    logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
+    logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
+    logger.debug(f"Length unit {engines.own_lenght_unit} m, i think")
+    logger.debug(f"Length fan {engines.own_length_fan} m, i think")
+    logger.debug(f"Spacing: {engines.own_spacing} m")
+
+
+    logger.debug(f"WING:")
+    logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span} m")
+    logger.debug(f"Root chord: {aircraft.WingGroup.Wing.root_chord} m")
+    logger.debug(f"Tip chord: {aircraft.WingGroup.Wing.tip_chord} m")
+    logger.debug(f"LE Sweep: {aircraft.WingGroup.Wing.leading_edge_sweep} rad")
+    h_tail = aircraft.FuselageGroup.Tail.HorizontalTail
+    logger.debug(f"H TAIL:")
+    logger.debug(f"Root chord: {h_tail.root_chord} m")
+    logger.debug(f"Tip chord: {h_tail.tip_chord} m")
+    logger.debug(f"Span: {h_tail.span} m")
+    logger.debug(f"LE Sweep: {h_tail.leading_edge_sweep} rad")
+    v_tail = aircraft.FuselageGroup.Tail.VerticalTail
+    logger.debug(f"V TAIL:")
+    logger.debug(f"Root chord: {v_tail.root_chord} m")
+    logger.debug(f"Tip chord: {v_tail.tip_chord} m")
+    logger.debug(f"Span: {v_tail.span} m")
+    logger.debug(f"LE Sweep: {v_tail.leading_edge_sweep} rad")
+
 
 
     takeoff_speed = np.sqrt(aircraft.mtom * 9.81 / (0.5 * 1.225 * aircraft.reference_area * aircraft.C_L_TO))
