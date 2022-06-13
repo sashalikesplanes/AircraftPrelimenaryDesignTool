@@ -50,6 +50,9 @@ def wing_bending_shear(aircraft, force_run):
 
     # Start analysis
     print(df)
+    plt.figure()
+    plt.plot(df["y-span"], df["Cl"])
+    plt.title("Figure Title")
 
 
 def fuselage_bending_shear(aircraft, force_run):
