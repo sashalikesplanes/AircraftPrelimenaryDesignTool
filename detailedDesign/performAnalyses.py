@@ -9,6 +9,7 @@ from detailedDesign.analysis.make_payload_range_diagram import make_payload_rang
 from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
 from detailedDesign.climbPerformance import get_max_climb_rate, get_climb_angle, get_power_plot, calc_ROC, get_theta_plot, get_heigt_velocity_plot, get_performance_altitude_plot
 from detailedDesign.potatoPlot import make_potato_plot
+from detailedDesign.bending_shear import find_bending_shear
 import numpy as np
 from misc.constants import g
 from detailedDesign.analysis.dragPolar import make_drag_polar
@@ -17,12 +18,11 @@ logger = logging.getLogger("logger")
 
 
 def perform_analyses(aircraft, make_stability):
-    # make_avl_file(aircraft)
-    #
-    # plt.figure()
-    # sketch_aircraft(aircraft)
+    make_avl_file(aircraft)
+
+    sketch_aircraft(aircraft)
     print_summary(aircraft)
-    # make_payload_range_diagram(aircraft)
+    make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
@@ -30,6 +30,7 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
     #get_ROC_V_plot(aircraft)
+
     get_performance_altitude_plot(aircraft)
     # plt.figure()
     if make_stability:
@@ -51,8 +52,8 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
-    # make_loading_diagrams(aircraft)
-    # make_loading_diagrams(aircraft)
+    make_loading_diagrams(aircraft)
+    find_bending_shear(aircraft)
 
     #####
     state = aircraft.states["cruise"]
@@ -64,7 +65,7 @@ def perform_analyses(aircraft, make_stability):
 
     AR = aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio
     d = (aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg - aircraft.WingGroup.Wing.transformed_cg)[0]
-    # print(d)
+
     c_avg = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
 
     dCm = (1 - 4 / (AR + 2) * Clh * d) / c_avg
@@ -72,7 +73,6 @@ def perform_analyses(aircraft, make_stability):
     #####
 
     make_drag_polar(aircraft)
-
 
     plt.show()
 
@@ -90,7 +90,6 @@ def print_summary(aircraft):
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
-    # logger.debug(f"
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
@@ -132,9 +131,14 @@ def print_summary(aircraft):
     logger.debug(f"C_g position: {aircraft.cg_loaded_half_fuel}")
     logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
 
-    logger.debug(f"##########################################################")
-    logger.debug(f"##### FOR PALOMA AND JULIE!!!! ###########################")
-    logger.debug(f"##########################################################")
+    logger.debug(f"###################################################################")
+    logger.debug(f"##### FOR PALOMA AND JULIE AND KATO!!!! ###########################")
+    logger.debug(f"###################################################################")
+    power = aircraft.FuselageGroup.Power
+    logger.debug(f"POWER:")
+    logger.debug(f"Peak power: {power.own_power_peak:.2E} W")
+    logger.debug(f"Avg power: {power.own_power_average:.2E} W")
+    logger.debug('')
     logger.debug(f"ENGINES:")
     logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
@@ -142,8 +146,7 @@ def print_summary(aircraft):
     logger.debug(f"Length unit {engines.own_lenght_unit} m, i think")
     logger.debug(f"Length fan {engines.own_length_fan} m, i think")
     logger.debug(f"Spacing: {engines.own_spacing} m")
-
-
+    logger.debug('')
     logger.debug(f"WING:")
     logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span} m")
     logger.debug(f"Ailerons length: {aircraft.WingGroup.Wing.length_ailerons} m")
@@ -151,12 +154,14 @@ def print_summary(aircraft):
     logger.debug(f"Tip chord: {aircraft.WingGroup.Wing.tip_chord} m")
     logger.debug(f"LE Sweep: {aircraft.WingGroup.Wing.leading_edge_sweep} rad")
     h_tail = aircraft.FuselageGroup.Tail.HorizontalTail
+    logger.debug('')
     logger.debug(f"H TAIL:")
     logger.debug(f"Root chord: {h_tail.root_chord} m")
     logger.debug(f"Tip chord: {h_tail.tip_chord} m")
     logger.debug(f"Span: {h_tail.span} m")
     logger.debug(f"LE Sweep: {h_tail.leading_edge_sweep} rad")
     v_tail = aircraft.FuselageGroup.Tail.VerticalTail
+    logger.debug('')
     logger.debug(f"V TAIL:")
     logger.debug(f"Root chord: {v_tail.root_chord} m")
     logger.debug(f"Tip chord: {v_tail.tip_chord} m")

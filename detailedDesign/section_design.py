@@ -24,4 +24,5 @@ def plate_crippling(t, aircraft):
     sigma_cr = C * np.pi ** 2 * E_carbon / (12 * (1 - v ** 2)) * (t/b) ** 2  # [Pa] Crippling of plates
 
     sigma_cc_panel = (sigma_cc * area_stiffner + sigma_cr * t * b) / (t * b + area_stiffner)
-    print(sigma_cc_panel * 10 ** -6, "[MPa]")
+    # print(sigma_cc_panel * 10 ** -6, "[MPa]")
+    return sigma_cc_panel

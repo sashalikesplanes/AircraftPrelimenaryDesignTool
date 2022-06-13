@@ -17,19 +17,25 @@ def make_loading_diagrams(aircraft):
     # Make the different components to find forces from
     fuselage_group = aircraft.FuselageGroup
     components = get_sizes_and_loads(fuselage_group)
+    forces = []
 
     # Initialize the bending moment due to the wing
-    C_m = 0.199
+    # print(aircraft.WingGroup.Wing.get_C_m(aircraft.WingGroup.Wing.installation_angle))
+    # print(0.075)
+    # this number is made negative since the coordinate system for the moment diagram is inverted
+    C_m = -aircraft.WingGroup.Wing.get_C_m(aircraft.WingGroup.Wing.installation_angle)
     state = aircraft.states["cruise"]
     wing_area = aircraft.WingGroup.Wing.wing_area
     normalized_chord = aircraft.WingGroup.Wing.mean_geometric_chord
     moment = 0.5 * state.density * state.velocity ** 2 * wing_area * C_m * normalized_chord
-    forces = [PointMoment(aircraft.WingGroup.Wing.transformed_cg, moment)]
+    forces.append(PointMoment(aircraft.WingGroup.Wing.transformed_cg, moment))
+
+    # TODO: introduce tail forces in order to finalize moment diagram
     C_mh = -0.4079129718445125
     S_h = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
     C_h = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
     moment = 0.5 * state.density * state.velocity ** 2 * S_h * C_mh * C_h
-    forces.append(PointMoment(aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg, -moment))
+    # forces.append(PointMoment(aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg, -moment))
 
     # Transform the components into the correct loads
     for component in components:
