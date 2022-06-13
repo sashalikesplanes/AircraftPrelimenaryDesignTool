@@ -35,7 +35,7 @@ def perform_analyses(aircraft, make_stability):
 
     ground_time = operations_and_logistics(aircraft)
     competitive_price_ac, total_program_cost, program_roi, average_price, total_nrc, breakeven_point = production_cost_estimation(aircraft)
-    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi = market_estimations(aircraft, average_price, total_nrc, ground_time)
+    price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight = market_estimations(aircraft, average_price, total_nrc, ground_time)
 
     logger.debug(f"{breakdown_summary}")
     logger.debug(f"Aircraft Delivery Price [M$]: {price_ac / 1e6:.2f}")
@@ -43,9 +43,11 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
     logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
     logger.debug(f"Break-even aircraft number [-]: {breakeven_point}")
+    logger.debug(f"Revenue per flight [M$]: {revenue_per_flight /1e6 :.2f}")
+    logger.debug(f"Cost per flight [M$]: {cost_per_flight / 1e6:.2f}")
     logger.debug(f"Operational ROI [%]: {roi:.2f}")
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
-    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
+    # logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
     # make_loading_diagrams(aircraft)
     # make_loading_diagrams(aircraft)

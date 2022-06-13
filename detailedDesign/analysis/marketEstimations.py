@@ -112,7 +112,7 @@ def production_cost_estimation(aircraft):
     empennage_mass = aircraft.FuselageGroup.Tail.total_mass
     fuselage_mass = aircraft.FuselageGroup.Fuselage.own_mass
     engine_mass = aircraft.WingGroup.Engines.own_mass
-    miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass + aircraft.FuselageGroup.Fuselage.fuel_tank_mass
+    miscellaneous_mass = aircraft.FuselageGroup.Miscellaneous.own_mass + aircraft.FuselageGroup.Fuselage.empty_fuel_tank_mass
 
     # Cost density [$/lb]
     wing_cost_density = 17731
@@ -138,6 +138,7 @@ def production_cost_estimation(aircraft):
     nrc_per_kg = np.array([[item_3] + [(item_1 * item_2) / 1e6 for item_1 in lst_1] for
                            item_2, item_3 in zip(lst_2, lst_3)])
 
+    print(aircraft.FuselageGroup.Miscellaneous.own_mass, aircraft.FuselageGroup.Fuselage.fuel_tank_mass)
     print()
     print("-----------NON RECURRING COSTS-----------")
     print()
@@ -303,4 +304,4 @@ def market_estimations(aircraft, average_price, total_nrc, ground_time):
     cost_per_flight = DOC / flight_cycles
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
 
-    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi
+    return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight
