@@ -2,6 +2,7 @@ from scipy.optimize import fsolve, minimize, Bounds, toms748, newton, brenth, br
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def get_drag_at_v(V):
     b = 12 # m - beam width
     g = 9.81 # m/s2 - 
@@ -16,6 +17,7 @@ def get_drag_at_v(V):
     epsilon = 5 # deg inclination of thrust relative to keel line
     f = -6 # distance of thrust lie from cg
 
+
     def get_total_drag(tau):
         C_V = V / np.sqrt(g * b)
 
@@ -26,6 +28,7 @@ def get_drag_at_v(V):
         print(f"{C_L_0 =}, {C_V=}, {tau=}, {lambda_}")
 
         wetted_beam_length = lambda_ * b
+
 
         V_m = V * (1 - (0.012 * lambda_ ** 0.5 * tau ** 1.1 - 0.0065 * beta * (0.012 * lambda_ ** 0.5 * tau ** 1.1) ** 0.6 / (lambda_ * np.cos(tau / 180 * np.pi)))) ** 0.5 # mean velocity over bottom surface
 

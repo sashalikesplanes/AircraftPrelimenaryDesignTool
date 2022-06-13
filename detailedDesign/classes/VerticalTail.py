@@ -36,7 +36,7 @@ class VerticalTail(Component):
 
     @property
     def tip_chord(self):
-        self.root_chord * self.taper
+        return self.root_chord * self.taper
 
     def size_self_geometry(self):
         # Sizing dimensions

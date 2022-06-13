@@ -31,6 +31,8 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
     #get_ROC_V_plot(aircraft)
 
+    get_performance_altitude_plot(aircraft)
+    # plt.figure()
     if make_stability:
         find_stability(aircraft)
 
@@ -48,7 +50,7 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Cost per flight [M$]: {cost_per_flight / 1e6:.2f}")
     logger.debug(f"Operational ROI [%]: {roi:.2f}")
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
-    # logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
+    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
     make_loading_diagrams(aircraft)
     find_bending_shear(aircraft)
@@ -88,13 +90,15 @@ def print_summary(aircraft):
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
-    # logger.debug(f" 
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
 
     fuselage = aircraft.FuselageGroup.Fuselage
+    logger.debug(f"Cockpit length: {fuselage.cockpit_length} m")
+    logger.debug(f"Cabin length: {fuselage.Cabin.length} m")
     logger.debug(f"Ass length: {fuselage.AssFuelContainer.length} m")
+    logger.debug(f"Tail cone length: {fuselage.tail_length} m")
     logger.debug(f"Fuselage Length: {fuselage.length} m")
     logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
     logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
@@ -107,6 +111,7 @@ def print_summary(aircraft):
     # logger.debug(f"Clean stall speed : {aircraft.clean_stall_speed} m/s")
     # logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
 
+    logger.debug(f"Wing Span: {aircraft.WingGroup.Wing.span} m")
 
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
     logger.debug(f"V Tail Length: {aircraft.FuselageGroup.Tail.VerticalTail.tail_length} m")
