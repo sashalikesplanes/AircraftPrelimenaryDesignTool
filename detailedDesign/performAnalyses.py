@@ -30,6 +30,7 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
     #get_ROC_V_plot(aircraft)
+    get_performance_altitude_plot(aircraft)
     # plt.figure()
     if make_stability:
         find_stability(aircraft)
@@ -89,7 +90,7 @@ def print_summary(aircraft):
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
     logger.debug(f"H Tail Area: {h_tail.surface_area}")
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
-    # logger.debug(f" 
+    # logger.debug(f"
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
@@ -111,6 +112,7 @@ def print_summary(aircraft):
     # logger.debug(f"Clean stall speed : {aircraft.clean_stall_speed} m/s")
     # logger.debug(f"W/S : {aircraft.weight_over_surface} N/m2")
 
+    logger.debug(f"Wing Span: {aircraft.WingGroup.Wing.span} m")
 
     logger.debug(f"Fuselage Length: {aircraft.FuselageGroup.Fuselage.length} m")
     logger.debug(f"V Tail Length: {aircraft.FuselageGroup.Tail.VerticalTail.tail_length} m")

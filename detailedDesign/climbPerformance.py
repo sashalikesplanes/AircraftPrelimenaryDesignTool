@@ -170,7 +170,7 @@ def get_performance_altitude_plot(aircraft):
     CDmin = aircraft.C_D_min
 
 
-    hlist=np.arange(0,11000,10)
+    hlist=np.arange(0,12100,10)
     Vslist = []
     Vroclist = []
     Vplimlist = []
@@ -194,7 +194,9 @@ def get_performance_altitude_plot(aircraft):
     plt.plot(Vslist,hlist, label ="Stall limit")
     plt.plot(Vroclist,hlist, label = 'Maximum rate of climb')
     plt.plot(Vplimlist,hlist, label = 'Mach limit')
-    plt.plot([158,191.7],[11000,11000], label = "Altitude limit") # due to pressurization??????????
+    #plt.plot([158,191.7],[11000,11000], label = "Altitude limit") # due to pressurization??????????
+    plt.plot([86,220],[3000,3000], "m--", label = "Cruise level")
+    plt.plot([86,220],[3810,3810], "r--", label = "Limit due to being non-presurized")
     plt.xlabel("Velocity [m/s]")
     plt.ylabel('Altitude [m]')
-    plt.legend()
+    plt.legend(loc = 2)
