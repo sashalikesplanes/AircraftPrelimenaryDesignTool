@@ -49,7 +49,7 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Cost per flight [M$]: {cost_per_flight / 1e6:.2f}")
     logger.debug(f"Operational ROI [%]: {roi:.2f}")
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
-    # logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
+    logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
     # make_loading_diagrams(aircraft)
     # make_loading_diagrams(aircraft)

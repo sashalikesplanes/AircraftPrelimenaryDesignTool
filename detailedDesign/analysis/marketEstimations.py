@@ -48,7 +48,7 @@ def operations_and_logistics(aircraft):
     n_doors = 8  # [-]
     refuelling_rate = 35500  # [kg/h]
     n_pumps = 3  # [-]
-    loading_bags = 1.2 / 60  # [h/container]
+    loading_bags = 1.4 / 60  # [h/container]
     unloading_bags = 1.2 / 60  # [h/container]
     boarding = 18 * 60 * n_doors  # [pax/h]
     deboarding = 28 * 60 * n_doors  # [pax/h]
@@ -61,7 +61,10 @@ def operations_and_logistics(aircraft):
     # Cargo
     loading_bag_time = bag_containers * loading_bags
     unloading_bag_time = bag_containers * unloading_bags
-    cargo_time = loading_bag_time + unloading_bag_time
+    cargo_containers = np.ceil(aircraft.cargo_mass / lbs_to_kg(13300))
+    load_cargo_time = cargo_containers * loading_bags
+    unloading_cargo_time = cargo_containers * unloading_bags
+    cargo_time = loading_bag_time + unloading_bag_time + load_cargo_time + unloading_cargo_time
 
     # Cabin
     cleaning_time = 25 / 60  # [h]
@@ -72,11 +75,9 @@ def operations_and_logistics(aircraft):
     cabin_time = cleaning_time + catering_time + boarding_time \
                  + deboarding_time + last_pax_delay
 
-    print(f"{boarding_time = }")
-    print(f"{deboarding_time = }")
-    print(f"{refuelling_time = }")
-    print(f"{cargo_time = }")
-    print(f"{cabin_time = }")
+    print(f"{refuelling_time = :.2f} [h]")
+    print(f"{cargo_time = :.2f} [h]")
+    print(f"{cabin_time = :.2f} [h]")
 
     return max(refuelling_time, cargo_time, cabin_time)
 
@@ -138,7 +139,6 @@ def production_cost_estimation(aircraft):
     nrc_per_kg = np.array([[item_3] + [(item_1 * item_2) / 1e6 for item_1 in lst_1] for
                            item_2, item_3 in zip(lst_2, lst_3)])
 
-    print(aircraft.FuselageGroup.Miscellaneous.own_mass, aircraft.FuselageGroup.Fuselage.fuel_tank_mass)
     print()
     print("-----------NON RECURRING COSTS-----------")
     print()
