@@ -93,6 +93,7 @@ def print_summary(aircraft):
     logger.debug(f"Fuselage Length: {fuselage.length} m")
     logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
     logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
+    logger.debug(f"TOtal volume :{fuselage.ForwardFuelContainer.volume_tank + fuselage.AftFuelContainer.volume_tank + fuselage.AssFuelContainer.volume_tank}")
 
     engines = aircraft.WingGroup.Engines
     # logger.debug(f"Amount of propellors: {engines.own_amount_prop} [-]")
@@ -118,6 +119,8 @@ def print_summary(aircraft):
     logger.debug(f"Diameter fans: {engines.own_diameter_fan}")
     logger.debug(f"N fans on wing: {engines.own_fans_on_wing}")
     logger.debug(f"N fans on fus: {engines.own_fans_on_fuselage}")
+    logger.debug(f"Reference Thrust Cruise {aircraft.reference_cruise_thrust}")
+    logger.debug(f"Reference Thrust Takeoff {aircraft.reference_takeoff_thrust}")
     logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
     logger.debug(f"Neutral point: {aircraft.neutral_point}")
     logger.debug(f"C_g position: {aircraft.cg_loaded_half_fuel}")

@@ -43,7 +43,7 @@ class Miscellaneous(Component):
         D_fus = self.FuselageGroup.Fuselage.outer_height
 
         # MDF TODO: find better one
-        self.W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.2
+        self.W_boat = self.FuselageGroup.Fuselage.get_mass() * 0.25
 
         self.W_apu = 2.2 * 0.001 * mtom
 
