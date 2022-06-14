@@ -176,6 +176,7 @@ def production_cost_estimation(aircraft):
 
     total_program_cost = (average_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
 
+    print(f"{np.sum(marginal_cost)/1e6 =}")
     # breakeven_point = np.where(np.cumsum(marginal_cost)/1e6 >= total_program_cost)[0][0]+1
 
     non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
@@ -305,5 +306,4 @@ def market_estimations(aircraft, average_price, total_nrc, ground_time):
     revenue_per_flight = price_per_ticket * n_pax * (1 + subsidy_operational) + price_per_cargo * aircraft.cargo_mass
     cost_per_flight = DOC / flight_cycles
     roi = (revenue_per_flight - cost_per_flight) / cost_per_flight * 100  # [%]
-
     return price_ac, cost_per_passenger_km, cost_breakdown, breakdown_summary, roi, revenue_per_flight, cost_per_flight
