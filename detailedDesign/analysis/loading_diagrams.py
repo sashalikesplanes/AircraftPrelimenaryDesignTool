@@ -1,15 +1,67 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate
+import pandas as pd
+from pathlib import Path
 
 from misc.constants import g
 from detailedDesign.board_passengers import board_passengers
+from detailedDesign.classes.Loads import *
+from detailedDesign.bending_shear import open_df
 
 
 dx = 0.1
 
 
 def make_loading_diagrams(aircraft):
+    make_wing_loading_diagrams(aircraft)
+    make_aircraft_loading_diagrams(aircraft)
+
+
+def make_wing_loading_diagrams(aircraft):
+    # Try to open the dataframe in order to generate it if it is not present
+    open_df()
+
+    df_location = Path('data', 'dataframes', 'wing_loading.dat')
+    lift = LiftCurve(df_location, aircraft.mtom * g / 2)
+    lift.calc_shear(100)
+
+    # Make the liftcurve and the linear load
+    span = aircraft.WingGroup.Wing.span / 2
+    total_length = span
+    m_wing = aircraft.WingGroup.Wing.own_mass
+    lift_fus = (aircraft.mtom - m_wing) * g
+    df_location = Path('data', 'dataframes', 'wing_loading.dat')
+    forces = [PointLoad(0, -lift_fus), LiftCurve(df_location, lift_fus + m_wing * g), LinearLoad([span / 2, 0, 0], -m_wing * g, span)]
+
+    # Initialize a new figure
+    fig, (ax1, ax2) = plt.subplots(2)
+
+    # Calculate shear and bending over the longitudinal plane length
+    X = np.arange(0, total_length, dx)
+    shear = np.array([sum([i.calc_shear(y) for i in forces]) for y in X])
+    # moment = -np.array([sum([i.calc_moment(y) for i in forces]) for y in X])
+
+    # Plot the bending and shear diagram
+    ax1.set_title("Wing Shear Loading Diagram")
+    ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
+    ax1.plot(X, shear * -10 ** -3, color="tab:red")
+    ax1.grid()
+    for force in forces:
+        shear = np.array([force.calc_shear(y) for y in X])
+        ax1.plot(X, shear * -10 ** -3, '--', color="tab:red")
+
+    moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
+    moment_integral = moment_integral - moment_integral[-1]
+
+    ax2.set_title("Wing Bending Diagram")
+    ax2.set(xlabel="Longitudinal Position [m]", ylabel="Bending Moment [kNm]")
+    # ax2.plot(X, moment * 10 ** -3, color="tab:green")
+    ax2.plot(X, np.array(moment_integral) * -10 ** -3, "--", color="tab:green")
+    ax2.grid()
+
+
+def make_aircraft_loading_diagrams(aircraft):
     """Make the loading diagram"""
     # Board the payload and fuel into the aircraft
     aircraft = board_passengers(aircraft)
@@ -69,7 +121,6 @@ def make_loading_diagrams(aircraft):
     shear_cut1 = max_abs_shear/3
     shear_cut2 = max_abs_shear*2/3
 
-
     # Plot the bending and shear diagram
     ax1.set_title("Fuselage Shear Loading Diagram")
     ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
@@ -106,91 +157,3 @@ def get_sizes_and_loads(head_component):
     for component in head_component.components:
         lst += get_sizes_and_loads(component)
     return lst
-
-
-class PointMoment:
-    def __init__(self, pos, moment):
-        self.x = pos[0]
-        self.moment = moment
-
-    @staticmethod
-    def calc_shear(x):
-        return 0
-
-    def calc_moment(self, x):
-        if x >= self.x:
-            return self.moment
-        else:
-            return 0
-
-    def plot(self):
-        pass
-
-
-class PointLoad:
-    def __init__(self, pos, force):
-        if isinstance(pos, int) or isinstance(pos, np.float64):
-            self.x = pos
-        elif isinstance(pos, np.ndarray):
-            self.x = pos[0]
-        else:
-            raise TypeError(f"position should be either 'int' or 'np.ndarray', currently {type(pos)}")
-        self.force = force
-
-    def calc_moment(self, x):
-        if x >= self.x:
-            arm = self.x - x
-            return arm * self.force
-        else:
-            return 0
-
-    def calc_shear(self, x):
-        if x >= self.x:
-            return self.force
-        else:
-            return 0
-
-    def plot(self):
-        plt.arrow(self.x, 0, 0, self.force, color="tab:blue")
-
-
-class DistributedLoad:
-    def __init__(self, pos, force, width):
-        self.x = pos[0]
-        self.force = force
-        self.width = width
-
-        self.force_per_meter = self.force / self.width
-        half_width = self.width / 2
-        self.x_left = self.x - half_width
-        self.x_right = self.x + half_width
-
-    def calc_moment(self, x):
-        if x <= self.x_left:
-            return 0
-        elif x >= self.x_right:
-            point_load = PointLoad(self.x_left + self.width / 2, self.force)
-            return point_load.calc_moment(x)
-        else:
-            width = x - self.x_left
-            force = width * self.force_per_meter
-            x_point_load = self.x_left + width / 2
-            point_load = PointLoad(x_point_load, force)
-            return point_load.calc_moment(x)
-
-    def calc_shear(self, x):
-        if x <= self.x_left:
-            return 0
-        elif x >= self.x_right:
-            return self.force
-        else:
-            width = x - self.x_left
-            force = width * self.force_per_meter
-            return force
-
-    def plot(self):
-        plt.arrow(self.x_left, 0, 0, self.force_per_meter, color="tab:blue")
-        plt.arrow(self.x_right, 0, 0, self.force_per_meter, color="tab:blue")
-        plt.arrow(self.x, 0, 0, self.force_per_meter, color="tab:blue")
-        plt.plot([self.x_left, self.x_right], [0, 0], color="tab:blue")
-        plt.plot([self.x_left, self.x_right], [self.force_per_meter, self.force_per_meter], color="tab:blue")

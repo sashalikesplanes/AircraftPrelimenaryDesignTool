@@ -1,3 +1,8 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
 class PointMoment:
     def __init__(self, pos, moment):
         self.x = pos[0]
@@ -163,6 +168,15 @@ class LiftCurve:
                 running = False
             elif data_y[i] > x:
                 running = False
+                y_left = data_y[i-1]
+                y_right = data_y[i]
+                cl_left = data_l[i-1]
+                cl_right = data_l[i]
+                dcldy = (cl_left - cl_right)/(y_left - y_right)
+                w_middle = x - y_left
+                cl_middle = cl_left + w_middle * dcldy
+                force += (cl_left + cl_middle) / 2 * w_middle
+
             elif i == 0:
                 pass
             elif data_y[i] < x:

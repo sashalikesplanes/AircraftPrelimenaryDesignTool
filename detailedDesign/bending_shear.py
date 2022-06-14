@@ -21,41 +21,17 @@ def find_bending_shear(aircraft, force_run=False):
 
 def wing_bending_shear(aircraft, force_run):
     # Open the dataframe containing the wing loading data if it is present
-    df_location = Path('data', 'dataframes', 'wing_loading.dat')
-    try:
-        if force_run:
-            raise FileNotFoundError
-        df = pd.read_csv(df_location)
-    except FileNotFoundError:
-        data_started = False
-        data = []
-
-        location = Path('data', 'xflr5', 'xflr_file_1.txt')
-        with open(location) as file:
-            for line in file.readlines():
-                line = line.strip("\n")
-                if line == "Main Wing":
-                    data_started = True
-                elif data_started:
-                    line = line.split(" ")
-
-                    line = [x for x in line if x != '']
-                    if len(line) > 0:
-                        data.append(line)
-
-        header = data.pop(0)
-        data = np.array([[float(y) for y in x] for x in data])
-        df = pd.DataFrame(data, columns=header)
-        df.to_csv(df_location, index=False)
+    df = open_df(force_run=force_run)
 
     # Start analysis
-    print(df)
     plt.figure()
     plt.plot(df["y-span"], df["Cl"])
     plt.title("Span-wise lift distribution")
     plt.ylabel("$C_l$ [-]")
     plt.grid()
     plt.xlabel("Span [m]")
+
+    forces = []
 
 
 def fuselage_bending_shear(aircraft, force_run):
@@ -179,3 +155,33 @@ def fuselage_bending_shear(aircraft, force_run):
     # Save the final dataframe with all the additional columns
     df_location2 = Path('data', 'dataframes', f'fuselage_stresses_final.dat')
     df.to_csv(df_location2, index=False)
+
+
+def open_df(force_run=False):
+    df_location = Path('data', 'dataframes', 'wing_loading.dat')
+    try:
+        if force_run:
+            raise FileNotFoundError
+        df = pd.read_csv(df_location)
+    except FileNotFoundError:
+        data_started = False
+        data = []
+
+        location = Path('data', 'xflr5', 'xflr_file_1.txt')
+        with open(location) as file:
+            for line in file.readlines():
+                line = line.strip("\n")
+                if line == "Main Wing":
+                    data_started = True
+                elif data_started:
+                    line = line.split(" ")
+
+                    line = [x for x in line if x != '']
+                    if len(line) > 0:
+                        data.append(line)
+
+        header = data.pop(0)
+        data = np.array([[float(y) for y in x] for x in data])
+        df = pd.DataFrame(data, columns=header)
+        df.to_csv(df_location, index=False)
+    return df
