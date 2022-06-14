@@ -17,7 +17,7 @@ from detailedDesign.analysis.dragPolar import make_drag_polar
 logger = logging.getLogger("logger")
 
 
-def perform_analyses(aircraft, make_stability):
+def perform_analyses(aircraft, make_stability, stress):
     make_avl_file(aircraft)
 
     sketch_aircraft(aircraft)
@@ -52,8 +52,9 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
-    # make_loading_diagrams(aircraft)
-    # find_bending_shear(aircraft)
+    if stress:
+        make_loading_diagrams(aircraft)
+        find_bending_shear(aircraft)
 
     #####
     state = aircraft.states["cruise"]
