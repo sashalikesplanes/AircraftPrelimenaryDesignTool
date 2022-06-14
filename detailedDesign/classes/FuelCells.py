@@ -23,7 +23,7 @@ class FuelCells(Component):
 
     def size_self(self):
         # use peak power for this, since the fuel stack has to be able to provide this
-        power_peak = self.Power.own_power_peak / self.conversion_efficiency
+        power_peak = self.Power.own_power_peak / self.conversion_efficiency * self.redundency
 
         self.own_mass = power_peak/self.mass_power_density  # [kg]
         self.size = self.own_mass/self.W_Size  # [m3]
@@ -31,7 +31,7 @@ class FuelCells(Component):
         self.logger.debug(f" {self.size = }")
         # TODO Update
         fuselage = self.Power.FuselageGroup.Fuselage
-        self.pos = np.array([fuselage.Cabin.length + fuselage.cockpit_length, 0, 0])
+        self.pos = np.array([self.Power.FuselageGroup.Aircraft.x_lemac + self.Power.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord / 2, 0, 0])
 
 
         # self.voltage = 1.2*self.conversion_efficiency*self.amount_cells

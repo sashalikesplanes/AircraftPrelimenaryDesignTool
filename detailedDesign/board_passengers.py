@@ -8,7 +8,7 @@ def unboard_passengers_fuel(aircraft):
     fuselage.AftFuelContainer.current_fuel_mass = 0
     fuselage.AssFuelContainer.current_fuel_mass = 0
     fuselage.ForwardFuelContainer.current_fuel_mass = 0
-
+    fuselage.CargoBay.current_cargo_mass = 0
     return aircraft
 
 def board_passengers_half_fuel(aircraft):
@@ -17,6 +17,14 @@ def board_passengers_half_fuel(aircraft):
     fuselage.AftFuelContainer.current_fuel_mass = fuselage.AftFuelContainer.mass_H2 / 2
     fuselage.AssFuelContainer.current_fuel_mass = fuselage.AssFuelContainer.mass_H2 / 2
     fuselage.ForwardFuelContainer.current_fuel_mass = fuselage.ForwardFuelContainer.mass_H2 / 2
+
+def board_passengers_no_fuel(aircraft):
+    board_passengers(aircraft)
+    fuselage = aircraft.FuselageGroup.Fuselage
+    fuselage.AftFuelContainer.current_fuel_mass = 0
+    fuselage.AssFuelContainer.current_fuel_mass = 0
+    fuselage.ForwardFuelContainer.current_fuel_mass = 0
+
 
 
 
@@ -95,5 +103,8 @@ def board_passengers(aircraft):
     fuselage.AftFuelContainer.current_fuel_mass = fuselage.AftFuelContainer.mass_H2
     fuselage.AssFuelContainer.current_fuel_mass = fuselage.AssFuelContainer.mass_H2
     fuselage.ForwardFuelContainer.current_fuel_mass = fuselage.ForwardFuelContainer.mass_H2
+
+
+    fuselage.CargoBay.current_cargo_mass = fuselage.FuselageGroup.Aircraft.cargo_mass
 
     return aircraft
