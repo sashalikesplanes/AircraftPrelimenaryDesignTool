@@ -30,7 +30,6 @@ def perform_analyses(aircraft, make_stability, stress):
     logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
     #get_ROC_V_plot(aircraft)
-
     get_performance_altitude_plot(aircraft)
     # plt.figure()
     if make_stability:
