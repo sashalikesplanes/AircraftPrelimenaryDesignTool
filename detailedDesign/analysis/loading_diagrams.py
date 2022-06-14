@@ -57,7 +57,7 @@ def make_wing_loading_diagrams(aircraft):
     ax2.plot(X, np.array(moment_integral) * -10 ** -3, "-", color="tab:green")
     ax2.grid()
 
-    aircraft.WingGroup.Wing.Fuselage.span_wise_shear = shear
+    aircraft.WingGroup.Wing.span_wise_shear = shear
     aircraft.WingGroup.Wing.span_wise_moment = moment_integral
 
 
@@ -104,9 +104,9 @@ def make_aircraft_loading_diagrams(aircraft):
     forces.append(lift)
 
     # Plot the forces for debugging
-    plt.figure()
-    [x.plot() for x in forces]
-    plt.title("Forces Drawing")
+    # plt.figure()
+    # [x.plot() for x in forces]
+    # plt.title("Forces Drawing")
 
     # Initialize a new figure
     fig, (ax1, ax2) = plt.subplots(2)
@@ -124,17 +124,19 @@ def make_aircraft_loading_diagrams(aircraft):
     # Plot the bending and shear diagram
     ax1.set_title("Fuselage Shear Loading Diagram")
     ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
-    ax1.plot(X, shear * 10 ** -3, color="tab:red")
-    ax1.plot(X, absolute_shear, "--", color="tab:red")
-    ax1.hlines([shear_cut1, shear_cut2],0,108,colors="tab:red", linestyles='dashed')
+    ax1.plot(X, shear * 10 ** -3, color="tab:red", label="Shear Force")
+    ax1.plot(X, absolute_shear, "--", color="tab:red", label="Absolute Shear Force")
+    ax1.hlines([shear_cut1], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red",
+               linestyles='dashdot')
+    ax1.hlines([shear_cut2], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red", linestyles='dashdot')
     ax1.grid()
 
-    moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
+    # moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
 
     ax2.set_title("Fuselage Bending Diagram")
     ax2.set(xlabel="Longitudinal Position [m]", ylabel="Bending Moment [kNm]")
     ax2.plot(X, moment * 10 ** -3, color="tab:green")
-    ax2.plot(X, np.array(moment_integral) * 10 ** -3, "--", color="tab:green")
+    # ax2.plot(X, np.array(moment_integral) * 10 ** -3, "--", color="tab:green")
     ax2.grid()
 
     aircraft.FuselageGroup.Fuselage.longitudinal_shear = shear

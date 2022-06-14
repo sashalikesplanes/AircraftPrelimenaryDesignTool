@@ -148,6 +148,7 @@ def fuselage_bending_shear(aircraft, force_run):
     # Plot the fuselage thickness against longitudinal position
     plt.figure()
     plt.plot(df["x"], max_thickness)
+    plt.grid()
     plt.title("Longitudinal Skin Thickness Variation")
     plt.xlabel("Longitudinal position [m]")
     plt.ylabel("Skin Thickness [mm]")
