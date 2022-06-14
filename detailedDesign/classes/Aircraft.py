@@ -37,6 +37,7 @@ class Aircraft(Component):
         # Drag states
         self.C_D_min = 0.055  # Initial Value
         self.C_D_TO = 0
+        self.CD = 0.06
 
         self.cruise_drag = 750000  # needed as drag comes from previous iteration
 
@@ -120,6 +121,7 @@ class Aircraft(Component):
         self.oem = self.get_mass() * self.oem_contingency
 
         total_C_D_min, CDi, CD, total_drag, self.C_D_TO = get_drag(self)
+        self.CD = CD
         self.C_D_min = total_C_D_min
         self.cruise_drag = total_drag
         self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")

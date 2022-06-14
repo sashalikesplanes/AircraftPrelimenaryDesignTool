@@ -85,6 +85,10 @@ def print_summary(aircraft):
     logger.debug(f"###################################")
     logger.debug(
         f"MTOM = {aircraft.mtom:.4E} kg, OEM = {aircraft.oem:.4E} kg, Fuel Mass = {aircraft.fuel_mass:.4E}")
+    logger.debug(f"Take off speed: {aircraft.takeoff_speed} m/s")
+    engines = aircraft.WingGroup.Engines
+    max_thrust = engines.own_amount_fans * engines.thrust_per_fan
+    logger.debug(f"Maximum speed : {(max_thrust / (aircraft.CD * 0.5 * 0.819 * aircraft.reference_area)) ** 0.5}")
     logger.debug(f"Wing Area: {aircraft.WingGroup.Wing.wing_area:.2E} m2")
     logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span:.3E} m")
     logger.debug(f"V Tail Area: {v_tail.surface_area}")
