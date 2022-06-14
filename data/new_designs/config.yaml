@@ -9,7 +9,7 @@ Aircraft:
   C_L_max: 1.276 # from DATCOM method2
   C_L_TO: 1.5
   count_pilot: 3
-  x_lemac: 55 # TODO optimize for stability
+  x_lemac: 78 # TODO optimize for stability
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
@@ -39,7 +39,7 @@ Aircraft:
         taper: 0.3 # [-] - picked from ADSEE
         aspect_ratio: 4 # [-] - picked from ADSEE
         three_quarter_chord_sweep: 0 # [rad] - picked from ADSEE
-        volume_coefficient: 1.5 # [-] General Aviation Design
+        volume_coefficient: 2.5 # [-] General Aviation Design
     Power:
       percentage_propulsion_power: 0.95 #percentage of total power that goes to propulsion system
       fuel_fraction_takeoff: 0.97 # jet fuel

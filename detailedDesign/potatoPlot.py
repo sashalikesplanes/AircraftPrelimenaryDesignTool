@@ -177,15 +177,14 @@ def make_potato_plot(aircraft, debug=False):
     plot_potato_curve(aircraft, plt_1, axs, c="b")
     plt_2 += plt_1
 
-    cg_range = find_cg_range(plt_2, aircraft)
+    cg_range = find_cg_range(plt_1, aircraft)
     if debug:
         plt.show()
         plt.close()
     else:
         save_path = Path("plots", "potato_plot")
         plt.tight_layout()
-        plt.savefig(save_path, dpi=9000)
-        plt.show()
+        plt.savefig(save_path, dpi=900)
         plt.close()
     return cg_range
 
@@ -208,19 +207,19 @@ def plot_potato_curve(aircraft, data, axs, c="b"):
         lst_x_lemac[i] = (lst_x[i] - aircraft.x_lemac) / aircraft.WingGroup.Wing.mean_geometric_chord
     dots = ""
 
-    axs[0, 0].plot(lst_x_lemac, lst_mass, f'{c}{dots}-')
+    axs[0, 0].plot(lst_x_lemac, lst_mass, f'{c}{dots}-', linewidth=0.4)
     axs[0, 0].set_title("X cg loading diagram")
     axs[0, 0].set(xlabel='X [% mac]', ylabel='Total Mass [kg]')
 
-    axs[0, 1].plot(lst_x, lst_mass, f'{c}{dots}-')
+    axs[0, 1].plot(lst_x, lst_mass, f'{c}{dots}-', linewidth=0.4)
     axs[0, 1].set_title("X cg loading diagram")
     axs[0, 1].set(xlabel='X [m]', ylabel='Total Mass [kg]')
 
-    axs[1, 0].plot(lst_y, lst_mass, f'{c}{dots}-')
+    axs[1, 0].plot(lst_y, lst_mass, f'{c}{dots}-', linewidth=0.4)
     axs[1, 0].set_title("Y cg loading diagram")
     axs[1, 0].set(xlabel='Y [m]', ylabel='Total Mass [kg]')
 
-    axs[1, 1].plot(lst_z, lst_mass, f'{c}{dots}-')
+    axs[1, 1].plot(lst_z, lst_mass, f'{c}{dots}-', linewidth=0.4)
     axs[1, 1].set_title("Z cg loading diagram")
     axs[1, 1].set(xlabel='Z [m]', ylabel='Total Mass [kg]')
 

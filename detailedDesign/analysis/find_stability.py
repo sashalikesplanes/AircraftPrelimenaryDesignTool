@@ -23,7 +23,6 @@ def find_stability(aircraft):
     y_min = 1e6
     z_min = None
     # For every row in the dataframe we try to find the Sh/S value, we then find the minimum Sh/S
-    print(df)
     for row in np.array(df):
         logger.debug(row)
         
@@ -48,7 +47,7 @@ def find_stability(aircraft):
             z_min = z
 
         # Plot the different lines from the carrot plot inside the scissor plot
-        plt.plot([x1, x2], [y, y], "--", label=row[4])
+        plt.plot([x1, x2], [y, y], "--", label=f'LE pos at MAC: {row[4]}, MTOM = {row[5]/1e3:.2f} [ton], Drag: {row[5]/1e6} [kN]')
         print(y)
 
     plt.savefig(Path('plots', 'scissor'))

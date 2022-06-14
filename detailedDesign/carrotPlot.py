@@ -25,7 +25,7 @@ def make_carrot_plot(force_run=False):
         max_length = 100
         # x_lemacs = np.linspace(40, 80, 8)
       #
-        x_lemacs = [55]
+        x_lemacs = [40, 45, 50, 55, 60]
         lst = []
         for x_lemac in x_lemacs:
             # print(f"Starting {x_lemac}")
@@ -34,14 +34,13 @@ def make_carrot_plot(force_run=False):
             aircraft.x_lemac = x_lemac
 
             run_aircraft(aircraft)
-            # print("Getting CGs")
             cg_range = make_potato_plot(aircraft, debug=debug)
             x_lemac_over_l_fus = x_lemac / aircraft.FuselageGroup.Fuselage.length
 
-            lst.append([x_lemac_over_l_fus, cg_range[0], cg_range[1], x_lemac])
+            lst.append([x_lemac_over_l_fus, cg_range[0], cg_range[1], x_lemac, aircraft.mtom, aircraft.cruise_drag])
             # print(f"Finished {x_lemac}")
 
-        header = ["pos", "fw cg", "aft cg", "xlemac"]
+        header = ["pos", "fw cg", "aft cg", "xlemac", "mtom", "drag"]
         df = pd.DataFrame(np.array(lst), columns=header)
         df.to_csv(df_location)
 
@@ -54,6 +53,5 @@ def make_carrot_plot(force_run=False):
     plt.savefig(Path("plots", "carrot.png"))
     plt.show()
     plt.close()
-    print(df)
 
     return df
