@@ -14,7 +14,7 @@ from detailedDesign.design_structure import design_structure
 #     return GUESS_AT_LOAD_FACTOR
 
 
-def detail_design(debug=False, make_stability=False):
+def detail_design(debug=False, make_stability=False, stress=False):
     # State in state
     states = {"cruise": State('cruise'), "take-off": State('take-off')}
     config_file = Path('data', 'new_designs', 'config.yaml')
@@ -25,7 +25,7 @@ def detail_design(debug=False, make_stability=False):
 
     # Stage 2: Analyse the things
     # make_stability = True
-    perform_analyses(aircraft, make_stability)
+    perform_analyses(aircraft, make_stability, stress=stress)
 
     # Stage 3: Sort of detailed design
     # design_structure(aircraft)
