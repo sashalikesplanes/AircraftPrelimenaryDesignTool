@@ -128,7 +128,8 @@ def print_summary(aircraft):
     logger.debug(f"Reference Thrust Takeoff {aircraft.reference_takeoff_thrust}")
     logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
     logger.debug(f"Neutral point: {aircraft.neutral_point}")
-    logger.debug(f"C_g position: {aircraft.cg_loaded_half_fuel}")
+    logger.debug(f"C_g position: {aircraft.cg_loaded_no_fuel}")
+    logger.debug(f"C_g position: {aircraft.cg_loaded}")
     logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
 
     logger.debug(f"###################################################################")

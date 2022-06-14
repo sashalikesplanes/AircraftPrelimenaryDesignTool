@@ -1,7 +1,7 @@
 from detailedDesign.classes.Component import Component
 from detailedDesign.classes.FuselageGroup import FuselageGroup
 from detailedDesign.classes.WingGroup import WingGroup
-from detailedDesign.board_passengers import board_passengers, unboard_passengers_fuel, board_passengers_half_fuel
+from detailedDesign.board_passengers import board_passengers, unboard_passengers_fuel, board_passengers_half_fuel, board_passengers_no_fuel
 import misc.constants as const
 from detailedDesign.get_drag import get_drag
 import numpy as np
@@ -66,7 +66,7 @@ class Aircraft(Component):
         mean_geometric_chord_wing = self.WingGroup.Wing.mean_geometric_chord
         C_L_term = self.WingGroup.Wing.C_L_alpha * (x_cg - x_acw) / mean_geometric_chord_wing
         C_L_H_term = 0.9 * horizontal_tail_ratio * C_L_H_alpha * d_alphah_d_alpha * (x_ach - x_cg) / mean_geometric_chord_wing
-        return C_L_term + C_m_alpha_fus + C_L_H_term
+        return C_L_term + C_m_alpha_fus - C_L_H_term
 
     @property
     def neutral_point(self):
@@ -140,6 +140,15 @@ class Aircraft(Component):
         """Get cg of empty aircraft with all the components"""
         self.get_cged()
         return self.get_cg()
+
+    @property
+    def cg_loaded_no_fuel(self):
+        """Get cg of aircraft with cargo and passengers"""
+        board_passengers_no_fuel(self)
+        self.get_cged()
+        cg = self.get_cg()
+        unboard_passengers_fuel(self)
+        return cg
 
     @property
     def cg_loaded(self):

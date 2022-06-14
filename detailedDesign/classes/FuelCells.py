@@ -31,7 +31,7 @@ class FuelCells(Component):
         self.logger.debug(f" {self.size = }")
         # TODO Update
         fuselage = self.Power.FuselageGroup.Fuselage
-        self.pos = np.array([fuselage.Cabin.length + fuselage.cockpit_length, 0, 0])
+        self.pos = np.array([self.Power.FuselageGroup.Aircraft.x_lemac + self.Power.FuselageGroup.Aircraft.WingGroup.Wing.mean_geometric_chord / 2, 0, 0])
 
 
         # self.voltage = 1.2*self.conversion_efficiency*self.amount_cells

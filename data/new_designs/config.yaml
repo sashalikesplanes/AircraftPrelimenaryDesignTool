@@ -1,15 +1,15 @@
 Aircraft:
-  cargo_mass: 100000 # [kg] extra cargo mass
+  cargo_mass: 50000 # [kg] extra cargo mass
   ultimate_load_factor: 3.75  # [-]
-  loiter_duration: 3600 # seconds 
-  oem_contingency: 1.1  # multiplier of OEM
+  loiter_duration: 1800 # seconds 
+  oem_contingency: 1.05  # multiplier of OEM
   cruise_drag_contingency: 1 # multiplier of cruise drag
   clean_stall_speed: 100 # m/s picked arbitrarily as no info in regulations
   required_climb_rate: 5 # m/s
   C_L_max: 1.276 # from DATCOM method2
   C_L_TO: 1.5
   count_pilot: 3
-  x_lemac: 55 # TODO optimize for stability
+  x_lemac: 70 # TODO optimize for stability
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
@@ -22,7 +22,7 @@ Aircraft:
         taper: 0.3 # [-] - picked from ADSEE
         aspect_ratio: 1.5 # [-] - picked from ADSEE
         leading_edge_sweep: 0.5 # [rad] - picked from ADSEE
-        volume_coefficient: 0.09 # [-] - General Aviation Design
+        volume_coefficient: 0.07 # [-] - General Aviation Design
         C_d_y: 0.7 #randomly chosen, 0.55-0.8 for conventional a/c, https://www.ripublication.com/ijaer18/ijaerv13n10_85.pdf
         Kf1: 0.7 # randomly chosen, 0.65-0.75 for conventional a/c
         Kf2: 1.4 # randomly chosen, 1.3-1.4 for conventional a/c
@@ -61,7 +61,7 @@ Aircraft:
       yieldstrength: 352000000 # [Pa], yield strength Al 2219-T81
 
       hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
-      tail_length_factor: 1.5 # number to make the tail longer , relating to height
+      tail_length_factor: 3.25 # number to make the tail longer , relating to height
       inner_width: 9  # [m]
       inner_height: 13.7 #  [m]
       inner_ass_diameter: 5.5 # [m] represents the smaller part at the back
@@ -106,7 +106,7 @@ Aircraft:
       C_L_min: -0.61 # Bs number
       defl_aileron: 20 #[degrees], A380
       C_L_delta_a: 0.05524 #[1/deg], random
-      d_epsilon_d_alpha: 0.4 # rad
+      d_epsilon_d_alpha: 0.2 # rad
 
       HLDs:
         test_prop: 1
