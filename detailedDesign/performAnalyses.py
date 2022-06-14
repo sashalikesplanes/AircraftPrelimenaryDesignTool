@@ -46,14 +46,14 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Direct Operating Cost / ASK [$/pax/km]: {cost_per_passenger_km:.4f}")
     logger.debug(f"Total Program Cost [M$]: {total_program_cost :.2f}")
     logger.debug(f"Break-even aircraft number [-]: {breakeven_point}")
-    logger.debug(f"Revenue per flight [M$]: {revenue_per_flight /1e6 :.2f}")
-    logger.debug(f"Cost per flight [M$]: {cost_per_flight / 1e6:.2f}")
+    logger.debug(f"Revenue per flight [$]: {revenue_per_flight :.2f}")
+    logger.debug(f"Cost per flight [$]: {cost_per_flight :.2f}")
     logger.debug(f"Operational ROI [%]: {roi:.2f}")
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
-    # make_loading_diagrams(aircraft)
-    # find_bending_shear(aircraft)
+    make_loading_diagrams(aircraft)
+    find_bending_shear(aircraft)
 
     #####
     state = aircraft.states["cruise"]

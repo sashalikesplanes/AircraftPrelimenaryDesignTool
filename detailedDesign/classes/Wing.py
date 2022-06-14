@@ -29,6 +29,9 @@ class Wing(Component):
         self.installation_angle = 0 # rad - angle wrt to the fuselagwinge
 
         self.x_aerodynamic_center = None
+
+        self.span_wise_shear = None
+        self.span_wise_moment = None
         # Create all the parameters that this component must have here:
         # Using self.property_name = None
         self._freeze()
