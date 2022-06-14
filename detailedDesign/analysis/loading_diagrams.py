@@ -22,17 +22,32 @@ def make_wing_loading_diagrams(aircraft):
     # Try to open the dataframe in order to generate it if it is not present
     open_df()
 
-    df_location = Path('data', 'dataframes', 'wing_loading.dat')
-    lift = LiftCurve(df_location, aircraft.mtom * g / 2)
-    lift.calc_shear(100)
+    # df_location = Path('data', 'dataframes', 'wing_loading.dat')
+    # lift = LiftCurve(df_location, aircraft.mtom * g / 2)
+    # lift.calc_shear(100)
 
     # Make the liftcurve and the linear load
     span = aircraft.WingGroup.Wing.span / 2
     total_length = span
     m_wing = aircraft.WingGroup.Wing.own_mass
-    lift_fus = (aircraft.mtom - m_wing) * g
+    m_engines = aircraft.WingGroup.Engines.own_mass
+    lift_fus = (aircraft.mtom - m_wing - m_engines) * g / 2
     df_location = Path('data', 'dataframes', 'wing_loading.dat')
-    forces = [PointLoad(0, -lift_fus), LiftCurve(df_location, lift_fus + m_wing * g), LinearLoad([span / 2, 0, 0], -m_wing * g, span)]
+    forces = [PointLoad(0, -lift_fus), LiftCurve(df_location, lift_fus + (m_wing + m_engines) * g / 2), LinearLoad([span / 2, 0, 0], -m_wing * g / 2, span)]
+
+    # Find the amount of engines in order to model the engines as point loads
+    n_engines = int(np.ceil(aircraft.WingGroup.Engines.own_amount_fans))
+    spacing_engine = aircraft.WingGroup.Engines.own_spacing
+
+    m_engine = m_engines / n_engines
+
+    y_leftmost_engine = -(n_engines - 1) * spacing_engine / 2
+    for i in range(n_engines):
+        y_current = y_leftmost_engine + i * spacing_engine
+        if y_current > 0:
+            forces.append(PointLoad(y_current, m_engine * g))
+        elif y_current == 0:
+            forces.append(PointLoad(y_current, m_engine * g / 2))
 
     # Initialize a new figure
     fig, (ax1, ax2) = plt.subplots(2)
@@ -40,6 +55,9 @@ def make_wing_loading_diagrams(aircraft):
     # Calculate shear and bending over the longitudinal plane length
     X = np.arange(0, total_length, dx)
     shear = np.array([sum([i.calc_shear(y) for i in forces]) for y in X])
+
+    # TODO: fix the shear in a less hacky way
+    shear = shear - shear[-1]
     # moment = -np.array([sum([i.calc_moment(y) for i in forces]) for y in X])
 
     # Plot the bending and shear diagram
@@ -127,8 +145,9 @@ def make_aircraft_loading_diagrams(aircraft):
     ax1.plot(X, shear * 10 ** -3, color="tab:red", label="Shear Force")
     ax1.plot(X, absolute_shear, "--", color="tab:red", label="Absolute Shear Force")
     ax1.hlines([shear_cut1], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red",
-               linestyles='dashdot')
+               linestyles="dashdot", label="Design Section Cutoffs")
     ax1.hlines([shear_cut2], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red", linestyles='dashdot')
+    ax1.legend()
     ax1.grid()
 
     # moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)

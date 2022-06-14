@@ -154,8 +154,8 @@ class LiftCurve:
         self.cl_sum = self.calc_shear(1000)
         self.force_factor = self.force / self.cl_sum
 
-        print(self.cl_sum)
-        print(self.df)
+        # print(self.cl_sum)
+        # print(self.df)
 
     def calc_shear(self, x):
         running = True
@@ -184,7 +184,7 @@ class LiftCurve:
                 width = abs(data_y[i] - data_y[i-1])
                 force += width * avg_height
 
-                print(data_y[i])
+                # print(data_y[i])
             i += 1
 
         return force * self.force_factor
