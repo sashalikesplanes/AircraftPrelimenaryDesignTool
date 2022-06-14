@@ -52,8 +52,8 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
-    make_loading_diagrams(aircraft)
-    find_bending_shear(aircraft)
+    # make_loading_diagrams(aircraft)
+    # find_bending_shear(aircraft)
 
     #####
     state = aircraft.states["cruise"]
@@ -126,10 +126,12 @@ def print_summary(aircraft):
     engines = aircraft.WingGroup.Engines
     logger.debug(f"Reference Thrust Cruise {aircraft.reference_cruise_thrust}")
     logger.debug(f"Reference Thrust Takeoff {aircraft.reference_takeoff_thrust}")
-    logger.debug(f"C_m_alpha: {aircraft.C_m_alpha}")
-    logger.debug(f"Neutral point: {aircraft.neutral_point}")
-    logger.debug(f"C_g position: {aircraft.cg_loaded_no_fuel}")
-    logger.debug(f"C_g position: {aircraft.cg_loaded}")
+    logger.debug(f"C_m_alpha half fuel: {aircraft.C_m_alpha}")
+    logger.debug(f"CG half fuel: {aircraft.cg_loaded_half_fuel}")
+    logger.debug(f"C_m_alpha no fuel: {aircraft.C_m_alpha_no_fuel}")
+    logger.debug(f"CG no fuel: {aircraft.cg_loaded_no_fuel}")
+    logger.debug(f"C_m_alpha full fuel {aircraft.C_m_alpha_full_fuel}")
+    logger.debug(f"CG full fuel: {aircraft.cg_loaded}")
     logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
 
     logger.debug(f"###################################################################")

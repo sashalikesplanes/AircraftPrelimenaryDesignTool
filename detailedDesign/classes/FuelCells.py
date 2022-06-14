@@ -23,7 +23,7 @@ class FuelCells(Component):
 
     def size_self(self):
         # use peak power for this, since the fuel stack has to be able to provide this
-        power_peak = self.Power.own_power_peak / self.conversion_efficiency
+        power_peak = self.Power.own_power_peak / self.conversion_efficiency * self.redundency
 
         self.own_mass = power_peak/self.mass_power_density  # [kg]
         self.size = self.own_mass/self.W_Size  # [m3]

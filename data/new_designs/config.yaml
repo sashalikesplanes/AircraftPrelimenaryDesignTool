@@ -1,5 +1,5 @@
 Aircraft:
-  cargo_mass: 50000 # [kg] extra cargo mass
+  cargo_mass: 100000 # [kg] extra cargo mass
   ultimate_load_factor: 3.75  # [-]
   loiter_duration: 1800 # seconds 
   oem_contingency: 1.05  # multiplier of OEM
@@ -9,7 +9,7 @@ Aircraft:
   C_L_max: 1.276 # from DATCOM method2
   C_L_TO: 1.5
   count_pilot: 3
-  x_lemac: 70 # TODO optimize for stability
+  x_lemac: 56.5 # TODO optimize for stability
   FuselageGroup:
     Miscellaneous:
       Fish: 5 # [Fish]
@@ -50,6 +50,7 @@ Aircraft:
       eff_converter: 0.95
       cable_contingency: 1.05 # cable losses
       FuelCells:
+        redundency: 1.3 # picked to match the fuel cells
         conversion_efficiency: 0.6 # [-] - multiple literature source, 60% also works
         current_density: 8 # [Amps/m2] - same paper as above
         mass_power_density: 8000 # [W/kg]
@@ -61,7 +62,7 @@ Aircraft:
       yieldstrength: 352000000 # [Pa], yield strength Al 2219-T81
 
       hull_shape_factor: 4.6 # 4.6 - conventional, 6.5 - planar
-      tail_length_factor: 3.25 # number to make the tail longer , relating to height
+      tail_length_factor: 2.25 # number to make the tail longer , relating to height
       inner_width: 9  # [m]
       inner_height: 13.7 #  [m]
       inner_ass_diameter: 5.5 # [m] represents the smaller part at the back
