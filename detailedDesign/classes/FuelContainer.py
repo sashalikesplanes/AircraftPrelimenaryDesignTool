@@ -50,7 +50,7 @@ class FuelContainer(Component):
         self.area_tank = 4 * np.pi * self.radius_tank ** 2 + 2 * np.pi * self.radius_tank * self.length_cyl
 
         # Insulation mass/thickness sizing
-        thickness_insulation = np.arange(0.001, 0.09, 0.000001)
+        thickness_insulation = np.arange(0.001, 0.01, 0.000001)
         Q_conduction = self.thermal_cond * (self.temp_room - self.temp_LH2) / thickness_insulation
         Q_flow = Q_conduction * self.area_tank
         boiloff_rate = Q_flow / self.E_boiloff
@@ -63,6 +63,13 @@ class FuelContainer(Component):
         self.thickness_insulation = thickness_insulation[index]
         self.total_tank_thickness = self.thickness_insulation + self.thickness
         self.empty_space_thickness = self.total_tank_thickness
+
+        # plotting
+        # plt.plot(thickness_insulation, mass_total)
+        # plt.ylabel("Total mass boiloff, tank, insulation [kg]")
+        # plt.xlabel("Insulation thickness [m]")
+        # plt.title("Effect of insulation thickness on total tank weight")
+        # plt.show()
 
     def size_self(self):
         state = self.Fuselage.FuselageGroup.Aircraft.states["cruise"]
@@ -84,19 +91,15 @@ class FuelContainer(Component):
         # self.logger.debug(f" { self.radius_tank = }, {self.mass_tank = }")
         # self.logger.debug(f"Empty thickness before: {self.empty_space_thickness} m")
         # self.logger.debug(f"Empty thickness after: {self.empty_space_thickness} m")
-        # self.logger.debug(f"Empty space thiccness: {self.empty_space_thickness:.4E} [m]")
-        # self.logger.debug(f"Metal tank thiccness: {self.thickness:.4E} [m]")
-        # self.logger.debug(f"Total tank thiccness: {self.total_tank_thickness:.4E} [m]")
+        # self.logger.debug(f"Empty space thickness: {self.empty_space_thickness:.4E} [m]")
+        # self.logger.debug(f"Insulation thickness: {self.thickness_insulation} [m]")
+        self.logger.debug(f"Metal tank thickness: {self.thickness:.4E} [m]")
+        self.logger.debug(f"Total tank thickness: {self.total_tank_thickness:.4E} [m]")
         # self.logger.debug(f"Total hydrogen mass: {self.mass_H2:.4E} [kg]")
         # self.logger.debug(f"Total tank mass: {self.own_mass:.4E} [kg]")
         # self.logger.debug(f"Total tank volume: {self.volume_tank:.4E} [m3]")
 
-        # plotting
-        # plt.plot(thickness_insulation, mass_total)
-        # plt.ylabel("Total mass boiloff, tank, insulation [kg]")
-        # plt.xlabel("Insulation thickness [m]")
-        # plt.title("Effect of insulation thickness on total tank weight")
-        # plt.show()
+
 
     def cg_self(self):
 
