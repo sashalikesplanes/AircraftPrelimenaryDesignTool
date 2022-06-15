@@ -13,6 +13,7 @@ from detailedDesign.bending_shear import find_bending_shear
 import numpy as np
 from misc.constants import g
 from detailedDesign.analysis.dragPolar import make_drag_polar
+from detailedDesign.critical_range import calculate_crit_range
 
 logger = logging.getLogger("logger")
 
@@ -97,6 +98,7 @@ def print_summary(aircraft):
     logger.debug(f"{aircraft.cruise_drag = :.4E} N")
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
+    logger.debug(f"Range at critical point: {calculate_crit_range(aircraft, 3760e3) / 1000:.2f} km")
 
     fuselage = aircraft.FuselageGroup.Fuselage
     logger.debug(f"Cockpit length: {fuselage.cockpit_length} m")
@@ -106,6 +108,7 @@ def print_summary(aircraft):
     logger.debug(f"Fuselage Length: {fuselage.length} m")
     logger.debug(f"Forward fuel length: {fuselage.ForwardFuelContainer.length} m")
     logger.debug(f"Aft fuel length: {fuselage.AftFuelContainer.length} m")
+    logger.debug(f"Ass fuel length: {fuselage.AssFuelContainer.length} m")
     logger.debug(f"TOtal volume :{fuselage.ForwardFuelContainer.volume_tank + fuselage.AftFuelContainer.volume_tank + fuselage.AssFuelContainer.volume_tank}")
 
     engines = aircraft.WingGroup.Engines

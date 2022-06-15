@@ -29,6 +29,25 @@ class Power(Component):
         # Using self.property_name = value
         self._freeze()
 
+    def get_fuel_fractions(self, range_, loiter_duration):
+
+        cruise_state = self.FuselageGroup.Aircraft.states['cruise']
+
+        average_cruise_lift = (self.FuselageGroup.Aircraft.mtom - self.mass_H2 / 2) * g 
+        lift_over_drag = average_cruise_lift / self.FuselageGroup.Aircraft.cruise_drag
+
+        specific_fuel_consumption = 1 / self.hydrogen_energy_density
+
+        engines = self.FuselageGroup.Aircraft.WingGroup.Engines
+        self.propulsive_efficiency = self.FuelCells.conversion_efficiency * self.eff_converter / self.cable_contingency * engines.eff_mot_inv * (engines.propulsive_eff + engines.increase_BLI_eff)
+
+        fuel_fraction_cruise = np.exp(- range_ / lift_over_drag * g * specific_fuel_consumption / self.propulsive_efficiency)
+
+        fuel_fraction_loiter = np.exp(- cruise_state.velocity * loiter_duration / lift_over_drag * g * specific_fuel_consumption / self.propulsive_efficiency)
+
+        return fuel_fraction_cruise, fuel_fraction_loiter
+
+
     def size_self(self):
         cruise_state = self.FuselageGroup.Aircraft.states['cruise']
         P_motor = self.FuselageGroup.Aircraft.WingGroup.Engines.P_motor
@@ -58,20 +77,11 @@ class Power(Component):
         fuel_fraction_misc_jet = self.fuel_fraction_takeoff * self.fuel_fraction_climb * self.fuel_fraction_landing 
         self.fuel_fraction_misc = 1 - ((1 - fuel_fraction_misc_jet) * self.jet_fuel_energy_density / self.hydrogen_energy_density)
 
-        average_cruise_lift = (self.FuselageGroup.Aircraft.mtom - self.mass_H2 / 2) * g 
-        lift_over_drag = average_cruise_lift / self.FuselageGroup.Aircraft.cruise_drag
-
-        specific_fuel_consumption = 1 / self.hydrogen_energy_density
-
-        engines = self.FuselageGroup.Aircraft.WingGroup.Engines
-        self.propulsive_efficiency = self.FuelCells.conversion_efficiency * self.eff_converter / self.cable_contingency * engines.eff_mot_inv * (engines.propulsive_eff + engines.increase_BLI_eff)
-
-        fuel_fraction_cruise = np.exp(- cruise_state.range / lift_over_drag * g * specific_fuel_consumption / self.propulsive_efficiency)
-
         loiter_duration = self.FuselageGroup.Aircraft.loiter_duration
-        self.fuel_fraction_loiter = np.exp(- cruise_state.velocity * loiter_duration / lift_over_drag * g * specific_fuel_consumption / self.propulsive_efficiency)
 
-        fuel_fraction_total = self.fuel_fraction_misc * fuel_fraction_cruise * self.fuel_fraction_loiter
+        fuel_fraction_cruise, fuel_fraction_loiter = self.get_fuel_fractions(cruise_state.range, loiter_duration)
+
+        fuel_fraction_total = self.fuel_fraction_misc * fuel_fraction_cruise * fuel_fraction_loiter
 
         self.logger.debug(f"{fuel_fraction_cruise = }")
         self.logger.debug(f"{self.fuel_fraction_loiter = }")

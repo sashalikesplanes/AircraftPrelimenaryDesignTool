@@ -62,3 +62,19 @@ def calc_range(W0, W1, aircraft):
 
     return max(result, 0)
 
+def calc_range(W0, W1, aircraft):
+    print("Fraction W5/W4:", W1/W0)
+    prop_eff = aircraft.FuselageGroup.Power.propulsive_efficiency
+    c_p = 1 / energyDensityHydrogen
+
+    # TODO: implement realistic L/D
+    L = (aircraft.mtom - 0.5 * (W0 - W1)) * 9.81
+    D = aircraft.cruise_drag
+    L_over_D_cruise = L / D
+
+    # Range formula from ADSEE I
+    power = aircraft.FuselageGroup.Power
+
+    result = (prop_eff / g / c_p) * L_over_D_cruise * np.log(W0 / W1 * power.fuel_fraction_misc * power.fuel_fraction_loiter)
+
+    return max(result, 0)

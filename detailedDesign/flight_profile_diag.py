@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 from dataclasses import dataclass, field
 import matplotlib.pyplot as plt
 
@@ -69,14 +70,14 @@ points.add_point('Descent and Land', climb_range, 0)
 points.add_point('Taxi', taxi_range, 0)
 
 
-fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+fig, (ax1, ax2) = plt.subplots(1, 2)
 
 ax1.plot(points.ranges, points.altitudes, color='k')
 ax2.plot(points.ranges, points.altitudes, color='k')
 
-for point in points.points:
-    ax1.annotate(point.name, point.label_point)
-    ax2.annotate(point.name, point.label_point)
+# for point in points.points:
+    # ax1.annotate(point.name, point.label_point)
+    # ax2.annotate(point.name, point.label_point)
 
 ax1.set_xlim(0, points.ranges[3] + 5)
 ax2.set_xlim(points.ranges[4] - 2, points.ranges[-1] + 1)
@@ -102,7 +103,7 @@ ax2.plot((-d, +d), (1 - d, 1 + d), **kwargs)
 fig.subplots_adjust(wspace=0.05)
 
 fig.supxlabel('Range [km]')
-fig.supylabel('Altitude [km]')
+ax1.set_ylabel('Altitude [km]')
 
-plt.show()
-
+plt.savefig(Path('plots', 'flightProfileDiagram.pdf'))
+plt.close()
