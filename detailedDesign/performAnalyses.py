@@ -10,6 +10,7 @@ from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
 from detailedDesign.climbPerformance import get_max_climb_rate, get_climb_angle, get_power_plot, calc_ROC, get_theta_plot, get_heigt_velocity_plot, get_performance_altitude_plot
 from detailedDesign.potatoPlot import make_potato_plot
 from detailedDesign.bending_shear import find_bending_shear
+from detailedDesign.flightEnvelope import make_flight_envelope
 import numpy as np
 from misc.constants import g
 from detailedDesign.analysis.dragPolar import make_drag_polar
@@ -73,6 +74,10 @@ def perform_analyses(aircraft, make_stability, stress):
     #####
 
     make_drag_polar(aircraft)
+    make_flight_envelope(aircraft, 'take-off')
+    make_flight_envelope(aircraft, 'cruise')
+
+
 
     plt.show()
 

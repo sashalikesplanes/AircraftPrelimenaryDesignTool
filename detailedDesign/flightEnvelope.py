@@ -6,6 +6,7 @@ from misc.ISA import getDensity
 
 
 def make_flight_envelope(aircraft, test_state):
+    plt.clf()
     altitude = aircraft.states[test_state].altitude
     rho = getDensity(altitude)
     wing_span = aircraft.WingGroup.Wing.span
@@ -22,12 +23,16 @@ def make_flight_envelope(aircraft, test_state):
     delta_C_L_TO = 1
     delta_C_L_land = 1.3 
     V_H = 200 # TODO: Get number somewhere
-    V_C_max = aircraft.states[test_state].velocity
+    if test_state == "take-off":
+        V_C_max = aircraft.states["cruise"].velocity * np.sqrt(0.819 / 1.225)
+    else:
+        V_C_max = aircraft.states[test_state].velocity
     V_D = V_C_max * 1.25
+    print(V_D)
     n_neg = -1
     n_pos_HLD = 2
     n_neg_HLD = 0
-    max_alt = 7000
+    max_alt = 4000
 
 
 
@@ -149,10 +154,11 @@ def make_flight_envelope(aircraft, test_state):
 
 
 
-    plt.title("GET LIMIT LOADS AND MULTIPLY BY 1.5 TO GET ULTIMATE LOADS")
+    # plt.title("GET LIMIT LOADS AND MULTIPLY BY 1.5 TO GET ULTIMATE LOADS")
     figpath = Path("plots", f'flightEnvelope{test_state}')
     plt.savefig(figpath, dpi=600)
-    plt.cla()
+    plt.show()
+    plt.close()
 
 
 def get_gust_load(K_g, U_ds, V, C_L_alpha, wing_loading):
