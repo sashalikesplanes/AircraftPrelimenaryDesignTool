@@ -178,3 +178,122 @@ def get_sizes_and_loads(head_component):
     for component in head_component.components:
         lst += get_sizes_and_loads(component)
     return lst
+
+def wingbox(aircraft):
+    step = 0.1
+    span = aircraft.WingGroup.Wing.span
+    b = np.arange(0, span/2, step)
+    linestyles = ['-','--','-.',':']
+    tvariation = np.arange(0.002, 0.006,0.001)
+    for t in tvariation:
+        listtosavestringers = []
+        listtosavestringersmom = []
+        for y in b:
+            croot = aircraft.WingGroup.Wing.root_chord
+            taper = aircraft.WingGroup.Wing.taper_ratio
+            chord = croot * (1 + 2 * (taper - 1) / span * y)
+            l = 0.5 * chord
+            h = 0.0876 * chord  # from Catia
+            index = np.where(b == y)
+            V = aircraft.WingGroup.Wing.span_wise_shear[index]#-10000000  # from max dependent on span loc
+            Astringer = 0.012  # based on sample report but should be elaborated
+            # Ixxbox = l*h**3/12-(l-2*t)*(h-2*t)**3/12 # Ixx of the box
+            # Ixxstringer = Astringer*(h/2-t)**2
+            # n_stringer = 8 #TODO get a reasonable value
+            # Ixx = Ixxbox+n_stringer*Ixxstringer
+            tauallow = 331 * 10 ** 6/1.5/1.2  # Al7075 +1.5 safety +1.2 for torque
+            slist = np.arange(0, l + h, step)
+            Ixxlist = []
+            for s in slist:
+                if s <= 0.5 * l:
+                    Ixx = -V / tauallow * (0.5 * h * s)
+                if 0.5 * l < s <= 0.5 * l + h:
+                    sfix = 0.5 * l
+                    s = s - sfix
+                    Ixx = -V / tauallow * (0.5 * h * sfix) + -V / tauallow * (0.5 * h * s - 0.5 * s ** 2)
+                if 0.5 * l + h < s <= l + h - step:
+                    sfix1 = 0.5 * l
+                    sfix2 = h
+                    s = s - (sfix1 + sfix2)
+                    Ixx = -V / tauallow * (0.5 * h * sfix1) + -V / tauallow * (
+                                0.5 * h * sfix2 - 0.5 * sfix2 ** 2) + - V / tauallow * (-0.5 * h * s)
+                Ixxlist.append(Ixx)
+            Ixxmax = np.max(Ixxlist)
+            n_stringerlist = np.arange(0, 15, 1)
+            #t= 0.004 #4 mm
+            #print(f"b:{y},index:{index}v:{V},Ixxneeded:{Ixxmax-t * (6 * l * h ** 2 + 2 * h ** 3) / 12}, I per stringer:{Astringer * (h / 2) ** 2} ")
+
+            # for n_stringer in n_stringerlist:
+            #     I = t * (6 * l * h ** 2 + 2 * h ** 3) / 12
+            #     Ixxneeded = Ixxmax - I
+            #     if Ixxneeded < Astringer * (h / 2) ** 2 * n_stringer:
+            #         listtosavestringers.append(n_stringer)
+
+            Ibox = t * (6 * l * h ** 2 + 2 * h ** 3) / 12
+            Ixxneeded = Ixxmax - Ibox
+            n_stringer = 0
+            while Ixxneeded > Astringer * (h / 2) ** 2 * n_stringer:
+                n_stringer += 1
+            #print(f"for a span of {y}, the stringers needed are: {n_stringer}")
+            listtosavestringers.append(n_stringer)
+            # print(f"for a span of {y}, the stringers needed are: {listtosavestringers[0]}")
+            moment = aircraft.WingGroup.Wing.span_wise_moment[index] # this is somehow positive
+            distancetop = h / 2
+            maximumstressbottom = 503 * 10 ** 6 / 1.5  # TODO check
+            Ixxwanted = moment * distancetop / maximumstressbottom
+            # print(f"h:{h}, l:{l}")
+            # print(f"Ixxbox:{Ibox},Istringer: {Astringer * (h / 2) ** 2}")
+            # print(f"Ixxwanted:{Ixxwanted} M:{moment}")
+            n_sttringer = 0
+            while Ixxwanted-Ibox > Astringer * (h / 2) ** 2 * n_sttringer:
+                n_sttringer += 1
+            #print(f"for a span of {y}, the stringers needed are: {n_sttringer}")
+            listtosavestringersmom.append(n_sttringer)
+        linestyleindex = int(np.where(tvariation == t)[0])
+        plt.plot(b,listtosavestringers, label = f"t = {t*1000} [mm]", ls = linestyles[linestyleindex])
+        #plt.plot(b,listtosavestringersmom, label = f"t = {t*1000} [mm]", ls = linestyles[linestyleindex])
+    for i in range(len(listtosavestringersmom)):
+        listtosavestringersmom[i] = 2 * np.ceil((listtosavestringersmom[0] + 1) / 2)
+        # if i < 0.25 * len(listtosavestringersmom):
+        #     listtosavestringersmom[i] = 2*np.ceil((listtosavestringersmom[0]+1)/2)
+        # if 0.25 * len(listtosavestringersmom) <= i < 0.5 * len(listtosavestringersmom):
+        #     listtosavestringersmom[i] = 2*np.ceil((listtosavestringersmom[int(0.25*len(listtosavestringersmom))]+1)/2)
+        # else:
+        #     listtosavestringersmom[i] = 2 * np.ceil((listtosavestringersmom[i] + 1) / 2)
+    plt.plot([0,15.72,15.72,31.44,31.44,47.16,47.16,62.89],[10,10,6,6,2,2,2,2],label = 'Chosen amount of stringers', lw = 3)
+    #plt.plot([0,15.72,15.72,31.44,31.44,47.16,47.16,62.89],[50,50,28,28,8,8,2,2],label = 'Chosen amount of stringers', lw = 3)
+    #plt.plot(b,listtosavestringersmom, label = 'Chosen amount of stringers', lw = 3)
+    plt.title("Stringers needed at different spanwise locations")
+    plt.xlabel("Half span [m]")
+    plt.ylabel("Number of stringers needed [-]")
+    plt.grid()
+    plt.legend()
+    plt.show()
+            #tlist.append(t)
+
+
+        # plt.scatter(n_stringerlist,tlist)
+        # plt.title("hello")
+        # plt.show()
+
+        # for n_stringer in n_stringerlist:
+        #
+        #     tlist = np.arange(0, 15, 0.001)
+        #     Ixxlistq = []
+        #     for t in tlist:
+        #         Ixxthick = (6 * l * h ** 2 + 2 * h ** 3) / 12 * t / 1000
+        #         Ixxstr = Astringer * (h / 2) ** 2 * n_stringer
+        #         Ixxlistq.append((Ixxthick + Ixxstr))
+        #     plt.plot(tlist, Ixxlistq, label=f"number of stringers = {n_stringer}")
+        #
+        #     plt.title("k")
+        # plt.plot([0, 15], [Ixxmax, Ixxmax])
+        # plt.legend()
+        # plt.show()
+
+        #plt.plot(slist, Ixxlist)
+        # plt.plot([0.5*l,0.5*l],[0,-230], 'r')
+        # plt.plot([0.5*l+h,0.5*l+h],[0,-230], 'r')
+
+        #plt.show()
+
