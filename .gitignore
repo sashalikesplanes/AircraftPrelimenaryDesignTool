@@ -1,4 +1,6 @@
 # Ignore VSCode config
+urmum
+
 .vscode
 generate_commits.sh
 # Byte-compiled / optimized / DLL files

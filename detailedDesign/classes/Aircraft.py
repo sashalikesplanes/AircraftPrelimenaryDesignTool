@@ -21,7 +21,7 @@ class Aircraft(Component):
 
         # Create all the parameters that this component must have here:
         # Use self.property = None
-        self.mtom = 2  # Initial Value
+        self.mtom = 2  # Initial Value test test
         self.oem = 1
         self.payload_mass = None
         self.thrust_over_weight_cruise = 0.1  # Initial Value
