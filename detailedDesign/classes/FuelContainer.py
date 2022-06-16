@@ -64,11 +64,15 @@ class FuelContainer(Component):
         self.total_tank_thickness = self.thickness_insulation + self.thickness
         self.empty_space_thickness = self.total_tank_thickness
 
-        # plotting
-        # plt.plot(thickness_insulation, mass_total)
+        # # plotting
+        # plt.plot(thickness_insulation*1000, mass_total)
         # plt.ylabel("Total mass boiloff, tank, insulation [kg]")
-        # plt.xlabel("Insulation thickness [m]")
+        # plt.xlabel("Insulation thickness [mm]")
         # plt.title("Effect of insulation thickness on total tank weight")
+        # plt.grid()
+        # plt.xticks(fontsize=11)
+        # plt.yticks(fontsize=11)
+        # plt.tight_layout()
         # plt.show()
 
     def size_self(self):

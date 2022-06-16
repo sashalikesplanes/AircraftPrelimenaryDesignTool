@@ -107,6 +107,7 @@ def fuselage_bending_shear(aircraft, force_run):
     # ax.set_title("Stress over rotation")
     # # plt.xlabel("Rotation around axis [rad]")
     # # plt.ylabel("Stress [MPa]")
+    # plt.tight_layout()
     # # ax.set(xlabel="Rotation around axis [rad]", ylabel="Stress [MPa]")
     # ax.grid(True)
 
@@ -139,6 +140,7 @@ def fuselage_bending_shear(aircraft, force_run):
 
     # Add the thickness and the crippling stress to the different columns of the dataframe
     df['thickness'] = np.select(conditions, segment_thicknesses)
+    # self.logger.debug(f"thickness fuselage: {df['thickness']} [m]")
     segment_buckling = [plate_crippling(x, aircraft) for x in segment_thicknesses]
     df['buckling_stress'] = np.select(conditions, segment_buckling)
 
@@ -152,6 +154,9 @@ def fuselage_bending_shear(aircraft, force_run):
     plt.title("Longitudinal Skin Thickness Variation")
     plt.xlabel("Longitudinal position [m]")
     plt.ylabel("Skin Thickness [mm]")
+    plt.tight_layout()
+    plt.grid()
+
 
     # Save the final dataframe with all the additional columns
     df_location2 = Path('data', 'dataframes', f'fuselage_stresses_final.dat')

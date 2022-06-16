@@ -43,6 +43,9 @@ def make_payload_range_diagram(aircraft):
     plt.title("Payload Range Diagram")
     plt.xlabel("Range [km]")
     plt.ylabel("Payload mass [kg]")
+    # plt.xticks(fontsize=11)
+    # plt.yticks(fontsize=11)
+    plt.tight_layout()
 
 
 def calc_range(W0, W1, aircraft):

@@ -50,7 +50,7 @@ def make_wing_loading_diagrams(aircraft):
             forces.append(PointLoad(y_current, m_engine * g / 2))
 
     # Initialize a new figure
-    fig, (ax1, ax2) = plt.subplots(2)
+    fig, (ax1, ax2) = plt.subplots(2, constrained_layout = True)
 
     # Calculate shear and bending over the longitudinal plane length
     X = np.arange(0, total_length, dx)
@@ -278,6 +278,9 @@ def wingbox(aircraft):
     plt.title("Stringers needed at different spanwise locations")
     plt.xlabel("Half span [m]")
     plt.ylabel("Number of stringers needed [-]")
+    # plt.xticks(fontsize=11)
+    # plt.yticks(fontsize=11)
+    plt.tight_layout()
     plt.grid()
     plt.legend()
     plt.show()

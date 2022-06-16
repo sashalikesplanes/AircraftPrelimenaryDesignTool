@@ -133,6 +133,8 @@ class FuelContainer(Component):
         # plt.ylabel("Total mass boiloff, tank, insulation [kg]")
         # plt.xlabel("Insulation thickness [m]")
         # plt.title("Effect of insulation thickness on total tank weight")
+        # plt.grid()
+        # plt.tight_layout()
         # plt.show()
         self.pos = np.array([self.Fuselage.cockpit_length + self.Fuselage.Cabin.length, 0., 0.])
 

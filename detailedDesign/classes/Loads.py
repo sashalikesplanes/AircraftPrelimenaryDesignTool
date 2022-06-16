@@ -89,6 +89,9 @@ class DistributedLoad:
         plt.arrow(self.x, 0, 0, self.force_per_meter, color="tab:blue")
         plt.plot([self.x_left, self.x_right], [0, 0], color="tab:blue")
         plt.plot([self.x_left, self.x_right], [self.force_per_meter, self.force_per_meter], color="tab:blue")
+        # plt.grid()
+        # plt.xticks(fontsize=11)
+        # plt.yticks(fontsize=11)
 
 
 class LinearLoad:

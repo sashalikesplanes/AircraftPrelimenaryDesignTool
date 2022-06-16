@@ -14,6 +14,7 @@ def sketch_aircraft(aircraft):
     plt.title("CG positions relative to nose")
     plt.xlabel("Longitudanal postion [m]")
     plt.ylabel("Height position [m]")
+    plt.tight_layout()
 
     # plot fuselage
     length = aircraft.FuselageGroup.Fuselage.length

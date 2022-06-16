@@ -49,6 +49,7 @@ def make_carrot_plot(force_run=False):
     plt.xlabel("Xcg/MAC [%]")
     plt.ylabel("Xlemac/Lfus [%]")
     plt.title("Centra of Gravity Range")
+    plt.tight_layout()
     plt.grid()
     plt.xlim(-0.5, 1)
     plt.ylim(0, 1)
