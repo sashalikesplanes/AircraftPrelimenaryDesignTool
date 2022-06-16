@@ -18,7 +18,7 @@ def get_max_climb_rate(aircraft):
     weight = aircraft.mtom * g
     k = 1 / (np.pi * A * e)
 
-    rho = aircraft.states['cruise'].density
+    rho = aircraft.states['take-off'].density
     V_best_ROC = np.sqrt(2 / rho * wingloading * np.sqrt(k / (3 * CDmin)))
     ROC_max = efficiency * power / weight - V_best_ROC * np.sqrt(4 * k * CDmin) * (1 / np.sqrt(3) + np.sqrt(3)) / 2
     return ROC_max, V_best_ROC
