@@ -100,12 +100,13 @@ def make_aircraft_loading_diagrams(aircraft):
     moment = 0.5 * state.density * state.velocity ** 2 * wing_area * C_m * normalized_chord
     forces.append(PointMoment(aircraft.WingGroup.Wing.transformed_cg, moment))
 
-    # TODO: introduce tail forces in order to finalize moment diagram
-    C_mh = -0.4079129718445125
+    # TODO: find better C_mh
+    C_mh = -0.25
     S_h = aircraft.FuselageGroup.Tail.HorizontalTail.surface_area
     C_h = aircraft.FuselageGroup.Tail.HorizontalTail.mean_geometric_chord
     moment = 0.5 * state.density * state.velocity ** 2 * S_h * C_mh * C_h
-    # forces.append(PointMoment(aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg, -moment))
+
+    forces.append(PointMoment(aircraft.FuselageGroup.Tail.HorizontalTail.transformed_cg, moment))
 
     # Transform the components into the correct loads
     for component in components:
@@ -118,8 +119,19 @@ def make_aircraft_loading_diagrams(aircraft):
     total_length = aircraft.FuselageGroup.Tail.transformed_pos[0]
 
     # Lift force
-    lift = PointLoad(aircraft.WingGroup.Wing.transformed_cg[0], aircraft.FuselageGroup.get_mass() * g)
+    # Lift correction is present due to the get_mass function returning
+    # TODO: discover the cause of this lift inequality
+    lift_correction = 1080e3  # [N]
+    # lift_correction = 0
+    lift = PointLoad(aircraft.WingGroup.Wing.transformed_cg[0], aircraft.FuselageGroup.get_mass() * g - lift_correction)
     forces.append(lift)
+
+    tail = aircraft.FuselageGroup.Tail
+    C_lh = tail.HorizontalTail.get_C_L()
+    lift_tail = 0.5 * state.density * state.velocity ** 2 * S_h * C_lh
+    print(lift_tail)
+    pos_tail_h = tail.HorizontalTail.transformed_cg
+    forces.append(PointLoad(pos_tail_h, lift_tail))
 
     # Plot the forces for debugging
     # plt.figure()

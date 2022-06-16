@@ -8,7 +8,7 @@ from detailedDesign.log import setup_custom_logger
 from detailedDesign.getConstraints import get_constraints
 
 name = os.getlogin()
-if name == "Devoteam1":
+if name == "Devoteam":
     logger = setup_custom_logger("logger", False)
 else:
     logger = setup_custom_logger("logger", True)
