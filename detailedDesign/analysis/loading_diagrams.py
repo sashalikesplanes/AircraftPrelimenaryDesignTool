@@ -50,7 +50,7 @@ def make_wing_loading_diagrams(aircraft):
             forces.append(PointLoad(y_current, m_engine * g / 2))
 
     # Initialize a new figure
-    fig, (ax1, ax2) = plt.subplots(2)
+    # fig, (ax1, ax2) = plt.subplots(2)
 
     # Calculate shear and bending over the longitudinal plane length
     X = np.arange(0, total_length, dx)
@@ -61,19 +61,25 @@ def make_wing_loading_diagrams(aircraft):
     # moment = -np.array([sum([i.calc_moment(y) for i in forces]) for y in X])
 
     # Plot the bending and shear diagram
-    ax1.set_title("Wing Shear Loading Diagram")
-    ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
-    ax1.plot(X, shear * -10 ** -3, color="tab:red")
-    ax1.grid()
+    plt.figure()
+    plt.title("Wing Shear Loading Diagram")
+    plt.xlabel("Longitudinal Position [m]")
+    plt.ylabel("Shear Force [kN]")
+    plt.plot(X, shear * -10 ** -3, color="tab:red")
+    plt.grid()
+    plt.savefig(Path("plots", "wing_loading_shear.pdf"))
 
     moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
     moment_integral = moment_integral - moment_integral[-1]
 
-    ax2.set_title("Wing Bending Diagram")
-    ax2.set(xlabel="Longitudinal Position [m]", ylabel="Bending Moment [kNm]")
+    plt.figure()
+    plt.title("Wing Bending Diagram")
+    plt.xlabel("Longitudinal Position [m]")
+    plt.ylabel("Bending Moment [kNm]")
     # ax2.plot(X, moment * 10 ** -3, color="tab:green")
-    ax2.plot(X, np.array(moment_integral) * -10 ** -3, "-", color="tab:green")
-    ax2.grid()
+    plt.plot(X, np.array(moment_integral) * -10 ** -3, "-", color="tab:green")
+    plt.grid()
+    plt.savefig(Path("plots", "wing_loading_moment.pdf"))
 
     aircraft.WingGroup.Wing.span_wise_shear = shear
     aircraft.WingGroup.Wing.span_wise_moment = moment_integral
@@ -139,7 +145,7 @@ def make_aircraft_loading_diagrams(aircraft):
     # plt.title("Forces Drawing")
 
     # Initialize a new figure
-    fig, (ax1, ax2) = plt.subplots(2)
+    # fig, (ax1, ax2) = plt.subplots(2)
 
     # Calculate shear and bending over the longitudinal plane length
     X = np.arange(0, total_length, dx)
@@ -152,23 +158,28 @@ def make_aircraft_loading_diagrams(aircraft):
     shear_cut2 = max_abs_shear*2/3
 
     # Plot the bending and shear diagram
-    ax1.set_title("Fuselage Shear Loading Diagram")
-    ax1.set(xlabel="Longitudinal Position [m]", ylabel="Shear Force [kN]")
-    ax1.plot(X, shear * 10 ** -3, color="tab:red", label="Shear Force")
-    ax1.plot(X, absolute_shear, "--", color="tab:red", label="Absolute Shear Force")
-    ax1.hlines([shear_cut1], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red",
+    plt.figure()
+    plt.title("Fuselage Shear Loading Diagram")
+    plt.xlabel("Longitudinal Position [m]")
+    plt.ylabel("Shear Force [kN]")
+    plt.plot(X, shear * 10 ** -3, color="tab:red", label="Shear Force")
+    plt.plot(X, absolute_shear, "--", color="tab:red", label="Absolute Shear Force")
+    plt.hlines([shear_cut1], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red",
                linestyles="dashdot", label="Design Section Cutoffs")
-    ax1.hlines([shear_cut2], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red", linestyles='dashdot')
-    ax1.legend()
-    ax1.grid()
+    plt.hlines([shear_cut2], 0, aircraft.FuselageGroup.Fuselage.length, colors="tab:red", linestyles='dashdot')
+    plt.legend()
+    plt.grid()
+    plt.savefig(Path("plots", "fuselage_loading_shear.pdf"))
 
     # moment_integral = integrate.cumtrapz(shear, X, initial=0, dx=dx)
-
-    ax2.set_title("Fuselage Bending Diagram")
-    ax2.set(xlabel="Longitudinal Position [m]", ylabel="Bending Moment [kNm]")
-    ax2.plot(X, moment * 10 ** -3, color="tab:green")
+    plt.figure()
+    plt.title("Fuselage Bending Diagram")
+    plt.xlabel("Longitudinal Position [m]")
+    plt.ylabel("Bending Moment [kNm]")
+    plt.plot(X, moment * 10 ** -3, color="tab:green")
     # ax2.plot(X, np.array(moment_integral) * 10 ** -3, "--", color="tab:green")
-    ax2.grid()
+    plt.grid()
+    plt.savefig(Path("plots", "fuselage_loading_moment.pdf"))
 
     aircraft.FuselageGroup.Fuselage.longitudinal_shear = shear
     aircraft.FuselageGroup.Fuselage.longitudinal_moment = moment
