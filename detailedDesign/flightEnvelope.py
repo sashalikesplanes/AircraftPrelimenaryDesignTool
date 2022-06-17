@@ -51,6 +51,8 @@ def make_flight_envelope(aircraft, test_state):
     plt.vlines(V_D, n_neg, n_pos, colors='k')
     plt.vlines(V_stall, 0, 1, colors='k')
     plt.vlines(V_stall_inverted, n_neg, 0, colors='k')
+    # plt.grid()
+    plt.tight_layout()
 
     R_1 = W_max_landing / W
     R_2 = W_ZF / W
@@ -74,6 +76,7 @@ def make_flight_envelope(aircraft, test_state):
     plt.plot(Vs, gust_lines_prime, 'k')
     plt.plot(Vs, gust_lines_neg, 'k')
     plt.plot(Vs, gust_lines_prime_neg, 'k')
+    plt.grid()
 
     # Check At V_A gust > Manoeuvre
     # V_A manoeuvre
@@ -96,6 +99,7 @@ def make_flight_envelope(aircraft, test_state):
     n_cruise = get_gust_load(K_g, U_ds, V_C_max, C_L_alpha, wing_loading)
     if n_cruise > n_pos:
         plt.plot(V_C_max, n_cruise, 'k', marker="o", markersize=10)
+        plt.grid()
 
 
 
@@ -103,6 +107,7 @@ def make_flight_envelope(aircraft, test_state):
         n_dive = get_gust_load(K_g, U_ds_prime, V_D, C_L_alpha, wing_loading)
         # plt.plot(V_D, n_dive, marker="o", markersize=10)
         plt.plot([V_C_max, V_D], [n_cruise, n_dive], 'k')
+        plt.grid
 
     # Negative same 
     V_intersect = 498 * 1/47.88 * wing_loading * (1 - n_neg)/(K_g * U_ds * 3.281 * C_L_alpha * 1.9438)
@@ -111,12 +116,13 @@ def make_flight_envelope(aircraft, test_state):
     # plt.plot(V_C_max, n_cruise_neg, marker="o", markersize=10)
         n_dive_neg = get_gust_load(K_g, - U_ds_prime, V_D, C_L_alpha, wing_loading)
         plt.plot([V_C_max, V_D], [n_cruise_neg, n_dive_neg], 'k')
+        plt.grid()
     if V_intersect < V_C_max:
         plt.plot([V_intersect, V_C_max], [n_neg, n_cruise_neg], 'k')
-
+        plt.grid()
     if V_intersect < V_D:
         plt.plot(V_intersect, n_neg, 'k', marker="o", markersize=10)
-        
+        plt.grid()
 
     if altitude < 300:
         # Take off
@@ -130,6 +136,7 @@ def make_flight_envelope(aircraft, test_state):
         plt.hlines(2, V_A_TO, V_F_TO, colors='k')
         plt.vlines(V_stall_TO, 0, 1, colors='k')
         plt.plot(V_TO, positive_stall_line_TO, 'k')
+        plt.grid()
 
 
         # Land
@@ -142,6 +149,7 @@ def make_flight_envelope(aircraft, test_state):
         plt.hlines(2, V_A_land, V_F_land, colors='k')
         plt.vlines(V_stall_land, 0, 1, colors='k')
         plt.plot(V_land, positive_stall_line_land, 'k')
+        plt.grid()
 
 
 

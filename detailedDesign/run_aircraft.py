@@ -56,6 +56,8 @@ def run_aircraft(aircraft, debug=False):
     #     # print(df)
     #     plt.xlabel("Iterations [-]")
     #     plt.ylabel("System Mass [kg]")
+    #     plt.grid()
+    #     plt.tight_layout()
     #     plt.title("MTOM over iterations")
     #     # plt.ylim([0, 10e9])
     #     # plt.yscale("log")

@@ -105,6 +105,8 @@ def get_power_plot(aircraft):
     plt.plot(V, power_available_array, label = "Power available")
     plt.xlabel("Velocity [m/s]")
     plt.ylabel("Power [MW]")
+    plt.grid()
+    plt.tight_layout()
     plt.legend()
 
 def get_ROC_V_plot(aircraft):
@@ -156,6 +158,8 @@ def get_heigt_velocity_plot(aircraft):
     plt.plot(lst, rholist)
     plt.ylabel("density")
     plt.xlabel("ROC")
+    plt.grid()
+    plt.tight_layout()
     plt.show()
     plt.plot(lst2, rholist)
 
@@ -199,4 +203,6 @@ def get_performance_altitude_plot(aircraft):
     plt.plot([86,220],[3810,3810], "r--", label = "Limit due to being non-presurized")
     plt.xlabel("Velocity [m/s]")
     plt.ylabel('Altitude [m]')
+    plt.grid()
+    plt.tight_layout()
     plt.legend(loc = 2)
