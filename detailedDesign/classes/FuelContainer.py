@@ -88,6 +88,7 @@ class FuelContainer(Component):
         thickness_fatigue = self.tank_pressure * self.radius_tank * self.SF / self.fatiguestrength
         thickness_yield = self.tank_pressure * self.radius_tank * self.SF / self.yieldstrength
 
+        # Should really be: thickness_yield = self.tank_pressure * self.radius_tank * self.SF / (2*self.yieldstrength)
         self.thickness = max(thickness_fatigue, thickness_yield)
 
         # Debugging
