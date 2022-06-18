@@ -9,22 +9,24 @@ class State:
 
         self.source = openData(Path('data', 'states', f'{name}.yaml'))
         # self.viscosity =
+        self.velocity = self.source['velocity']
+        self.range = self.source['range']
 
     @property
     def dynamic_pressure(self):
         return 0.5 * self.density * self.velocity ** 2
 
-    @property
-    def velocity(self):
-        return self.source["velocity"]
+    # @property
+    # def velocity(self):
+        # return self.source["velocity"]
 
     @property
     def altitude(self):
         return self.source["altitude"]
 
-    @property
-    def range(self):
-        return self.source["range"]
+    # @property
+    # def range(self):
+        # return self.source["range"]
 
     @property
     def duration(self):

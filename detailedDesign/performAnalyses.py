@@ -90,6 +90,8 @@ def print_summary(aircraft):
     engines = aircraft.WingGroup.Engines
     max_thrust = engines.own_amount_fans * engines.thrust_per_fan
     logger.debug(f"Maximum speed : {(max_thrust / (aircraft.CD * 0.5 * 0.819 * aircraft.reference_area)) ** 0.5}")
+    logger.debug(f"X loc H tail ac: {aircraft.FuselageGroup.Tail.HorizontalTail.x_aerodynamic_center} m")
+    logger.debug(f"Span of V tail: {aircraft.FuselageGroup.Tail.VerticalTail.span} m")
     logger.debug(f"Wing Area: {aircraft.WingGroup.Wing.wing_area:.2E} m2")
     logger.debug(f"Wing span: {aircraft.WingGroup.Wing.span:.3E} m")
     logger.debug(f"V Tail Area: {v_tail.surface_area}")

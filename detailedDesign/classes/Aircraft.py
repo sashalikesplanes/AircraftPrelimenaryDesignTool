@@ -123,7 +123,7 @@ class Aircraft(Component):
         total_C_D_min, CDi, CD, total_drag, self.C_D_TO = get_drag(self)
         self.CD = CD
         self.C_D_min = total_C_D_min
-        self.cruise_drag = total_drag
+        self.cruise_drag = total_drag * self.cruise_drag_contingency
         self.logger.debug(f"DRAG: { self.C_D_min = } [-], { self.cruise_drag = } N")
 
         new_mtom = self.oem + self.payload_mass + self.fuel_mass + self.cargo_mass
