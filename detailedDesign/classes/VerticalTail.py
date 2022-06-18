@@ -74,7 +74,7 @@ class VerticalTail(Component):
         # print("initial S",self.surface_area)
         # print(self.surface_area/wing_area)
         # # print("rudder length",self.mean_geometric_chord*0.3)
-        # # print("MAC",self.mean_geometric_chord)
+        # print("MAC",self.mean_geometric_chord)
         # # print("height VTP",self.span)
         # print("tail length:", self.tail_length)
 

@@ -6,7 +6,7 @@ from detailedDesign.analysis.find_stability import find_stability
 from detailedDesign.sketch import sketch_aircraft
 from detailedDesign.analysis.make_avl_file import make_avl_file
 from detailedDesign.analysis.make_payload_range_diagram import make_payload_range_diagram
-from detailedDesign.analysis.loading_diagrams import make_loading_diagrams
+from detailedDesign.analysis.loading_diagrams import make_loading_diagrams, wingbox
 from detailedDesign.climbPerformance import get_max_climb_rate, get_climb_angle, get_power_plot, calc_ROC, get_theta_plot, get_heigt_velocity_plot, get_performance_altitude_plot
 from detailedDesign.potatoPlot import make_potato_plot
 from detailedDesign.bending_shear import find_bending_shear
@@ -28,10 +28,9 @@ def perform_analyses(aircraft, make_stability):
     # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
                  f"Max climb rate : {get_max_climb_rate(aircraft)[0]}m/s")
-    logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= aircraft.takeoff_speed)} degrees')
+    logger.debug(f'climb angle the plane can fly at take-off: {get_climb_angle(aircraft,V= get_max_climb_rate(aircraft)[1])} degrees')
     logger.debug(f"ROC @ TO speed of {aircraft.takeoff_speed} m/s:{calc_ROC(aircraft, True, aircraft.takeoff_speed)}m/s")
     #get_ROC_V_plot(aircraft)
-
     get_performance_altitude_plot(aircraft)
     # plt.figure()
     if make_stability:
@@ -55,7 +54,7 @@ def perform_analyses(aircraft, make_stability):
     # plt.figure()
     make_loading_diagrams(aircraft)
     find_bending_shear(aircraft)
-
+    wingbox(aircraft)
     #####
     state = aircraft.states["cruise"]
     Cl = aircraft.mtom * g / (0.5 * state.density * state.velocity ** 2 * aircraft.WingGroup.Wing.wing_area)

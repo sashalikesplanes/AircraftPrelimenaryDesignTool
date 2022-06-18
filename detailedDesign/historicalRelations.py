@@ -44,6 +44,8 @@ def get_MTOM_from_historical_relations(aircraft, plot=False):
         plt.plot(x, j)
         plt.xlabel("PAX [-]")
         plt.ylabel("MTOW [kg]")
+        plt.grid()
+        plt.tight_layout()
         histRelationsPath = Path("plots", "historicalRelations")
         plt.savefig(histRelationsPath, dpi=600)
         # plt.show()

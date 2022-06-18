@@ -176,8 +176,11 @@ def production_cost_estimation(aircraft):
 
     total_program_cost = (average_rc_per_ac * n_ac_sold) / 1e6 + total_nrc
 
-    print(f"{np.sum(marginal_cost)/1e6 =}")
     # breakeven_point = np.where(np.cumsum(marginal_cost)/1e6 >= total_program_cost)[0][0]+1
+
+    # print(f"{marginal_cost[-1] =}")
+    # print(f"{average_rc_per_ac =}")
+
 
     non_rec_costs_totals = [float(i[-1]) for i in nrc_per_kg[:-1]]
     colors = [plt.cm.Pastel1(i) for i in range(20)]
@@ -218,6 +221,10 @@ def production_cost_estimation(aircraft):
     breakeven_point = np.ceil(total_program_cost / price_ac)
 
     program_roi = (program_revenues - total_program_cost) / total_program_cost * 100
+
+    # print(f"{program_revenues =}")
+    # print(f"{average_rc_per_ac * n_ac_sold /1e6 =}")
+    # print(f"{total_program_cost =}")
 
     return competitive_price_ac, total_program_cost, program_roi, average_rc_per_ac / 1e6, total_nrc, breakeven_point
 

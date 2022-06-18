@@ -18,7 +18,7 @@ def get_max_climb_rate(aircraft):
     weight = aircraft.mtom * g
     k = 1 / (np.pi * A * e)
 
-    rho = aircraft.states['cruise'].density
+    rho = aircraft.states['take-off'].density
     V_best_ROC = np.sqrt(2 / rho * wingloading * np.sqrt(k / (3 * CDmin)))
     ROC_max = efficiency * power / weight - V_best_ROC * np.sqrt(4 * k * CDmin) * (1 / np.sqrt(3) + np.sqrt(3)) / 2
     return ROC_max, V_best_ROC
@@ -105,6 +105,8 @@ def get_power_plot(aircraft):
     plt.plot(V, power_available_array, label = "Power available")
     plt.xlabel("Velocity [m/s]")
     plt.ylabel("Power [MW]")
+    plt.grid()
+    plt.tight_layout()
     plt.legend()
 
 def get_ROC_V_plot(aircraft):
@@ -156,6 +158,8 @@ def get_heigt_velocity_plot(aircraft):
     plt.plot(lst, rholist)
     plt.ylabel("density")
     plt.xlabel("ROC")
+    plt.grid()
+    plt.tight_layout()
     plt.show()
     plt.plot(lst2, rholist)
 
@@ -199,4 +203,6 @@ def get_performance_altitude_plot(aircraft):
     plt.plot([86,220],[3810,3810], "r--", label = "Limit due to being non-presurized")
     plt.xlabel("Velocity [m/s]")
     plt.ylabel('Altitude [m]')
+    plt.grid()
+    plt.tight_layout()
     plt.legend(loc = 2)
