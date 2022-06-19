@@ -80,7 +80,7 @@ def get_xplot(aircraft):
     AR = aircraft.WingGroup.Wing.aspect_ratio
     ARh = aircraft.FuselageGroup.Tail.HorizontalTail.aspect_ratio
     M = aircraft.states['cruise'].velocity/aircraft.states['cruise'].speed_of_sound
-    Vlanding = 77  # from boeing 787, increasing is better, 93 from A380
+    Vlanding = 100 # from boeing 787, increasing is better, 93 from A380
     Mlanding = 0.2263  # 77m/s at sealevel
 
     eta = 0.95  # from Sam
@@ -105,11 +105,11 @@ def get_xplot(aircraft):
 
     taillength = aircraft.FuselageGroup.Tail.HorizontalTail.tail_length
     VhoverV = 0.85  # if fuselage mounted
-    SM = 0.05 # as defined in ADSEE
+    SM = 0.00 # as defined in ADSEE
     Xacw = 0.23  # increasing shifts stability line to right, which is nice
     Xacwlanding = 0.24  #TODO, check for final landing, slide 31, adsee3PPT7
 
-    CLh = -0.8  # from slide 17 lecture 8
+    CLh = -0.6  # from slide 17 lecture 8
     Wfin = aircraft.mtom - aircraft.fuel_mass # TODO check for reserve fuel
     rho_sealevel = 1.225
     CLaminush = Wfin / (0.5 * rho_sealevel * Vlanding ** 2 * S) - CLh

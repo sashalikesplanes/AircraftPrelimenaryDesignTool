@@ -23,7 +23,7 @@ def perform_analyses(aircraft, make_stability):
 
     sketch_aircraft(aircraft)
     print_summary(aircraft)
-    make_payload_range_diagram(aircraft)
+    # make_payload_range_diagram(aircraft)
     # get_power_plot(aircraft)
     # make_potato_plot(aircraft, True)
     logger.debug(f"Max climb rate obtained at a velocity of {get_max_climb_rate(aircraft)[1]} m/s\n"
@@ -52,9 +52,9 @@ def perform_analyses(aircraft, make_stability):
     logger.debug(f"Program ROI [%]: {program_roi:.2f}")
     logger.debug(f"Aircraft turnaround time [h]: {ground_time:.2f}")
     # plt.figure()
-    make_loading_diagrams(aircraft)
-    find_bending_shear(aircraft)
-    wingbox(aircraft)
+    # make_loading_diagrams(aircraft)
+    # find_bending_shear(aircraft)
+    # wingbox(aircraft)
     #####
     state = aircraft.states["cruise"]
     Cl = aircraft.mtom * g / (0.5 * state.density * state.velocity ** 2 * aircraft.WingGroup.Wing.wing_area)
@@ -100,6 +100,11 @@ def print_summary(aircraft):
     logger.debug(f"Wing Area: {aircraft.reference_area:.2f} m2")
     logger.debug(f"INOP Moment: {aircraft.WingGroup.Engines.engines_inoperative_moment} Nm")
     logger.debug(f"Range at critical point: {calculate_crit_range(aircraft, 3760e3) / 1000:.2f} km")
+    logger.debug("########################################################################")
+    fuselage = aircraft.FuselageGroup.Fuselage
+    logger.debug(f"FORWARD mass: {fuselage.ForwardFuelContainer.own_mass} kg, v = {fuselage.ForwardFuelContainer.volume_tank} m ^ 3, h2 = {fuselage.ForwardFuelContainer.mass_H2} kg")
+    logger.debug(f"MID mass: {fuselage.AftFuelContainer.own_mass} kg, v = {fuselage.AftFuelContainer.volume_tank} m ^ 3, h2 = {fuselage.AftFuelContainer.mass_H2} kg")
+    logger.debug(f"AFT mass: {fuselage.AssFuelContainer.own_mass} kg, v = {fuselage.AssFuelContainer.volume_tank} m ^ 3, h2 = {fuselage.AssFuelContainer.mass_H2} kg")
 
     fuselage = aircraft.FuselageGroup.Fuselage
     logger.debug(f"Cockpit length: {fuselage.cockpit_length} m")

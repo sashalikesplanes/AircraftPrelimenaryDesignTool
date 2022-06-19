@@ -88,7 +88,7 @@ class Component:
         else:
             percent_mass = 100
 
-        self.logger.debug(f"{' ' * depth * 2}{type(self).__name__:<15}{self.get_mass():<20.4E}[kg]{percent_mass:>20.2f} %")
+        self.logger.debug(f"{' ' * depth * 2}{type(self).__name__:<15}{self.get_mass():<20.6E}[kg]{percent_mass:>20.2f} %")
         # self.logger.debug(f"{' ' * depth * 2}x_cg: {self.transformed_cg[0]} [m]")
         for component in self.components:
             component.print_component_masses(prev_mass=self.get_mass(), depth=depth+1)
