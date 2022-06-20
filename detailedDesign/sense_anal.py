@@ -11,6 +11,8 @@ from detailedDesign.log import setup_custom_logger
 from detailedDesign.analysis.marketEstimations import market_estimations, production_cost_estimation, operations_and_logistics
 from dataclasses import dataclass
 
+plt.rcParams.update({'font.size': 16})
+
 # Key parameters:
     # oem
     # fuel_mass
