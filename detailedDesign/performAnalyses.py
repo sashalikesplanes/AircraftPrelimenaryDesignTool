@@ -147,6 +147,7 @@ def print_summary(aircraft):
     logger.debug(f"CG full fuel: {aircraft.cg_loaded}")
     logger.debug(f"x_ac : {aircraft.WingGroup.Wing.x_aerodynamic_center}")
 
+    logger.debug(f"L/D: {aircraft.mtom * 9.81 / aircraft.cruise_drag}")
     logger.debug(f"###################################################################")
     logger.debug(f"##### FOR PALOMA AND JULIE AND KATO!!!! ###########################")
     logger.debug(f"###################################################################")

@@ -139,17 +139,17 @@ out_names_wing = ['Wing Area [m^2]', 'Wing Mass [kg]', 'Installation Angle [deg]
 
 # Volume volume coefficient, aspect ratio, tail_length_factor, x_lemac
 params_tail = [param_velocity,  
-               Parameter('H Tail Volume Coefficient [-]', [1.485, 1.5, 1.515], param_updater_volume_coef),
-               Parameter('H Tail Aspect Ratio [-]', [3.96, 4, 4.04], param_updater_tail_ar),
+               Parameter(r"$V_{HT}$ [-]", [1.485, 1.5, 1.515], param_updater_volume_coef),
+               Parameter('H Tail AR [-]', [3.96, 4, 4.04], param_updater_tail_ar),
                Parameter('Tailcone Length [m]', [2.2275, 2.25, 2.2725], param_updater_tail_length),
                Parameter('X position LEMAC [m]', [55.935, 56.5, 57.065], param_updater_xlemac)]
 
 out_names_tail = ['Empennage Mass [kg]', 'H Tail Area [m^2]']
 
 def main():
-    plot_anal('aircraft', out_names_ac, params_ac)
-    plot_anal('power_and_prop', out_names_eng, params_eng)
-    plot_anal('wing', out_names_wing, params_wing)
+    # plot_anal('aircraft', out_names_ac, params_ac)
+    # plot_anal('power_and_prop', out_names_eng, params_eng)
+    # plot_anal('wing', out_names_wing, params_wing)
     plot_anal_tail('tail', out_names_tail, params_tail)
 
 def plot_anal_tail(sys_name, out_names, params):
@@ -167,7 +167,7 @@ def plot_anal_tail(sys_name, out_names, params):
     out_arrs = np.stack(out_arrs, axis=2)
 
     fig, ax = plt.subplots()
-    fig.set_size_inches(12, 8)
+    fig.set_size_inches(16, 12)
     plt.grid()
 
     x_locs = np.linspace(0, 10, len(params))
@@ -190,29 +190,33 @@ def plot_anal_tail(sys_name, out_names, params):
         ax.bar_label(up_bars, padding=3, labels=['{:,.2%}'.format(x) for x in outs_pos])
 
     ax2 = ax.twinx()
-    x_locs = np.hstack([-x_locs[1], x_locs])
+    # x_locs = np.hstack([-x_locs[1], x_locs])
     ax2.set_ylabel(r"$C_{m_{\alpha}}$")
     up_bars = ax2.bar(x_locs + width,
-                     [clean_c_m_alpha] + c_m_alphas,
+                     c_m_alphas,
                      width - 0.05,
                      label=r"$C_{m_{\alpha}}$",
                      color='none',
-                     hatch=hatch_list[-1],
-                     edgecolor=(0, 0, 0, 1.0),
+                     hatch="xx",
+                     edgecolor=(1, 0, 0, 1.0),
                      zorder=10)
 
-    ax2.bar_label(up_bars, padding=3, labels=['{:,.2f}'.format(x) for x in [clean_c_m_alpha] + c_m_alphas])
+    ax2.bar_label(up_bars, padding=3, labels=['{:,.2f}'.format(x) for x in c_m_alphas], color="red")
     ax2.set_ylim(bottom=-0.08)
     align_yaxis(ax, ax2)
 
 
+    ax2.axhline(y=clean_c_m_alpha, xmin=0, xmax=10, dashes=(2, 1), zorder=-1, color="red")
     ax.set_yticklabels(['{:,.2%}'.format(x) for x in ax.get_yticks()])
     ax.set_ylabel(f"% Change in {', '.join(out_names)} relative to baseline")
-    labels = ['Baseline'] + [param.name for param in params] 
+    labels = [param.name for param in params] 
     ax.set_xticks(x_locs, labels)
     ax.set_xlabel('Parameter varied')
+    ax2.tick_params(axis='y', colors='red')
     ax.legend()
     ax2.legend(loc='lower right')
+    ax2.spines['right'].set_color('red')
+    ax2.yaxis.label.set_color('red')
     plt.tight_layout()
     plt.savefig(Path('plots', f"sense_anal_{sys_name}.pdf"))
 
@@ -243,7 +247,7 @@ def plot_anal(sys_name, out_names, params):
     out_arrs = np.stack(out_arrs, axis=2)
 
     fig, ax = plt.subplots()
-    fig.set_size_inches(12, 8)
+    fig.set_size_inches(16, 12)
     plt.grid()
 
     x_locs = np.linspace(0, 10, len(params))
